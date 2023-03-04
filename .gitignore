@@ -1,0 +1,24 @@
+.DS_Store
+.idea/
+Thumbs.db
+temp/*
+
+yarn.lock
+lerna-debug.log
+package-lock.json
+/node_modules
+.build/
+tsconfig.tsbuildinfo
+
+packages/*/dist/*
+packages/*/src/**/*.d.ts
+
+# Ignore internal todo-list (if any)
+.todo.md
+
+# Ignore various environment files in root directory
+.env
+.testing
+.production
+.locale
+.development
