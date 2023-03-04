@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "useWorkspaces": true,
+  "version": "0.0.0",
+  "command": {
+    "version": {
+      "allowBranch": "main",
+      "conventionalCommits": false,
+      "message": "Release of %v"
+    },
+    "publish": {
+      "message": "Publish %v"
+    },
+    "create": {
+      "homepage": "https://github.com/aedart/ion",
+      "license": "BSD-3-Clause"
+    }
+  }
+}

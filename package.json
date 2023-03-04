@@ -1,0 +1,25 @@
+{
+  "name": "@aedart/ion",
+  "description": "Mono-repo for JS / TS packages",
+  "keywords": [
+    "Ion",
+    "Library"
+  ],
+  "author": "Alin Eugen Deac",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/aedart/ion/issues"
+  },
+  "homepage": "https://github.com/aedart/ion#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aedart/ion.git"
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^6.5.1"
+  }
+}
