@@ -1,0 +1,36 @@
+{
+  "name": "@aedart/xyz",
+  "version": "0.0.0",
+  "description": "A private package used for testing, examples and tinkering",
+  "keywords": [
+    "Tests",
+    "Examples"
+  ],
+  "author": "Alin Eugen Deac <aedart@gmail.com>",
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/aedart/ion/tree/main/packages/xyz#readme",
+  "bugs": {
+    "url": "https://github.com/aedart/ion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aedart/ion.git"
+  },
+  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/xyz.cjs.js",
+  "module": "dist/xyz.esm.js",
+  "browser": "dist/xyz.umd.js",
+  "types": "dist/xyz.d.ts",
+  "directories": {
+    "dist": "dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "node ./__tests__/xyz.test.js"
+  }
+}
