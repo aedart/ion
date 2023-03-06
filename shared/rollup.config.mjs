@@ -10,7 +10,7 @@
 */
 
 import { builtinModules } from 'module';
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 import fs, {readFileSync} from "fs";
 
 /**
@@ -145,8 +145,17 @@ export function makeESModuleFormat(schema, overwrites = {})
  */
 export function typescriptPlugin(options = {})
 {
+    // @see https://github.com/ezolenko/rollup-plugin-typescript2
     let typeScriptOptions = Object.assign({
-        sourceMap: true,
+
+        // Set to true to disable the cache and do a clean build.
+        // This also wipes any existing cache.
+        clean: true,
+
+        // If true, declaration files will be emitted in the declarationDir given in the tsconfig.
+        // If false, declaration files will be placed inside the destination directory given in
+        // the Rollup configuration [...]
+        useTsconfigDeclarationDir: true
     }, options);
 
     return typescript(typeScriptOptions);
