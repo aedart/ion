@@ -29,7 +29,7 @@ export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ]
     // Perform a cleanup of evt. previous export, to ensure that evt. removed components are no
     // longer part of the "dist" export.
     clearDistDirectory(baseDir);
-    
+
     // Load package.json schema from base directory. Then, cleanup directories...
     const schema = getPackageSchema(baseDir);
 
