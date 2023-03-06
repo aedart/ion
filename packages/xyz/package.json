@@ -20,17 +20,20 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "dist/xyz.cjs.js",
-  "module": "dist/xyz.esm.js",
-  "browser": "dist/xyz.umd.js",
-  "types": "dist/xyz.d.ts",
-  "directories": {
-    "dist": "dist"
+  "main": "./dist/cjs/xyz.js",
+  "module": "./dist/es/xyz.js",
+  "types": "./dist/types/xyz.d.ts",
+  "exports": {
+    "types": "./dist/types/xyz.d.ts",
+    "import": "./dist/es/xyz.js",
+    "default": "./dist/cjs/xyz.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
-    "test": "node ./__tests__/xyz.test.js"
+    "compile": "rollup -c",
+    "watch": "rollup -c -w"
   }
 }
