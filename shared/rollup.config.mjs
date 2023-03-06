@@ -26,9 +26,12 @@ import fs, {readFileSync} from "fs";
  * @returns {import('rollup').RollupOptions|object}
  */
 export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ] }, overwrites = {}) {
+    // Perform a cleanup of evt. previous export, to ensure that evt. removed components are no
+    // longer part of the "dist" export.
+    clearDistDirectory(baseDir);
+    
     // Load package.json schema from base directory. Then, cleanup directories...
     const schema = getPackageSchema(baseDir);
-    clearDistDirectory(baseDir);
 
     // -------------------------------------------------------------------------------------- //
 
