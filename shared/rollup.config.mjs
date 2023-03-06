@@ -139,7 +139,7 @@ export function makeESModuleFormat(schema, overwrites = {})
 /**
  * Returns a new typescript plugin with given configuration options
  *
- * @param {import('@rollup/plugin-typescript').RollupTypescriptOptions} options
+ * @param {object} [options]
  *
  * @returns {Plugin}
  */
@@ -155,7 +155,13 @@ export function typescriptPlugin(options = {})
         // If true, declaration files will be emitted in the declarationDir given in the tsconfig.
         // If false, declaration files will be placed inside the destination directory given in
         // the Rollup configuration [...]
-        useTsconfigDeclarationDir: true
+        useTsconfigDeclarationDir: true,
+
+        // 0 -- Error
+        // 1 -- Warning
+        // 2 -- Info
+        // 3 -- Debug
+        verbosity: 1,
     }, options);
 
     return typescript(typeScriptOptions);
