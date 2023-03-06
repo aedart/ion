@@ -29,5 +29,12 @@
     "rollup": "^3.18.0",
     "tslib": "^2.5.0",
     "typescript": "^4.9.5"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean",
+    "build": "lerna run compile",
+    "compile": "lerna run compile",
+    "watch": "lerna run watch"
   }
 }
