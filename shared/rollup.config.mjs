@@ -12,6 +12,8 @@
 import { builtinModules } from 'module';
 import typescript from 'rollup-plugin-typescript2';
 import fs, {readFileSync} from "fs";
+import dts from "rollup-plugin-dts";
+import del from 'rollup-plugin-delete'
 
 /**
  * Creates a new rollup configuration for given package
@@ -23,7 +25,7 @@ import fs, {readFileSync} from "fs";
  * @param {string[]} [formats] Output formats, e.g. cjs, es
  * @param {import('rollup').RollupOptions|object} [overwrites]
  *
- * @returns {import('rollup').RollupOptions|object}
+ * @returns {import('rollup').RollupOptions[]|object[]}
  */
 export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ] }, overwrites = {}) {
     // Perform a cleanup of evt. previous export, to ensure that evt. removed components are no
@@ -34,6 +36,7 @@ export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ]
     const schema = getPackageSchema(baseDir);
 
     // -------------------------------------------------------------------------------------- //
+    // Add formats to output
 
     if (formats.length === 0) {
         throw new Error('No output formats specified')
@@ -46,9 +49,10 @@ export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ]
     });
 
     // -------------------------------------------------------------------------------------- //
+    // Create the main configuration object
 
     /** @type {import('rollup').RollupOptions} */
-    return Object.assign({
+    let main = Object.assign({
         input: 'src/index.ts',
         external: Object.keys(schema.dependencies || {})
             .concat(Object.keys(schema.peerDependencies || {}))
@@ -64,6 +68,15 @@ export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ]
             typescriptPlugin()
         ]
     }, overwrites);
+
+    // -------------------------------------------------------------------------------------- //
+    // Finally, return the final configuration for the package...
+
+    return [
+        main,
+        makeBundleDtsConfig(schema),
+        makeCleanupConfig(schema)
+    ];
 }
 
 /*****************************************************************
@@ -129,6 +142,71 @@ export function makeESModuleFormat(schema, overwrites = {})
             emitModulePackageFilePlugin()
         ],
         sourcemap: true
+    }, overwrites);
+}
+
+/*****************************************************************
+ * Other utils...
+ ****************************************************************/
+
+/**
+ * Makes a new "bundle *.d.ts" configuration
+ *
+ * @param {object} schema Package schema
+ * @param {string} [input] Path to input *.d.ts file.
+ * @param {string|null} [output] Output file. Defaults to "schema.types" when not given
+ * @param {import('rollup').OutputOptions|object} [overwrites]
+ *
+ * @returns {import('rollup').RollupOptions|object}
+ */
+export function makeBundleDtsConfig(schema, input = 'dist/tmp/index.d.ts', output = null, overwrites = {})
+{
+    return Object.assign({
+        input: input,
+        output: {
+            // file: 'dist/index.d.ts',
+            file: output || schema.types,
+            format: 'es',
+            //banner: makeBannerText(schema) // TODO: banner
+        },
+        plugins: [
+            dts()
+        ],
+        onwarn: (warning) => {
+            throw Object.assign(new Error(), warning);
+        },
+    }, overwrites);
+}
+
+/**
+ * Makes a new "cleanup" after build configuration
+ *
+ * @param {object} schema Package schema
+ * @param {string[]} [targets] Directories to delete
+ * @param {import('rollup').OutputOptions|object} [overwrites]
+ *
+ * @returns {import('rollup').RollupOptions|object}
+ */
+export function makeCleanupConfig(schema, targets = [ 'dist/tmp' ], overwrites = {})
+{
+    return Object.assign({
+        input: schema.module,
+        output: {
+            // file: 'dist/index.d.ts',
+            file: schema.module,
+            format: 'es',
+        },
+        plugins: [
+
+            // Clear specified directories...
+            del({
+                targets: targets,
+                hook: "buildEnd",
+                force: true,
+                runOnce: true,
+                verbose: false
+            }),
+        ]
     }, overwrites);
 }
 

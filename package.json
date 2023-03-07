@@ -26,6 +26,8 @@
     "@rollup/plugin-replace": "^5.0.2",
     "lerna": "^6.5.1",
     "rollup": "^3.18.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-dts": "^5.2.0",
     "rollup-plugin-typescript2": "^0.34.1",
     "tslib": "^2.5.0",
     "typescript": "^4.9.5"
