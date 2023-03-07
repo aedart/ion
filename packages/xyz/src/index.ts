@@ -1,3 +1,5 @@
+import Person, { Someone } from "./Person";
+
 /**
  * Something to export...
  */
@@ -8,14 +10,7 @@ export type Something = string;
  */
 export const Sweet: Something = 'Something';
 
-/**
- * Someone...
- */
-export interface Someone {
-
-    /**
-     * Returns a message
-     */
-    message(): string;
-
+export {
+    Someone,
+    Person as default
 }
