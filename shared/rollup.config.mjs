@@ -22,12 +22,13 @@ import del from 'rollup-plugin-delete'
  * @param {string[]} [external] List of external dependencies to exclude.
  *                              Package's dependencies and peer dependencies are automatically
  *                              excluded.
+ * @param {string[]} [submodules] Names of eventual submodules to export
  * @param {string[]} [formats] Output formats, e.g. cjs, es
  * @param {import('rollup').RollupOptions|object} [overwrites]
  *
  * @returns {import('rollup').RollupOptions[]|object[]}
  */
-export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ] }, overwrites = {}) {
+export function createConfig({ baseDir, external = [], submodules = [], formats = [ 'cjs', 'es' ] }, overwrites = {}) {
     // Perform a cleanup of evt. previous export, to ensure that evt. removed components are no
     // longer part of the "dist" export.
     clearDistDirectory(baseDir);
@@ -51,8 +52,104 @@ export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ]
     // -------------------------------------------------------------------------------------- //
     // Create the main configuration object
 
-    /** @type {import('rollup').RollupOptions} */
-    let main = Object.assign({
+    let main = makeMainExport(schema, external, outputFormats, overwrites);
+
+    // -------------------------------------------------------------------------------------- //
+    // Make configuration for eventual submodules
+    let submodulesConfig = [];
+    submodules.forEach((target) => {
+        submodulesConfig.push(
+            ...makeSubmodule(target, schema, formats)
+        );
+    });
+
+    // -------------------------------------------------------------------------------------- //
+    // Finally, return the final configuration for the package...
+
+    return [
+        // Main...
+        main,
+        makeBundleDtsConfig(schema),
+        makeCleanupConfig(schema),
+
+        // Evt. submodules...
+        ...submodulesConfig,
+    ];
+}
+
+/**
+ * Returns export configuration for a submodule
+ *
+ * @param {string} target Name of submodule (directory name)
+ * @param {object} schema Package schema
+ * @param {string[]} [formats] Output formats, e.g. cjs, es
+ * @param {string[]} [external] List of external dependencies to exclude.
+ *                              Package's dependencies and peer dependencies are automatically
+ *                              excluded.
+ * @param {import('rollup').RollupOptions|object} [overwrites]
+ * @returns {(import('rollup').RollupOptions|Object)[]}
+ */
+export function makeSubmodule(target, schema, formats = [ 'cjs', 'es' ], external = [], overwrites = {})
+{
+    if (formats.length === 0) {
+        throw new Error('No output formats specified')
+    }
+
+    // -------------------------------------------------------------------------------------- //
+    // Make output formats for submodule
+
+    /** @type {import('rollup').OutputOptions[]} */
+    let output = [];
+    formats.forEach((format) => {
+        let formatOption = makeFormat(format, schema);
+        formatOption.file = 'dist/' + format + '/' + target + '.js'
+
+        output.push(formatOption);
+    });
+
+    // -------------------------------------------------------------------------------------- //
+    // Create main export config for submodules
+    let main = makeMainExport(schema, external, output, overwrites);
+    main.input = 'src/' + target + '/index.ts';
+
+    // Make dts configuration for submodule
+    let dts = makeBundleDtsConfig(
+        schema,
+        'dist/tmp/' + target + '/index.d.ts',
+        'dist/types/' + target + '.d.ts'
+    );
+
+    // -------------------------------------------------------------------------------------- //
+    // Make cleanup config, for submodule...
+    let dummyFile = 'dist/' + formats[0] + '/' + target + '.js';
+    let cleanup = makeCleanupConfig(schema);
+    cleanup.input = dummyFile ;
+    cleanup.output.file = dummyFile;
+
+    // -------------------------------------------------------------------------------------- //
+    // Finally, return configuration entries for submodule
+    return [
+        main,
+        dts,
+        cleanup
+    ];
+}
+
+/**
+ * Returns a main export rollup option entry
+ *
+ * @param {object} schema Package schema
+ * @param {string[]} [external] List of external dependencies to exclude.
+ *                              Package's dependencies and peer dependencies are automatically
+ *                              excluded.
+ * @param {import('rollup').OutputOptions[]} [outputFormats] Output formats, e.g. cjs, es
+ * @param {import('rollup').RollupOptions|object} [overwrites]
+ *
+ * @returns {import('rollup').RollupOptions}
+ */
+export function makeMainExport(schema, external = [], outputFormats = [], overwrites = {})
+{
+    return Object.assign({
         input: 'src/index.ts',
         external: Object.keys(schema.dependencies || {})
             .concat(Object.keys(schema.peerDependencies || {}))
@@ -68,15 +165,6 @@ export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ]
             typescriptPlugin()
         ]
     }, overwrites);
-
-    // -------------------------------------------------------------------------------------- //
-    // Finally, return the final configuration for the package...
-
-    return [
-        main,
-        makeBundleDtsConfig(schema),
-        makeCleanupConfig(schema)
-    ];
 }
 
 /*****************************************************************
