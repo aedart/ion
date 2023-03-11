@@ -17,14 +17,23 @@ export default class Box
     protected _height: number;
 
     /**
+     * Length of this box
+     *
+     * @protected
+     */
+    protected _length: number;
+
+    /**
      * Creates a new box instance
      *
      * @param width Width of box
      * @param height Height of box
+     * @param length length of box
      */
-    constructor(width:number, height: number) {
+    constructor(width:number, height: number, length: number) {
         this._width = width;
         this._height = height;
+        this._length = length;
     }
 
     /**
@@ -41,5 +50,13 @@ export default class Box
     public get height(): number
     {
         return this._height;
+    }
+
+    /**
+     * Returns this box's length
+     */
+    public get length(): number
+    {
+        return this._length;
     }
 }
