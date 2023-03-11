@@ -45,7 +45,7 @@ export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ]
     /** @type {import('rollup').OutputOptions[]} */
     let outputFormats = [];
     formats.forEach((format) => {
-        outputFormats.push(makeOptionForFormat(format, schema))
+        outputFormats.push(makeFormat(format, schema))
     });
 
     // -------------------------------------------------------------------------------------- //
@@ -92,7 +92,7 @@ export function createConfig({ baseDir, external = [], formats = [ 'cjs', 'es' ]
  *
  * @returns {import('rollup').OutputOptions|object}
  */
-export function makeOptionForFormat(format, schema, overwrites = {})
+export function makeFormat(format, schema, overwrites = {})
 {
     switch (format) {
         case 'cjs':
