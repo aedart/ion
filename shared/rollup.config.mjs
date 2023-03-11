@@ -120,6 +120,7 @@ export function makeCommonJsFormat(schema, overwrites = {})
         format: 'cjs',
         file: schema.main,
         exports: 'named',
+        banner: makeBanner(schema),
         footer: 'module.exports = Object.assign(exports.default, exports);',
         sourcemap: true,
     }, overwrites);
@@ -138,6 +139,7 @@ export function makeESModuleFormat(schema, overwrites = {})
     return Object.assign({
         format: 'es',
         file: schema.module,
+        banner: makeBanner(schema),
         plugins: [
             emitModulePackageFilePlugin()
         ],
@@ -167,7 +169,7 @@ export function makeBundleDtsConfig(schema, input = 'dist/tmp/index.d.ts', outpu
             // file: 'dist/index.d.ts',
             file: output || schema.types,
             format: 'es',
-            //banner: makeBannerText(schema) // TODO: banner
+            banner: makeBanner(schema),
         },
         plugins: [
             dts()
@@ -316,7 +318,7 @@ export function deleteDirectory(path, recursive = true)
 {
     try {
         if (fs.existsSync(path)) {
-            fs.rmdirSync(path, { recursive: recursive }); // Deprecated ?
+            fs.rmdirSync(path, { recursive: recursive }); // TODO: Deprecated ?
             // fs.rm(path, {  recursive: true })
 
             console.log(`Deleting directory ${path}`);
@@ -324,4 +326,25 @@ export function deleteDirectory(path, recursive = true)
     } catch (error) {
         console.error(`Unable to delete directory ${path}`, error);
     }
+}
+
+/**
+ * Makes output file banner
+ *
+ * @param {object} schema Package schema
+ *
+ * @returns {string}
+ */
+export function makeBanner(schema)
+{
+    const name = schema.name;
+    const license = schema.license;
+    const date = new Date().getFullYear();
+
+    return `/**
+ * ${name}
+ * 
+ * ${license}, Copyright (c) 2021-${date} Alin Eugen Deac <aedart@gmail.com>
+ */
+`;
 }
