@@ -20,13 +20,23 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/cjs/xyz.js",
-  "module": "./dist/es/xyz.js",
-  "types": "./dist/types/xyz.d.ts",
+  "type": "module",
   "exports": {
-    "types": "./dist/types/xyz.d.ts",
-    "import": "./dist/es/xyz.js",
-    "default": "./dist/cjs/xyz.js"
+    ".": {
+      "types": "./dist/types/xyz.d.ts",
+      "import": "./dist/es/xyz.js",
+      "require": "./dist/cjs/xyz.cjs"
+    },
+    "./submodule_a": {
+      "types": "./dist/types/submodule_a.d.ts",
+      "import": "./dist/es/submodule_a.js",
+      "require": "./dist/cjs/submodule_a.cjs"
+    },
+    "./submodule_b": {
+      "types": "./dist/types/submodule_b.d.ts",
+      "import": "./dist/es/submodule_b.js",
+      "require": "./dist/cjs/submodule_b.cjs"
+    }
   },
   "files": [
     "dist",

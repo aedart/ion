@@ -101,8 +101,7 @@ export function makeSubmodule(target, schema, formats = [ 'cjs', 'es' ], externa
     /** @type {import('rollup').OutputOptions[]} */
     let output = [];
     formats.forEach((format) => {
-        let formatOption = makeFormat(format, schema);
-        formatOption.file = 'dist/' + format + '/' + target + '.js'
+        let formatOption = makeFormat(format, schema, './' + target);
 
         output.push(formatOption);
     });
@@ -116,12 +115,12 @@ export function makeSubmodule(target, schema, formats = [ 'cjs', 'es' ], externa
     let dts = makeBundleDtsConfig(
         schema,
         'dist/tmp/' + target + '/index.d.ts',
-        'dist/types/' + target + '.d.ts'
+        schema.exports['./' + target].types
     );
 
     // -------------------------------------------------------------------------------------- //
     // Make cleanup config, for submodule...
-    let dummyFile = 'dist/' + formats[0] + '/' + target + '.js';
+    let dummyFile = 'dist/es/' + target + '.js';
     let cleanup = makeCleanupConfig(schema);
     cleanup.input = dummyFile ;
     cleanup.output.file = dummyFile;
@@ -176,18 +175,19 @@ export function makeMainExport(schema, external = [], outputFormats = [], overwr
  *
  * @param {string} format E.g. cjs, es
  * @param {object} schema Package schema
+ * @param {string} [exportsKey] Name of schema "exports" key where to find output destination
  * @param {import('rollup').OutputOptions|object} [overwrites]
  *
  * @returns {import('rollup').OutputOptions|object}
  */
-export function makeFormat(format, schema, overwrites = {})
+export function makeFormat(format, schema, exportsKey = '.', overwrites = {})
 {
     switch (format) {
         case 'cjs':
-            return makeCommonJsFormat(schema, overwrites);
+            return makeCommonJsFormat(schema, exportsKey, overwrites);
 
         case 'es':
-            return makeESModuleFormat(schema, overwrites);
+            return makeESModuleFormat(schema, exportsKey, overwrites);
 
         default:
             throw new Error('Unsupported output option format ' + format);
@@ -198,15 +198,17 @@ export function makeFormat(format, schema, overwrites = {})
  * Makes a new common js format output option for rollup
  *
  * @param {object} schema Package schema
+ * @param {string} [exportsKey] Name of schema "exports" key where to find output destination
  * @param {import('rollup').OutputOptions|object} [overwrites]
  *
  * @returns {import('rollup').OutputOptions|object}
  */
-export function makeCommonJsFormat(schema, overwrites = {})
+export function makeCommonJsFormat(schema, exportsKey = '.', overwrites = {})
 {
     return Object.assign({
         format: 'cjs',
-        file: schema.main,
+        //file: schema.main,
+        file: schema.exports[exportsKey].require,
         exports: 'named',
         banner: makeBanner(schema),
         footer: 'module.exports = Object.assign(exports.default, exports);',
@@ -218,15 +220,17 @@ export function makeCommonJsFormat(schema, overwrites = {})
  * Makes a new ES module format output option for rollup
  *
  * @param {object} schema Package schema
+ * @param {string} [exportsKey] Name of schema "exports" key where to find output destination
  * @param {import('rollup').OutputOptions|object} [overwrites]
  *
  * @returns {import('rollup').OutputOptions|object}
  */
-export function makeESModuleFormat(schema, overwrites = {})
+export function makeESModuleFormat(schema, exportsKey = '.', overwrites = {})
 {
     return Object.assign({
         format: 'es',
-        file: schema.module,
+        //file: schema.module,
+        file: schema.exports[exportsKey].import,
         banner: makeBanner(schema),
         plugins: [
             emitModulePackageFilePlugin()
@@ -244,7 +248,7 @@ export function makeESModuleFormat(schema, overwrites = {})
  *
  * @param {object} schema Package schema
  * @param {string} [input] Path to input *.d.ts file.
- * @param {string|null} [output] Output file. Defaults to "schema.types" when not given
+ * @param {string|null} [output] Output file. Defaults to "schema.exports['.'].types" when not given
  * @param {import('rollup').OutputOptions|object} [overwrites]
  *
  * @returns {import('rollup').RollupOptions|object}
@@ -254,8 +258,8 @@ export function makeBundleDtsConfig(schema, input = 'dist/tmp/index.d.ts', outpu
     return Object.assign({
         input: input,
         output: {
-            // file: 'dist/index.d.ts',
-            file: output || schema.types,
+            // file: 'dist/types/index.d.ts',
+            file: output || schema.exports['.'].types,
             format: 'es',
             banner: makeBanner(schema),
         },
@@ -280,10 +284,9 @@ export function makeBundleDtsConfig(schema, input = 'dist/tmp/index.d.ts', outpu
 export function makeCleanupConfig(schema, targets = [ 'dist/tmp' ], overwrites = {})
 {
     return Object.assign({
-        input: schema.module,
+        input: schema.exports['.'].import,
         output: {
-            // file: 'dist/index.d.ts',
-            file: schema.module,
+            file: schema.exports['.'].import,
             format: 'es',
         },
         plugins: [
