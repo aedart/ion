@@ -5,7 +5,9 @@
       "options": {
         "cacheableOperations": [
           "build",
-          "compile"
+          "compile",
+          "test",
+          "test-dev"
         ]
       }
     }
