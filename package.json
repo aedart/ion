@@ -50,5 +50,10 @@
     "build": "lerna run compile",
     "compile": "lerna run compile",
     "watch": "lerna run watch"
-  }
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "not dead"
+  ]
 }
