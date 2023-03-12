@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
 [Unreleased]: https://github.com/aedart/ion/compare/HEAD
