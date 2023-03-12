@@ -20,23 +20,49 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-replace": "^5.0.2",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.7.3",
+    "jasmine": "^4.5.0",
+    "karma": "^6.4.1",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-firefox-launcher": "^2.1.2",
+    "karma-jasmine": "^5.1.0",
+    "karma-spec-reporter": "^0.0.36",
+    "karma-webpack": "^5.0.0",
     "lerna": "^6.5.1",
+    "prettier": "^2.8.4",
+    "puppeteer": "^19.7.4",
     "rollup": "^3.18.0",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^5.2.0",
     "rollup-plugin-typescript2": "^0.34.1",
+    "sass": "^1.59.2",
+    "sass-loader": "^13.2.0",
+    "style-loader": "^3.3.1",
     "tslib": "^2.5.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "webpack": "^5.76.1",
+    "webpack-cli": "^5.0.1"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "clean": "lerna clean",
     "build": "lerna run compile",
     "compile": "lerna run compile",
-    "watch": "lerna run watch"
-  }
+    "watch": "lerna run watch",
+    "test": "lerna run compile && karma start shared/tests/karma-production.conf.js",
+    "test-dev": "lerna run compile && karma start shared/tests/karma-development.conf.js"
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "not dead"
+  ]
 }
