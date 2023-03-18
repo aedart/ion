@@ -1,6 +1,7 @@
 import {defaultTheme, defineUserConfig, Page} from 'vuepress';
 import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
 import {searchPlugin} from "@vuepress/plugin-search";
+import Navigation from "./navigation";
 
 /**
  * Vuepress configuration for docs...
@@ -25,8 +26,16 @@ export default defineUserConfig({
         lastUpdatedText: 'Last Updated',
 
         navbar: [
+            { text: 'Packages', link: '/archive/current/' },
+            {
+                text: 'Archive',
+                link: '/archive/',
+                children: Navigation.archiveItems(),
+            },
             { text: 'Changelog', link: 'https://github.com/aedart/ion/blob/main/CHANGELOG.md' },
-        ]
+        ],
+
+        sidebar: Navigation.sidebarItems()
     }),
 
     plugins: [
