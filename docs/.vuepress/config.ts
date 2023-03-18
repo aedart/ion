@@ -1,14 +1,20 @@
-import {defaultTheme, defineUserConfig} from 'vuepress';
+import {defaultTheme, defineUserConfig, Page} from 'vuepress';
+import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
+import {searchPlugin} from "@vuepress/plugin-search";
 
+/**
+ * Vuepress configuration for docs...
+ */
 export default defineUserConfig({
-    //dest: '.build',
+    base: resolveBasePath(),
+    dest: './.build',
     lang: 'en-GB',
     title: 'Ion',
     description: 'Ion Official Documentation',
 
     theme: defaultTheme({
         editLink: true,
-        editLinkText: 'Edit page on GitHub',
+        editLinkText: 'Edit page',
         //editLinkPattern: ':repo/-/edit/:branch/:path',
         docsRepo: 'https://github.com/aedart/ion',
         docsBranch: 'main',
@@ -16,5 +22,36 @@ export default defineUserConfig({
 
         lastUpdated: true,
         lastUpdatedText: 'Last Updated'
-    })
+    }),
+
+    plugins: [
+
+        backToTopPlugin(),
+
+        searchPlugin({
+            maxSuggestions: 10,
+
+            isSearchable: (page: Page) => {
+                return page.path.includes('/archive/current/');
+            },
+
+            getExtraFields: (page: Page) => {
+                return [page.frontmatter.description] ?? [];
+            },
+        }),
+    ]
 });
+
+/**
+ * Resolves "base" path
+ *
+ * @returns {string}
+ */
+function resolveBasePath() {
+    console.info('ENVIRONMENT', process.env.NODE_ENV);
+    if(process.env.NODE_ENV === 'development'){
+        return '/';
+    }
+
+    return '/ion/';
+}
