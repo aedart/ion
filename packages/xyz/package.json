@@ -36,6 +36,11 @@
       "types": "./dist/types/submodule_b.d.ts",
       "import": "./dist/es/submodule_b.js",
       "require": "./dist/cjs/submodule_b.cjs"
+    },
+    "./decorator": {
+      "types": "./dist/types/decorator.d.ts",
+      "import": "./dist/es/decorator.js",
+      "require": "./dist/cjs/decorator.cjs"
     }
   },
   "files": [
