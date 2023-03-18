@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Typescript version `5.x`.
+* Proposal decorators for when running browser tests.
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
