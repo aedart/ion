@@ -7,6 +7,8 @@ export type Something = string;
 
 /**
  * A sweet message...
+ *
+ * @type {string}
  */
 export const Sweet: Something = 'Something';
 

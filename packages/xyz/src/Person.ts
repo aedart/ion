@@ -5,6 +5,8 @@ export interface Someone {
 
     /**
      * Returns a message
+     *
+     * @returns {string}
      */
     message(): string;
 
@@ -13,8 +15,11 @@ export interface Someone {
 /**
  * A person
  */
-export default class Person implements Person
+export default class Person implements Someone
 {
+    /**
+     * @inheritdoc
+     */
     message(): string {
         return 'hi...';
     }

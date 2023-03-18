@@ -6,18 +6,25 @@ export default class Box
     /**
      * Width of this box
      *
+     * @type {number}
+     *
      * @protected
      */
     protected _width: number;
 
     /**
      * Height of this box
+     *
+     * @type {number}
+     *
      * @protected
      */
     protected _height: number;
 
     /**
      * Length of this box
+     *
+     * @type {number}
      *
      * @protected
      */
@@ -26,9 +33,9 @@ export default class Box
     /**
      * Creates a new box instance
      *
-     * @param width Width of box
-     * @param height Height of box
-     * @param length length of box
+     * @param {number} width
+     * @param {number} height
+     * @param {number} length
      */
     constructor(width:number, height: number, length: number) {
         this._width = width;
@@ -38,6 +45,8 @@ export default class Box
 
     /**
      * Returns this box's width
+     *
+     * @returns {number}
      */
     public get width(): number
     {
@@ -46,6 +55,8 @@ export default class Box
 
     /**
      * Returns this box's height
+     *
+     * @returns {number}
      */
     public get height(): number
     {
@@ -54,6 +65,8 @@ export default class Box
 
     /**
      * Returns this box's length
+     *
+     * @returns {number}
      */
     public get length(): number
     {

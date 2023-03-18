@@ -2,11 +2,15 @@ import Box from "./Box";
 
 /**
  * A default width...
+ *
+ * @type {number}
  */
 const DEFAULT_WIDTH: number = 10;
 
 /**
  * A default height...
+ *
+ * @type {number}
  */
 const DEFAULT_HEIGHT: number = 10;
 
