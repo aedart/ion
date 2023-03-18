@@ -2,8 +2,6 @@
 .idea/
 Thumbs.db
 temp/*
-.temp
-.cache
 
 yarn.lock
 lerna-debug.log
@@ -14,6 +12,11 @@ tsconfig.tsbuildinfo
 
 packages/*/dist/*
 packages/*/src/**/*.d.ts
+
+# Vuepress
+docs/.vuepress/.temp
+docs/.vuepress/.cache
+docs/.vuepress/dist
 
 # Ignore internal todo-list (if any)
 .todo.md
