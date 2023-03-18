@@ -22,7 +22,8 @@ import del from 'rollup-plugin-delete'
  * @param {string[]} [external] List of external dependencies to exclude.
  *                              Package's dependencies and peer dependencies are automatically
  *                              excluded.
- * @param {string[]} [submodules] Names of eventual submodules to export
+ * @param {string[]} [submodules] Names of eventual submodules to export. If none are given, then
+ *                                package.json "exports" property is used.
  * @param {string[]} [formats] Output formats, e.g. cjs, es
  * @param {import('rollup').RollupOptions|object} [overwrites]
  *
@@ -57,6 +58,7 @@ export function createConfig({ baseDir, external = [], submodules = [], formats 
     // -------------------------------------------------------------------------------------- //
     // Make configuration for eventual submodules
     let submodulesConfig = [];
+    submodules = resolveSubmodules(schema, submodules);
     submodules.forEach((target) => {
         submodulesConfig.push(
             ...makeSubmodule(target, schema, formats)
@@ -417,6 +419,41 @@ export function deleteDirectory(path, recursive = true)
     } catch (error) {
         console.error(`Unable to delete directory ${path}`, error);
     }
+}
+
+/**
+ * Resolves list of submodules
+ *
+ * @param {object} schema Package schema
+ * @param {string[]} [submodules] Names of eventual submodules to export. If none are given, then
+ *                                given schema object's "exports" property is used.
+ *
+ * @returns {string[]} List of submodules' names
+ */
+export function resolveSubmodules(schema, submodules = [])
+{
+    if (submodules.length > 0) {
+        return submodules;
+    }
+
+    let output = [];
+    for (const module in schema.exports) {
+
+        // Skip if this is the "main" module
+        if (module === '.') {
+            continue;
+        }
+
+        // Extract submodule's name and add it to output
+        let name = module.replace('./', '');
+
+        // Debug
+        //console.debug('Submodule: ' + name);
+
+        output.push(name);
+    }
+
+    return output;
 }
 
 /**
