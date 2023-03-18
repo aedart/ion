@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * `@aedart/xyz` package (_private, not published_) for testing various configurations, exports and features.
+* Vuepress documentation boilerplate.
 * "Special" Rollup package bundling configuration (_tailored for this exporting multiple submodules_). 
 * Typescript version `5.x`.
 * Proposal decorators for when running browser tests.
