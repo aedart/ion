@@ -13,6 +13,7 @@ export default defineUserConfig({
     description: 'Ion Official Documentation',
 
     theme: defaultTheme({
+        repo: 'aedart/ion',
         editLink: true,
         editLinkText: 'Edit page',
         //editLinkPattern: ':repo/-/edit/:branch/:path',
@@ -21,7 +22,11 @@ export default defineUserConfig({
         docsDir: 'docs',
 
         lastUpdated: true,
-        lastUpdatedText: 'Last Updated'
+        lastUpdatedText: 'Last Updated',
+
+        navbar: [
+            { text: 'Changelog', link: 'https://github.com/aedart/ion/blob/main/CHANGELOG.md' },
+        ]
     }),
 
     plugins: [
