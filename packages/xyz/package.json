@@ -42,6 +42,9 @@
     "dist",
     "!dist/**/*.map"
   ],
+  "peerDependencies": {
+    "tslib": "^2.5.0"
+  },
   "scripts": {
     "compile": "rollup -c",
     "watch": "rollup -c -w"
