@@ -7,4 +7,4 @@ actions:
   type: primary
 ---
 
-TODO: Introduction text for Ion...
+_Work in progress. Ion is at a very early stage. Come back at a later time to review the documentation..._
