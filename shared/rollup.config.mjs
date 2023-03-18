@@ -61,7 +61,7 @@ export function createConfig({ baseDir, external = [], submodules = [], formats 
     submodules = resolveSubmodules(schema, submodules);
     submodules.forEach((target) => {
         submodulesConfig.push(
-            ...makeSubmodule(target, schema, formats)
+            ...makeSubmodule(target, schema, formats, external)
         );
     });
 
@@ -154,6 +154,7 @@ export function makeMainExport(schema, external = [], outputFormats = [], overwr
         input: 'src/index.ts',
         external: Object.keys(schema.dependencies || {})
             .concat(Object.keys(schema.peerDependencies || {}))
+            .concat(Object.keys(schema.devDependencies || {}))
             .concat(builtinModules)
             .concat(external),
         onwarn: (warning) => {
