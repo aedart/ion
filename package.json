@@ -30,6 +30,7 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-replace": "^5.0.2",
     "babel-loader": "^9.1.2",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.7.3",
     "jasmine": "^4.5.0",
     "karma": "^6.4.1",
@@ -50,6 +51,7 @@
     "style-loader": "^3.3.1",
     "tslib": "^2.5.0",
     "typescript": "^5.0.2",
+    "vuepress": "^2.0.0-beta.61",
     "webpack": "^5.76.1",
     "webpack-cli": "^5.0.1"
   },
@@ -61,7 +63,10 @@
     "cache:clear": "npx nx reset",
     "watch": "lerna run watch",
     "test": "lerna run compile && karma start shared/tests/karma-production.conf.js",
-    "test-dev": "lerna run compile && karma start shared/tests/karma-development.conf.js"
+    "test-dev": "lerna run compile && karma start shared/tests/karma-development.conf.js",
+    "docs:dev": "cross-env NODE_ENV=development vuepress dev docs --config docs/.vuepress/config.ts",
+    "docs:build": "cross-env NODE_ENV=development vuepress build docs --config docs/.vuepress/config.ts",
+    "docs:build-prod": "cross-env NODE_ENV=production vuepress build docs --config docs/.vuepress/config.ts"
   },
   "browserslist": [
     "last 1 version",
