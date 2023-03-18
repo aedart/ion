@@ -472,7 +472,7 @@ export function makeBanner(schema)
     return `/**
  * ${name}
  * 
- * ${license}, Copyright (c) 2021-${date} Alin Eugen Deac <aedart@gmail.com>
+ * ${license}, Copyright (c) 2023-${date} Alin Eugen Deac <aedart@gmail.com>.
  */
 `;
 }
