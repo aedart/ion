@@ -1,9 +1,9 @@
 ---
 title: Introduction
 description: Ion Packages
-sidebarDepth: 0
+sidebarDepth: 1
 ---
 
-# Introduction
+# Packages
 
-Contains documentation for Ion packages.
+Here you can find documentation for all available Ion packages.

@@ -26,7 +26,7 @@ export default defineUserConfig({
         lastUpdatedText: 'Last Updated',
 
         navbar: [
-            { text: 'Packages', link: '/archive/current/' },
+            { text: 'Packages', link: '/archive/current/packages/' },
             {
                 text: 'Archive',
                 link: '/archive/',

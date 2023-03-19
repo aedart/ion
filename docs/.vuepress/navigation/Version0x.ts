@@ -25,6 +25,7 @@ export default class Version0x extends BaseVersion
                 text: 'Packages',
                 collapsible: true,
                 children: [
+                    this.resolve('packages/'),
 
                     // TEST Package... should not contain anything special..
                     //this.resolve('packages/'), // No index for packages...
@@ -35,6 +36,7 @@ export default class Version0x extends BaseVersion
                     //         this.resolve('packages/xyz/'),
                     //     ]
                     // }
+
                     this.resolve('packages/xyz/')
                 ]
             },

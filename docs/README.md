@@ -2,9 +2,12 @@
 home: true
 footer: Copyright © 2023-present Alin Eugen Deac, License BSD-3-Clause
 actions:
-- text: Get Started
+- text: View Documentation
   link: /archive/current/
   type: primary
+- text: Packages
+  link: /archive/current/packages/
+  type: secondary
 ---
 
-_Work in progress. Ion is at a very early stage. Come back at a later time to review the documentation..._
+_Work in progress. Ion is at a very early stage. Feel free to browse the available documentation..._
