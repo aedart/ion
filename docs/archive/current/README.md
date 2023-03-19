@@ -6,9 +6,9 @@ sidebarDepth: 0
 
 # Release Notes
 
-::: warning
+::: danger
 Ion is still in development.
-You _SHOULD NOT_ use any of the packages in a production environment.
+You _SHOULD NOT_ use any of the packages in production.
 Breaking changes _**MUST**_ be expected for all `v0.x` releases!
 :::
 
