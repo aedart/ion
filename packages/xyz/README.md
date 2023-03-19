@@ -4,6 +4,10 @@ A private package used for testing, examples and tinkering.
 
 **NOTE**: _This package is NOT intended to be published._
 
+# Official Documentation
+
+Please read the [official documentation](https://aedart.github.io/ion/) for additional information.
+
 ## Versioning
 
 This package follows [Semantic Versioning 2.0.0](http://semver.org/)

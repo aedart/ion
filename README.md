@@ -4,7 +4,7 @@
 
 # Official Documentation
 
-**TODO:** _Official documentation has yet to be manifested_
+Please read the [official documentation](https://aedart.github.io/ion/) for additional information.
 
 ## Versioning
 
