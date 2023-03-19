@@ -16,10 +16,10 @@ Breaking changes _**MUST**_ be expected for all `v0.x` releases!
 
 ## Support Policy
 
-| Version | TypeScript | Release            | Security Fixes Until   |
-|---------|------------|--------------------|------------------------|
-| `1.x`   | `5.0 - ?`  | _TBD_              | _TBD_                  |
-| `0.x`*  | `5.0 - ?`  | _ongoing releases_ | _until `v1.x` release_ |
+| Version | TypeScript | ECMA Script | Release            | Security Fixes Until   |
+|---------|------------|-------------|--------------------|------------------------|
+| `1.x`   | `5.0 - ?`  | _TBD_       | _TBD_              | _TBD_                  |
+| `0.x`*  | `5.0`      | `ES2022`    | _ongoing releases_ | _until `v1.x` release_ |
 
 _*: current supported version._
 
