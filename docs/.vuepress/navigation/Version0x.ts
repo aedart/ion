@@ -10,7 +10,7 @@ export default class Version0x extends BaseVersion
         return [
             {
                 text: 'Version 0.x',
-                collapsible: false,
+                collapsible: true,
                 children: [
                     this.resolve(''),
                     // this.resolve('upgrade-guide'),
@@ -25,14 +25,17 @@ export default class Version0x extends BaseVersion
                 text: 'Packages',
                 collapsible: true,
                 children: [
+
+                    // TEST Package... should not contain anything special..
                     //this.resolve('packages/'), // No index for packages...
-                    {
-                        text: 'XYZ (Test package)',
-                        collapsible: true,
-                        children: [
-                            this.resolve('packages/xyz/'),
-                        ]
-                    }
+                    // {
+                    //     text: 'XYZ (Test package)',
+                    //     collapsible: true,
+                    //     children: [
+                    //         this.resolve('packages/xyz/'),
+                    //     ]
+                    // }
+                    this.resolve('packages/xyz/')
                 ]
             },
         ];

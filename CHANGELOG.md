@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * `@aedart/xyz` package (_private, not published_) for testing various configurations, exports and features.
+* Code of conduct, contribution guide and other "introduction" documents (_ported and adapted from Athenaeum_).
+* Templates for issues, pull request, etc. (_ported and adapted from Athenaeum_).
 * Vuepress documentation boilerplate.
 * "Special" Rollup package bundling configuration (_tailored for this exporting multiple submodules_). 
 * Typescript version `5.x`.
