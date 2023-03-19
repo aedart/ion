@@ -25,6 +25,11 @@ export default defineUserConfig({
         lastUpdated: true,
         lastUpdatedText: 'Last Updated',
 
+        // Due to strange date format, and comparison, when situated in a different
+        // timezone, e.g. Denmark (UTC + 01:00), then dark/light mode switches
+        // incorrectly, when set to 'auto'!
+        colorMode: 'light',
+
         navbar: [
             { text: 'Packages', link: '/archive/current/packages/' },
             {
