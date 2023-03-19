@@ -18,6 +18,8 @@ export default interface Version
     /**
      * Returns this version's sidebar configuration
      *
+     * @see https://v2.vuepress.vuejs.org/reference/default-theme/config.html#sidebar
+     *
      * @returns {SidebarConfigArray}
      */
     sidebar(): SidebarConfigArray;

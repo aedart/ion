@@ -1,7 +1,7 @@
-import Version from "./contracts/Version";
 import {SidebarConfigArray} from "vuepress";
+import BaseVersion from "./BaseVersion";
 
-export default class Version1x implements Version
+export default class Version1x extends BaseVersion
 {
     name: string = 'v1.x';
     link: string = '/archive/v1x/'
@@ -12,13 +12,13 @@ export default class Version1x implements Version
                 text: 'Version 1.x',
                 collapsible: true,
                 children: [
-                    '',
-                    // 'upgrade-guide',
-                    // 'new',
-                    // 'contribution-guide',
-                    // 'security',
-                    // 'code-of-conduct',
-                    // 'origin',
+                    this.resolve(''),
+                    // this.resolve('upgrade-guide'),
+                    // this.resolve('new'),
+                    // this.resolve('contribution-guide'),
+                    // this.resolve('security'),
+                    // this.resolve('code-of-conduct'),
+                    // this.resolve('origin'),
                 ]
             },
         ];
