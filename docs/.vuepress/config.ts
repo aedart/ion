@@ -13,22 +13,33 @@ export default defineUserConfig({
     title: 'Ion',
     description: 'Ion Official Documentation',
 
+    head: [
+        // Icon
+        ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/images/icon/apple-touch-icon.png' }],
+        ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/images/icon/favicon-32x32.png' }],
+        ['link', { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/images/icon/favicon-16x16.png' }],
+        ['link', { rel: 'manifest', href: '/site.webmanifest' }],
+    ],
+
     theme: defaultTheme({
         repo: 'aedart/ion',
+
+        // Due to strange date format, and comparison, when situated in a different
+        // timezone, e.g. Denmark (UTC + 01:00), then dark/light mode switches
+        // incorrectly, when set to 'auto'!
+        colorMode: 'light',
+        logo: '/images/icon/apple-touch-icon.png',
+
         editLink: true,
         editLinkText: 'Edit page',
         //editLinkPattern: ':repo/-/edit/:branch/:path',
+
         docsRepo: 'https://github.com/aedart/ion',
         docsBranch: 'main',
         docsDir: 'docs',
 
         lastUpdated: true,
         lastUpdatedText: 'Last Updated',
-
-        // Due to strange date format, and comparison, when situated in a different
-        // timezone, e.g. Denmark (UTC + 01:00), then dark/light mode switches
-        // incorrectly, when set to 'auto'!
-        colorMode: 'light',
 
         navbar: [
             { text: 'Packages', link: '/archive/current/packages/' },
