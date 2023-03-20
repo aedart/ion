@@ -33,8 +33,6 @@ const showWarningForOutdated = computed(
       let current = Navigation.currentLink;
       let path = page.value.path;
 
-      console.log('PATH', path);
-
       return path !== home
           && !path.includes(next)
           && !path.includes(current);
