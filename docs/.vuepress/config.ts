@@ -1,7 +1,11 @@
 import {defaultTheme, defineUserConfig, Page} from 'vuepress';
 import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
 import {searchPlugin} from "@vuepress/plugin-search";
+import { getDirname, path } from "@vuepress/utils"
 import Navigation from "./navigation";
+
+// @ts-ignore
+const __dirname = getDirname(import.meta.url);
 
 /**
  * Vuepress configuration for docs...
@@ -53,6 +57,11 @@ export default defineUserConfig({
 
         sidebar: Navigation.sidebarItems()
     }),
+
+    // Replace default shown "last updated" format!
+    alias: {
+        '@theme/PageMeta.vue': path.resolve(__dirname, './layouts/components/PageMeta.vue'),
+    },
 
     plugins: [
 
