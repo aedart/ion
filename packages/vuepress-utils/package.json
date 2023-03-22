@@ -1,0 +1,42 @@
+{
+  "name": "@aedart/vuepress-utils",
+  "version": "0.0.0",
+  "description": "Vuepress Utilities",
+  "keywords": [
+    "Vuepress",
+    "Utilities"
+  ],
+  "author": "Alin Eugen Deac <aedart@gmail.com>",
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/aedart/ion/tree/main/packages/xyz#readme",
+  "bugs": {
+    "url": "https://github.com/aedart/ion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aedart/ion.git"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types/vuepress-utils.d.ts",
+      "import": "./dist/esm/vuepress-utils.js",
+      "require": "./dist/cjs/vuepress-utils.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map"
+  ],
+  "peerDependencies": {
+    "tslib": "^2.5.0"
+  },
+  "scripts": {
+    "compile": "rollup -c",
+    "watch": "rollup -c -w"
+  }
+}
