@@ -26,6 +26,11 @@
       "types": "./dist/types/vuepress-utils.d.ts",
       "import": "./dist/esm/vuepress-utils.js",
       "require": "./dist/cjs/vuepress-utils.cjs"
+    },
+    "./contracts": {
+      "types": "./dist/types/contracts.d.ts",
+      "import": "./dist/esm/contracts.js",
+      "require": "./dist/cjs/contracts.cjs"
     }
   },
   "files": [
