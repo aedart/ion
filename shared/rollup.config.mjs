@@ -122,7 +122,7 @@ export function makeSubmodule(target, schema, formats = [ 'cjs', 'es' ], externa
 
     // -------------------------------------------------------------------------------------- //
     // Make cleanup config, for submodule...
-    let dummyFile = 'dist/es/' + target + '.js';
+    let dummyFile = 'dist/esm/' + target + '.js';
     let cleanup = makeCleanupConfig(schema);
     cleanup.input = dummyFile ;
     cleanup.output.file = dummyFile;
@@ -190,6 +190,7 @@ export function makeFormat(format, schema, exportsKey = '.', overwrites = {})
             return makeCommonJsFormat(schema, exportsKey, overwrites);
 
         case 'es':
+        case 'esm':
             return makeESModuleFormat(schema, exportsKey, overwrites);
 
         default:
