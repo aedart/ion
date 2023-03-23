@@ -32,6 +32,11 @@
       "types": "./dist/types/contracts.d.ts",
       "import": "./dist/esm/contracts.js",
       "require": "./dist/cjs/contracts.cjs"
+    },
+    "./navigation": {
+      "types": "./dist/types/navigation.d.ts",
+      "import": "./dist/esm/navigation.js",
+      "require": "./dist/cjs/navigation.cjs"
     }
   },
   "files": [
