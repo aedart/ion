@@ -14,7 +14,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aedart/ion.git"
+    "url": "git+https://github.com/aedart/ion.git",
+    "directory": "packages/vuepress-utils"
   },
   "private": false,
   "publishConfig": {
