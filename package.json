@@ -1,6 +1,6 @@
 {
-  "name": "@aedart/ion",
-  "description": "Mono-repo for JS / TS packages",
+  "name": "@aedart/ion-monorepo",
+  "description": "Monorepo for JS / TS packages",
   "keywords": [
     "Ion",
     "Library"
