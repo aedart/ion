@@ -34,9 +34,12 @@ export function createConfig({ baseDir, external = [], submodules = [], formats 
     // longer part of the "dist" export.
     clearDistDirectory(baseDir);
 
-    // Load package.json schema from base directory. Then, cleanup directories...
+    // Load package.json schema from base directory, obtain its submodules and resolve external
+    // dependencies...
     const schema = getPackageSchema(baseDir);
-
+    submodules = resolveSubmodules(schema, submodules);
+    external = resolveExternalDependencies(schema, external, submodules);
+    
     // -------------------------------------------------------------------------------------- //
     // Add formats to output
 
@@ -49,7 +52,7 @@ export function createConfig({ baseDir, external = [], submodules = [], formats 
     formats.forEach((format) => {
         outputFormats.push(makeFormat(format, schema))
     });
-
+    
     // -------------------------------------------------------------------------------------- //
     // Create the main configuration object
 
@@ -58,7 +61,6 @@ export function createConfig({ baseDir, external = [], submodules = [], formats 
     // -------------------------------------------------------------------------------------- //
     // Make configuration for eventual submodules
     let submodulesConfig = [];
-    submodules = resolveSubmodules(schema, submodules);
     submodules.forEach((target) => {
         submodulesConfig.push(
             ...makeSubmodule(target, schema, formats, external)
@@ -71,7 +73,7 @@ export function createConfig({ baseDir, external = [], submodules = [], formats 
     return [
         // Main...
         main,
-        makeBundleDtsConfig(schema),
+        makeBundleDtsConfig(schema, external),
         makeCleanupConfig(schema),
 
         // Evt. submodules...
@@ -116,6 +118,7 @@ export function makeSubmodule(target, schema, formats = [ 'cjs', 'es' ], externa
     // Make dts configuration for submodule
     let dts = makeBundleDtsConfig(
         schema,
+        external,
         'dist/tmp/' + target + '/index.d.ts',
         schema.exports['./' + target].types
     );
@@ -152,11 +155,7 @@ export function makeMainExport(schema, external = [], outputFormats = [], overwr
 {
     return Object.assign({
         input: 'src/index.ts',
-        external: Object.keys(schema.dependencies || {})
-            .concat(Object.keys(schema.peerDependencies || {}))
-            .concat(Object.keys(schema.devDependencies || {}))
-            .concat(builtinModules)
-            .concat(external),
+        external: external,
         onwarn: (warning) => {
             throw Object.assign(new Error(), warning);
         },
@@ -251,16 +250,20 @@ export function makeESModuleFormat(schema, exportsKey = '.', overwrites = {})
  * Makes a new "bundle *.d.ts" configuration
  *
  * @param {object} schema Package schema
+ * @param {string[]} [external] List of external dependencies to exclude.
+ *                              Package's dependencies and peer dependencies are automatically
+ *                              excluded.
  * @param {string} [input] Path to input *.d.ts file.
  * @param {string|null} [output] Output file. Defaults to "schema.exports['.'].types" when not given
  * @param {import('rollup').OutputOptions|object} [overwrites]
  *
  * @returns {import('rollup').RollupOptions|object}
  */
-export function makeBundleDtsConfig(schema, input = 'dist/tmp/index.d.ts', output = null, overwrites = {})
+export function makeBundleDtsConfig(schema, external = [], input = 'dist/tmp/index.d.ts', output = null, overwrites = {})
 {
     return Object.assign({
         input: input,
+        external: external,
         output: {
             // file: 'dist/types/index.d.ts',
             file: output || schema.exports['.'].types,
@@ -456,6 +459,29 @@ export function resolveSubmodules(schema, submodules = [])
     }
 
     return output;
+}
+
+/**
+ * Resolves external dependencies
+ * 
+ * @param {object} schema
+ * @param {string[]} [external]
+ * @param {string[]} [submodules]
+ * 
+ * @returns {string[]}
+ */
+export function resolveExternalDependencies(schema, external = [], submodules = [])
+{
+    let resolvedSubmodules = submodules.map((submodule) => {
+        return schema.name + '/' + submodule;
+    });
+    
+    return Object.keys(schema.dependencies || {})
+        .concat(Object.keys(schema.peerDependencies || {}))
+        .concat(Object.keys(schema.devDependencies || {}))
+        .concat(builtinModules)
+        .concat(resolvedSubmodules)
+        .concat(external);
 }
 
 /**
