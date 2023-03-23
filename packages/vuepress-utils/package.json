@@ -37,6 +37,11 @@
       "types": "./dist/types/navigation.d.ts",
       "import": "./dist/esm/navigation.js",
       "require": "./dist/cjs/navigation.cjs"
+    },
+    "./utils": {
+        "types": "./dist/types/utils.d.ts",
+        "import": "./dist/esm/utils.js",
+        "require": "./dist/cjs/utils.cjs"
     }
   },
   "files": [
