@@ -14,6 +14,8 @@ import typescript from 'rollup-plugin-typescript2';
 import fs, {readFileSync} from "fs";
 import dts from "rollup-plugin-dts";
 import del from 'rollup-plugin-delete'
+import vue from 'rollup-plugin-vue';
+import scss from 'rollup-plugin-scss';
 
 /**
  * Creates a new rollup configuration for given package
@@ -163,6 +165,8 @@ export function makeMainExport(schema, external = [], outputFormats = [], overwr
         output: outputFormats,
 
         plugins: [
+            //vuePlugin(),
+            //scssPlugin(),
             typescriptPlugin()
         ]
     }, overwrites);
@@ -345,6 +349,40 @@ export function typescriptPlugin(options = {})
     return typescript(typeScriptOptions);
 }
 
+/**
+ * Returns vue plugin to process *.vue files
+ * 
+ * @param {object} [options]
+ * 
+ * @returns {Plugin}
+ */
+export function vuePlugin(options = {})
+{
+    // @see https://github.com/vuejs/rollup-plugin-vue
+    let vueOptions = Object.assign({
+        target: 'node',
+        preprocessStyles: false
+    }, options);
+    
+    return vue(vueOptions);
+}
+
+/**
+ * Returns scss plugin to process *.scss files
+ *
+ * @param {object} [options]
+ *
+ * @returns {Plugin}
+ */
+export function scssPlugin(options = {})
+{
+    // @see https://github.com/thgh/rollup-plugin-scss
+    let scssOptions = Object.assign({
+        
+    }, options);
+    
+    return scss(scssOptions);
+}
 
 /**
  * Plugin that emits package file
