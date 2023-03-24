@@ -1,5 +1,6 @@
-import type {NavbarItem, SidebarConfig} from "vuepress";
+import type {NavbarGroup, NavbarItem, SidebarConfig} from "vuepress";
 import PagesCollection from "./PagesCollection.js";
+
 
 /**
  * Archive
@@ -151,11 +152,11 @@ export default interface Archive
     get nextFullPath(): string;
 
     /**
-     * Returns a "navigation bar item" representation of this archive
-     *
-     * @returns {NavbarItem}
+     * Returns a navigation "bar item" or "group" representation of this archive
+     * 
+     * @returns {NavbarItem | NavbarGroup}
      */
-    asNavigationItem(): NavbarItem;
+    asNavigationItem(): NavbarItem | NavbarGroup;
 
     /**
      * Returns sidebar configuration (all collections' pages)
