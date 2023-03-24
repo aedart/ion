@@ -1,12 +1,9 @@
 import {defaultTheme, defineUserConfig, Page} from 'vuepress';
 import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
 import {searchPlugin} from "@vuepress/plugin-search";
-import { getDirname, path } from "@vuepress/utils"
 import {baseURL, prefixPath} from "@aedart/vuepress-utils";
+import {lastUpdatedPlugin} from "./plugins/lastUpdatedPlugin";
 import Archive from "./archive";
-
-// @ts-ignore
-const __dirname = getDirname(import.meta.url);
 
 /**
  * Base URL of site
@@ -62,11 +59,6 @@ export default defineUserConfig({
         sidebar: Archive.sidebarConfiguration()
     }),
 
-    // Replace default shown "last updated" format!
-    alias: {
-        '@theme/PageMeta.vue': path.resolve(__dirname, './layouts/components/PageMeta.vue'),
-    },
-
     plugins: [
 
         backToTopPlugin(),
@@ -82,6 +74,8 @@ export default defineUserConfig({
                 return [page.frontmatter.description] ?? [];
             },
         }),
+
+        lastUpdatedPlugin()
     ]
 });
 
