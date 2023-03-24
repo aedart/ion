@@ -1,5 +1,5 @@
 import {Archive as ArchiveContract, PagesCollection} from "@aedart/vuepress-utils/contracts";
-import {prefixPath} from "@aedart/vuepress-utils/utils";
+import {prefixPath} from "@aedart/vuepress-utils";
 import type {NavbarGroup, NavbarItem, NavLink, SidebarConfig} from "vuepress";
 
 /**
