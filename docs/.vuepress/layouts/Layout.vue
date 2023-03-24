@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import ParentLayout from '@vuepress/theme-default/layouts/Layout.vue';
 import VersionWarning from "./components/VersionWarning.vue";
-import Navigation from "../navigation";
+import Archive from "../archive";
 import {usePageData} from "@vuepress/client";
 
 const page = usePageData();
@@ -14,7 +14,7 @@ const page = usePageData();
  */
 const showWarningForNext = computed(
     () => {
-      let next = Navigation.nextLink;
+      let next = Archive.nextFullPath;
       let path = page.value.path;
 
       return path.includes(next);
@@ -29,8 +29,8 @@ const showWarningForNext = computed(
 const showWarningForOutdated = computed(
     () => {
       let home = '/';
-      let next = Navigation.nextLink;
-      let current = Navigation.currentLink;
+      let next = Archive.nextFullPath;
+      let current = Archive.currentFullPath;
       let path = page.value.path;
 
       return path !== home

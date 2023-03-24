@@ -2,7 +2,7 @@ import {defaultTheme, defineUserConfig, Page} from 'vuepress';
 import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
 import {searchPlugin} from "@vuepress/plugin-search";
 import { getDirname, path } from "@vuepress/utils"
-import Navigation from "./navigation";
+import Archive from "./archive";
 
 // @ts-ignore
 const __dirname = getDirname(import.meta.url);
@@ -47,15 +47,11 @@ export default defineUserConfig({
 
         navbar: [
             { text: 'Packages', link: '/archive/current/packages/' },
-            {
-                text: 'Archive',
-                link: '/archive/',
-                children: Navigation.archiveItems(),
-            },
+            Archive.asNavigationItem(),
             { text: 'Changelog', link: 'https://github.com/aedart/ion/blob/main/CHANGELOG.md' },
         ],
 
-        sidebar: Navigation.sidebarItems()
+        sidebar: Archive.sidebarConfiguration()
     }),
 
     // Replace default shown "last updated" format!
