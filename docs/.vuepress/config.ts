@@ -54,7 +54,7 @@ export default defineUserConfig({
         lastUpdatedText: 'Last Updated',
 
         navbar: [
-            { text: 'Packages', link: '/archive/current/packages/' },
+            { text: 'Packages', link: prefixPath(Archive.currentFullPath, '/packages/') },
             Archive.asNavigationItem(),
             { text: 'Changelog', link: 'https://github.com/aedart/ion/blob/main/CHANGELOG.md' },
         ],
@@ -75,7 +75,7 @@ export default defineUserConfig({
             maxSuggestions: 10,
 
             isSearchable: (page: Page) => {
-                return page.path.includes('/archive/current/');
+                return page.path.includes(Archive.currentFullPath);
             },
 
             getExtraFields: (page: Page) => {
