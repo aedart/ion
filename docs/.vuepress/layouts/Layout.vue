@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import ParentLayout from '@vuepress/theme-default/layouts/Layout.vue';
-import VersionWarning from "./components/VersionWarning.vue";
+import VersionDisclaimer from "@aedart/vuepress-utils/components/VersionDisclaimer.vue";
 import Archive from "../archive";
 import {usePageData} from "@vuepress/client";
 
@@ -45,14 +45,14 @@ const showWarningForOutdated = computed(
     <template #page-top>
 
       <!-- When viewing docs. for next version -->
-      <VersionWarning v-if="showWarningForNext" type="info">
+      <VersionDisclaimer v-if="showWarningForNext" type="info">
         You are viewing documentation for an upcoming version. <strong>It has not yet been released!</strong>!
-      </VersionWarning>
+      </VersionDisclaimer>
 
       <!-- When viewing docs. for outdated version -->
-      <VersionWarning v-if="showWarningForOutdated">
+      <VersionDisclaimer v-if="showWarningForOutdated">
         You are viewing documentation for an outdated version. <strong>It is no longer supported!</strong>
-      </VersionWarning>
+      </VersionDisclaimer>
 
     </template>
   </ParentLayout>
