@@ -94,7 +94,7 @@ function resolvePath(path: string) {
  * @returns {string}
  */
 function resolveBasePath() {
-    console.info('ENVIRONMENT', process.env.NODE_ENV);
+    // console.info('ENVIRONMENT', process.env.NODE_ENV);
     if(process.env.NODE_ENV === 'development'){
         return '/';
     }
