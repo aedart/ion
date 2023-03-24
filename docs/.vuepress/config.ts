@@ -2,16 +2,24 @@ import {defaultTheme, defineUserConfig, Page} from 'vuepress';
 import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
 import {searchPlugin} from "@vuepress/plugin-search";
 import { getDirname, path } from "@vuepress/utils"
+import {baseURL, prefixPath} from "@aedart/vuepress-utils/utils";
 import Archive from "./archive";
 
 // @ts-ignore
 const __dirname = getDirname(import.meta.url);
 
 /**
+ * Base URL of site
+ * 
+ * @type {"/" | `/${string}/`}
+ */
+const BASE_URL = baseURL('ion');
+
+/**
  * Vuepress configuration for docs...
  */
 export default defineUserConfig({
-    base: resolveBasePath(),
+    base: BASE_URL,
     dest: './.build',
     lang: 'en-GB',
     title: 'Ion',
@@ -78,26 +86,12 @@ export default defineUserConfig({
 });
 
 /**
- * Prefixes given path with "base" path, if needed
+ * Prefixes given path with "base" URL, if needed
  *
  * @param {string} path
  *
  * @returns {string}
  */
 function resolvePath(path: string) {
-    return resolveBasePath() + path;
-}
-
-/**
- * Resolves "base" path
- *
- * @returns {string}
- */
-function resolveBasePath() {
-    // console.info('ENVIRONMENT', process.env.NODE_ENV);
-    if(process.env.NODE_ENV === 'development'){
-        return '/';
-    }
-
-    return '/ion/';
+    return prefixPath(BASE_URL, path);
 }
