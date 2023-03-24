@@ -1,4 +1,4 @@
-import {prefixPath} from "./prefixPath.js";
+import {prefixPath} from "./prefixPath";
 
 export {
     prefixPath

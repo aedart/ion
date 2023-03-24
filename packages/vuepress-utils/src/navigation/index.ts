@@ -1,4 +1,4 @@
-import PagesCollection from "./PagesCollection.js";
+import PagesCollection from "./PagesCollection";
 
 export {
     PagesCollection
