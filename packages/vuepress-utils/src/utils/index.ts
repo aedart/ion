@@ -1,5 +1,2 @@
-import {prefixPath} from "./prefixPath";
-
-export {
-    prefixPath
-}
+export * from './prefixPath';
+export * from './baseURL';
