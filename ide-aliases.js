@@ -23,7 +23,7 @@ module.exports = {
             '@aedart/vuepress-utils/navigation': path.resolve(__dirname, './packages/vuepress-utils/src/navigation'),
             '@aedart/vuepress-utils/utils': path.resolve(__dirname, './packages/vuepress-utils/src/utils'),
             '@aedart/vuepress-utils': path.resolve(__dirname, './packages/vuepress-utils/src'),
-            
+
             // xyz
             '@aedart/xyz': path.resolve(__dirname, './packages/xyz/src'),
         },
