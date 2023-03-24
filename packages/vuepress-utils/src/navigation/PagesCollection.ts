@@ -43,18 +43,17 @@ export default class PagesCollection implements PagesCollectionContract
      * The pages in this collection
      * 
      * @type {SidebarConfigArray}
-     * @protected
      */
-    protected pages: SidebarConfigArray;
+    public pages: SidebarConfigArray;
 
     /**
      * Creates a new pages collection instance
      * 
      * @param {string} name
      * @param {string} path
-     * @param {SidebarConfigArray} pages
+     * @param {SidebarConfigArray} [pages]
      */
-    constructor(name: string, path: string, pages: SidebarConfigArray)
+    constructor(name: string, path: string, pages: SidebarConfigArray = [])
     {
         this._name = name;
         this._path = path;
@@ -66,11 +65,11 @@ export default class PagesCollection implements PagesCollectionContract
      * 
      * @param {string} name
      * @param {string} path
-     * @param {SidebarConfigArray} pages
+     * @param {SidebarConfigArray} [pages]
      * 
      * @returns {PagesCollection}
      */
-    static make(name: string, path: string, pages: SidebarConfigArray)
+    static make(name: string, path: string, pages: SidebarConfigArray = [])
     {
         return new this(name, path, pages);
     }
