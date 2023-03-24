@@ -2,11 +2,12 @@ import { createConfig } from '../../shared/rollup.config.mjs';
 
 export default createConfig({
     baseDir: new URL('.', import.meta.url),
-    
-    // Because this package offers *.vue files, we need to
-    // be explicit about which to export! 
+
+    // *.vue files offered by this package, so we must manually
+    // specify the submodules to be exported or vue components
+    // must be compiled...
     submodules: [
-        //'components', // don't!
+        //'components', // *.vue files copied into dist - not compiled!
         'contracts',
         'navigation'
     ]
