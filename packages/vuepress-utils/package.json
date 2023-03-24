@@ -38,7 +38,7 @@
       "import": "./dist/esm/navigation.js",
       "require": "./dist/cjs/navigation.cjs"
     },
-    "./components": "./dist/components/*"
+    "./components/*": "./dist/components/*"
   },
   "files": [
     "dist",
@@ -51,7 +51,7 @@
     "tslib": "^2.5.0"
   },
   "scripts": {
-    "compile": "rollup -c && npx cpx \"src/components/*.vue\" dist/components",
+    "compile": "rollup -c && npx cpx \"src/**/*.vue\" dist",
     "watch": "rollup -c -w"
   }
 }
