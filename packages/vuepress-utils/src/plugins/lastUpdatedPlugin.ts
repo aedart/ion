@@ -6,40 +6,45 @@ import { getDirname, path } from "@vuepress/utils"
 const __dirname = getDirname(import.meta.url);
 
 /**
+ * Last Updated Plugin Options 
+ */
+export interface lastUpdatedPluginOptions
+{
+    /**
+     * Datetime format
+     * 
+     * @see https://moment.github.io/luxon/#/formatting?id=table-of-tokens
+     */
+    format?: string;
+
+    /**
+     * Datetime Options
+     */
+    options?: DateTimeJSOptions;
+}
+
+/**
  * Formats the last updated timestamp according to given format
  * 
- * @see https://moment.github.io/luxon/#/formatting?id=table-of-tokens
- * 
- * @param {string} [format='yyyy-MM-dd HH:mm:ss ZZZZ']
- * @param {import('luxon/src/datetime').DateTimeJSOptions} [options={}]
+ * @param {string | undefined} [format='yyyy-MM-dd HH:mm:ss ZZZZ']
+ * @param {import('luxon/src/datetime').DateTimeJSOptions | undefined} [options={}]
  * 
  * @returns {import('@vuepress/core').Plugin}
  */
-export const lastUpdatedPlugin = (format: string = 'yyyy-MM-dd HH:mm:ss ZZZZ', options: DateTimeJSOptions = {}): Plugin => {
+export const lastUpdatedPlugin = ({
+    format = 'yyyy-MM-dd HH:mm:ss ZZZZ',
+    options = {}
+}: lastUpdatedPluginOptions = {} ): Plugin => {
     return {
         name: 'last-updated-plugin',
-    
-        //clientConfigFile: path.resolve(__dirname, '../client/config.js'),
-    
-        // DON'T use the global injectors. Seems a bit too risky!
-        // define: {
-        //     __LAST_UPDATED_DATE_FORMAT__: format,
-        //     __LAST_UPDATED_OPTIONS__: options,
-        // },
-    
-        onInitialized: (app) => {
-            // Debug
-            //console.log('Last Updated Plugin...');
-        },
-    
+        
         extendsPage: (page: Page) => {
             // @ts-ignore
             page.data.lastUpdatedDateFormat = format;
             // @ts-ignore
             page.data.lastUpdatedDateOptions = options;
         },
-    
-        // Replace default shown "last updated" format!
+
         alias: {
             '@theme/PageMeta.vue': path.resolve(
                 __dirname,
