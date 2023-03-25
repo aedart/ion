@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * `@aedart/vuepress-utils` package, which includes an `Archive` component, a plugin to format "last updated" datetime, and other minor utilities. 
 * `@aedart/xyz` package (_private, not published_) for testing various configurations, exports and features.
+* `publish.sh` (_helper to publish to npm_).
 * `deploy-docs.sh` (_ported and adapted from Athenaeum_).
 * Version warning component in docs (_ported and adapted from Athenaeum_).
 * Code of conduct, contribution guide and other "introduction" documents (_ported and adapted from Athenaeum_).
