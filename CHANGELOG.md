@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2023-03-25
+
 ### Added
 
+* `@aedart/vuepress-utils` package, which includes an `Archive` component, a plugin to format "last updated" datetime, and other minor utilities. 
 * `@aedart/xyz` package (_private, not published_) for testing various configurations, exports and features.
 * `deploy-docs.sh` (_ported and adapted from Athenaeum_).
 * Version warning component in docs (_ported and adapted from Athenaeum_).
@@ -21,4 +24,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.1.0...HEAD
+[0.1.0]: https://github.com/aedart/athenaeum/releases/tag/0.1.0
