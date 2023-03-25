@@ -64,7 +64,6 @@ export default PagesCollection.make('v0.x', '/v0x', [
             //         'packages/xyz/',
             //     ]
             // }
-
             'packages/xyz/'
         ]
     }, 
