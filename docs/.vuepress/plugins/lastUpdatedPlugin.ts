@@ -1,4 +1,4 @@
-import type { Plugin } from '@vuepress/core';
+import type { Plugin, Page } from '@vuepress/core';
 import { getDirname, path } from "@vuepress/utils"
 import {DateTimeJSOptions} from "luxon/src/datetime";
 
@@ -20,17 +20,24 @@ export const lastUpdatedPlugin = (format: string = 'yyyy-LL-dd HH:mm:ss ZZZZ', o
 
     //clientConfigFile: path.resolve(__dirname, '../client/config.js'),
 
-    // TODO: WARNING... These become global variables. Perhaps we should inject format into page data instead!
-    define: {
-        __LAST_UPDATED_DATE_FORMAT__: format,
-        __LAST_UPDATED_OPTIONS__: options,
-    },
+    // DON'T use the global injectors. Seems a bit too risky!
+    // define: {
+    //     __LAST_UPDATED_DATE_FORMAT__: format,
+    //     __LAST_UPDATED_OPTIONS__: options,
+    // },
 
     onInitialized: (app) => {
         // Debug
         //console.log('Last Updated Plugin...');
     },
 
+    extendsPage: (page: Page) => {
+        // @ts-ignore
+        page.data.lastUpdatedDateFormat = format;
+        // @ts-ignore
+        page.data.lastUpdatedDateOptions = options;
+    },
+    
     // Replace default shown "last updated" format!
     alias: {
         '@theme/PageMeta.vue': path.resolve(__dirname, '../layouts/components/PageMeta.vue'),  

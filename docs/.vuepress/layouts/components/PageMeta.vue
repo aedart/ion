@@ -5,20 +5,6 @@ import {onMounted, nextTick} from "vue";
 import {usePageData} from "@vuepress/client";
 import { DateTime } from 'luxon';
 
-/**
- * Global format from plugin...
- *
- * @see lastUpdatedPlugin.define
- */
-const lastUpdatedFormat = __LAST_UPDATED_DATE_FORMAT__;
-
-/**
- * Global options from plugin
- *
- * @see lastUpdatedPlugin.define
- */
-const lastUpdatedOptions = __LAST_UPDATED_OPTIONS__;
-
 onMounted(() =>
 {
     const page = usePageData();
@@ -29,16 +15,16 @@ onMounted(() =>
         return;
     }
 
-    // Debug
-    //console.log('Timestamp', timestamp);
-    
-    // Resolve options...
-    let options = lastUpdatedOptions ?? {};
+    // Resolve format and options from page's data...
+    // @ts-ignore
+    let format = page.value.lastUpdatedDateFormat ?? 'yyyy-LL-dd HH:mm:ss';
+    // @ts-ignore
+    let options = page.value.lastUpdatedDateOptions ?? {};
     
     // Convert into a date and format as UTC
     let date = DateTime
         .fromMillis(timestamp, options)
-        .toFormat(lastUpdatedFormat);
+        .toFormat(format);
     
     // Find DOM element and replace "last updated" value.
     // This is NOT pretty... but it works!
