@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+* Commit message for lerna "version" command.
+
 ## [0.1.1] - 2023-03-25
 
 ### Fixed

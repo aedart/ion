@@ -6,7 +6,7 @@
     "version": {
       "allowBranch": "main",
       "conventionalCommits": false,
-      "message": "Release of %v"
+      "message": "Release of v%v"
     },
     "publish": {
       "message": "Publish %v"
