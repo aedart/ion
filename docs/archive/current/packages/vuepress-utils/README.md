@@ -17,3 +17,6 @@ Amongst them are:
 
 * [Last Updated](./plugins/last-updated.md)
 
+## Components
+
+* [Version Disclaimer](./components/version-disclaimer.md)
