@@ -1,43 +1,31 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import ParentLayout from '@vuepress/theme-default/layouts/Layout.vue';
 import VersionDisclaimer from "@aedart/vuepress-utils/components/VersionDisclaimer.vue";
-import Archive from "../archive";
 import {usePageData} from "@vuepress/client";
+import {isViewingNextRef, isViewingOtherRef} from "@aedart/vuepress-utils";
+import archive from "../archive";
 
+/**
+ * Page data...
+ * 
+ * @type {PageDataRef<Record<never, never>>}
+ */
 const page = usePageData();
 
 /**
  * Determine if warning must be shown for upcoming version docs...
  *
- * @type {ComputedRef<*>}
+ * @type {ComputedRef<boolean>}
  */
-const showWarningForNext = computed(
-    () => {
-      let next = Archive.nextFullPath;
-      let path = page.value.path;
-
-      return path.includes(next);
-    }
-)
+const showWarningForNext = isViewingNextRef(page, archive);
 
 /**
  * Determine if warning must be shown for outdated version docs...
  *
- * @type {ComputedRef<*>}
+ * @type {ComputedRef<boolean>}
  */
-const showWarningForOutdated = computed(
-    () => {
-      let home = '/';
-      let next = Archive.nextFullPath;
-      let current = Archive.currentFullPath;
-      let path = page.value.path;
+const showWarningForOutdated = isViewingOtherRef(page, archive);
 
-      return path !== home
-          && !path.includes(next)
-          && !path.includes(current);
-    }
-)
 </script>
 
 <template>
