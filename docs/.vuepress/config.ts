@@ -2,7 +2,7 @@ import {defaultTheme, defineUserConfig, Page} from 'vuepress';
 import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
 import {searchPlugin} from "@vuepress/plugin-search";
 import {baseURL, prefixPath} from "@aedart/vuepress-utils";
-import {lastUpdatedPlugin} from "./plugins/lastUpdatedPlugin";
+import {lastUpdatedPlugin} from "@aedart/vuepress-utils/plugins";
 import Archive from "./archive";
 
 /**

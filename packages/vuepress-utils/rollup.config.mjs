@@ -9,6 +9,7 @@ export default createConfig({
     submodules: [
         //'components', // *.vue files copied into dist - not compiled!
         'contracts',
-        'navigation'
+        'navigation',
+        'plugins',
     ]
 });

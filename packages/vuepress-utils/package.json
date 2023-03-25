@@ -38,6 +38,11 @@
       "import": "./dist/esm/navigation.js",
       "require": "./dist/cjs/navigation.cjs"
     },
+    "./plugins": {
+      "types": "./dist/types/plugins.d.ts",
+      "import": "./dist/esm/plugins.js",
+      "require": "./dist/cjs/plugins.cjs"
+    },
     "./components/*": "./dist/components/*"
   },
   "files": [
@@ -47,6 +52,8 @@
   "peerDependencies": {
     "vue": "^3.2.47",
     "vuepress": "^2.0.0-beta.61",
+    "@vuepress/core": "^2.0.0-beta.61",
+    "@vuepress/utils": "^2.0.0-beta.61",
     "luxon": "^3.3.0",
     "@types/luxon": "^3.2.0",
     "tslib": "^2.5.0"

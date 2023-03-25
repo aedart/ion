@@ -1,0 +1,1 @@
+export { lastUpdatedPlugin } from './lastUpdatedPlugin';
