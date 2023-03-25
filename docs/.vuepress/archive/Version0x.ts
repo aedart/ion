@@ -28,6 +28,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                 collapsible: true,
                 children: [
                     'packages/vuepress-utils/',
+                    'packages/vuepress-utils/install',
                     {
                         text: 'Navigation',
                         collapsible: true,
@@ -42,6 +43,14 @@ export default PagesCollection.make('v0.x', '/v0x', [
                         children: [
                             // 'packages/vuepress-utils/plugins', // No index page...
                             'packages/vuepress-utils/plugins/last-updated',
+                        ]
+                    },
+                    {
+                        text: 'Components',
+                        collapsible: true,
+                        children: [
+                            // 'packages/vuepress-utils/components', // No index page...
+                            'packages/vuepress-utils/components/version-disclaimer',
                         ]
                     },
                 ]
