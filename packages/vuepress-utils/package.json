@@ -50,13 +50,13 @@
     "!dist/**/*.map"
   ],
   "peerDependencies": {
-    "vue": "^3.2.47",
-    "vuepress": "^2.0.0-beta.61",
+    "@types/luxon": "^3.2.0",
     "@vuepress/core": "^2.0.0-beta.61",
     "@vuepress/utils": "^2.0.0-beta.61",
     "luxon": "^3.3.0",
-    "@types/luxon": "^3.2.0",
-    "tslib": "^2.5.0"
+    "tslib": "^2.5.0",
+    "vue": "^3.2.47",
+    "vuepress": "^2.0.0-beta.61"
   },
   "scripts": {
     "compile": "rollup -c && npx cpx \"src/**/*.vue\" dist",
