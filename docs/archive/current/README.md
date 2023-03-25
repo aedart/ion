@@ -27,4 +27,7 @@ _TBD: "To be decided"._
 
 ## `v0.x` Highlights
 
-_Not yet available... please visit at a later point_
+### Vuepress Utils <Badge type="tip" text="Available since v0.1" />
+
+Utilities for vuepress sites, which includes an `Archive` component for structuring documentation into an archive.
+See [package documentation](./packages/vuepress-utils/README.md) for details.
