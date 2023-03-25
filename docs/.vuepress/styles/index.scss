@@ -149,6 +149,21 @@
 
   --search-input-width: 25rem;
   --search-result-width: 45rem;
+
+    .suggestions {
+        .suggestion {
+            // Display the path after each search result
+            a::after {
+                content: "" attr(href) "";
+                display: block;
+                color: var(--c-text-lightest);
+                //background-color: var(--c-bg-lighter);
+                font-style: italic;
+                width: 100%;
+                padding: 2px;
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------------------------- //
