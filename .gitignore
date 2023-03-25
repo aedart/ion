@@ -5,7 +5,7 @@ temp/*
 
 yarn.lock
 lerna-debug.log
-package-lock.json
+# package-lock.json # Lerna really likes having package-lock.json included...
 /node_modules
 .build/
 tsconfig.tsbuildinfo
