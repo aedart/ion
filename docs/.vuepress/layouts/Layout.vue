@@ -33,12 +33,12 @@ const showWarningForOutdated = isViewingOtherRef(page, archive);
     <template #page-top>
 
       <!-- When viewing docs. for next version -->
-      <VersionDisclaimer v-if="showWarningForNext" type="info">
+      <VersionDisclaimer v-if="showWarningForNext">
         You are viewing documentation for an upcoming version. <strong>It has not yet been released!</strong>!
       </VersionDisclaimer>
 
       <!-- When viewing docs. for outdated version -->
-      <VersionDisclaimer v-if="showWarningForOutdated">
+      <VersionDisclaimer v-if="showWarningForOutdated" type="danger" label="Warning">
         You are viewing documentation for an outdated version. <strong>It is no longer supported!</strong>
       </VersionDisclaimer>
 

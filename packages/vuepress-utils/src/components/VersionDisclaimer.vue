@@ -24,12 +24,20 @@ export default defineComponent({
          */
         type: {
             type: String,
-            default: 'warning'
+            default: 'info'
+        },
+
+        /**
+         * Custom label
+         */
+        label: {
+            type: String
         }
     },
     
     setup(props) {
         const type = props.type;
+        const userLabel = props.label;
         
         const css = computed(() => {
             return {
@@ -39,14 +47,11 @@ export default defineComponent({
         });
         
         const label = computed(() => {
-            switch (type) {
-                case 'info':
-                    return 'Info';
-
-                case 'warning':
-                default:
-                    return 'Warning';
+            if (userLabel) {
+                return userLabel;
             }
+
+            return type.charAt(0).toUpperCase() + type.slice(1);
         });
         
         return {
@@ -82,6 +87,12 @@ export default defineComponent({
     }
 
     &.warning {
+        label {
+            color: var(--c-warning);
+        }
+    }
+    
+    &.danger {
         label {
             color: var(--c-danger);
         }
