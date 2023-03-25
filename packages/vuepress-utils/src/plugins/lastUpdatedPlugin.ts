@@ -10,12 +10,12 @@ const __dirname = getDirname(import.meta.url);
  * 
  * @see https://moment.github.io/luxon/#/formatting?id=table-of-tokens
  * 
- * @param {string} [format='yyyy-LL-dd HH:mm:ss ZZZZ']
+ * @param {string} [format='yyyy-MM-dd HH:mm:ss ZZZZ']
  * @param {import('luxon/src/datetime').DateTimeJSOptions} [options={}]
  * 
  * @returns {import('@vuepress/core').Plugin}
  */
-export const lastUpdatedPlugin = (format: string = 'yyyy-LL-dd HH:mm:ss ZZZZ', options: DateTimeJSOptions = {}): Plugin => {
+export const lastUpdatedPlugin = (format: string = 'yyyy-MM-dd HH:mm:ss ZZZZ', options: DateTimeJSOptions = {}): Plugin => {
     return {
         name: 'last-updated-plugin',
     
