@@ -18,6 +18,7 @@ export function isViewingOther(page: PageDataRef, archive: Archive, exclude: str
     let path = page.value.path;
 
     return !exclude.includes(path)
+        && path !== archive.path + '/' 
         && !isViewingNext(page, archive)
         && !isViewingCurrent(page, archive);
 }
