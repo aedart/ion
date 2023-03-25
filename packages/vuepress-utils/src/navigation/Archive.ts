@@ -89,7 +89,7 @@ export default class Archive implements ArchiveContract
      *
      * @param {PagesCollection} current
      * @param {PagesCollection} next
-     * @param {PagesCollection[]} [collections]
+     * @param {PagesCollection[]} [collections=[]]
      */
     constructor(
         current: PagesCollection,
@@ -108,7 +108,7 @@ export default class Archive implements ArchiveContract
      *
      * @param {PagesCollection} current
      * @param {PagesCollection} next
-     * @param {PagesCollection[]} [collections]
+     * @param {PagesCollection[]} [collections=[]]
      *
      * @returns {Archive}
      */

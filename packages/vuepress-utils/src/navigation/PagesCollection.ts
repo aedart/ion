@@ -51,7 +51,7 @@ export default class PagesCollection implements PagesCollectionContract
      * 
      * @param {string} name
      * @param {string} path
-     * @param {SidebarConfigArray} [pages]
+     * @param {SidebarConfigArray} [pages=[]]
      */
     constructor(name: string, path: string, pages: SidebarConfigArray = [])
     {
@@ -65,7 +65,7 @@ export default class PagesCollection implements PagesCollectionContract
      * 
      * @param {string} name
      * @param {string} path
-     * @param {SidebarConfigArray} [pages]
+     * @param {SidebarConfigArray} [pages=[]]
      * 
      * @returns {PagesCollection}
      */

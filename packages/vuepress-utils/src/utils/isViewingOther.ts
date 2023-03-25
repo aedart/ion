@@ -9,7 +9,7 @@ import { isViewingCurrent } from "./isViewingCurrent";
  *
  * @param {import('@vuepress/client').PageDataRef} page
  * @param {Archive} archive
- * @param {string[]} [exclude] Paths to exclude from result
+ * @param {string[]} [exclude=[ '/' ]] Paths to exclude from result
  *
  * @returns {boolean}
  */
@@ -28,7 +28,7 @@ export function isViewingOther(page: PageDataRef, archive: Archive, exclude: str
  *
  * @param {import('@vuepress/client').PageDataRef} page
  * @param {Archive} archive
- * @param {string[]} [exclude] Paths to exclude from result
+ * @param {string[]} [exclude=[ '/' ]] Paths to exclude from result
  *
  * @returns {import('vue').ComputedRef<boolean>}
  */

@@ -2,7 +2,7 @@
  * Resolves the base URL of vuepress site, based on {@link process.env.NODE_ENV}
  * 
  * @param {string} path
- * @param {string} [productionEnv] Name of a production environment 
+ * @param {string} [productionEnv='production'] Name of a production environment 
  * 
  * @returns {"/" | `/${string}/`} '/' when not in production
  */

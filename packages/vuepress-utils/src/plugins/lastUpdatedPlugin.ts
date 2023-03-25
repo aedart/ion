@@ -10,8 +10,8 @@ const __dirname = getDirname(import.meta.url);
  * 
  * @see https://moment.github.io/luxon/#/formatting?id=table-of-tokens
  * 
- * @param {string} [format]
- * @param {import('luxon/src/datetime').DateTimeJSOptions} [options]
+ * @param {string} [format='yyyy-LL-dd HH:mm:ss ZZZZ']
+ * @param {import('luxon/src/datetime').DateTimeJSOptions} [options={}]
  * 
  * @returns {import('@vuepress/core').Plugin}
  */
