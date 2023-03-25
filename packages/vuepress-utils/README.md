@@ -5,15 +5,15 @@ Amongst them are:
 
 ## Navigation
 
-* [Archive](https://aedart.github.io/ion/archive/current/packages/vuepress-utils/navigation/archive.md)
+* [Archive](https://aedart.github.io/ion/archive/current/packages/vuepress-utils/navigation/archive.html)
 
 ## Plugins
 
-* [Last Updated](https://aedart.github.io/ion/archive/current/packages/vuepress-utils/plugins/last-updated.md)
+* [Last Updated](https://aedart.github.io/ion/archive/current/packages/vuepress-utils/plugins/last-updated.html)
 
 ## Components
 
-* [Version Disclaimer](https://aedart.github.io/ion/archive/current/packages/vuepress-utils/components/version-disclaimer.md)
+* [Version Disclaimer](https://aedart.github.io/ion/archive/current/packages/vuepress-utils/components/version-disclaimer.html)
 
 # Official Documentation
 
