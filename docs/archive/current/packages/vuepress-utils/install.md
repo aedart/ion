@@ -4,28 +4,20 @@ description: How to install Vuepress Utils
 
 # How to install
 
-<CodeGroup>
-  <CodeGroupItem title="npm" active>
+## npm
 
 ```bash:no-line-numbers
 npm install --save-dev @aedart/vuepress-utils
 ```
 
-  </CodeGroupItem>
-
-  <CodeGroupItem title="yarn">
+## yarn
 
 ```bash:no-line-numbers
 yarn add --dev @aedart/vuepress-utils
 ```
 
-  </CodeGroupItem>
-
-  <CodeGroupItem title="pnpm">
+## pnpm
 
 ```bash:no-line-numbers
 pnpm add --save-dev @aedart/vuepress-utils
 ```
-
-  </CodeGroupItem>
-</CodeGroup>
