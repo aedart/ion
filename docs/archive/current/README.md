@@ -10,6 +10,8 @@ sidebarDepth: 0
 Ion is still in development.
 You _SHOULD NOT_ use any of the packages in production.
 Breaking changes _**MUST**_ be expected for all `v0.x` releases!
+
+_Please review the [`CHANGELOG.md`](https://github.com/aedart/ion/blob/main/CHANGELOG.md) for additional details._
 :::
 
 [[toc]]
