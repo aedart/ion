@@ -10,7 +10,7 @@ Having a full-time job and maintaining [Athenaeum](https://aedart.github.io/athe
 Like so many other developers, I was copying JavaScript from one project into another. 
 I always knew that was very bad practice. But, it was too cumbersome trying to maintain so much code, spread throughout various repositories.  
 
-Nevertheless, in recent years, [Lerna](https://lerna.js.org/), [TypeScript](https://www.typescriptlang.org/), and many other tools and frameworks made it somewhat easier to manage [mono-repos](https://en.wikipedia.org/wiki/Monorepo).
+Nevertheless, in recent years, [Lerna](https://lerna.js.org/), [TypeScript](https://www.typescriptlang.org/), and many other tools & frameworks made it somewhat easier to manage [mono-repos](https://en.wikipedia.org/wiki/Monorepo).
 I cannot claim to have gained more time, but decided to give JavaScript packages another shoot.
 
 ## Meaning of "Ion"
