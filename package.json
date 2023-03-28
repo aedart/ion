@@ -69,8 +69,8 @@
     "compile": "lerna run compile",
     "cache:clear": "npx nx reset",
     "watch": "lerna run watch",
-    "test": "lerna run compile && karma start shared/tests/karma-production.conf.js",
-    "test-dev": "lerna run compile && karma start shared/tests/karma-development.conf.js",
+    "test": "lerna run compile && karma start shared/tests/karma-development.conf.js",
+    "test:prod": "lerna run compile && karma start shared/tests/karma-production.conf.js",
     "docs:dev": "cross-env NODE_ENV=development vuepress dev docs --config docs/.vuepress/config.ts",
     "docs:build": "cross-env NODE_ENV=development vuepress build docs --config docs/.vuepress/config.ts",
     "docs:build-prod": "cross-env NODE_ENV=production vuepress build docs --config docs/.vuepress/config.ts"
