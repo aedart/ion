@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-03-28
+
 ### Added
 
-* Enabled CI testing via GitHub Actions. 
+* Enabled CI testing via GitHub Actions. Currently testing in Chrome and Firefox. 
 * Troubleshooting section for npm installation of `@aedart/vuepress-utils`. 
 
 ### Changed
@@ -46,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.1.1...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/aedart/ion/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/aedart/ion/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/aedart/ion/releases/tag/0.1.0
