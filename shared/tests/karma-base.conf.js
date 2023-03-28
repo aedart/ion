@@ -8,7 +8,7 @@ const webpackConfiguration = require('./webpack.config');
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 // Path to tests
-const TESTS_PATH_PATTERN = 'tests/packages/**/*.test.js';
+const TESTS_PATH_PATTERN = 'tests/browser/packages/**/*.test.js';
 
 /*****************************************************************
  * Karma (Base) Configuration

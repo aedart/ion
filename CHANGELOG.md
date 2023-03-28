@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Refactored location of "browser" tests. These are now located within the `tests/browser/*` directory.
 * Improved the "packages" introduction.
 * Reformatted the "how to install" section for `@aedart/vuepress-utils`.
 * Commit message for lerna "version" command.
