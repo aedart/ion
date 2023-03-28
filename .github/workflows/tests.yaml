@@ -1,0 +1,52 @@
+name: 'Tests'
+on:
+    push:
+    pull_request:
+    
+    # Schedule tests to run every day at 07:00 (if possible)
+    # Doing so should enable us to capture evt. changes in
+    # dependencies that are breaking...
+#    schedule:
+#        - cron: '0 7 * * *'
+
+jobs:
+    ion_tests:
+        name: "Ion (Node ${{ matrix.node }} on ${{ matrix.os }})"
+        runs-on: ${{ matrix.os }}
+        
+        strategy:
+            fail-fast: true
+            matrix:
+                os: [ 'ubuntu-22.04' ]
+                node: [ '18' ]
+        
+        steps:
+            
+            # ------------------------------------------------------------------------------------------------------- #
+            # Checkout code ...
+            # ------------------------------------------------------------------------------------------------------- #
+
+            - name: "Checkout"
+              uses: actions/checkout@v3
+
+            - name: "Install Chrome"
+            - uses: browser-actions/setup-chrome@v1
+              with:
+                  chrome-version: latest
+
+            - name: "Install Firefox"
+            - uses: browser-actions/setup-firefox@v1
+              with:
+                  firefox-version: latest
+    
+            - name: "Use Node ${{ matrix.node }}"
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node }}
+                  cache: npm
+    
+            - name: "Install dependencies"
+              run: npm install
+        
+            - name: "Test"
+              run: npm run test
