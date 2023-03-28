@@ -29,21 +29,33 @@ jobs:
             - name: "Checkout"
               uses: actions/checkout@v3
 
+            # ------------------------------------------------------------------------------------------------------- #
+            # Install Browsers
+            # ------------------------------------------------------------------------------------------------------- #
+
             - name: "Install Chrome"
-            - uses: browser-actions/setup-chrome@v1
+              uses: browser-actions/setup-chrome@v1
               with:
                   chrome-version: latest
 
             - name: "Install Firefox"
-            - uses: browser-actions/setup-firefox@v1
+              uses: browser-actions/setup-firefox@v1
               with:
                   firefox-version: latest
+            
+            # ------------------------------------------------------------------------------------------------------- #
+            # Install Node
+            # ------------------------------------------------------------------------------------------------------- #
     
             - name: "Use Node ${{ matrix.node }}"
               uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node }}
                   cache: npm
+            
+            # ------------------------------------------------------------------------------------------------------- #
+            # Run...
+            # ------------------------------------------------------------------------------------------------------- #
     
             - name: "Install dependencies"
               run: npm install
