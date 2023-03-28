@@ -14,7 +14,7 @@ Badges are used to indicate the environment a package is intended for, e.g. <Bad
 
 ## Available Since
 
-The "_available since x.y.z_" badge might also be displayed, if a package was released during a minor version. E.g. <Badge type="tip" text="Available since v1.5" vertical="middle" />.
+The "_available since x.y.z_" badge might also be displayed, if a package _or feature_ was released during a minor version. E.g. <Badge type="tip" text="Available since v1.5" vertical="middle" />.
 
 ## Not Released
 
