@@ -61,5 +61,6 @@
   "scripts": {
     "compile": "rollup -c && npx cpx \"src/**/*.vue\" dist",
     "watch": "rollup -c -w"
-  }
+  },
+  "gitHead": "1139c58ef97115299bfae6203fe97caa4b423a9a"
 }
