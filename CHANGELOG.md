@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Reformatted the "how to install" section for `@aedart/vuepress-utils`.
 * Commit message for lerna "version" command.
 
+### Fixed
+
+* Duplicate code in bundle output for submodules, when importing a function (_or anything for that matter_) from the "root" module of a package.
+
 ## [0.1.1] - 2023-03-25
 
 ### Fixed
