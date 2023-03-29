@@ -1,0 +1,7 @@
+{
+  "extends": "../../shared/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "declarationDir": "./dist/tmp"
+  }
+}
