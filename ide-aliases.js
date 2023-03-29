@@ -19,9 +19,10 @@ module.exports = {
         
         alias: {
             // vuepress-utils
+            '@aedart/vuepress-utils/components': path.resolve(__dirname, './packages/vuepress-utils/src/components'),
             '@aedart/vuepress-utils/contracts': path.resolve(__dirname, './packages/vuepress-utils/src/contracts'),
             '@aedart/vuepress-utils/navigation': path.resolve(__dirname, './packages/vuepress-utils/src/navigation'),
-            '@aedart/vuepress-utils/utils': path.resolve(__dirname, './packages/vuepress-utils/src/utils'),
+            '@aedart/vuepress-utils/plugins': path.resolve(__dirname, './packages/vuepress-utils/src/plugins'),
             '@aedart/vuepress-utils': path.resolve(__dirname, './packages/vuepress-utils/src'),
 
             // xyz
