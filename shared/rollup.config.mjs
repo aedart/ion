@@ -113,6 +113,15 @@ export function makeSubmodule(target, schema, formats = [ 'cjs', 'es' ], externa
     });
 
     // -------------------------------------------------------------------------------------- //
+    // Ensure that the "root" module is set to external, or we risk having duplicate code in
+    // the output. E.g. submodule imports a util from the package's "root" module, which is
+    // then simply copied into the output, rather than declared as an import.
+    
+    external = external.concat(
+        schema.name
+    );
+    
+    // -------------------------------------------------------------------------------------- //
     // Create main export config for submodules
     let main = makeMainExport(schema, external, output, overwrites);
     main.input = 'src/' + target + '/index.ts';
