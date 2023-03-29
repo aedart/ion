@@ -1,10 +1,13 @@
 {
   "name": "@aedart/contracts",
   "version": "0.2.0",
-  "description": "Ion Contracts package",
+  "description": "Types, interfaces and unique identifiers for Ion packages",
   "keywords": [
     "Ion",
-    "Contracts"
+    "Contracts",
+    "Interfaces",
+    "Types",
+    "Unique Identifiers"
   ],
   "author": "Alin Eugen Deac <aedart@gmail.com>",
   "license": "BSD-3-Clause",
