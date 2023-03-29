@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * `publish.sh` now runs lerna publish with `--force-publish` flag. 
+* Improved the "packages" introduction (_again_).
 
 ## [0.2.0] - 2023-03-29
 
