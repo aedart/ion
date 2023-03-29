@@ -1,10 +1,12 @@
 {
   "name": "@aedart/vuepress-utils",
   "version": "0.2.0",
-  "description": "Vuepress Utilities",
+  "description": "A few utilities for Vuepress.",
   "keywords": [
     "Vuepress",
-    "Utilities"
+    "Utilities",
+    "Archive",
+    "Navigation"
   ],
   "author": "Alin Eugen Deac <aedart@gmail.com>",
   "license": "BSD-3-Clause",
