@@ -1,0 +1,7 @@
+packages/*/dist/*
+packages/xyz/
+shared/*
+tests/*
+
+shim.d.ts
+ide-aliases.js
