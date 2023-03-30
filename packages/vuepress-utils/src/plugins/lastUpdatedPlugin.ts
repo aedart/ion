@@ -2,7 +2,6 @@ import type { Plugin, Page } from '@vuepress/core';
 import type {DateTimeJSOptions} from "luxon/src/datetime";
 import { getDirname, path } from "@vuepress/utils"
 
-// @ts-ignore
 const __dirname = getDirname(import.meta.url);
 
 /**
@@ -38,10 +37,10 @@ export const lastUpdatedPlugin = ({
     return {
         name: 'last-updated-plugin',
         
-        extendsPage: (page: Page) => {
-            // @ts-ignore
+        extendsPage: (page: Page ) => {
+            // @ts-expect-error: TS2339 because strange definition of PageData from vuepress
             page.data.lastUpdatedDateFormat = format;
-            // @ts-ignore
+            // @ts-expect-error: TS2339 because strange definition of PageData from vuepress
             page.data.lastUpdatedDateOptions = options;
         },
 

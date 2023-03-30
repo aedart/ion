@@ -12,8 +12,8 @@ import {computed, ComputedRef} from "vue";
  */
 export function isViewingNext(page: PageDataRef, archive: Archive): boolean
 {
-    let next = archive.nextFullPath;
-    let path = page.value.path;
+    const next = archive.nextFullPath;
+    const path = page.value.path;
 
     return path.startsWith(next);
 }

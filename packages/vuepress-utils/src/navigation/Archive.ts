@@ -327,7 +327,7 @@ export default class Archive implements ArchiveContract
      */
     protected makeNavbarItemChildren(): NavLink[]
     {
-        let output: NavLink[] = [];
+        const output: NavLink[] = [];
 
         this.collections.forEach((collection: PagesCollection) =>
         {

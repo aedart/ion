@@ -12,8 +12,8 @@ import {computed, ComputedRef} from "vue";
  */
 export function isViewingCurrent(page: PageDataRef, archive: Archive): boolean
 {
-    let current = archive.currentFullPath;
-    let path = page.value.path;
+    const current = archive.currentFullPath;
+    const path = page.value.path;
 
     return path.startsWith(current);
 }

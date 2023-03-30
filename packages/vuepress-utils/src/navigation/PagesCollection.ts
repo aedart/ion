@@ -197,7 +197,7 @@ export default class PagesCollection implements PagesCollectionContract
             return this.prefixWillFullPath(page);
         }
 
-        if (!page.hasOwnProperty('children') || (page as SidebarGroup).children.length === 0) {
+        if (!Reflect.has(page, 'children') || (page as SidebarGroup).children.length === 0) {
             return page;
         }
 
@@ -231,7 +231,7 @@ export default class PagesCollection implements PagesCollectionContract
      */
     protected prefixWithArchivePath(path: string): string
     {
-        let prefix: string = (this.archive !== null)
+        const prefix: string = (this.archive !== null)
             ? this.archive.path
             : '';
         

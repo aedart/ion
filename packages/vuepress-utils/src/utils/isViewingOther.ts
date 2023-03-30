@@ -15,7 +15,7 @@ import { isViewingCurrent } from "./isViewingCurrent";
  */
 export function isViewingOther(page: PageDataRef, archive: Archive, exclude: string[] = [ '/' ]): boolean
 {
-    let path = page.value.path;
+    const path = page.value.path;
 
     return !exclude.includes(path)
         && path !== archive.path + '/' 
