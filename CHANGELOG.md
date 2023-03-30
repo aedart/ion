@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Improved the "packages" introduction (_again_).
 * Improved description of `@aedart/vuepress-utils`.
 
+### Fixed
+
+* Various minor issues identified by eslint.
+
 ## [0.2.0] - 2023-03-29
 
 ### Added
