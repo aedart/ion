@@ -8,6 +8,7 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     root: true,
     rules: {
-        '@typescript-eslint/no-explicit-any': ["warn", { "ignoreRestArgs": true }]
+        '@typescript-eslint/no-explicit-any': ["warn", { "ignoreRestArgs": true }],
+        '@typescript-eslint/no-inferrable-types': 'off'
     }
 };
