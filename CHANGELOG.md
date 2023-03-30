@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * `@aedart/contracts` package, which is intended to define common types, interfaces and unique identifiers.
+* Enabled eslint for TypeScript, which is now also run during CI tests.
 
 ### Changed
 
