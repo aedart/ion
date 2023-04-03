@@ -12,3 +12,8 @@ export type AbstractConstructor<T> = abstract new (...args: any[]) => T;
  * Constructor or Abstract Constructor type
  */
 export type ConstructorOrAbstractConstructor<T> = Constructor<T> | AbstractConstructor<T>;
+
+/**
+ * Object property key
+ */
+export type PropertyKey = string | symbol;
