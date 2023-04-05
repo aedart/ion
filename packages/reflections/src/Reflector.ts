@@ -1,5 +1,5 @@
-import type { PropertyKey } from "@aedart/contracts";
-import { CONTRACTS } from "@aedart/contracts";
+// import type { PropertyKey } from "@aedart/contracts";
+// import { CONTRACTS } from "@aedart/contracts";
 import {
     hasIn,
     get
@@ -30,7 +30,7 @@ export default class Reflector
     {
         // TODO: Assert target is an object, but also not null!
         
-        console.log(CONTRACTS);
+        // console.log(CONTRACTS);
         
         return hasIn(target, propertyKey);
     }
@@ -46,7 +46,7 @@ export default class Reflector
      *
      * @throws {TypeError} If target is undefined, null, or not an object.
      */
-    static hasAll(target: object, properties: PropertyKey | PropertyKey[]): boolean
+    static hasAll(target: object, properties: string | number | symbol | (string | number | symbol)[]): boolean
     {
         if (!Array.isArray(properties)) {
             properties = [ properties ];
