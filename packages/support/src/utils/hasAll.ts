@@ -12,7 +12,8 @@ import type { PropertyPath } from 'lodash';
  * 
  * @returns {boolean}
  */
-export const hasAll: Function = <T>(object: T, paths: PropertyPath[]): boolean => {
+export function hasAll<T>(object: T, paths: PropertyPath[]): boolean
+{
     for (const path of paths) {
         if (!has(object, path)) {
             return false;

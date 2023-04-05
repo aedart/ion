@@ -1,4 +1,5 @@
-import { has as _has } from 'lodash-es';
+import {has as _has} from 'lodash-es';
+import type { PropertyPath } from 'lodash';
 
 /**
  * Determine if object has property
@@ -8,4 +9,4 @@ import { has as _has } from 'lodash-es';
  * 
  * @type {<T>(object: T, path: PropertyPath) => boolean}
  */
-export const has: Function = _has;
+export const has: <T>(object: T, path: PropertyPath ) => boolean = _has;
