@@ -1,1 +1,1 @@
-export { lastUpdatedPlugin } from './lastUpdatedPlugin';
+export * from './lastUpdatedPlugin';

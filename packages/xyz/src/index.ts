@@ -13,6 +13,6 @@ export type Something = string;
 export const Sweet: Something = 'Something';
 
 export {
-    Someone,
+    type Someone,
     Person as default
 }
