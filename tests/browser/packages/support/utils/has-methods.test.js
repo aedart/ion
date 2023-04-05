@@ -9,12 +9,23 @@ describe('@aedart/support', () => {
 
         it('can determine if single property exist', function () {
             
+            const symbolProp = Symbol('my-symbol');
             const target = {
                 a: 1234,
                 b: {
                     name: 'Sven',
                     c: {
                         age: 24
+                    }
+                },
+                d: [
+                    { name: 'Jane'},
+                    { name: 'Ashley'},
+                ],
+                [symbolProp]: true,
+                e: {
+                    nested: {
+                        [symbolProp]: 'foo',
                     }
                 }
             };
@@ -25,6 +36,11 @@ describe('@aedart/support', () => {
                 'b.name',
                 'b.c',
                 'b.c.age',
+                'd[0]',
+                'd[1].name',
+                symbolProp,
+                // [ 'e.nested', symbolProp ] // This does not work...
+                [ 'e', 'nested', symbolProp ] // This does ...
             ];
 
             const invalidPaths = [
@@ -33,15 +49,15 @@ describe('@aedart/support', () => {
                 'b.c.name',
             ];
             
-            validPaths.forEach((path) => {
+            validPaths.forEach((path, index) => {
                 expect(has(target, path))
-                    .withContext(`${path} does not exist in target`)
+                    .withContext(index + ` does not exist in target`)
                     .toBeTrue();
             });
 
-            invalidPaths.forEach((path) => {
+            invalidPaths.forEach((path, index) => {
                 expect(has(target, path))
-                    .withContext(`${path} SHOULD NOT exist in target`)
+                    .withContext(index + ` SHOULD NOT exist in target`)
                     .toBeFalse();
             });
         });
@@ -67,20 +83,29 @@ describe('@aedart/support', () => {
 
         it('can determine if has all properties', function () {
 
+            const symbolProp = Symbol('my-symbol');
             const target = {
                 a: 1234,
                 b: {
                     name: 'Sven',
                     c: {
-                        age: 24
+                        age: 24,
+                        [symbolProp]: true
                     }
-                }
+                },
+                d: [
+                    { name: 'Jane'},
+                    { name: 'Ashley'},
+                ],
             };
 
             const validPaths = [
                 'a',
                 'b.name',
                 'b.c.age',
+                ['b', 'c', symbolProp],
+                'd[0]',
+                'd[1].name',
             ];
 
             const invalidPaths = [
