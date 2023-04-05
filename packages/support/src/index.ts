@@ -1,8 +1,8 @@
 /*****************************************************************
- * Utility Methods
+ * Object util methods
  ****************************************************************/
 
-export * from './utils/get';
-export * from './utils/has';
-export * from './utils/hasAll';
-export * from './utils/hasAny';
+export * from './objects/get';
+export * from './objects/has';
+export * from './objects/hasAll';
+export * from './objects/hasAny';
