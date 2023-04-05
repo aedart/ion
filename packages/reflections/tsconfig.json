@@ -3,10 +3,12 @@
   "compilerOptions": {
     "rootDir": "./src",
     "declarationDir": "./dist/tmp",
-    "composite": true
+    "composite": true,
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
   ],
-  "references": []
+  "references": [
+    { "path": "../contracts", "prepend": false }
+  ]
 }

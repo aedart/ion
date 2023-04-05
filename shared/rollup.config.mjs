@@ -339,6 +339,13 @@ export function typescriptPlugin(options = {})
     // @see https://github.com/ezolenko/rollup-plugin-typescript2
     let typeScriptOptions = Object.assign({
 
+        // TODO: This is really ugly... We disable the "diagnostic checks" entirely, because
+        // TODO: something prevents project "references" from working as intended. Whenever
+        // TODO: dependent on other packages (in this mono-repo), TS6059 (file not under rootDir)
+        // TODO: error is thrown, despite having followed the prescribed approach to working with
+        // TODO: "references" list, "composite": true compiler option. 
+        check: false,
+        
         // Set to true to disable the cache and do a clean build.
         // This also wipes any existing cache.
         clean: true,

@@ -9,7 +9,7 @@ import PagesCollection from "./PagesCollection.js";
 const VUEPRESS_UTILS_CONTRACTS: unique symbol = Symbol('@aedart/vuepress-utils/contracts');
 
 export {
-    Archive,
-    PagesCollection,
+    type Archive,
+    type PagesCollection,
     VUEPRESS_UTILS_CONTRACTS
 };

@@ -1,0 +1,45 @@
+{
+  "name": "@aedart/reflections",
+  "version": "0.2.0",
+  "description": "Reflections",
+  "keywords": [
+    "Reflect",
+    "Reflections"
+  ],
+  "author": "Alin Eugen Deac <aedart@gmail.com>",
+  "license": "BSD-3-Clause",
+  "homepage": "https://aedart.github.io/ion/",
+  "bugs": {
+    "url": "https://github.com/aedart/ion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aedart/ion.git",
+    "directory": "packages/reflections"
+  },
+  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types/reflections.d.ts",
+      "import": "./dist/esm/reflections.js",
+      "require": "./dist/cjs/reflections.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map"
+  ],
+  "peerDependencies": {
+    "@aedart/contracts": "*",
+    "lodash-es": "^4.17.21",
+    "@types/lodash-es": "^4.17.7"
+  },
+  "scripts": {
+    "compile": "rollup -c",
+    "watch": "rollup -c -w"
+  }
+}
