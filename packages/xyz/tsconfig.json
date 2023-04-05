@@ -3,5 +3,8 @@
   "compilerOptions": {
     "rootDir": "./src",
     "declarationDir": "./dist/tmp"
-  }
+  },
+  "include": [
+    "./src/*"
+  ]
 }
