@@ -16,7 +16,6 @@ export function isset<T>(object: T, ...paths: (PropertyPath)[]): boolean
 {
     for (const path of paths) {
         const value = get(object, path);
-        
         if (value === undefined || value === null) {
             return false;
         }
