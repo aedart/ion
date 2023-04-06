@@ -2,9 +2,9 @@ import {
     set,
     has,
     get
-} from '@aedart/support';
+} from '@aedart/support/objects';
 
-describe('@aedart/support', () => {
+describe('@aedart/support/objects', () => {
     describe('set', () => {
 
         it('can set property', function () {

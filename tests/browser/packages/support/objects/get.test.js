@@ -1,8 +1,8 @@
 import {
     get
-} from '@aedart/support';
+} from '@aedart/support/objects';
 
-describe('@aedart/support', () => {
+describe('@aedart/support/objects', () => {
     describe('get', () => {
 
         it('can get property', function () {

@@ -2,9 +2,9 @@ import {
     has,
     hasAll,
     hasAny
-} from '@aedart/support';
+} from '@aedart/support/objects';
 
-describe('@aedart/support', () => {
+describe('@aedart/support/objects', () => {
     describe('has', () => {
 
         it('can determine if single property exist', function () {

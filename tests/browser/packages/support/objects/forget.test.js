@@ -2,9 +2,9 @@ import {
     forget,
     forgetAll,
     has,
-} from '@aedart/support';
+} from '@aedart/support/objects';
 
-describe('@aedart/support', () => {
+describe('@aedart/support/objects', () => {
     describe('forget', () => {
 
         it('can "forget" property', function () {
