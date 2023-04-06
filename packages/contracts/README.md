@@ -1,6 +1,6 @@
 # Contracts
 
-TODO: ...
+The contracts package contains types, interfaces and unique identifiers.
 
 # Official Documentation
 
