@@ -1,50 +1,50 @@
 {
-    "name": "@aedart/support",
-    "version": "0.2.0",
-    "description": "The Ion support package",
-    "keywords": [
-        "Support",
-        "Utilities"
-    ],
-    "author": "Alin Eugen Deac <aedart@gmail.com>",
-    "license": "BSD-3-Clause",
-    "homepage": "https://aedart.github.io/ion/",
-    "bugs": {
-        "url": "https://github.com/aedart/ion/issues"
+  "name": "@aedart/support",
+  "version": "0.3.0",
+  "description": "The Ion support package",
+  "keywords": [
+    "Support",
+    "Utilities"
+  ],
+  "author": "Alin Eugen Deac <aedart@gmail.com>",
+  "license": "BSD-3-Clause",
+  "homepage": "https://aedart.github.io/ion/",
+  "bugs": {
+    "url": "https://github.com/aedart/ion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aedart/ion.git",
+    "directory": "packages/support"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types/support.d.ts",
+      "import": "./dist/esm/support.js",
+      "require": "./dist/cjs/support.cjs"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/aedart/ion.git",
-        "directory": "packages/support"
-    },
-    "private": false,
-    "publishConfig": {
-        "access": "public"
-    },
-    "type": "module",
-    "exports": {
-        ".": {
-            "types": "./dist/types/support.d.ts",
-            "import": "./dist/esm/support.js",
-            "require": "./dist/cjs/support.cjs"
-        },
-        "./objects": {
-            "types": "./dist/types/objects.d.ts",
-            "import": "./dist/esm/objects.js",
-            "require": "./dist/cjs/objects.cjs"
-        }
-    },
-    "files": [
-        "dist",
-        "!dist/**/*.map"
-    ],
-    "peerDependencies": {
-        "@aedart/contracts": "*",
-        "lodash-es": "^4.17.21",
-        "@types/lodash-es": "^4.17.7"
-    },
-    "scripts": {
-        "compile": "rollup -c",
-        "watch": "rollup -c -w"
+    "./objects": {
+      "types": "./dist/types/objects.d.ts",
+      "import": "./dist/esm/objects.js",
+      "require": "./dist/cjs/objects.cjs"
     }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map"
+  ],
+  "peerDependencies": {
+    "@aedart/contracts": "*",
+    "@types/lodash-es": "^4.17.7",
+    "lodash-es": "^4.17.21"
+  },
+  "scripts": {
+    "compile": "rollup -c",
+    "watch": "rollup -c -w"
+  }
 }

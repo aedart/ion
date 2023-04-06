@@ -1,6 +1,6 @@
 {
   "name": "@aedart/contracts",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The Ion contracts package. Contains types, interfaces and unique identifiers",
   "keywords": [
     "Ion",
@@ -36,9 +36,6 @@
     "dist",
     "!dist/**/*.map"
   ],
-  "peerDependencies": {
-
-  },
   "scripts": {
     "compile": "rollup -c",
     "watch": "rollup -c -w"
