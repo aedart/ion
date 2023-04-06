@@ -27,6 +27,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                 collapsible: true,
                 children: [
                     'packages/contracts/',
+                    'packages/contracts/install',
                 ]
             },
             {
