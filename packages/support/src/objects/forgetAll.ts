@@ -1,5 +1,5 @@
 import {forget} from "./forget";
-import {PropertyPath} from "lodash";
+import type {PropertyPath} from "lodash";
 
 /**
  * Remove all values in object that match given paths
