@@ -4,4 +4,4 @@ shared/*
 tests/*
 
 shim.d.ts
-ide-aliases.js
+aliases.js

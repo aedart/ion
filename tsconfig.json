@@ -43,6 +43,9 @@
       "@aedart/reflections/*": [
         "./packages/reflections/src/*"
       ],
+      "@aedart/support/*": [
+        "./packages/support/src/*"
+      ],
       "@aedart/vuepress-utils/*": [
         "./packages/vuepress-utils/src/*"
       ],
@@ -139,6 +142,7 @@
   "references": [
     { "path": "./packages/contracts" },
     { "path": "./packages/reflections" },
+    { "path": "./packages/support" },
     { "path": "./packages/vuepress-utils" },
     { "path": "./packages/xyz" },
   ]

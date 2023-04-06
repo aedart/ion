@@ -1,8 +1,6 @@
-// import type { PropertyKey } from "@aedart/contracts";
-// import { CONTRACTS } from "@aedart/contracts";
 import {
     hasIn,
-    get
+    // get
 } from "lodash-es";
 
 /**
@@ -28,10 +26,6 @@ export default class Reflector
      */
     static has(target: object, propertyKey: string | number | symbol): boolean
     {
-        // TODO: Assert target is an object, but also not null!
-        
-        // console.log(CONTRACTS);
-        
         return hasIn(target, propertyKey);
     }
     
@@ -101,10 +95,10 @@ export default class Reflector
      *
      * @throws {TypeError} If target is undefined, null, or not an object.
      */
-    static get<T = any>(target: object, propertyKey: string | number | symbol, defaultValue: any = undefined): T
-    {
-        // TODO: Assert target is an object, but also not null!
-        
-        return get(target, propertyKey, defaultValue);
-    }
+    // static get<T = any>(target: object, propertyKey: string | number | symbol, defaultValue: any = undefined): T
+    // {
+    //     // TODO: Assert target is an object, but also not null!
+    //    
+    //     return get(target, propertyKey, defaultValue);
+    // }
 }

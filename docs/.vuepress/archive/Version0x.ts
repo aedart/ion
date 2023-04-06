@@ -22,7 +22,15 @@ export default PagesCollection.make('v0.x', '/v0x', [
         collapsible: true,
         children: [
             'packages/',
-
+            {
+                text: 'Support',
+                collapsible: true,
+                children: [
+                    'packages/support/',
+                    'packages/support/install',
+                    'packages/support/objects',
+                ]
+            },
             {
                 text: 'Vuepress Utils',
                 collapsible: true,
