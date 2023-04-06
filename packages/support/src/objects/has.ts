@@ -1,11 +1,12 @@
-import {has as _has} from 'lodash-es';
+import {hasIn as _hasIn} from 'lodash-es';
 
 /**
- * Determine if object has property
- * (Alias for Lodash' {@link import('lodash').has has}) method
+ * Determine if path is a property of given object
+ * 
+ * (Alias for Lodash' {@link import('lodash').hasIn hasIn}) method
  *
  * @typedef {import('lodash').PropertyPath} PropertyPath
  * 
  * @type {<T>(object: T, path: PropertyPath) => boolean}
  */
-export const has = _has;
+export const has = _hasIn;
