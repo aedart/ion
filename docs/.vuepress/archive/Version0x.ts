@@ -23,6 +23,13 @@ export default PagesCollection.make('v0.x', '/v0x', [
         children: [
             'packages/',
             {
+                text: 'Contracts',
+                collapsible: true,
+                children: [
+                    'packages/contracts/',
+                ]
+            },
+            {
                 text: 'Support',
                 collapsible: true,
                 children: [
