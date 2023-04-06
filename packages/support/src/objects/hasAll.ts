@@ -2,7 +2,7 @@ import { has } from './has';
 import type { PropertyPath } from 'lodash';
 
 /**
- * Determine if object has all properties
+ * Determine if all paths are properties of given object
  * 
  * @typedef {import('lodash').PropertyPath} PropertyPath
  * @template T
