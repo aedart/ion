@@ -4,4 +4,5 @@ export * from './get';
 export * from './has';
 export * from './hasAll';
 export * from './hasAny';
+export * from './isset';
 export * from './set';
