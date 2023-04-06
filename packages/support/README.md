@@ -1,6 +1,6 @@
 # Support
 
-TODO ...
+The support package offers various utilities.
 
 # Official Documentation
 

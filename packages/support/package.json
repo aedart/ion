@@ -1,10 +1,10 @@
 {
     "name": "@aedart/support",
     "version": "0.2.0",
-    "description": "Support",
+    "description": "The Ion support package",
     "keywords": [
         "Support",
-        "Utils"
+        "Utilities"
     ],
     "author": "Alin Eugen Deac <aedart@gmail.com>",
     "license": "BSD-3-Clause",
