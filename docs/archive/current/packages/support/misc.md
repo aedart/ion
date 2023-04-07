@@ -6,7 +6,7 @@ sidebarDepth: 0
 
 # Misc. <Badge type="tip" text="Available since v0.4" vertical="middle" />
 
-`@aedart/support/misc` offers miscellaneous utility methods. 
+`@aedart/support/misc` offers miscellaneous utility methods.
 
 [[TOC]]
 

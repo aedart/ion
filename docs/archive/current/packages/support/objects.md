@@ -12,7 +12,7 @@ The `@aedart/support/objects` submodule offers object related utilities.
 
 ## `forget`
 
-Remove (_delete_) a value in object at given path. 
+Remove (_delete_) a value in object at given path.
 _Method is an alias for [Lodash `unset`](https://lodash.com/docs/4.17.15#unset)._
 
 ```js
@@ -76,7 +76,7 @@ let age = get(target, 'b.c.age');
 console.log(age); // 24
 ```
 
-You can also specify a default value to be returned, if the resolved value is `undefined`. 
+You can also specify a default value to be returned, if the resolved value is `undefined`.
 
 ```js
 const target = {

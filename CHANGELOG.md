@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Documentation code examples (_examples where marked to be TypeScript, but are written as plain JavaScript_).
+* Navigation sidebar closes unexpectedly for support "objects" submodule, in documentation site. 
 
 ## [0.3.1] - 2023-04-07
 
