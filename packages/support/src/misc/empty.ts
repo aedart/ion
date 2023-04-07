@@ -3,11 +3,11 @@ import { isArguments } from "lodash-es";
 /**
  * Determine if value is empty
  * 
- * @param {*} value
+ * @param {boolean | string | number | object | any[] | null | undefined} value
  * 
  * @returns {boolean}
  */
-export function empty(value: any): boolean
+export function empty(value: undefined | null | boolean | string | number | object| any[]): boolean
 {
     if (value === undefined || value === null) {
         return true;
