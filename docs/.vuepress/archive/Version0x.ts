@@ -37,6 +37,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                     'packages/support/',
                     'packages/support/install',
                     'packages/support/objects',
+                    'packages/support/misc',
                 ]
             },
             {
