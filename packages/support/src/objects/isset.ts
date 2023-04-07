@@ -1,3 +1,4 @@
+import { isset as _isset } from "@aedart/support/misc";
 import {get} from "./get";
 import type {PropertyPath} from "lodash";
 
@@ -14,13 +15,12 @@ import type {PropertyPath} from "lodash";
  */
 export function isset<T>(object: T, ...paths: (PropertyPath)[]): boolean
 {
-    if (object === undefined || paths === undefined || paths.length === 0) {
+    if (object === undefined || paths.length === 0) {
         return false;
     }
 
     for (const path of paths) {
-        const value = get(object, path);
-        if (value === undefined || value === null) {
+        if (!_isset(get(object, path))) {
             return false;
         }
     }
