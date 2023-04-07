@@ -3,11 +3,13 @@ import { isArguments } from "lodash-es";
 /**
  * Determine if value is empty
  * 
- * @param {boolean | string | number | object | any[] | null | undefined} value
+ * @param {any} value
  * 
  * @returns {boolean}
  */
-export function empty(value: undefined | null | boolean | string | number | object| any[]): boolean
+export function empty(
+    value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+): boolean
 {
     if (value === undefined || value === null) {
         return true;
