@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2023-04-07
+
 ### Fixed
 
 * Object `isset()` method returns `true` when object argument is undefined, and when no paths argument given.
@@ -74,7 +76,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.3.1...HEAD
+[0.3.1]: https://github.com/aedart/ion/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/aedart/ion/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/aedart/ion/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/aedart/ion/compare/0.1.0...0.1.1
