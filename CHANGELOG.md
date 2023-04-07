@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+* Object `isset()` method returns `true` when object argument is undefined, and when no paths argument given.
+
 ## [0.3.0] - 2023-04-06
 
 ### Added

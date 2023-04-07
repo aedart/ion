@@ -4,6 +4,19 @@ import {
 
 describe('@aedart/support/objects', () => {
     describe('isset', () => {
+
+        it('returns false when no object', () => {
+            
+            expect(isset(undefined))
+                .toBeFalse();
+        });
+        
+        it('returns false when no paths given', () => {
+            const target = { name: 'Ulla' };
+            
+            expect(isset(target))
+                .toBeFalse();
+        });
         
         it('can determine if single property isset', function () {
             
@@ -36,6 +49,10 @@ describe('@aedart/support/objects', () => {
             expect(isset(target, 'b.c.name'))
                 .withContext('b.c.age should NOT be set')
                 .toBeFalse();
+            
+            expect(isset(target, [ undefined ]))
+                .withContext('[ undefined ] should NOT be set')
+                .toBeFalse()
         });
 
         it('can determine if multiple properties are set', function () {
