@@ -15,7 +15,7 @@ The `@aedart/support/objects` submodule offers object related utilities.
 Remove (_delete_) a value in object at given path. 
 _Method is an alias for [Lodash `unset`](https://lodash.com/docs/4.17.15#unset)._
 
-```ts
+```js
 import {forget} from "@aedart/support/objects";
 
 const target = {
@@ -36,7 +36,7 @@ console.log(target); // { a: 1234, b: {} }
 
 Remove (_deletes_) all values in object, at given paths.
 
-```ts
+```js
 import {forgetAll} from "@aedart/support/objects";
 
 const target = {
@@ -60,7 +60,7 @@ _Method is an alias for [Lodash `get`](https://lodash.com/docs/4.17.15#get)._
 
 _See also [`set()`](#set)._
 
-```ts
+```js
 import {get} from "@aedart/support/objects";
 
 const target = {
@@ -78,7 +78,7 @@ console.log(age); // 24
 
 You can also specify a default value to be returned, if the resolved value is `undefined`. 
 
-```ts
+```js
 const target = {
     a: 1234,
     b: {
@@ -100,7 +100,7 @@ _Method is an alias for [Lodash `hasIn`](https://lodash.com/docs/4.17.15#hasIn).
 
 _See also [`isset()`](#isset)._
 
-```ts
+```js
 import {has} from "@aedart/support/objects";
 
 const target = {
@@ -122,7 +122,7 @@ Determine if all paths are properties of given object.
 
 _See also [`isset()`](#isset)._
 
-```ts
+```js
 import {hasAll} from "@aedart/support/objects";
 
 const mySymbol = Symbol('my-symbol');
@@ -158,7 +158,7 @@ console.log(result); // true
 
 Determine if any paths are properties of given object.
 
-```ts
+```js
 import {hasAny} from "@aedart/support/objects";
 
 const target = {
@@ -186,7 +186,7 @@ console.log(result); // true
 Determine if paths are properties of given object and have values.
 This method differs from [`has()`](#has), in that it only returns true if properties' values are not `undefined` and not `null`.
 
-```ts
+```js
 import {isset} from "@aedart/support/objects";
 
 const target = {
@@ -208,7 +208,7 @@ console.log(isset(target, 'b.c.age')); // false
 
 You can also check if multiple paths are set.
 
-```ts
+```js
 console.log(isset(target, 'a', 'b')); // true
 console.log(isset(target, 'b.c', 'b.name')); // false
 console.log(isset(target, 'a', 'b.name', 'b.c.age')); // false
@@ -219,7 +219,7 @@ console.log(isset(target, 'a', 'b.name', 'b.c.age')); // false
 Set a value in object at given path.
 _Method is an alias for [Lodash `set`](https://lodash.com/docs/4.17.15#set)._
 
-```ts
+```js
 import {set} from "@aedart/support/objects";
 
 const target = {};

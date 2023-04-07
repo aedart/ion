@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Object `isset()` now uses the `isset()` from `@aedart/support/misc`.
 
+### Fixed
+
+* Documentation code examples (_examples where marked to be TypeScript, but are written as plain JavaScript_).
+
 ## [0.3.1] - 2023-04-07
 
 ### Fixed
