@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* `@aedart/support/misc` submodule
+
+### Changed
+
+* Object `isset()` now uses the `isset()` from the `/misc` submodule.
+
 ## [0.3.1] - 2023-04-07
 
 ### Fixed
