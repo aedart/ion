@@ -56,6 +56,27 @@ empty(typedArr); // false
 `empty()` is not able to determine if a [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) or [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) is empty.
 :::
 
+## `getTag`
+
+Return the default string description of an object.
+
+```js
+import {getTag} from '@aedart/support/misc';
+
+getTag('foo'); // [object String]
+getTag(3); // [object Number]
+getTag([1, 2, 3]); // [object Array]
+getTag(true); // [object Boolean]
+// ... etc
+```
+
+The method is a shorthand for the following:
+
+```js
+Object.prototype.toString.call(/* your value */);
+```
+
+See [Mozilla's documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) for additional information.
 
 ## `isset`
 
