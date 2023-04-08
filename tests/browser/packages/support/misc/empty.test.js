@@ -49,7 +49,9 @@ describe('@aedart/support/misc', () => {
                 (new Set()).add('a'),
                 (new Map).set('foo', 'bar'),
                 typedArr,
-                new Date()
+                new Date(),
+                function() {},
+                Symbol('symbol')
             ];
 
             for (const [index, value] of values.entries()) {
