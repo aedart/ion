@@ -23,6 +23,7 @@ empty(''); // true
 empty(false); // true
 empty(0); // true
 empty(0n); // true
+empty(NaN); // true
 empty(null); // true
 empty(undefined); // true
 empty([]); // true
@@ -37,6 +38,7 @@ empty(true); // false
 empty(1); // false
 empty(1n); // false
 empty(-1); // false
+empty(Infinity); // false
 empty([ 1 ]); // false
 empty({ name: 'Jimmy' }); // false
 empty((new Set()).add('a')); // false
