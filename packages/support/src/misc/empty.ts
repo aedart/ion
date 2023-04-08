@@ -1,4 +1,4 @@
-import { isArguments } from "lodash-es";
+import { getTag } from "./getTag";
 
 /**
  * Determine if value is empty
@@ -31,8 +31,8 @@ export function empty(
         },
         'object': function(value: object): boolean {
             // Array or array like
-            if (Array.isArray(value) || ArrayBuffer.isView(value) || isArguments(value)) {
-                return 'length' in value && value.length === 0
+            if (Array.isArray(value) || ArrayBuffer.isView(value) || getTag(value) === '[object Arguments]') {
+                return 'length' in value && value.length === 0;
             }
 
             // Map / Set
