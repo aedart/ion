@@ -7,11 +7,12 @@ describe('@aedart/support/misc', () => {
 
         it('can determine if value is empty', () => {
             
-            const emptyValues = [
+            const values = [
                 '',
                 false,
                 0,
                 0.0,
+                0n,
                 null,
                 undefined,
                 [],
@@ -23,41 +24,43 @@ describe('@aedart/support/misc', () => {
                 // new WeakSet(), // Has no way to determine size
             ];
 
-            emptyValues.forEach((value, index) => {
-                // Debug
-                // console.log('empty', value, isEmpty(value));
-                
+            for (const [index, value] of values.entries()) {
+                //console.log(index, value);
+
                 expect(empty(value))
                     .withContext(`Value at index ${index} should be empty`)
                     .toBeTrue();
-            });
-            
+            }
+        });
+
+        it('can determine if value is not empty', () => {
             const typedArr = new Int8Array(1);
             typedArr[0] = 1;
-            // console.log('Typed arr', typedArr, typedArr.length);
-            const nonEmptyValues = [
+            
+            const values = [
                 ' ',
                 'a',
                 true,
                 1,
-                -1
+                1n,
                 [ 1 ],
+                -1,
                 { name: 'Jimmy' },
                 (new Set()).add('a'),
                 (new Map).set('foo', 'bar'),
                 typedArr,
+                new Date()
             ];
-            
-            nonEmptyValues.forEach((value, index) => {
-                // Debug
-                // console.log('empty', value, isEmpty(value));
-                
+
+            for (const [index, value] of values.entries()) {
+                //console.log(index, value);
+
                 expect(empty(value))
                     .withContext(`Value at index ${index} SHOULD NOT be empty`)
                     .toBeFalse();
-            });
+            }
         });
-
+        
         it('can determine if "Arguments" is empty', () => {
             
             const fn = function() {

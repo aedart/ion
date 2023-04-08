@@ -15,34 +15,39 @@ export function empty(
         return true;
     }
     
-    if (value === false) {
-        return true;
-    }
-    
-    if (typeof value === 'string' && value.length === 0) {
-        return true;
-    }
-    
-    if (typeof value === 'number' && value === 0) {
-        return true;
+    const type: string = typeof value;
+    const conditions: object = {
+        'boolean': function(value: boolean): boolean {
+            return !value;
+        },
+        'string': function(value: string): boolean {
+            return value.length === 0;
+        },
+        'number': function(value: number): boolean {
+            return value === 0 || isNaN(value);
+        },
+        'bigint': function(value: BigInt): boolean {
+            return value === 0n;
+        },
+        'object': function(value: object): boolean {
+            // Array or array like
+            if (Array.isArray(value) || ArrayBuffer.isView(value) || isArguments(value)) {
+                return 'length' in value && value.length === 0
+            }
+
+            // Map / Set
+            if (value instanceof Map || value instanceof Set) {
+                return value.size === 0
+            }
+
+            // Native object
+            return value.constructor === Object && Object.keys(value).length === 0;
+        }
+    };
+
+    const check: Function = Reflect.get(conditions, type) ?? function(): boolean {
+        return false;
     }
 
-    if ((Array.isArray(value) || ArrayBuffer.isView(value) || isArguments(value))
-        && 'length' in value
-        && value.length === 0
-    ) {
-        return true;
-    }
-
-    if ((value instanceof Map || value instanceof Set)
-        && value.size === 0
-    ) {
-        return true;
-    }
-    
-    if (typeof value === 'object' && value.constructor === Object && Object.keys(value).length === 0) {
-        return true;
-    }
-
-    return false;
+    return check(value);
 }
