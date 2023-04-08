@@ -26,7 +26,7 @@ export function empty(
         'number': function(value: number): boolean {
             return value === 0 || isNaN(value);
         },
-        'bigint': function(value: BigInt): boolean {
+        'bigint': function(value: bigint): boolean {
             return value === 0n;
         },
         'object': function(value: object): boolean {
@@ -45,7 +45,7 @@ export function empty(
         }
     };
 
-    const check: Function = Reflect.get(conditions, type) ?? function(): boolean {
+    const check = Reflect.get(conditions, type) ?? function(): boolean {
         return false;
     }
 
