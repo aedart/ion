@@ -9,7 +9,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
         collapsible: true,
         children: [
             '',
-            // 'upgrade-guide',
+            'upgrade-guide',
             // 'new',
             'contribution-guide',
             'security',
