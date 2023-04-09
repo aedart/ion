@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2023-04-09
+
 ### Changed
 
 * Set ["sideEffects"](https://webpack.js.org/guides/tree-shaking/) property to `false`, in `package.json` files (_all packages except `@aedart/vuepress-utils`_). 
+* Adapted `lerna-json` for use with [Lerna-lite](https://github.com/lerna-lite/lerna-lite).
+
+### Fixed
+
+* `@aedart/contracts` dependency not specified in published `@aedart/support` package (_peer dependencies bump not supported by lerna_).
+This has been fixed by migrating to [Lerna-lite](https://github.com/lerna-lite/lerna-lite) and explicit use of [`--allow-peer-dependencies-update` option](https://github.com/lerna-lite/lerna-lite/tree/main/packages/version#--allow-peer-dependencies-update) for
+the version command (_configured in root `lerna.json`_).
 
 ## [0.4.0] - 2023-04-09
 
@@ -103,7 +112,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.4.0...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.5.0...HEAD
+[0.5.0]: https://github.com/aedart/ion/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/aedart/ion/compare/0.3.1...0.4.0
 [0.3.1]: https://github.com/aedart/ion/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/aedart/ion/compare/0.2.0...0.3.0
