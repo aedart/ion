@@ -121,6 +121,14 @@ describe('@aedart/support/objects', () => {
                 .withContext('should NOT contain all paths')
                 .toBeFalse();
         });
+
+        it('returns false, when no paths given', () => {
+            
+            const target = { name: 'Erica' };
+            
+            expect(hasAll(target))
+                .toBeFalse();
+        });
     });
 
     describe('hasAny', () => {

@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* `hasAll()` returns true when no paths given, in `@aedart/support/objects` submodule.
 * Documentation code examples (_examples where marked to be TypeScript, but are written as plain JavaScript_).
 * Navigation sidebar closes unexpectedly for support "objects" submodule, in documentation site.
 * Unable to "build" packages when interdependent on other packages, due to applied settings in rollup typescript plugin. 

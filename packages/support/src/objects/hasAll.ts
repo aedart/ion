@@ -14,6 +14,10 @@ import type { PropertyPath } from 'lodash';
  */
 export function hasAll<T>(object: T, ...paths: (PropertyPath)[]): boolean
 {
+    if (object === undefined || paths.length === 0) {
+        return false;
+    }
+
     for (const path of paths) {
         if (!has(object, path)) {
             return false;
