@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Removed `"gitHead"` from all `package.json` files (_should not had been committed in the first place_).
+* Removed `"gitHead"` from all `package.json` files (_should not have been committed in the first place_).
 
 ## [0.5.0] - 2023-04-09
 
