@@ -10,4 +10,4 @@ npm run build
 # npm run test
 
 # Finally, publish using lerna. Follow onscreen instructions
-npx lerna publish --force-publish --no-private --tag-version-prefix='' --no-git-reset
+npx lerna publish --force-publish

@@ -6,6 +6,7 @@
     "packages": [
         "packages/*"
     ],
+    "tagVersionPrefix": "",
     "command": {
         "version": {
             "allowBranch": ["main", "replace-lerna"],
@@ -15,7 +16,8 @@
         },
         "publish": {
             "message": "Publish %v",
-            "graphType": "all"
+            "graphType": "all",
+            "noGitReset": true
         },
         "create": {
             "homepage": "https://github.com/aedart/ion",
