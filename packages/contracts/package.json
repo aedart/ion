@@ -1,44 +1,45 @@
 {
-  "name": "@aedart/contracts",
-  "version": "0.4.0",
-  "description": "The Ion contracts package. Contains types, interfaces and unique identifiers",
-  "keywords": [
-    "Ion",
-    "Contracts",
-    "Interfaces",
-    "Types",
-    "Unique Identifiers"
-  ],
-  "author": "Alin Eugen Deac <aedart@gmail.com>",
-  "license": "BSD-3-Clause",
-  "homepage": "https://aedart.github.io/ion/",
-  "bugs": {
-    "url": "https://github.com/aedart/ion/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aedart/ion.git",
-    "directory": "packages/contracts"
-  },
-  "private": false,
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/types/contracts.d.ts",
-      "import": "./dist/esm/contracts.js",
-      "require": "./dist/cjs/contracts.cjs"
-    }
-  },
-  "files": [
-    "dist",
-    "!dist/**/*.map"
-  ],
-  "scripts": {
-    "compile": "rollup -c",
-    "watch": "rollup -c -w"
-  },
-  "gitHead": "cf9efaccc2c1fe1473664aa8b11bf83b37e50547"
+    "name": "@aedart/contracts",
+    "version": "0.4.0",
+    "description": "The Ion contracts package. Contains types, interfaces and unique identifiers",
+    "keywords": [
+        "Ion",
+        "Contracts",
+        "Interfaces",
+        "Types",
+        "Unique Identifiers"
+    ],
+    "author": "Alin Eugen Deac <aedart@gmail.com>",
+    "license": "BSD-3-Clause",
+    "homepage": "https://aedart.github.io/ion/",
+    "bugs": {
+        "url": "https://github.com/aedart/ion/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aedart/ion.git",
+        "directory": "packages/contracts"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./dist/types/contracts.d.ts",
+            "import": "./dist/esm/contracts.js",
+            "require": "./dist/cjs/contracts.cjs"
+        }
+    },
+    "files": [
+        "dist",
+        "!dist/**/*.map"
+    ],
+    "scripts": {
+        "compile": "rollup -c",
+        "watch": "rollup -c -w"
+    },
+    "sideEffects": false,
+    "gitHead": "cf9efaccc2c1fe1473664aa8b11bf83b37e50547"
 }

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+* Set ["sideEffects": false](https://webpack.js.org/guides/tree-shaking/) property in `package.json` for most packages. 
+
 ## [0.4.0] - 2023-04-09
 
 ### Added
