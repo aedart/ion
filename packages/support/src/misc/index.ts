@@ -1,3 +1,3 @@
 export * from './empty';
 export * from './isset';
-export * from './getTag';
+export * from './descTag';

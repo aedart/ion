@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* `@aedart/support/misc` submodule.
+* `@aedart/support/misc` submodule, which contains `descTag()`, `empty()` and `isset()` methods.
 
 ### Changed
 

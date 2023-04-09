@@ -8,7 +8,7 @@
  * 
  * @returns {string}
  */
-export function getTag(
+export function descTag(
     value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 ): string
 {

@@ -1,9 +1,9 @@
 import {
-    getTag
+    descTag
 } from '@aedart/support/misc';
 
 describe('@aedart/support/misc', () => {
-    describe('getTag', () => {
+    describe('descTag', () => {
         
         it('can return default string description', () => {
             
@@ -27,7 +27,7 @@ describe('@aedart/support/misc', () => {
             ];
             
             for (const entry of values) {
-                let result = getTag(entry.value); 
+                let result = descTag(entry.value); 
                 // console.log(result);
                 
                 expect(result)
@@ -36,7 +36,7 @@ describe('@aedart/support/misc', () => {
         });
 
         it('returns object undefined when no arguments given', () => {
-            expect(getTag())
+            expect(descTag())
                 .toBe('[object Undefined]');
         });
     });

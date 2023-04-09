@@ -1,4 +1,4 @@
-import { getTag } from "./getTag";
+import { descTag } from "./descTag";
 
 /**
  * Determine if value is empty
@@ -31,7 +31,7 @@ export function empty(
         },
         'object': function(value: object): boolean {
             // Array or array like
-            if (Array.isArray(value) || ArrayBuffer.isView(value) || getTag(value) === '[object Arguments]') {
+            if (Array.isArray(value) || ArrayBuffer.isView(value) || descTag(value) === '[object Arguments]') {
                 return 'length' in value && value.length === 0;
             }
 
