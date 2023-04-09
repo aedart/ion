@@ -113,11 +113,11 @@ describe('@aedart/support/objects', () => {
                 'b.c.name' // does not exist
             ];
 
-            expect(hasAll(target, validPaths))
+            expect(hasAll(target, ...validPaths))
                 .withContext('should contain all valid paths')
                 .toBeTrue()
 
-            expect(hasAll(target, invalidPaths))
+            expect(hasAll(target, ...invalidPaths))
                 .withContext('should NOT contain all paths')
                 .toBeFalse();
         });
@@ -148,11 +148,11 @@ describe('@aedart/support/objects', () => {
                 'z', // does not exist
             ];
 
-            expect(hasAny(target, validPaths))
+            expect(hasAny(target, ...validPaths))
                 .withContext('should contain some of the valid paths')
                 .toBeTrue()
 
-            expect(hasAny(target, invalidPaths))
+            expect(hasAny(target, ...invalidPaths))
                 .withContext('should NOT contain any paths')
                 .toBeFalse();
         });

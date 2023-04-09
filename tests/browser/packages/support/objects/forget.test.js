@@ -92,7 +92,7 @@ describe('@aedart/support/objects', () => {
                 ['e', 'nested', sym]
             ];
 
-            forgetAll(target, paths);
+            forgetAll(target, ...paths);
             
             paths.forEach((path, index) => {
                 expect(has(target, path))

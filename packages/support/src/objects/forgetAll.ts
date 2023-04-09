@@ -8,9 +8,9 @@ import type {PropertyPath} from "lodash";
  * @template T
  *
  * @param {T} object Target object
- * @param {PropertyPath[]} paths List of property paths
+ * @param {...PropertyPath} paths Property path(s)
  */
-export function forgetAll<T>(object: T, paths: PropertyPath[]): void
+export function forgetAll<T>(object: T, ...paths: (PropertyPath)[]): void
 {
     for (const path of paths) {
         forget(object, path);

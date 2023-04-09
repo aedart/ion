@@ -8,11 +8,11 @@ import type { PropertyPath } from 'lodash';
  * @template T
  * 
  * @param {T} object Target object
- * @param {PropertyPath[]} paths List of property paths
+ * @param {...PropertyPath} paths Property path(s)
  * 
  * @returns {boolean}
  */
-export function hasAll<T>(object: T, paths: PropertyPath[]): boolean
+export function hasAll<T>(object: T, ...paths: (PropertyPath)[]): boolean
 {
     for (const path of paths) {
         if (!has(object, path)) {
