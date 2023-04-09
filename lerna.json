@@ -10,8 +10,7 @@
     "command": {
         "version": {
             "allowBranch": [
-                "main",
-                "replace-lerna"
+                "main"
             ],
             "conventionalCommits": false,
             "allowPeerDependenciesUpdate": true,
