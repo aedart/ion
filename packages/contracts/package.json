@@ -40,6 +40,5 @@
         "compile": "rollup -c",
         "watch": "rollup -c -w"
     },
-    "sideEffects": false,
-    "gitHead": "cf9efaccc2c1fe1473664aa8b11bf83b37e50547"
+    "sideEffects": false
 }
