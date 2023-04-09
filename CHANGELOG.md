@@ -13,18 +13,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Object `isset()` now uses the `isset()` from `@aedart/support/misc`.
+* `@aedart/support/object`'s `isset()` now uses the `isset()` from `@aedart/support/misc`.
 
 ### Fixed
 
 * Documentation code examples (_examples where marked to be TypeScript, but are written as plain JavaScript_).
-* Navigation sidebar closes unexpectedly for support "objects" submodule, in documentation site. 
+* Navigation sidebar closes unexpectedly for support "objects" submodule, in documentation site.
+* Unable to "build" packages when interdependent on other packages, due to applied settings in rollup typescript plugin. 
 
 ## [0.3.1] - 2023-04-07
 
 ### Fixed
 
-* Object `isset()` method returns `true` when object argument is undefined, and when no paths argument given.
+* `@aedart/support/object`'s `isset()` method returns `true` when object argument is undefined, and when no paths argument given.
 
 ## [0.3.0] - 2023-04-06
 
