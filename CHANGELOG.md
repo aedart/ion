@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+**Breaking Changes**
+
+* `forgetAll()`, `hasAll()` and `hasAny()` now accepts rest parameters instead of an array of property paths, in `@aedart/support/object`.
+
+**Non-breaking Changes**
+
 * `@aedart/support/object`'s `isset()` now uses the `isset()` from `@aedart/support/misc`.
 
 ### Fixed
