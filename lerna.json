@@ -1,6 +1,6 @@
 {
     "$schema": "node_modules/@lerna-lite/cli/schemas/lerna-schema.json",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "useNx": true,
     "useWorkspaces": true,
     "packages": [
@@ -9,7 +9,10 @@
     "tagVersionPrefix": "",
     "command": {
         "version": {
-            "allowBranch": ["main", "replace-lerna"],
+            "allowBranch": [
+                "main",
+                "replace-lerna"
+            ],
             "conventionalCommits": false,
             "allowPeerDependenciesUpdate": true,
             "message": "Release of v%v"

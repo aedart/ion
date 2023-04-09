@@ -1,6 +1,6 @@
 {
     "name": "@aedart/reflections",
-    "version": "0.2.0",
+    "version": "0.5.0",
     "description": "Reflections",
     "keywords": [
         "Reflect",
@@ -35,8 +35,8 @@
     ],
     "peerDependencies": {
         "@aedart/contracts": "*",
-        "lodash-es": "^4.17.21",
-        "@types/lodash-es": "^4.17.7"
+        "@types/lodash-es": "^4.17.7",
+        "lodash-es": "^4.17.21"
     },
     "scripts": {
         "compile": "rollup -c",
