@@ -21,7 +21,11 @@ export default interface Registry
      * 
      * @returns {this}
      */
-    set(target: object, key: Key, data: any): this;
+    set(
+        target: object,
+        key: Key,
+        data: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): this;
 
     /**
      * Get metadata that matches given key
@@ -45,7 +49,10 @@ export default interface Registry
      * @returns {Record<PropertyKey, any>} Empty object when no metadata was
      *                                     set for target object.
      */
-    all(target: object): Record<PropertyKey, any>
+    all(target: object): Record<
+        PropertyKey,
+        any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    >
 
     /**
      * Determine if metadata exists that matches given key
