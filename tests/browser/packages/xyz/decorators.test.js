@@ -93,6 +93,65 @@ describe('@aedart/xyz', () => {
 
             DummyLogger.clear();
         });
+
+        it('decorator is still applied in subclass', () => {
+
+            class Foo
+            {
+                @logMethodCall
+                hi() {
+                    return 'bar';
+                }
+            }
+
+            class Bar extends Foo {}
+            
+            const bar = new Bar();
+            bar.hi();
+
+            // --------------------------------------------------------------------------------- //
+
+            let entries = DummyLogger.entries;
+
+            // Debug
+            // console.log(entries);
+
+            expect(entries.length)
+                .withContext('Decorator not invoked')
+                .toBe(2);
+        });
+
+        it('decorator is invoked when method overwritten', () => {
+            class Foo
+            {
+                @logMethodCall
+                hi() {
+                    return 'bar';
+                }
+            }
+
+            class Bar extends Foo {
+                hi() {
+                    super.hi(); // NOTE: This is VERY important - or decorator is NOT invoked!
+
+                    return 'Hi there...';
+                }
+            }
+
+            const bar = new Bar();
+            bar.hi();
+
+            // --------------------------------------------------------------------------------- //
+
+            let entries = DummyLogger.entries;
+
+            // Debug
+            console.log(entries);
+
+            expect(entries.length)
+                .withContext('Decorator not invoked')
+                .toBe(2);
+        });
     });
 
     // Experimental: Raw function decorators...
