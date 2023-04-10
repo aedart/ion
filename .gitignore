@@ -14,6 +14,7 @@ tsconfig.tsbuildinfo
 packages/*/dist/*
 /packages/*/src/**/*.d.ts
 /packages/*/src/**/*.d.ts.map
+!/packages/*/src/**/shim.d.ts
 
 # Vuepress
 docs/.vuepress/.temp
