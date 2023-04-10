@@ -18,7 +18,9 @@ module.exports = {
         // conditionNames: ['require', 'import'],
 
         alias: {
-            // support
+            // contracts
+            '@aedart/contracts/support/meta': path.resolve(__dirname, './packages/contracts/support/meta'),
+            '@aedart/contracts/support': path.resolve(__dirname, './packages/contracts/support'),
             '@aedart/contracts': path.resolve(__dirname, './packages/contracts/src'),
             
             // support
