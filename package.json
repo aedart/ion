@@ -71,9 +71,9 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "clean": "lerna clean",
-    "build": "lerna run compile",
-    "compile": "lerna run compile",
+    "clean": "lerna clean && sh clean.sh",
+    "build": "lerna run compile sh clean.sh",
+    "compile": "lerna run compile && sh clean.sh",
     "cache:clear": "npx nx reset",
     "watch": "lerna run watch",
     "lint": "eslint .",
