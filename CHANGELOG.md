@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* `Key`, and `PropertyKey` types in contracts.
+
 ### Changed
 
 * Removed `"gitHead"` from all `package.json` files (_should not have been committed in the first place_).
