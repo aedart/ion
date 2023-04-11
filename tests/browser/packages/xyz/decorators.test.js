@@ -119,6 +119,11 @@ describe('@aedart/xyz', () => {
             expect(entries.length)
                 .withContext('Decorator not invoked')
                 .toBe(2);
+
+            // --------------------------------------------------------------------------------- //
+            // Cleanup
+
+            DummyLogger.clear();
         });
 
         it('decorator is invoked when method overwritten', () => {
@@ -151,6 +156,11 @@ describe('@aedart/xyz', () => {
             expect(entries.length)
                 .withContext('Decorator not invoked')
                 .toBe(2);
+
+            // --------------------------------------------------------------------------------- //
+            // Cleanup
+
+            DummyLogger.clear();
         });
     });
 
