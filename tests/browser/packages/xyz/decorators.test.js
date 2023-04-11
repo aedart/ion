@@ -151,7 +151,7 @@ describe('@aedart/xyz', () => {
             let entries = DummyLogger.entries;
 
             // Debug
-            console.log(entries);
+            // console.log(entries);
 
             expect(entries.length)
                 .withContext('Decorator not invoked')
