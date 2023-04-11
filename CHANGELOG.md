@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * `Key`, and `PropertyKey` types in contracts.
+* `ObjectId` helper that can generate/obtain a numeric ID for a target object, in `@aedart/support`.
 * Cleanup script for removing leftover `*.d.ts` files in source dirs.
 
 ### Changed
