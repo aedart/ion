@@ -38,15 +38,15 @@ export default class ObjectId
      */
     static get(target: object): number
     {
-        const id: number | undefined = this.#map.get(target);
+        const id: number | undefined = ObjectId.#map.get(target);
         if (id !== undefined) {
             return id;
         }
+
+        ObjectId.#count += 1;
+        ObjectId.#map.set(target, ObjectId.#count);
         
-        this.#count += 1;
-        this.#map.set(target, this.#count);
-        
-        return this.#count;
+        return ObjectId.#count;
     }
 
     /**
@@ -58,6 +58,6 @@ export default class ObjectId
      */
     static has(target: object): boolean
     {
-        return this.#map.has(target);
+        return ObjectId.#map.has(target);
     }
 }
