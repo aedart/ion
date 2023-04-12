@@ -6,3 +6,8 @@ export * from './hasAll';
 export * from './hasAny';
 export * from './isset';
 export * from './set';
+
+import ObjectId from "./ObjectId";
+export {
+    ObjectId
+}
