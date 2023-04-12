@@ -27,10 +27,11 @@ export default class ObjectId
     static #map: WeakMap<object, number> = new WeakMap<object, number>();
 
     /**
-     * Returns ID for target object.
+     * Returns a unique ID for target object.
      * 
-     * If no ID exists for object, then a new id is generated and
-     * returned.
+     * If no ID exists for the given object, then a new ID is
+     * generated and returned. Subsequent calls to this method using
+     * the same object will return the same ID.
      * 
      * @param {object} target
      * @returns {number}
@@ -49,7 +50,7 @@ export default class ObjectId
     }
 
     /**
-     * Determine if an ID exists for target object
+     * Determine if a unique ID exists for target object
      * 
      * @param {object} target
      * 
