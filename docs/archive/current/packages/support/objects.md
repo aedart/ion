@@ -186,7 +186,7 @@ console.log(result); // true
 Determine if paths are properties of given object and have values.
 This method differs from [`has()`](#has), in that it only returns true if properties' values are not `undefined` and not `null`.
 
-_See also [misc. `isset()`](../misc/README.md#isset)._
+_See also [misc. `isset()`](./misc/README.md#isset)._
 
 ```js
 import {isset} from "@aedart/support/objects";
