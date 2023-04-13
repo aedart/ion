@@ -8,6 +8,12 @@ import {Key, PropertyKey} from "@aedart/contracts/support";
 export const REGISTRY: unique symbol = Symbol('@aedart/support/meta/registry');
 
 /**
+ * @deprecated TODO: We need a "private" writer, public reader kind of approach to emulate the "decorator metadata" behaviour (safest)
+ * 
+ * @see https://github.com/tc39/proposal-decorator-metadata
+ * @see https://github.com/tc39/proposal-decorator-metadata/issues/13
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/structuredClone
+ * 
  * Meta Registry
  */
 export default interface Registry
