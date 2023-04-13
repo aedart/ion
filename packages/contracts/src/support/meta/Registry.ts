@@ -1,6 +1,8 @@
 import {Key, PropertyKey} from "@aedart/contracts/support";
 
 /**
+ * @deprecated TODO: This too needs to be redesigned...
+ * 
  * Meta Registry identifier
  * 
  * @type {Symbol}
