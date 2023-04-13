@@ -28,6 +28,11 @@
             "import": "./dist/esm/support.js",
             "require": "./dist/cjs/support.cjs"
         },
+        "./meta": {
+            "types": "./dist/types/meta.d.ts",
+            "import": "./dist/esm/meta.js",
+            "require": "./dist/cjs/meta.cjs"
+        },
         "./misc": {
             "types": "./dist/types/misc.d.ts",
             "import": "./dist/esm/misc.js",
