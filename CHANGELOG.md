@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Broken link to `isset()`, in Objects `isset()` documentation.
+* `deploy.docs.sh` fails when `.build` directory does not exist.
 
 ## [0.5.0] - 2023-04-09
 
