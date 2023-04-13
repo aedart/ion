@@ -1,1 +1,1 @@
-export const TODO: string = 'TODO';
+export * from './meta';
