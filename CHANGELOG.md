@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Methods in `@aedart/support/objects` now use the new `Key` type (_previously used Lodash's `PropertyKey` type_).
 * Removed `"gitHead"` from all `package.json` files (_should not have been committed in the first place_).
 
+### Fixed
+
+* Broken link to `isset()`, in Objects `isset()` documentation.
+
 ## [0.5.0] - 2023-04-09
 
 ### Changed
