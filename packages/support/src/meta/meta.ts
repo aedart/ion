@@ -56,7 +56,18 @@ export function meta(
         // Default behaviour is not able to store meta for class fields, or "undefined"
         // target. However, if a callback is provided, then we proceed. 
         // @see https://github.com/tc39/proposal-decorators#class-fields
-        if ((target === undefined || context.kind === 'field') && !isCallback) {
+        // 
+        // NOTE: This will not work, unless the callback also returns a new target that is
+        // not "undefined", ... this implementation will not (at least not yet) support such
+        // behaviour. Maybe in a future version, if TC39 proposal forms a good solution.
+        // @see https://github.com/tc39/proposal-decorator-metadata
+        //
+        // if ((target === undefined || context.kind === 'field') && !isCallback) {
+        //     throw new TypeError('Unable to store metadata for class field, or undefined target.');
+        // }
+
+        // Abort when attempting to add meta for a class field or undefined target.
+        if (target === undefined || context.kind === 'field') {
             throw new TypeError('Unable to store metadata for class field, or undefined target.');
         }
 
@@ -64,6 +75,7 @@ export function meta(
         // object's key-value are then used instead.
         if (isCallback) {
             const entry: MetaEntry = (key as MetaCallback)(target, context);
+            // target = entry.newTarget; // This would be needed if registry is used for class field...
             key = entry.key;
             value = entry.value;
         }
