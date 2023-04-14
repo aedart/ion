@@ -1,3 +1,5 @@
+import type { MetadataRecord } from "./types";
+
 /**
  * Metadata Context
  * 
@@ -8,5 +10,5 @@ export default interface MetadataContext {
     /**
      * Contains arbitrary information
      */
-    metadata?: Record<string | number | symbol, unknown>;
+    metadata?: MetadataRecord;
 }
