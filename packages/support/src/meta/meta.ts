@@ -1,5 +1,5 @@
 import type {Key} from "@aedart/contracts/support";
-import type { Context, MetaCallback } from "@aedart/contracts/support/meta";
+import type { Context, MetaCallback, MetadataRecord } from "@aedart/contracts/support/meta";
 import { set } from "@aedart/support/objects";
 
 /**
@@ -13,9 +13,9 @@ import { set } from "@aedart/support/objects";
  * This registry is NOT intended to be available for writing,
  * outside the scope of the meta decorator.
  * 
- * @type {WeakMap<object, Record<string | number | symbol, unknown>>}
+ * @type {WeakMap<object, MetadataRecord>}
  */
-const registry: WeakMap<object, Record<string | number | symbol, unknown>> = new WeakMap<object, Record<string | number | symbol, unknown>>();
+const registry: WeakMap<object, MetadataRecord> = new WeakMap<object, MetadataRecord>();
 
 // TODO: The metadata symbol... we will need this when reading metadata from a target.
 // const metadataSymbol = Symbol.for('metadata');
