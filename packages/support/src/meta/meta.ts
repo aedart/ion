@@ -1,6 +1,6 @@
 import type {Key} from "@aedart/contracts/support";
 import type { Context, MetaCallback, MetadataRecord } from "@aedart/contracts/support/meta";
-import { set } from "@aedart/support/objects";
+import { set, get } from "@aedart/support/objects";
 
 /**
  * @typedef {import('@aedart/contracts/support/meta').MetaEntry} MetaEntry
@@ -17,8 +17,13 @@ import { set } from "@aedart/support/objects";
  */
 const registry: WeakMap<object, MetadataRecord> = new WeakMap<object, MetadataRecord>();
 
-// TODO: The metadata symbol... we will need this when reading metadata from a target.
-// const metadataSymbol = Symbol.for('metadata');
+/**
+ * The well-known symbol for metadata
+ * @see https://github.com/tc39/proposal-decorator-metadata
+ * 
+ * @type {symbol}
+ */
+const metadataSymbol = Symbol.for('metadata');
 
 /**
  * Store value as metadata, for given key.
@@ -73,4 +78,54 @@ export function meta(
             registry.set(target, metadata);    
         }
     }
+}
+
+/**
+ * Return metadata that matches key, for given target
+ * 
+ * @template T
+ * @template D=unknown Type of default value
+ * 
+ * @param {object} target
+ * @param {Key} key Key or path identifier
+ * @param {D} [defaultValue=undefined] Default value
+ * 
+ * @returns {T | D | undefined}
+ */
+export function getMeta<T, D = unknown>(target: object, key: Key, defaultValue?: D): T | D | undefined
+{
+    const metadata: Readonly<MetadataRecord> | undefined = getAllMeta(target);
+    if (metadata === undefined) {
+        return defaultValue;
+    }
+    
+    return get(metadata, key, defaultValue);
+}
+
+/**
+ * Returns all registered metadata for given target, if available
+ *
+ * @param {object} target
+ *
+ * @returns {Readonly<MetadataRecord> | undefined}
+ */
+export function getAllMeta(target: object): Readonly<MetadataRecord> | undefined
+{
+    // Return all available metadata from target, using the well-known `Symbol.metadata`.
+    if (Reflect.has(target, metadataSymbol)) {
+        // @ts-expect-error: Target has well-known symbol and should either be an object or undefined.
+        return target[metadataSymbol];
+    }
+    
+    // Alternatively, determine if registry has metadata
+    if (!registry.has(target)) {
+        return undefined;
+    }
+
+    // Create a structured clone of the metadata record, so that it
+    // can be safely frozen to avoid undesired manipulation outside
+    // the scope of the meta decorator.
+    return Object.freeze<MetadataRecord | undefined>(
+        structuredClone(registry.get(target))
+    );
 }
