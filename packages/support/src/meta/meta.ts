@@ -21,7 +21,7 @@ const registry: WeakMap<object, Record<string | number | symbol, unknown>> = new
 // const metadataSymbol = Symbol.for('metadata');
 
 /**
- * Store value as metadata, for given key
+ * Store value as metadata, for given key.
  * 
  * @param {Key | MetaCallback} key Key or path identifier. If callback is given,
  *                                 then its resulting {@link MetaEntry}'s `key`
@@ -29,7 +29,7 @@ const registry: WeakMap<object, Record<string | number | symbol, unknown>> = new
  * @param {unknown} [value] Value to store. Ignored if `key` argument is
  *                          a callback.
  * 
- * @returns {(target: object, context: Context) => void}
+ * @returns {(target: object, context: Context) => void} Decorator function
  */
 export function meta(
     key: Key | MetaCallback,
