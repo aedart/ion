@@ -4,6 +4,7 @@ import GetterContext from "./GetterContext";
 import SetterContext from "./SetterContext";
 import FieldContext from "./FieldContext";
 import AccessorContext from "./AccessorContext";
+import MetaEntry from "./MetaEntry";
 
 /**
  * Decorator context types for any decorator
@@ -23,3 +24,8 @@ export type MemberContext =
     | FieldContext
     | AccessorContext
     ;
+
+/**
+ * Callback that returns a meta entry object.
+ */
+export type MetaCallback = (target: object, context: Context) => MetaEntry;
