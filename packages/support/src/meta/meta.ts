@@ -1,6 +1,10 @@
 import type {Key} from "@aedart/contracts/support";
-import type { Context, MetaCallback, MetaEntry } from "@aedart/contracts/support/meta";
+import type { Context, MetaCallback } from "@aedart/contracts/support/meta";
 import { set } from "@aedart/support/objects";
+
+/**
+ * @typedef {import('@aedart/contracts/support/meta').MetaEntry} MetaEntry
+ */
 
 /**
  * Fallback registry of metadata, in case that `context.metadata` is
