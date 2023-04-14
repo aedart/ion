@@ -5,8 +5,8 @@ import type { MetadataRecord } from "./types";
  * 
  * @see https://github.com/tc39/proposal-decorator-metadata
  */
-export default interface MetadataContext {
-    
+export default interface MetadataContext
+{
     /**
      * Contains arbitrary information
      */
