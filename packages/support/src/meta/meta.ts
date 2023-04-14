@@ -1,17 +1,13 @@
 import type {Key} from "@aedart/contracts/support";
-import type { Context, MetaCallback, MetadataRecord } from "@aedart/contracts/support/meta";
+import type { Context, MetaCallback, MetaEntry, MetadataRecord } from "@aedart/contracts/support/meta";
 import { set, get } from "@aedart/support/objects";
-
-/**
- * @typedef {import('@aedart/contracts/support/meta').MetaEntry} MetaEntry
- */
 
 /**
  * Fallback registry of metadata, in case that `context.metadata` is
  * not available.
  * 
- * This registry is NOT intended to be available for writing,
- * outside the scope of the meta decorator.
+ * **Warning**: _This registry is **NOT intended** to be available for writing,
+ * outside the scope of the meta decorator._
  * 
  * @type {WeakMap<object, MetadataRecord>}
  */
@@ -27,6 +23,9 @@ const metadataSymbol = Symbol.for('metadata');
 
 /**
  * Store value as metadata, for given key.
+ * 
+ * @see getMeta
+ * @see getAllMeta
  * 
  * @param {Key | MetaCallback} key Key or path identifier. If callback is given,
  *                                 then its resulting {@link MetaEntry}'s `key`
@@ -45,7 +44,7 @@ export function meta(
         context: Context
     ) => {
         // Resolve the metadata object, either from registry or decorator context.
-        let metadata: Record<string | number | symbol, unknown> = registry.get(target) ?? {}; /* eslint-disable-line prefer-const */
+        let metadata: MetadataRecord = registry.get(target) ?? {}; /* eslint-disable-line prefer-const */
         let useFallback: boolean = true;
         const isMetaCallback: boolean = (typeof key === 'function');
 
@@ -65,7 +64,7 @@ export function meta(
         // In case a callback is given as key, resolve it. The resulting meta entry object's
         // key-value are then used instead.
         if (isMetaCallback) {
-            const entry = (key as MetaCallback)(target, context);
+            const entry: MetaEntry = (key as MetaCallback)(target, context);
             key = entry.key;
             value = entry.value;
         }
@@ -82,6 +81,8 @@ export function meta(
 
 /**
  * Return metadata that matches key, for given target
+ * 
+ * @see getAllMeta
  * 
  * @template T
  * @template D=unknown Type of default value
@@ -105,6 +106,8 @@ export function getMeta<T, D = unknown>(target: object, key: Key, defaultValue?:
 /**
  * Returns all registered metadata for given target, if available
  *
+ * @see getMeta
+ * 
  * @param {object} target
  *
  * @returns {Readonly<MetadataRecord> | undefined}
