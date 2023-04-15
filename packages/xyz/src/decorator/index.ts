@@ -1,5 +1,6 @@
 import logMethodCall from "./logMethodCall";
 import DummyLogger from "./DummyLogger";
+import ChannelLogger from "./ChannelLogger";
 
 /**
  * A Character
@@ -18,5 +19,6 @@ class Character
 export {
     logMethodCall,
     DummyLogger,
+    ChannelLogger,
     Character as default
 }
