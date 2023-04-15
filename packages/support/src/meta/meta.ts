@@ -39,52 +39,55 @@ export function meta(
     key: Key | MetaCallback,
     value?: unknown
 ) {
-    return (
-        target: object,
-        context: Context
-    ) => {
-        let useRegistry: boolean = true;
-        const isCallback: boolean = (typeof key === 'function');
+    return (target: object, context: Context) => {
+        // The "kind" of target that is being decorated
+        const kind = context.kind;
+
+        // The target class...
+        let targetClass: object;
         
-        // Resolve the metadata object, either from registry or decorator context.
-        let metadata: MetadataRecord = registry.get(target) ?? {};
-        if (Reflect.has(context, 'metadata') && typeof context.metadata === 'object') {
-            metadata = context.metadata;
-            useRegistry = false;
+        // For a class target, the meta can be added directly.
+        if (kind === 'class') {
+            targetClass = target;
+            
+            return save(
+                resolve(key, value, target, context, targetClass),
+                targetClass,
+                context
+            );
         }
 
-        // Default behaviour is not able to store meta for class fields, or "undefined"
-        // target. However, if a callback is provided, then we proceed. 
-        // @see https://github.com/tc39/proposal-decorators#class-fields
-        // 
-        // NOTE: This will not work, unless the callback also returns a new target that is
-        // not "undefined", ... this implementation will not (at least not yet) support such
-        // behaviour. Maybe in a future version, if TC39 proposal forms a good solution.
+        // When a field is decorated, we need to rely on the value initialisation to
+        // obtain correct target class...
+        if (kind === 'field') {
+            return function(initialValue: unknown) {
+                // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
+                targetClass = getTargetClass(this, context);
+
+                save(
+                    resolve(key, value, target, context, targetClass),
+                    targetClass,
+                    context
+                );
+
+                return initialValue;
+            }
+        }
+        
+        // For all other kinds of targets, we need to use the initialisation logic
+        // to obtain the correct target class. This is needed for current implementation
+        // and until the TC39 proposal is approved and implemented.
         // @see https://github.com/tc39/proposal-decorator-metadata
-        //
-        // if ((target === undefined || context.kind === 'field') && !isCallback) {
-        //     throw new TypeError('Unable to store metadata for class field, or undefined target.');
-        // }
+        context.addInitializer(function() {
+            // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
+            targetClass = getTargetClass(this, context);
 
-        // Abort when attempting to add meta for a class field or undefined target.
-        if (target === undefined || context.kind === 'field') {
-            throw new TypeError('Unable to store metadata for class field, or undefined target.');
-        }
-
-        // In case a callback is given as key, resolve it. The resulting meta entry
-        // object's key-value are then used instead.
-        if (isCallback) {
-            const entry: MetaEntry = (key as MetaCallback)(target, context);
-            // target = entry.newTarget; // This would be needed if registry is used for class field...
-            key = entry.key;
-            value = entry.value;
-        }
-
-        // Set the metadata value and evt. save metadata in registry, if needed.
-        set(metadata, (key as Key), value);
-        if (useRegistry) {
-            registry.set(target, metadata);    
-        }
+            save(
+                resolve(key, value, target, context, targetClass),
+                targetClass,
+                context
+            );
+        });
     }
 }
 
@@ -96,7 +99,7 @@ export function meta(
  * @template T
  * @template D=unknown Type of default value
  *
- * @param {object} target
+ * @param {object} target Target Class
  * @param {Key} key Key or path identifier
  * @param {D} [defaultValue=undefined] Default value
  *
@@ -117,7 +120,7 @@ export function getMeta<T, D = unknown>(target: object, key: Key, defaultValue?:
  *
  * @see getMeta
  *
- * @param {object} target
+ * @param {object} target Target Class
  *
  * @returns {Readonly<MetadataRecord> | undefined}
  */
@@ -135,4 +138,88 @@ export function getAllMeta(target: object): Readonly<MetadataRecord> | undefined
     return Object.freeze<MetadataRecord | undefined>(
         structuredClone(registry.get(target))
     );
+}
+
+/**
+ * Set "meta" entry for given target class
+ *
+ * @param {MetaEntry} entry
+ * @param {object} targetClass
+ * @param {Context} context
+ */
+function save(
+    entry: MetaEntry,
+    targetClass: object,
+    context: Context
+) {
+    // State whether to use registry or context.metadata
+    const useRegistry: boolean = !(Reflect.has(context, 'metadata') && typeof context.metadata === 'object');
+
+    // Obtain the metadata record for the target
+    let metadata: MetadataRecord = (useRegistry)
+        ? registry.get(targetClass) ?? {}
+        : (context.metadata as MetadataRecord);
+
+    // Set key-value in record...
+    set(metadata, entry.key, entry.value);
+
+    // Persist metadata in registry, if needed.
+    if (useRegistry) {
+        registry.set(targetClass, metadata);
+    }
+}
+
+/**
+ * Resolve the "meta" entry's key and value.
+ *
+ * If key is a callback, then it will be invoked. Otherwise,
+ * a new meta entry object is returned with given key-value.
+ *
+ * @param {Key | MetaCallback} key
+ * @param {unknown} value Ignored if key is a callback
+ * @param {object} target Target that is being decorated
+ * @param {Context} context Decorator context
+ * @param {object} targetClass Target class
+ *
+ * @returns {MetaEntry}
+ */
+function resolve(
+    key: Key | MetaCallback,
+    value: unknown,
+    target: object,
+    context: Context,
+    targetClass: object
+): MetaEntry
+{
+    if (typeof key === 'function') {
+        (key as MetaCallback)(target, context, targetClass);
+    }
+
+    return {
+        key: (key as Key),
+        value: value
+    }
+}
+
+/**
+ * Returns the target class
+ *
+ * **Caution**: _`thisArg` should only be set from an "addInitializer" callback
+ * function._ 
+ *
+ * @param {object} thisArg
+ * @param {Context} context
+ *
+ * @returns {object}
+ */
+function getTargetClass(thisArg: object, context: Context): object
+{
+    if (context.kind === 'class') {
+        return thisArg;
+    }
+
+    return (context.static)
+        ? thisArg
+        // @ts-expect-error: When target is not static, then it's obtainable via prototype
+        : Reflect.getPrototypeOf(thisArg).constructor;
 }
