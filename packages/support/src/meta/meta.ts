@@ -43,12 +43,9 @@ export function meta(
         // The "kind" of target that is being decorated
         const kind = context.kind;
 
-        // The target class...
-        let targetClass: object;
-        
         // For a class target, the meta can be added directly.
         if (kind === 'class') {
-            targetClass = target;
+            let targetClass: object = target;
             
             return save(
                 resolve(key, value, target, context, targetClass),
@@ -62,7 +59,7 @@ export function meta(
         if (kind === 'field') {
             return function(initialValue: unknown) {
                 // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
-                targetClass = getTargetClass(this, context);
+                let targetClass: object = getTargetClass(this, context);
 
                 save(
                     resolve(key, value, target, context, targetClass),
@@ -80,7 +77,7 @@ export function meta(
         // @see https://github.com/tc39/proposal-decorator-metadata
         context.addInitializer(function() {
             // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
-            targetClass = getTargetClass(this, context);
+            let targetClass: object = getTargetClass(this, context);
 
             save(
                 resolve(key, value, target, context, targetClass),
