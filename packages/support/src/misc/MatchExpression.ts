@@ -19,6 +19,7 @@ export default class MatchExpression<T>
     /**
      * The handler to invoke if this expression matches
      *
+     * @template T
      * @type {MatchHandler<T>}
      * @private
      */

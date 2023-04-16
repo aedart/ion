@@ -45,7 +45,7 @@ export function meta(
 
         // For a class target, the meta can be added directly.
         if (kind === 'class') {
-            let targetClass: object = target;
+            const targetClass: object = target;
             
             return save(
                 resolve(key, value, target, context, targetClass),
@@ -59,7 +59,7 @@ export function meta(
         if (kind === 'field') {
             return function(initialValue: unknown) {
                 // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
-                let targetClass: object = getTargetClass(this, context);
+                const targetClass: object = getTargetClass(this, context);
 
                 save(
                     resolve(key, value, target, context, targetClass),
@@ -77,7 +77,7 @@ export function meta(
         // @see https://github.com/tc39/proposal-decorator-metadata
         context.addInitializer(function() {
             // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
-            let targetClass: object = getTargetClass(this, context);
+            const targetClass: object = getTargetClass(this, context);
 
             save(
                 resolve(key, value, target, context, targetClass),
@@ -153,7 +153,7 @@ function save(
     const useRegistry: boolean = !(Reflect.has(context, 'metadata') && typeof context.metadata === 'object');
 
     // Obtain the metadata record for the target
-    let metadata: MetadataRecord = (useRegistry)
+    let metadata: MetadataRecord = (useRegistry) /* eslint-disable-line prefer-const */
         ? registry.get(targetClass) ?? {}
         : (context.metadata as MetadataRecord);
 

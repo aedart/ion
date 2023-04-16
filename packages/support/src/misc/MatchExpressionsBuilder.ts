@@ -21,6 +21,7 @@ export default class MatchExpressionsBuilder<T, D>
     /**
      * List of match expressions
      *
+     * @template T
      * @type {MatchExpression<T>[]}
      * @private
      */
@@ -92,7 +93,7 @@ export default class MatchExpressionsBuilder<T, D>
         const value = this.#value;
 
         // Find expression (and it's assigned handler) that matches the given value
-        let matched: MatchExpression<T> | undefined = this.#expressions.find((expression: MatchExpression<T>) => {
+        const matched: MatchExpression<T> | undefined = this.#expressions.find((expression: MatchExpression<T>) => {
             return expression.matches(value);
         });
 
