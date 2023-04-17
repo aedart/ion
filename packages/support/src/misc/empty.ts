@@ -14,22 +14,21 @@ export function empty(
     if (value === undefined || value === null) {
         return true;
     }
-    
-    const type: string = typeof value;
-    const conditions: object = {
-        'boolean': function(value: boolean): boolean {
+
+    switch (typeof value) {
+        case 'boolean':
             return !value;
-        },
-        'string': function(value: string): boolean {
-            return value.length === 0;
-        },
-        'number': function(value: number): boolean {
+            
+        case 'number':
             return value === 0 || isNaN(value);
-        },
-        'bigint': function(value: bigint): boolean {
+            
+        case 'bigint':
             return value === 0n;
-        },
-        'object': function(value: object): boolean {
+            
+        case 'string':
+            return value.length === 0;
+            
+        case 'object':
             // Array or array like
             if (Array.isArray(value) || ArrayBuffer.isView(value) || descTag(value) === '[object Arguments]') {
                 return 'length' in value && value.length === 0;
@@ -42,12 +41,8 @@ export function empty(
 
             // Native object
             return value.constructor === Object && Object.keys(value).length === 0;
-        }
-    };
-
-    const check = Reflect.get(conditions, type) ?? function(): boolean {
-        return false;
+            
+        default:
+            return false;
     }
-
-    return check(value);
 }
