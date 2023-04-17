@@ -1,6 +1,7 @@
 import type {Key} from "@aedart/contracts/support";
 import type { Context, MetaCallback, MetaEntry, MetadataRecord } from "@aedart/contracts/support/meta";
 import { set, get } from "@aedart/support/objects";
+// import { cloneDeep } from "lodash-es";
 
 /**
  * Fallback registry of metadata, in case that `context.metadata` is
@@ -127,12 +128,29 @@ export function getAllMeta(target: object): Readonly<MetadataRecord> | undefined
         return target[metadataSymbol];
     }
 
+    // Return from registry...
+    return registry.get(target);
+    
+    // NOTE: Ideally, we would be able to safeguard against undesired meta value changes.
+    // But the performance cost of JavaScript's native structuredClone(), or Lodash'
+    // cloneDeep(), can be terrible in this context. This is especially evident when
+    // reading multiple meta entries from a target.
+    
+    // --- original intent ---
+    
     // Otherwise we must use the registry. However, the metadata must be
     // cloned and frozen to avoid undesired manipulation outside the scope
     // of the meta decorator.
-    return Object.freeze<MetadataRecord | undefined>(
-        structuredClone(registry.get(target))
-    );
+    // return Object.freeze<MetadataRecord | undefined>(
+    //     cloneDeep(registry.get(target))
+    // );
+
+    // Alternative: JavaScript's native structuredClone does a good job, but cannot
+    // "clone" symbols, which can be very problematic in the case where symbols
+    // as used as keys or values.
+    // return Object.freeze<MetadataRecord | undefined>(
+    //     structuredClone(registry.get(target))
+    // );
 }
 
 /**
