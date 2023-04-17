@@ -33,7 +33,7 @@ const metadataSymbol = Symbol.for('metadata');
  * @param {unknown} [value] Value to store. Ignored if `key` argument is
  *                          a callback.
  *
- * @returns {(target: object, context: Context) => void} Decorator function
+ * @returns {(target: object, context: Context) => (void | ((initialValue: unknown) => unknown) | undefined)}
  */
 export function meta(
     key: Key | MetaCallback,
