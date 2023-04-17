@@ -187,7 +187,7 @@ function resolve(
 ): MetaEntry
 {
     if (typeof key === 'function') {
-        (key as MetaCallback)(target, context, targetClass);
+        return (key as MetaCallback)(target, context, targetClass);
     }
 
     return {
