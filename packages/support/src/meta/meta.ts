@@ -40,51 +40,49 @@ export function meta(
     value?: unknown
 ) {
     return (target: object, context: Context) => {
-        // The "kind" of target that is being decorated
-        const kind = context.kind;
 
-        // For a class target, the meta can be added directly.
-        if (kind === 'class') {
-            const targetClass: object = target;
-            
-            return save(
-                resolve(key, value, target, context, targetClass),
-                targetClass,
-                context
-            );
-        }
-
-        // When a field is decorated, we need to rely on the value initialisation to
-        // obtain correct target class...
-        if (kind === 'field') {
-            return function(initialValue: unknown) {
-                // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
-                const targetClass: object = getTargetClass(this, context);
-
-                save(
-                    resolve(key, value, target, context, targetClass),
-                    targetClass,
+        switch(context.kind) {
+            // For a class target, the meta can be added directly.
+            case 'class':
+                return save(
+                    resolve(key, value, target, context, target),
+                    target,
                     context
                 );
 
-                return initialValue;
-            }
-        }
-        
-        // For all other kinds of targets, we need to use the initialisation logic
-        // to obtain the correct target class. This is needed for current implementation
-        // and until the TC39 proposal is approved and implemented.
-        // @see https://github.com/tc39/proposal-decorator-metadata
-        context.addInitializer(function() {
-            // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
-            const targetClass: object = getTargetClass(this, context);
+            // When a field is decorated, we need to rely on the value initialisation to
+            // obtain correct target class...
+            case 'field':
+                return function(initialValue: unknown) {
+                    // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
+                    const targetClass: object = getTargetClass(this, context);
 
-            save(
-                resolve(key, value, target, context, targetClass),
-                targetClass,
-                context
-            );
-        });
+                    save(
+                        resolve(key, value, target, context, targetClass),
+                        targetClass,
+                        context
+                    );
+
+                    return initialValue;
+                }
+
+            // For all other kinds of targets, we need to use the initialisation logic
+            // to obtain the correct target class. This is needed for current implementation
+            // and until the TC39 proposal is approved and implemented.
+            // @see https://github.com/tc39/proposal-decorator-metadata
+            default:
+                context.addInitializer(function() {
+                    // @ts-expect-error: TS has issues with "this" being set here, claiming that it corresponds to "any"
+                    const targetClass: object = getTargetClass(this, context);
+    
+                    save(
+                        resolve(key, value, target, context, targetClass),
+                        targetClass,
+                        context
+                    );
+                });
+                return;
+        }
     }
 }
 
