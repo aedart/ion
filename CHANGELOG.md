@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * `Key`, `PropertyKey`, and `Primitive` types in contracts.
 * `when()` which allows building a match expression that can be evaluated, in `@aedart/support`.
+* `isPrimitive()` method, in `@aedart/support`.
 * `ObjectId` helper that can generate/obtain a numeric ID for a target object, in `@aedart/support`.
 * Cleanup script for removing leftover `*.d.ts` files in source dirs.
 
