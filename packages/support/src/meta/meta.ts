@@ -200,7 +200,7 @@ function resolve(
  * Returns the target class
  *
  * **Caution**: _`thisArg` should only be set from an "addInitializer" callback
- * function._ 
+ * function, via decorator context._ 
  *
  * @param {object} thisArg
  * @param {Context} context
