@@ -11,6 +11,8 @@ lerna-debug.log
 tsconfig.tsbuildinfo
 .tsbuildinfo
 
+tmp.js
+
 packages/*/dist/*
 /packages/*/src/**/*.d.ts
 /packages/*/src/**/*.d.ts.map
