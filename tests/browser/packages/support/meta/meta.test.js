@@ -3,6 +3,7 @@ import {
     getMeta,
     getAllMeta
 } from '@aedart/support/meta';
+import { METADATA } from "@aedart/contracts/support/meta";
 
 describe('@aedart/support/meta', () => {
     
@@ -17,6 +18,10 @@ describe('@aedart/support/meta', () => {
             class A {}
             
             // ----------------------------------------------------------------- //
+            
+            expect(Reflect.has(A, METADATA))
+                .withContext('A[Symbol.metadata] not defined')
+                .toBeTrue();
             
             const found = getMeta(A, key);
             expect(found)
