@@ -35,14 +35,13 @@ const metadataSymbol = Symbol.for('metadata');
  *                                 and `value` are stored.
  * @param {unknown} [value] Value to store. Ignored if `key` argument is
  *                          a callback.
- *
- * @returns {(target: object, context: Context) => (void | ((initialValue: unknown) => unknown) | undefined)}
+ * @returns {(target: (Function | object | undefined), context: Context) => (void | ((initialValue: unknown) => unknown) | undefined)}
  */
 export function meta(
     key: Key | MetaCallback,
     value?: unknown
 ) {
-    return (target: object, context: Context) => {
+    return (target: Function | object | undefined, context: Context) => {
 
         switch(context.kind) {
             // For a class target, the meta can be added directly.
