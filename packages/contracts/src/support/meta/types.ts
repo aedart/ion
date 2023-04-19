@@ -28,7 +28,7 @@ export type MemberContext =
 /**
  * Callback that returns a meta entry object.
  */
-export type MetaCallback = (target: object, context: Context, targetClass: object) => MetaEntry;
+export type MetaCallback = (target: object, context: Context, owner: object) => MetaEntry;
 
 /**
  * Metadata Record

@@ -1,4 +1,3 @@
-import Registry, { REGISTRY } from "./Registry";
 import MetadataContext from "./MetadataContext";
 import ClassContext from "./ClassContext";
 import MethodContext from "./MethodContext";
@@ -15,11 +14,15 @@ import MetaEntry from "./MetaEntry";
  */
 export const SUPPORT_META: unique symbol = Symbol('@aedart/contracts/support/meta');
 
-//export type * from './types';
+/**
+ * The well-known symbol for metadata
+ * @see https://github.com/tc39/proposal-decorator-metadata
+ * 
+ * @type {symbol}
+ */
+export const METADATA: unique symbol = Symbol.for('metadata');
+
 export {
-    type Registry,
-    REGISTRY,
-    
     type ClassContext,
     type MethodContext,
     type GetterContext,

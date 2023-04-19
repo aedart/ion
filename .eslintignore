@@ -5,3 +5,4 @@ tests/*
 
 shim.d.ts
 aliases.js
+tmp.js
