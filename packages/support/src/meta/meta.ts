@@ -135,12 +135,10 @@ function save(
 {
     // Determine if the internal registry should be used. This is expected to be true, until the
     // TC39 proposal decorator-metadata is approved and published.
-    const useRegistry: boolean = !(Reflect.has(context, 'metadata') && typeof context.metadata === 'object')
+    const dontUseRegistry: boolean = Reflect.has(context, 'metadata') && typeof context.metadata === 'object';
     
     // Obtain metadata, either from the provide context or via owner[Symbol.metadata].
-    let metadata: MetadataRecord = useRegistry /* eslint-disable-line prefer-const */
-        ? registry.get(owner) ?? {}
-        : (context.metadata as MetadataRecord);
+    const metadata: MetadataRecord = resolveMetadataRecord(owner, context, dontUseRegistry);
 
     // In case that context.metadata is not set (e.g. we use the internal registry), then
     // this should ensure that it is set. Thus, if key is a "meta callback", it will be
@@ -161,7 +159,7 @@ function save(
     set(metadata, entry.key, entry.value);
 
     // If the internal registry is NOT used, then the method can stop here.
-    if (!useRegistry) {
+    if (dontUseRegistry) {
         return;
     }
     
@@ -169,12 +167,9 @@ function save(
     // for the class, in a different decorator.
     registry.set(owner, metadata);
 
-    // Lastly, we might also need to define the owner[Symbol.metadata] property, if not
-    // already defined.
-    if (Reflect.has(owner, METADATA)) {
-        return;
-    }
-    
+    // Lastly, define the owner[Symbol.metadata] property. In case that owner is a subclass,
+    // then this ensures that it "overwrites" the parent's metadata property and offers its
+    // own version thereof, whilst the parent keeps the original defined.
     Reflect.defineProperty(owner, METADATA, {
         get: () => {
             // To ensure that metadata cannot be changed outside the scope and context of a
@@ -186,6 +181,36 @@ function save(
         // Ensure that the property cannot be deleted
         configurable: false
     });
+}
+
+/**
+ * Resolve the metadata record that must be used when writing new metadata
+ * 
+ * @param {object} owner
+ * @param {Context} context
+ * @param {boolean} dontUseRegistry
+ * 
+ * @returns {MetadataRecord}
+ */
+function resolveMetadataRecord(owner: object, context: Context, dontUseRegistry: boolean): MetadataRecord
+{
+    // If registry is not to be used, it means that context.metadata is available 
+    if (dontUseRegistry) {
+        return context.metadata as MetadataRecord;
+    }
+
+    // Obtain record from registry, or create new empty object.
+    let metadata: MetadataRecord = registry.get(owner) ?? {};
+
+    // In case that the owner has Symbol.metadata defined, merge it together
+    // with the metadata from the registry. Doing so ensures that inheritance
+    // of metadata works as intended... This is VERY important!
+    if (Reflect.has(owner, METADATA)) {
+        // @ts-expect-error: Owner has Symbol.metadata!
+        metadata = Object.assign(metadata, owner[METADATA]);
+    }
+
+    return metadata;
 }
 
 /**
