@@ -1,5 +1,6 @@
 import type {Key} from "@aedart/contracts/support";
 import type { Context, MetaCallback, MetaEntry, MetadataRecord } from "@aedart/contracts/support/meta";
+import { METADATA } from "@aedart/contracts/support/meta";
 import { set, get } from "@aedart/support/objects";
 // import { cloneDeep } from "lodash-es";
 
@@ -15,6 +16,8 @@ import { set, get } from "@aedart/support/objects";
 const registry: WeakMap<object, MetadataRecord> = new WeakMap<object, MetadataRecord>();
 
 /**
+ * @deprecated Use {@link METADATA} instead...
+ * 
  * The well-known symbol for metadata
  * @see https://github.com/tc39/proposal-decorator-metadata
  *

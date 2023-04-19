@@ -14,6 +14,14 @@ import MetaEntry from "./MetaEntry";
  */
 export const SUPPORT_META: unique symbol = Symbol('@aedart/contracts/support/meta');
 
+/**
+ * The well-known symbol for metadata
+ * @see https://github.com/tc39/proposal-decorator-metadata
+ * 
+ * @type {symbol}
+ */
+export const METADATA: unique symbol = Symbol.for('metadata');
+
 export {
     type ClassContext,
     type MethodContext,
