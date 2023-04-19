@@ -154,6 +154,8 @@ export function getAllMeta(target: object): Readonly<MetadataRecord> | undefined
 }
 
 /**
+ * @deprecated TODO: Redesign
+ * 
  * Set "meta" entry for given target class
  *
  * @param {MetaEntry} entry
@@ -183,6 +185,8 @@ function save(
 }
 
 /**
+ * @deprecated TODO: Redesign
+ * 
  * Resolve the "meta" entry's key and value.
  *
  * If key is a callback, then it will be invoked. Otherwise,
@@ -215,6 +219,8 @@ function resolve(
 }
 
 /**
+ * @deprecated TODO: Redesign
+ * 
  * Returns the target class
  *
  * **Caution**: _`thisArg` should only be set from an "addInitializer" callback
