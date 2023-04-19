@@ -5,9 +5,8 @@ import { set, get } from "@aedart/support/objects";
 // import { cloneDeep } from "lodash-es";
 
 /**
- * Fallback registry of metadata, in case that `context.metadata` is
- * not available.
- *
+ * Registry that contains the writable metadata (`context.metadata`).
+ * 
  * **Warning**: _This registry is **NOT intended** to be available for writing,
  * outside the scope of the meta decorator._
  *
