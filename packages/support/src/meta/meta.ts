@@ -133,20 +133,18 @@ function save(
     value?: unknown,
 )
 {
-    // Determine if the internal registry should be used. This is expected to be true, until the
-    // TC39 proposal decorator-metadata is approved and published.
-    const dontUseRegistry: boolean = Reflect.has(context, 'metadata') && typeof context.metadata === 'object';
-    
-    // Obtain metadata, either from the provide context or via owner[Symbol.metadata].
-    const metadata: MetadataRecord = resolveMetadataRecord(owner, context, dontUseRegistry);
+    // Determine if metadata from context can be used (if it's available), and resolve it either from
+    // the decorator context or from the registry.
+    const useMetaFromContext: boolean = Reflect.has(context, 'metadata') && typeof context.metadata === 'object';
+    const metadata: MetadataRecord = resolveMetadataRecord(owner, context, useMetaFromContext);
 
-    // In case that context.metadata is not set (e.g. we use the internal registry), then
-    // this should ensure that it is set. Thus, if key is a "meta callback", it will be
-    // able to gain access to previous defined metadata for the class.
+    // Set context.metadata, in case that it didn't exist in the decorator context, when
+    // reaching this point. This also allows "meta callback" to access previous defined
+    // metadata.
     context.metadata = metadata;
 
-    // Resolve meta entry (key and value). If a "meta callback" is given, then it
-    // will be invoked here...
+    // Resolve meta entry (key and value). When a "meta callback" is given, it is invoked
+    // here. Afterward, set the resolved key-value. 
     const entry: MetaEntry = resolveEntry(
         key,
         value,
@@ -155,27 +153,25 @@ function save(
         owner
     );
 
-    // Set the key and value in the metadata record.
     set(metadata, entry.key, entry.value);
-
-    // If the internal registry is NOT used, then the method can stop here.
-    if (dontUseRegistry) {
+    
+    // When the metadata originates from the decorator context, we can stop here.
+    // Otherwise, we need to save it in the internal registry...
+    if (useMetaFromContext) {
         return;
     }
-    
-    // Otherwise, the metadata must be set in the registry, so that it can be re-obtained
-    // for the class, in a different decorator.
+
     registry.set(owner, metadata);
 
-    // Lastly, define the owner[Symbol.metadata] property. In case that owner is a subclass,
-    // then this ensures that it "overwrites" the parent's metadata property and offers its
-    // own version thereof, whilst the parent keeps the original defined.
+    // Lastly, define the owner[Symbol.metadata] property (only done once for the owner).
+    // In case that owner is a subclass, then this ensures that it "overwrites" the parent's
+    // [Symbol.metadata] property and offers its own version thereof.
     Reflect.defineProperty(owner, METADATA, {
         get: () => {
             // To ensure that metadata cannot be changed outside the scope and context of a
-            // meta decorator, a deep clone of the metadata record is returned here. JavaScript's
+            // meta decorator, a deep clone of the record is returned here. JavaScript's
             // native structuredClone cannot be used, because it does not support symbols.
-            return cloneDeep(metadata);
+            return cloneDeep(registry.get(owner));
         },
         
         // Ensure that the property cannot be deleted
@@ -188,14 +184,14 @@ function save(
  * 
  * @param {object} owner
  * @param {Context} context
- * @param {boolean} dontUseRegistry
+ * @param {boolean} useMetaFromContext
  * 
  * @returns {MetadataRecord}
  */
-function resolveMetadataRecord(owner: object, context: Context, dontUseRegistry: boolean): MetadataRecord
+function resolveMetadataRecord(owner: object, context: Context, useMetaFromContext: boolean): MetadataRecord
 {
     // If registry is not to be used, it means that context.metadata is available 
-    if (dontUseRegistry) {
+    if (useMetaFromContext) {
         return context.metadata as MetadataRecord;
     }
 
@@ -261,6 +257,7 @@ function resolveTargetOwner(thisArg: object, context: Context): object
         return thisArg;
     }
 
+    // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#class_context
     return (context.static)
         ? thisArg
         // @ts-expect-error: When target is not static, then it's obtainable via prototype
