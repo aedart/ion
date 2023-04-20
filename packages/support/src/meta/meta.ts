@@ -198,9 +198,9 @@ function resolveMetadataRecord(owner: object, context: Context, useMetaFromConte
     // Obtain record from registry, or create new empty object.
     let metadata: MetadataRecord = registry.get(owner) ?? {};
 
-    // In case that the owner has Symbol.metadata defined, merge it together
-    // with the metadata from the registry. Doing so ensures that inheritance
-    // of metadata works as intended... This is VERY important!
+    // In case that the owner has Symbol.metadata defined (e.g. from base class),
+    // then merge it current metadata. This ensures that inheritance works as
+    // intended, whilst a base class still keeping its original metadata.
     if (Reflect.has(owner, METADATA)) {
         // @ts-expect-error: Owner has Symbol.metadata!
         metadata = Object.assign(metadata, owner[METADATA]);
