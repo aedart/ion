@@ -188,5 +188,27 @@ describe('@aedart/support/meta', () => {
                 .withContext('Key c SHOULD NOT exist in class A meta!')
                 .toBeUndefined();
         });
+
+        it('can overwrite inherited meta in subclass', () => {
+            const key = 'alpha'
+            const valueA = 1234;
+            const valueB = 8520;
+
+            @meta(key, valueA)
+            class A {}
+
+            @meta(key, valueB)
+            class B extends A {}
+
+            // ----------------------------------------------------------------- //
+
+            expect(getMeta(B, key))
+                .withContext('Overwritten meta has incorrect value')
+                .toBe(valueB)
+            
+            expect(getMeta(A, key))
+                .withContext('Original value was also overwritten in base class!')
+                .toBe(valueA);
+        });
     });
 });
