@@ -210,5 +210,32 @@ describe('@aedart/support/meta', () => {
                 .withContext('Original value was also overwritten in base class!')
                 .toBe(valueA);
         });
+
+        it('runs additional initialize callback for class', () => {
+
+            const key = 'foo';
+            const value = 'bar';
+            let invoked = false;
+
+            @meta((target, context) => {
+                context.addInitializer(() => {
+                    invoked = true;
+                });
+                
+                return {
+                    key: key,
+                    value: value
+                }
+            })
+            class A {}
+
+            // ----------------------------------------------------------------- //
+            
+            // console.log('was invoked', invoked)
+
+            expect(invoked)
+                .withContext('Init callback not invoked for class')
+                .toBeTrue();
+        });
     });
 });
