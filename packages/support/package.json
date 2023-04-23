@@ -1,6 +1,6 @@
 {
     "name": "@aedart/support",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "The Ion support package",
     "keywords": [
         "Support",
@@ -49,7 +49,7 @@
         "!dist/**/*.map"
     ],
     "peerDependencies": {
-        "@aedart/contracts": "^0.5.0",
+        "@aedart/contracts": "^0.6.0",
         "@types/lodash-es": "^4.17.7",
         "lodash-es": "^4.17.21"
     },
