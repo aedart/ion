@@ -1,5 +1,11 @@
 import type {Key} from "@aedart/contracts/support";
-import type { Context, MetaCallback, MetaEntry, MetadataRecord } from "@aedart/contracts/support/meta";
+import type {
+    Context,
+    MetaCallback,
+    MetaEntry,
+    MetadataRecord,
+    MetaTargetContext
+} from "@aedart/contracts/support/meta";
 import { METADATA } from "@aedart/contracts/support/meta";
 import { set, get } from "@aedart/support/objects";
 import { cloneDeep } from "lodash-es";
@@ -37,9 +43,7 @@ export function meta(
             // For a class target, the meta can be added directly.
             case 'class':
                 return save(
-                    resolveTargetOwner(target, context),
-                    target, // thisArg is the class in this case.
-                    target,
+                    resolveMetaTargetContext(target, target, context),
                     context,
                     key,
                     value
@@ -49,12 +53,14 @@ export function meta(
             // obtain correct owner...
             case 'field':
                 return function(initialValue: unknown) {
-                    // @ts-expect-error: "this" corresponds to class instance.
-                    const owner: object = resolveTargetOwner(this, context);
+                    save(
+                        // @ts-expect-error: "this" corresponds to class instance.
+                        resolveMetaTargetContext(target, this, context),
+                        context,
+                        key,
+                        value
+                    );
 
-                    // @ts-expect-error: "this" corresponds to class instance.
-                    save(owner, this, target, context, key, value);
-                    
                     return initialValue;
                 }
 
@@ -64,10 +70,12 @@ export function meta(
             // @see https://github.com/tc39/proposal-decorator-metadata
             default:
                 context.addInitializer(function() {
-                    // @ts-expect-error: "this" corresponds to class instance.
-                    const owner: object = resolveTargetOwner(this, context);
-
-                    save(owner, this, target, context, key, value);
+                    save(
+                        resolveMetaTargetContext(target, this, context),
+                        context,
+                        key,
+                        value
+                    );
                 });
                 return;
         }
@@ -116,22 +124,18 @@ export function getAllMeta(owner: object): Readonly<MetadataRecord> | undefined
 /**
  * Save metadata
  * 
- * @param {object} owner Class that owns the metadata
- * @param {any} thisArg The bound "this" value, e.g. from "addInitializer" callback function.
- * @param {object | undefined} target The target that is being decorated
+ * @param {MetaTargetContext} targetContext
  * @param {Context} context Decorator context
  * @param {Key | MetaCallback} key Key or path identifier. If callback is given,
  *                                 then its resulting {@link MetaEntry}'s `key`
  *                                 and `value` are stored.
  * @param {unknown} [value] Value to store. Ignored if `key` argument is
  *                          a callback.
- *                          
+ *
  * @return {void}
  */
 function save(
-    owner: object,
-    thisArg: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    target: object,
+    targetContext: MetaTargetContext,
     context: Context,
     key: Key | MetaCallback,
     value?: unknown,
@@ -140,7 +144,7 @@ function save(
     // Determine if metadata from context can be used (if it's available), and resolve it either from
     // the decorator context or from the registry.
     const useMetaFromContext: boolean = Reflect.has(context, 'metadata') && typeof context.metadata === 'object';
-    const metadata: MetadataRecord = resolveMetadataRecord(owner, context, useMetaFromContext);
+    const metadata: MetadataRecord = resolveMetadataRecord(targetContext.owner, context, useMetaFromContext);
 
     // Set context.metadata, in case that it didn't exist in the decorator context, when
     // reaching this point. This also allows "meta callback" to access previous defined
@@ -160,11 +164,10 @@ function save(
     // Resolve meta entry (key and value). When a "meta callback" is given, it is invoked
     // here. Afterward, set the resolved key-value. 
     const entry: MetaEntry = resolveEntry(
+        targetContext,
+        context,
         key,
         value,
-        target,
-        context,
-        owner
     );
 
     set(metadata, entry.key, entry.value);
@@ -175,17 +178,17 @@ function save(
         return;
     }
 
-    registry.set(owner, metadata);
+    registry.set(targetContext.owner, metadata);
 
     // Lastly, define the owner[Symbol.metadata] property (only done once for the owner).
     // In case that owner is a subclass, then this ensures that it "overwrites" the parent's
     // [Symbol.metadata] property and offers its own version thereof.
-    Reflect.defineProperty(owner, METADATA, {
+    Reflect.defineProperty(targetContext.owner, METADATA, {
         get: () => {
             // To ensure that metadata cannot be changed outside the scope and context of a
             // meta decorator, a deep clone of the record is returned here. JavaScript's
             // native structuredClone cannot be used, because it does not support symbols.
-            return cloneDeep(registry.get(owner));
+            return cloneDeep(registry.get(targetContext.owner));
         },
         
         // Ensure that the property cannot be deleted
@@ -194,7 +197,7 @@ function save(
 
     // Invoke evt. init callbacks...
     initCallbacks.forEach((callback: (this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void) => {
-        callback.call(thisArg);
+        callback.call(targetContext.thisArg);
     });
 }
 
@@ -231,31 +234,54 @@ function resolveMetadataRecord(owner: object, context: Context, useMetaFromConte
 /**
  * Resolve the "meta" entry's key and value
  * 
+ * @param {MetaTargetContext} targetContext
+ * @param {Context} context
  * @param {Key | MetaCallback} key If callback is given, then it is invoked.
  *                                 It's resulting meta entry is returned.
  * @param {unknown} value Value to store as metadata. Ignored if callback is given
  *                        as key.
- * @param {object} target
- * @param {Context} context
- * @param {object} owner
- * 
+ *                        
  * @returns {MetaEntry}
  */
 function resolveEntry(
+    targetContext: MetaTargetContext,
+    context: Context,
     key: Key | MetaCallback,
     value: unknown,
-    target: object,
-    context: Context,
-    owner: object
 ): MetaEntry
 {
     if (typeof key === 'function') {
-        return (key as MetaCallback)(target, context, owner);
+        return (key as MetaCallback)(targetContext.target, context, targetContext.owner);
     }
 
     return {
         key: (key as Key),
         value: value
+    }
+}
+
+/**
+ * Resolve the meta target context
+ *
+ * **Caution**: _`thisArg` should only be set from an "addInitializer" callback
+ * function, via decorator context._
+ * 
+ * @param {object} target Target the is being decorated
+ * @param {object} thisArg The bound "this" value, from "addInitializer" callback function.
+ * @param {Context} context
+ * 
+ * @returns {MetaTargetContext}
+ */
+function resolveMetaTargetContext(
+    target: object,
+    thisArg: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    context: Context
+): MetaTargetContext
+{
+    return {
+        owner: resolveTargetOwner(thisArg, context),
+        thisArg: thisArg,
+        target: target
     }
 }
 

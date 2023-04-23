@@ -6,6 +6,7 @@ import SetterContext from "./SetterContext";
 import FieldContext from "./FieldContext";
 import AccessorContext from "./AccessorContext";
 import MetaEntry from "./MetaEntry";
+import MetaTargetContext from "./MetaTargetContext";
 
 /**
  * Support Meta identifier
@@ -32,6 +33,7 @@ export {
     type MetadataContext,
     
     type MetaEntry,
+    type MetaTargetContext,
 };
 
 export type * from './types';
