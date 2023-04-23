@@ -99,13 +99,13 @@ const description = getMeta(Service, 'fetch.desc', 'N/A - method has no descript
 ### Callback
 
 If you need to create more advanced metadata, you can specify a callback as the first argument for the `meta()` decorator method.
-Using a callback, you gain access to the `target` that is being decorated, as well as the decorator `context`.
+When using a callback you gain access to the `target` that is being decorated, as well as the decorator `context`.
 The callback **MUST** return an object that contains a `key` and a `value` property.
 
 ```js
 import {meta} from '@aedart/support/meta';
 
-class Service{
+class Service {
 
     @meta((target, context) => {
         return {
@@ -135,7 +135,7 @@ function delegateMeta() {
     });
 }
 
-class Service{
+class Service {
 
     @delegateMeta()
     delegateTo(gateway) {
@@ -146,7 +146,72 @@ class Service{
 
 ## Inheritance
 
-...TODO...
+Metadata is automatically inherited by subclasses.
+
+```js
+import {meta, getMeta} from '@aedart/support/meta';
+
+@meta('service_alias', 'locationSearcher')
+class Service {}
+
+class CitySearcher extends Service {}
+
+getMeta(CitySearcher, 'service_alias'); // locationSearcher
+```
+
+### Overwrites
+
+You can also overwrite the inherited metadata. The subclass that defines the metadata creates its own copy of the inherited metadata.
+The parent class' metadata remains untouched.
+
+```js
+import {meta, getMeta} from '@aedart/support/meta';
+
+class Service {
+    
+    @meta('search.desc', 'Searches for countries')
+    search() {
+        // ...not shown...
+    }
+}
+
+class CitySearcher extends Service {
+
+    @meta('search.desc', 'Searches for cities')
+    search() {
+        // ...not shown...
+    }
+}
+
+const service = new CitySearcher();
+
+getMeta(CitySearcher, 'search.desc'); // Searches for cities
+getMeta(Service, 'search.desc'); // Searches for countries
+```
+
+## Changes outside the decorator
+
+Whenever you read metadata, **_a copy_** is returned by the `getMeta()` method.
+This means that you can change the data, in your given context, but the original metadata remains the same.
+
+```js
+import {meta, getMeta} from '@aedart/support/meta';
+
+@meta('description', { name: 'Search Service', alias: 'Location Sercher' })
+class Service {}
+
+// Obtain "copy" and change it...
+let desc = getMeta(Service, 'description');
+desc.name = 'Country Searcher';
+
+// Original remains unchanged
+getMeta(Service, 'description').name; // Search Service
+```
+
+::: warning Caution
+Only the `meta` decorator is intended to alter existing metadata - _even if the value is an object_.
+Please be mindful of this behaviour, whenever you change retrieved metadata using the `getMeta()` and `getAllMeta()` methods.  
+:::
 
 ## TC39 Decorator Metadata
 
@@ -177,7 +242,7 @@ class Service {}
 
 Service[Symbol.metadata].service_alias;
 ```
-(_Above shown example is very simplified. Actual implementation is a bit more complex,..._)
+(_Above shown example is very simplified. Actual implementation is a bit more complex..._)
 
 At present, the internal mechanisms of the `meta` decorator must rely on a [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) to associate metadata with the intended class.
 When the [Decorator Metadata proposal](https://github.com/tc39/proposal-decorator-metadata) becomes more mature and transpilers offer the `context.metadata` object (_or when browsers support it_),
