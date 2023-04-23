@@ -180,5 +180,5 @@ Service[Symbol.metadata].service_alias;
 (_Above shown example is very simplified. Actual implementation is a bit more complex,..._)
 
 At present, the internal mechanisms of the `meta` decorator must rely on a [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) to associate metadata with the intended class.
-However, when the [Decorator Metadata proposal](https://github.com/tc39/proposal-decorator-metadata) becomes more mature and transpilers offer the `context.metadata` (_or when browsers implement class decorators natively with support for `context.metadata`_),
+When the [Decorator Metadata proposal](https://github.com/tc39/proposal-decorator-metadata) becomes more mature and transpilers offer the `context.metadata` object (_or when browsers support it_),
 then this decorator will be updated respectfully to use the available metadata object. 
