@@ -30,6 +30,16 @@
             "types": "./dist/types/contracts.d.ts",
             "import": "./dist/esm/contracts.js",
             "require": "./dist/cjs/contracts.cjs"
+        },
+        "./support": {
+            "types": "./dist/types/support.d.ts",
+            "import": "./dist/esm/support.js",
+            "require": "./dist/cjs/support.cjs"
+        },
+        "./support/meta": {
+            "types": "./dist/types/support/meta.d.ts",
+            "import": "./dist/esm/support/meta.js",
+            "require": "./dist/cjs/support/meta.cjs"
         }
     },
     "files": [

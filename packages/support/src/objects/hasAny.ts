@@ -1,18 +1,16 @@
 import { has } from './has';
-import type { PropertyPath } from 'lodash';
+import type {Key} from "@aedart/contracts/support";
 
 /**
  * Determine if any paths are properties of given object
- * 
- * @typedef {import('lodash').PropertyPath} PropertyPath
  * @template T
  *
  * @param {T} object Target object
- * @param {...PropertyPath} paths Property path(s)
+ * @param {...Key} paths Property path(s)
  *
  * @returns {boolean}
  */
-export function hasAny<T>(object: T, ...paths: (PropertyPath)[]): boolean
+export function hasAny<T>(object: T, ...paths: (Key)[]): boolean
 {
     for (const path of paths) {
         if (has(object, path)) {

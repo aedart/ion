@@ -8,6 +8,9 @@ repository="git@github.com:aedart/ion.git"
 branch="main:gh-pages"
 build_directory=".build"
 
+# Create build dir, if needed.
+mkdir -p "$build_directory"
+
 # Clear the build directory, but keep the directory
 cd "$build_directory"
 find . -type f -delete

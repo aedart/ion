@@ -7,9 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* `Key`, `PropertyKey`, and `Primitive` types in contracts.
+* `isPrimitive()` method, in `@aedart/support`.
+* `ObjectId` helper that can generate/obtain a numeric ID for a target object, in `@aedart/support`.
+* Cleanup script for removing leftover `*.d.ts` files in source dirs.
+
 ### Changed
 
+* Methods in `@aedart/support/objects` now use the new `Key` type (_previously used Lodash's `PropertyKey` type_).
+* `empty()` new uses a switch case internally, which appears to be much faster, in `@aedart/support/misc`.
 * Removed `"gitHead"` from all `package.json` files (_should not have been committed in the first place_).
+
+### Fixed
+
+* Broken link to `isset()`, in Objects `isset()` documentation.
+* `deploy.docs.sh` fails when `.build` directory does not exist.
 
 ## [0.5.0] - 2023-04-09
 

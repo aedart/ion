@@ -1,19 +1,18 @@
 import { isset as _isset } from "@aedart/support/misc";
 import {get} from "./get";
-import type {PropertyPath} from "lodash";
+import type {Key} from "@aedart/contracts/support";
 
 /**
  * Determine if properties at given paths are declared, and their values are not undefined or null
  * 
- * @typedef {import('lodash').PropertyPath} PropertyPath
  * @template T
  * 
  * @param {T} object
- * @param {...PropertyPath} paths
+ * @param {...Key} paths
  * 
  * @returns {boolean}
  */
-export function isset<T>(object: T, ...paths: (PropertyPath)[]): boolean
+export function isset<T>(object: T, ...paths: (Key)[]): boolean
 {
     if (object === undefined || paths.length === 0) {
         return false;
