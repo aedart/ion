@@ -38,6 +38,7 @@ export function meta(
             case 'class':
                 return save(
                     resolveTargetOwner(target, context),
+                    target, // thisArg is the class in this case.
                     target,
                     context,
                     key,
@@ -48,10 +49,11 @@ export function meta(
             // obtain correct owner...
             case 'field':
                 return function(initialValue: unknown) {
-                    // @ts-expect-error: "this" is bound to the initialisation of the field.
+                    // @ts-expect-error: "this" corresponds to class instance.
                     const owner: object = resolveTargetOwner(this, context);
 
-                    save(owner, target, context, key, value);
+                    // @ts-expect-error: "this" corresponds to class instance.
+                    save(owner, this, target, context, key, value);
                     
                     return initialValue;
                 }
@@ -62,10 +64,10 @@ export function meta(
             // @see https://github.com/tc39/proposal-decorator-metadata
             default:
                 context.addInitializer(function() {
-                    // @ts-expect-error: "this" is bound to the initialisation of the field.
+                    // @ts-expect-error: "this" corresponds to class instance.
                     const owner: object = resolveTargetOwner(this, context);
 
-                    save(owner, target, context, key, value);
+                    save(owner, this, target, context, key, value);
                 });
                 return;
         }
@@ -115,6 +117,7 @@ export function getAllMeta(owner: object): Readonly<MetadataRecord> | undefined
  * Save metadata
  * 
  * @param {object} owner Class that owns the metadata
+ * @param {any} thisArg The bound "this" value, e.g. from "addInitializer" callback function.
  * @param {object | undefined} target The target that is being decorated
  * @param {Context} context Decorator context
  * @param {Key | MetaCallback} key Key or path identifier. If callback is given,
@@ -127,6 +130,7 @@ export function getAllMeta(owner: object): Readonly<MetadataRecord> | undefined
  */
 function save(
     owner: object,
+    thisArg: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
     target: object,
     context: Context,
     key: Key | MetaCallback,
@@ -142,6 +146,16 @@ function save(
     // reaching this point. This also allows "meta callback" to access previous defined
     // metadata.
     context.metadata = metadata;
+
+    // Whenever the key is a "meta" callback, for any other kind than a class or a field,
+    // we overwrite the "context.addInitializer" method, so init callbacks can be invoked
+    // manually after meta has been defined.
+    const initCallbacks: ((this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void)[] = [];
+    if (typeof key === 'function' && (context.kind !== 'class' && context.kind !== 'field')) {
+        context.addInitializer = (callback: (this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void) => {
+            initCallbacks.push(callback);
+        }
+    }
 
     // Resolve meta entry (key and value). When a "meta callback" is given, it is invoked
     // here. Afterward, set the resolved key-value. 
@@ -176,6 +190,11 @@ function save(
         
         // Ensure that the property cannot be deleted
         configurable: false
+    });
+
+    // Invoke evt. init callbacks...
+    initCallbacks.forEach((callback: (this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void) => {
+        callback.call(thisArg);
     });
 }
 
