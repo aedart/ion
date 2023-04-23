@@ -4,7 +4,7 @@ description: Add arbitrary metadata on classes, methods and properties.
 sidebarDepth: 0
 ---
 
-# Meta
+# Meta <Badge type="tip" text="Available since v0.6" vertical="middle" />
 
 Provides a decorator that is able to associate metadata with a class, its methods and properties.
 

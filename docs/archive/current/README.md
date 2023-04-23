@@ -29,6 +29,19 @@ _TBD: "To be decided"._
 
 ## `v0.x` Highlights
 
+### Meta Decorator <Badge type="tip" text="Available since v0.6" />
+
+The [meta decorator](./packages/support/meta.md) is able to associate arbitrary metadata with a class and its elements.
+
+```js
+import {meta, getMeta} from '@aedart/support/meta';
+
+@meta('description', 'Able to search for locations')
+class Service {}
+
+getMeta(Service, 'description'); // Able to search for locations
+```
+
 ### Support <Badge type="tip" text="Available since v0.3" />
 
 A package intended to contain various helpers and utilities.
