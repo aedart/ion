@@ -114,7 +114,7 @@ describe('@aedart/support/meta', () => {
             // console.log('was invoked', invoked)
 
             expect(invoked)
-                .withContext('Init callback not invoked for method')
+                .withContext('Init callback not invoked')
                 .toBeTrue();
         });
     });
