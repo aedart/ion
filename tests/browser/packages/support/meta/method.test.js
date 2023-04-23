@@ -84,24 +84,27 @@ describe('@aedart/support/meta', () => {
                 .withContext('Incorrect meta value obtained')
                 .toBe(value);
         });
-        
+
         it('runs additional initialize callback for method', () => {
 
             const key = 'foo';
             const value = 'bar';
             let invoked = false;
+            
+            class A {
 
-            @meta((target, context) => {
-                context.addInitializer(() => {
-                    invoked = true;
-                });
+                @meta((target, context) => {
+                    context.addInitializer(() => {
+                        invoked = true;
+                    });
 
-                return {
-                    key: key,
-                    value: value
-                }
-            })
-            class A {}
+                    return {
+                        key: key,
+                        value: value
+                    }
+                })
+                foo(){}
+            }
 
             // instance required... 
             new A();
