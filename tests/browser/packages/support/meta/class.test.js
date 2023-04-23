@@ -116,6 +116,36 @@ describe('@aedart/support/meta', () => {
                 .toEqual({ name: value })
         });
 
+        it('can wrap callback into custom decorator', () => {
+
+            const key = Symbol('foo');
+            const value = 'bar';
+
+            function customMetaDecorator() {
+                return meta(() => {
+                    return {
+                        key: key,
+                        value: {
+                            name: value
+                        }
+                    }
+                }) 
+            }
+            
+            @customMetaDecorator()
+            class A {}
+
+            // ----------------------------------------------------------------- //
+
+            // console.log(getAllMeta(A));
+
+            const found = getMeta(A, key);
+            expect(found)
+                .withContext('Incorrect meta value obtained')
+                .toEqual({ name: value })
+            
+        });
+        
         it('inherits metadata', () => {
 
             const key = 'alpha'
