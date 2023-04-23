@@ -93,35 +93,39 @@ describe('@aedart/support/meta', () => {
                 .toBe(value);
         });
 
-        // TODO: ...
-        // it('runs additional initialize callback for getter', () => {
-        //
-        //     const key = 'foo';
-        //     const value = 'bar';
-        //     let invoked = false;
-        //
-        //     @meta((target, context) => {
-        //         context.addInitializer(() => {
-        //             invoked = true;
-        //         });
-        //
-        //         return {
-        //             key: key,
-        //             value: value
-        //         }
-        //     })
-        //     class A {}
-        //
-        //     // instance required... 
-        //     new A();
-        //
-        //     // ----------------------------------------------------------------- //
-        //
-        //     // console.log('was invoked', invoked)
-        //
-        //     expect(invoked)
-        //         .withContext('Init callback not invoked for method')
-        //         .toBeTrue();
-        // });
+        it('runs additional initialize callback for getter', () => {
+
+            const key = 'foo';
+            const value = 'bar';
+            let invoked = false;
+
+            class A {
+
+                @meta((target, context) => {
+                    context.addInitializer(() => {
+                        invoked = true;
+                    });
+
+                    return {
+                        key: key,
+                        value: value
+                    }
+                })
+                get foo(){
+                    return 'bar'
+                }
+            }
+
+            // instance required... 
+            new A();
+
+            // ----------------------------------------------------------------- //
+
+            // console.log('was invoked', invoked)
+
+            expect(invoked)
+                .withContext('Init callback not invoked for method')
+                .toBeTrue();
+        });
     });
 });
