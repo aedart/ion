@@ -18,7 +18,7 @@
         "url": "git+https://github.com/aedart/ion.git",
         "directory": "packages/reflections"
     },
-    "private": false,
+    "private": true,
     "publishConfig": {
         "access": "public"
     },
