@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* `Kind` enum which contains cases of the kind of element that is being decorated (_defined in a decorator context object_). 
 * `Arrayable` interface, in `@aedart/contracts/support` submodule.
 
 ### Removed
