@@ -50,4 +50,11 @@ export default interface Reflection extends Arrayable
      * @returns {WeakRef<object> | undefined}
      */
     get target(): WeakRef<object> | undefined;
+
+    /**
+     * Determine if this reflection has a valid target reference
+     * 
+     * @returns {boolean}
+     */
+    hasTarget(): boolean;
 }
