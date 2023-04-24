@@ -8,9 +8,9 @@ export default interface Reflection extends Arrayable
     /**
      * The name of the element
      * 
-     * @returns {string | symbol}
+     * @returns {string | symbol | undefined}
      */
-    get name(): string | symbol;
+    get name(): string | symbol | undefined;
     
     /**
      * The kind of element
