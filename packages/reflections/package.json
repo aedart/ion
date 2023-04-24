@@ -4,7 +4,8 @@
     "description": "Reflections",
     "keywords": [
         "Reflect",
-        "Reflections"
+        "Meta Reflections",
+        "Class Decorator"
     ],
     "author": "Alin Eugen Deac <aedart@gmail.com>",
     "license": "BSD-3-Clause",
@@ -17,7 +18,7 @@
         "url": "git+https://github.com/aedart/ion.git",
         "directory": "packages/reflections"
     },
-    "private": true,
+    "private": false,
     "publishConfig": {
         "access": "public"
     },
@@ -34,9 +35,8 @@
         "!dist/**/*.map"
     ],
     "peerDependencies": {
-        "@aedart/contracts": "*",
-        "@types/lodash-es": "^4.17.7",
-        "lodash-es": "^4.17.21"
+        "@aedart/contracts": "^0.6.0",
+        "@aedart/support": "^0.6.0"
     },
     "scripts": {
         "compile": "rollup -c",
