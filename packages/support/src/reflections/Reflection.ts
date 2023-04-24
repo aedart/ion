@@ -199,7 +199,7 @@ export default class Reflection implements ReflectionContract
      *
      * @throws {TypeError} If kind is not supported
      */
-    static fromArray(arr: any[])
+    static fromArray(arr: unknown[])
     {
         const min: number = 4;
         if (arr.length < min) {
@@ -207,10 +207,10 @@ export default class Reflection implements ReflectionContract
         }
 
         return new this(
-            Reflection.decodeElementKind(arr[0]),
+            Reflection.decodeElementKind(arr[0] as number),
             Boolean(arr[1]),
             Boolean(arr[2]),
-            arr[3],
+            arr[3] as (string | symbol | undefined),
             Reflection.resolveTargetReference(arr[4] ?? undefined)
         );
     }
