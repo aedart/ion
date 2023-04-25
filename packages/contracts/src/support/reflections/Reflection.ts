@@ -2,6 +2,8 @@ import { Arrayable } from "@aedart/contracts/support";
 
 /**
  * Reflection
+ * 
+ * Contains meta information about a target element. 
  */
 export default interface Reflection extends Arrayable
 {
