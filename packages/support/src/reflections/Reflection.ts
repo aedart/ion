@@ -1,7 +1,5 @@
 import type { Reflection as ReflectionContract } from "@aedart/contracts/support/reflections";
-import { Kind } from "@aedart/contracts/support/meta";
 import { isset } from "@aedart/support/misc";
-import Encoder from "./Encoder";
 
 /**
  * Reflection
@@ -84,22 +82,6 @@ export default class Reflection implements ReflectionContract
     }
 
     /**
-     * Create a new Reflection instance from given array
-     *
-     * @see Encoder
-     * 
-     * @param {any[]} arr Encoded array of reflection attributes
-     *
-     * @returns {import('@aedart/contracts/support/reflections').Reflection}
-     *
-     * @throws {TypeError}
-     */
-    static fromArray(arr: unknown[]): ReflectionContract
-    {
-        return Encoder.decode(arr, Reflection);
-    }
-
-    /**
      * @inheritdoc
      */
     get kind(): string
@@ -153,21 +135,5 @@ export default class Reflection implements ReflectionContract
     hasTarget(): boolean
     {
         return this.target?.deref() !== undefined;
-    }
-    
-    /**
-     * @inheritdoc
-     * 
-     * @see Encoder.encode
-     */
-    toArray(): unknown[]
-    {
-        return Encoder.encode(
-            this.kind as keyof typeof Kind,
-            this.private,
-            this.static,
-            this.name,
-            this.target            
-        );
     }
 }
