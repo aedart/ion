@@ -41,7 +41,7 @@ export default interface Reflection
     get public(): boolean;
 
     /**
-     * Reference to target element
+     * Target element
      * 
      * **Note**: value is undefined if target element is not an
      * object (e.g. if a primitive value), or if target element
@@ -52,9 +52,26 @@ export default interface Reflection
     get target(): WeakRef<object> | undefined;
 
     /**
-     * Determine if this reflection has a valid target reference
+     * Determine if target is set
      * 
-     * @returns {boolean}
+     * @returns {boolean} True if target {@link WeakRef.deref} returns object instance.
      */
     hasTarget(): boolean;
+
+    /**
+     * Owner of target
+     * 
+     * A target owner can either be a class (_if element is static_),
+     * or a class instance.
+     * 
+     * @returns {object | undefined}
+     */
+    get owner(): WeakRef<object> | undefined;
+
+    /**
+     * Determine if owner is set
+     *
+     * @returns {boolean} True if owner {@link WeakRef.deref} returns object instance.
+     */
+    hasOwner(): boolean;
 }

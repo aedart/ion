@@ -1,8 +1,8 @@
-import type { Constructor } from "@aedart/contracts";
 import type {Context} from "@aedart/contracts/support/meta";
-import type { Reflection } from "@aedart/contracts/support/reflections";
+import type { Reflection as ReflectionContract } from "@aedart/contracts/support/reflections";
 import {Kind} from "@aedart/contracts/support/meta";
 import { targetToWeakReference } from "./targetToWeakReference";
+import Reflection from "./Reflection";
 
 /**
  * Encoder
@@ -14,32 +14,37 @@ export default class Encoder
      *
      * @param {Context} context
      * @param {WeakRef<object> | object | undefined} [target=undefined]
+     * @param {WeakRef<object> | object | undefined} [owner=undefined]
      *
      * @returns {unknown[]}
      *
      * @throws {TypeError} If context kind is not supported
      */
-    static encodeContext(context: Context, target: WeakRef<object> | object | undefined = undefined): unknown[]
+    static encodeContext(
+        context: Context,
+        target: WeakRef<object> | object | undefined = undefined,
+        owner: WeakRef<object> | object | undefined = undefined,
+    ): unknown[]
     {
         return Encoder.encode(
             context.kind,
             context.kind === 'class' ? false : context.private,
             context.kind === 'class' ? false : context.static,
             context.name,
-            target
+            target,
+            owner
         )
     }
     
     /**
      * "Encode" reflection attributes to an array
      * 
-     * @see decode
-     * 
      * @param {string} kind
      * @param {boolean} isPrivate
      * @param {boolean} isStatic
      * @param {string | symbol | undefined} name
      * @param {WeakRef<object> | object | undefined} [target=undefined]
+     * @param {WeakRef<object> | object | undefined} [owner=undefined]
      *
      * @returns {unknown[]}
      *
@@ -51,6 +56,7 @@ export default class Encoder
         isStatic: boolean,
         name: string | symbol | undefined,
         target: WeakRef<object> | object | undefined = undefined,
+        owner: WeakRef<object> | object | undefined = undefined,
     ): unknown[]
     {
         return [
@@ -58,38 +64,36 @@ export default class Encoder
             Number(isPrivate),                                      // 1 = private
             Number(isStatic),                                       // 2 = static
             name,                                                   // 3 = name
-            targetToWeakReference(target)                           // 4 = target reference
+            targetToWeakReference(target),                          // 4 = target reference
+            targetToWeakReference(owner)                            // 5 = owner reference
         ];
     }
     
     /**
      * "Decode" array and create a new instance of given Reflection class
      * 
-     * @see encode
-     * @see Reflection
-     * 
      * @template T
      * @param {unknown[]} arr
-     * @param {Constructor<Reflection>} reflectionClass
      * 
-     * @returns {Reflection} Reflection instance
+     * @returns {import('@aedart/contracts/support/reflections')} Reflection instance
      *
      * @throws {TypeError}
      */
-    static decode(arr: unknown[], reflectionClass: Constructor<Reflection>): Reflection
+    static decode(arr: unknown[]): ReflectionContract
     {
         const min: number = 4;
         if (arr.length < min) {
             throw new TypeError(`Insufficient elements in array. Expected at least ${min}`);
         }
         
-        return Reflect.construct(reflectionClass, [
+        return new Reflection(
             Encoder.decodeElementKind(arr[0] as number),
             Boolean(arr[1]),
             Boolean(arr[2]),
             arr[3] as (string | symbol | undefined),
-            targetToWeakReference(arr[4] ?? undefined)            
-        ])
+            targetToWeakReference(arr[4] ?? undefined),
+            targetToWeakReference(arr[5] ?? undefined),
+        )
     }
     
     /*****************************************************************

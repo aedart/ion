@@ -49,6 +49,14 @@ export default class Reflection implements ReflectionContract
     readonly #target: WeakRef<object> | undefined;
 
     /**
+     * Reference to target owner
+     * 
+     * @type {WeakRef<object> | undefined}
+     * @private
+     */
+    readonly #owner: WeakRef<object> | undefined;
+
+    /**
      * Create new Reflection instance
      * 
      * @see fromArray
@@ -59,8 +67,10 @@ export default class Reflection implements ReflectionContract
      * @param {boolean} isStatic
      * @param {string | symbol | undefined} name
      * @param {WeakRef<object> | undefined} target
+     * @param {WeakRef<object> | undefined} owner
      * 
-     * @throws {TypeError} If target is not WeakRef or undefined
+     * @throws {TypeError} If `target` or `owner` are not {@link WeakRef} instances - 
+     *                     `undefined` is allowed.
      */
     constructor(
         kind: string,
@@ -68,10 +78,14 @@ export default class Reflection implements ReflectionContract
         isStatic: boolean,
         name: string | symbol | undefined,
         target: WeakRef<object> | undefined,
+        owner: WeakRef<object> | undefined,
     )
     {
         if (isset(target) && !(target instanceof WeakRef)) {
             throw new TypeError('Target must be a WeakRef or undefined');
+        }
+        if (isset(owner) && !(owner instanceof WeakRef)) {
+            throw new TypeError('Owner must be a WeakRef or undefined');
         }
 
         this.#kind = kind;
@@ -79,6 +93,7 @@ export default class Reflection implements ReflectionContract
         this.#private = isPrivate;
         this.#static = isStatic;
         this.#target = target;
+        this.#owner = owner;
     }
 
     /**
@@ -134,6 +149,43 @@ export default class Reflection implements ReflectionContract
      */
     hasTarget(): boolean
     {
-        return this.target?.deref() !== undefined;
+        return this.hasTargetObject(this.target);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    get owner(): WeakRef<object> | undefined
+    {
+        return this.#owner;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    hasOwner(): boolean
+    {
+        return this.hasTargetObject(this.owner);
+    }
+
+    /*****************************************************************
+     * Internals
+     ****************************************************************/
+
+    /**
+     * Determine if given {@link WeakRef} has a target object instance set
+     * 
+     * @param {WeakRef<object> | undefined} reference
+     * 
+     * @returns {boolean}
+     * @protected
+     */
+    protected hasTargetObject(reference: WeakRef<object> | undefined): boolean
+    {
+        if (reference === undefined) {
+            return false;
+        }
+        
+        return reference.deref() !== undefined;
     }
 }
