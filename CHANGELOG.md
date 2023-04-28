@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2023-04-28
+
 ### Security
 
 * Fixed possible prototype pollution for the `MetadataRecord`, when merged with a base class' metadata object, in `meta` decorator (`@aedart/support`).  
@@ -137,7 +139,8 @@ the version command (_configured in root `lerna.json`_).
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.6.0...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.6.1...HEAD
+[0.6.1]: https://github.com/aedart/ion/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/aedart/ion/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/aedart/ion/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/aedart/ion/compare/0.3.1...0.4.0
