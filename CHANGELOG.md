@@ -22,9 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed possible prototype pollution for the `MetadataRecord`, when merged with a base class' metadata object, in `meta` decorator (`@aedart/support`).  
 
-
-* Private `@aedart/reflections` package. Desired features added as a submodule in `@aedart/support` package.
-
 ## [0.6.0] - 2023-04-23
 
 ### Added
