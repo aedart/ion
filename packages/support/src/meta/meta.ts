@@ -217,7 +217,7 @@ function resolveMetadataRecord(owner: object, context: Context, useMetaFromConte
     }
 
     // Obtain record from registry, or create new empty object.
-    let metadata: MetadataRecord = registry.get(owner) ?? {};
+    let metadata: MetadataRecord = registry.get(owner) ?? Object.create(null);
 
     // In case that the owner has Symbol.metadata defined (e.g. from base class),
     // then merge it current metadata. This ensures that inheritance works as

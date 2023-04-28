@@ -1,6 +1,6 @@
 {
     "name": "@aedart/contracts",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "description": "The Ion contracts package. Contains types, interfaces and unique identifiers",
     "keywords": [
         "Ion",
