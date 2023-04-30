@@ -310,12 +310,8 @@ function resolveMetaTargetContext(
  */
 function resolveTargetOwner(thisArg: object, context: Context): object
 {
-    if (context.kind === 'class') {
-        return thisArg;
-    }
-
     // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#class_context
-    return (context.static)
+    return (context.kind === 'class' || context.static)
         ? thisArg
         // @ts-expect-error: When target is not static, then it's obtainable via prototype
         : Reflect.getPrototypeOf(thisArg).constructor;
