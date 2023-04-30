@@ -37,7 +37,7 @@ export default class Encoder
      * @param {WeakRef<object> | object | undefined} [target=undefined]
      * @param {WeakRef<object> | object | undefined} [owner=undefined]
      *
-     * @returns {unknown[]}
+     * @returns {EncodedReflection}
      *
      * @throws {TypeError} If context kind is not supported
      */
@@ -45,7 +45,7 @@ export default class Encoder
         context: Context,
         target: WeakRef<object> | object | undefined = undefined,
         owner: WeakRef<object> | object | undefined = undefined,
-    ): unknown[]
+    ): EncodedReflection
     {
         return Encoder.encode(
             context.kind,
