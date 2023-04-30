@@ -95,10 +95,6 @@ export default class Encoder
             targetToWeakReference(arr[5] ?? undefined),
         )
     }
-    
-    /*****************************************************************
-     * Internals
-     ****************************************************************/
 
     /**
      * Encode "element kind" to a numeric value
@@ -106,11 +102,10 @@ export default class Encoder
      * @param {keyof typeof Kind} kind
      *
      * @returns {number}
-     * @protected
      *
      * @throws {TypeError} If kind is not supported
      */
-    protected static encodeElementKind(kind: keyof typeof Kind): number
+    static encodeElementKind(kind: keyof typeof Kind): number
     {
         if (!Reflect.has(Kind, kind)) {
             throw new TypeError(`Kind: "${kind}" is unsupported`);
@@ -124,11 +119,10 @@ export default class Encoder
      *
      * @param {number} kind
      * @returns {string}
-     * @protected
      *
      * @throws {TypeError} If kind is not supported
      */
-    protected static decodeElementKind(kind: number): string
+    static decodeElementKind(kind: number): string
     {
         if (!Reflect.has(Kind, kind)) {
             throw new TypeError(`Kind: "${kind}" is unsupported`);
