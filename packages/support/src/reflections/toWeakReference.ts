@@ -9,13 +9,13 @@ import { isset } from "@aedart/support/misc";
  */
 export function toWeakReference(target: WeakRef<object> | object | undefined = undefined): WeakRef<object> | undefined
 {
+    if (!isset(target)) {
+        return undefined;
+    }
+    
     if (target instanceof WeakRef) {
         return target;
     }
 
-    if (isset(target) && typeof target === 'object') {
-        return new WeakRef(target);
-    }
-
-    return undefined;
+    return new WeakRef(target as object);
 }
