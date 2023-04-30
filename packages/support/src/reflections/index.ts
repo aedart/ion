@@ -1,7 +1,7 @@
 import Reflection from "./Reflection";
 import Encoder from "./Encoder";
 
-export * from './targetToWeakReference';
+export * from './toWeakReference';
 export {
     Reflection,
     Encoder

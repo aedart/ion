@@ -1,7 +1,7 @@
 import type {Context} from "@aedart/contracts/support/meta";
 import type { Reflection as ReflectionContract } from "@aedart/contracts/support/reflections";
 import {Kind} from "@aedart/contracts/support/meta";
-import { targetToWeakReference } from "./targetToWeakReference";
+import { toWeakReference } from "./toWeakReference";
 import Reflection from "./Reflection";
 
 /**
@@ -64,8 +64,8 @@ export default class Encoder
             Number(isPrivate),                                      // 1 = private
             Number(isStatic),                                       // 2 = static
             name,                                                   // 3 = name
-            targetToWeakReference(target),                          // 4 = target reference
-            targetToWeakReference(owner)                            // 5 = owner reference
+            toWeakReference(target),                          // 4 = target reference
+            toWeakReference(owner)                            // 5 = owner reference
         ];
     }
     
@@ -91,8 +91,8 @@ export default class Encoder
             Boolean(arr[1]),
             Boolean(arr[2]),
             arr[3] as (string | symbol | undefined),
-            targetToWeakReference(arr[4] ?? undefined),
-            targetToWeakReference(arr[5] ?? undefined),
+            toWeakReference(arr[4] ?? undefined),
+            toWeakReference(arr[5] ?? undefined),
         )
     }
 
