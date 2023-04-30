@@ -5,6 +5,27 @@ import { toWeakReference } from "./toWeakReference";
 import Reflection from "./Reflection";
 
 /**
+ * "Encoded" Reflection object 
+ * 
+ * ```
+ * 0 = kind,
+ * 1 = private,
+ * 2 = static,
+ * 3 = name,
+ * 4 = target reference,
+ * 5 = target owner reference,
+ * ```
+ */
+export type EncodedReflection = [
+    number,                         // 0
+    number,                         // 1
+    number,                         // 2
+    string | symbol | undefined,    // 3
+    WeakRef<object> | undefined,    // 4
+    WeakRef<object> | undefined     // 5
+];
+
+/**
  * Encoder
  */
 export default class Encoder
@@ -46,7 +67,7 @@ export default class Encoder
      * @param {WeakRef<object> | object | undefined} [target=undefined]
      * @param {WeakRef<object> | object | undefined} [owner=undefined]
      *
-     * @returns {unknown[]}
+     * @returns {EncodedReflection}
      *
      * @throws {TypeError} If element kind is not supported
      */
@@ -57,15 +78,15 @@ export default class Encoder
         name: string | symbol | undefined,
         target: WeakRef<object> | object | undefined = undefined,
         owner: WeakRef<object> | object | undefined = undefined,
-    ): unknown[]
+    ): EncodedReflection
     {
         return [
-            Encoder.encodeElementKind(kind as keyof typeof Kind),   // 0 = kind
-            Number(isPrivate),                                      // 1 = private
-            Number(isStatic),                                       // 2 = static
-            name,                                                   // 3 = name
-            toWeakReference(target),                          // 4 = target reference
-            toWeakReference(owner)                            // 5 = owner reference
+            Encoder.encodeElementKind(kind as keyof typeof Kind),   // 0
+            Number(isPrivate),                                      // 1
+            Number(isStatic),                                       // 2
+            name,                                                   // 3
+            toWeakReference(target),                                // 4
+            toWeakReference(owner)                                  // 5
         ];
     }
     
@@ -73,13 +94,13 @@ export default class Encoder
      * "Decode" array and create a new instance of given Reflection class
      * 
      * @template T
-     * @param {unknown[]} arr
+     * @param {EncodedReflection} arr
      * 
      * @returns {import('@aedart/contracts/support/reflections')} Reflection instance
      *
      * @throws {TypeError}
      */
-    static decode(arr: unknown[]): ReflectionContract
+    static decode(arr: EncodedReflection): ReflectionContract
     {
         const min: number = 4;
         if (arr.length < min) {
