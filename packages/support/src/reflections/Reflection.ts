@@ -139,53 +139,16 @@ export default class Reflection implements ReflectionContract
     /**
      * @inheritdoc
      */
-    get target(): WeakRef<object> | undefined
+    get target(): object | undefined
     {
-        return this.#target;
+        return this.#target?.deref();
     }
 
     /**
      * @inheritdoc
      */
-    hasTarget(): boolean
+    get owner(): object | undefined
     {
-        return this.hasTargetObject(this.target);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    get owner(): WeakRef<object> | undefined
-    {
-        return this.#owner;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    hasOwner(): boolean
-    {
-        return this.hasTargetObject(this.owner);
-    }
-
-    /*****************************************************************
-     * Internals
-     ****************************************************************/
-
-    /**
-     * Determine if given {@link WeakRef} has a target object instance set
-     * 
-     * @param {WeakRef<object> | undefined} reference
-     * 
-     * @returns {boolean}
-     * @protected
-     */
-    protected hasTargetObject(reference: WeakRef<object> | undefined): boolean
-    {
-        if (reference === undefined) {
-            return false;
-        }
-        
-        return reference.deref() !== undefined;
+        return this.#owner?.deref();
     }
 }

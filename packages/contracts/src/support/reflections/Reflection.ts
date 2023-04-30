@@ -47,31 +47,17 @@ export default interface Reflection
      * object (e.g. if a primitive value), or if target element
      * otherwise cannot be referenced.
      * 
-     * @returns {WeakRef<object> | undefined}
+     * @returns {object | undefined}
      */
-    get target(): WeakRef<object> | undefined;
-
-    /**
-     * Determine if target is set
-     * 
-     * @returns {boolean} True if target {@link WeakRef.deref} returns object instance.
-     */
-    hasTarget(): boolean;
+    get target(): object | undefined;
 
     /**
      * Owner of target
      * 
-     * A target owner can either be a class (_if element is static_),
-     * or a class instance.
+     * Typically, this will correspond to the class that defines
+     * the target (not class instance).
      * 
      * @returns {object | undefined}
      */
-    get owner(): WeakRef<object> | undefined;
-
-    /**
-     * Determine if owner is set
-     *
-     * @returns {boolean} True if owner {@link WeakRef.deref} returns object instance.
-     */
-    hasOwner(): boolean;
+    get owner(): object | undefined;
 }
