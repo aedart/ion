@@ -115,7 +115,7 @@ export default class Encoder
             name,
             toWeakReference(target),
             owner,
-        )
+        );
     }
 
     /**
