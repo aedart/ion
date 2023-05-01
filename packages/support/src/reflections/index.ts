@@ -1,11 +1,12 @@
 import Reflection from "./Reflection";
 import Encoder from "./Encoder";
-import {reflect} from "./reflect";
+import {reflect, getReflection} from "./reflect";
 
 export * from './toWeakReference';
 export {
     Reflection,
     Encoder,
     
-    reflect
+    reflect,
+    getReflection
 }
