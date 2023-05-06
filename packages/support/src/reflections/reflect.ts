@@ -21,8 +21,12 @@ const registry: WeakMap<object, [ Key, WeakRef<object> ]> = new WeakMap<object, 
 export function reflect()
 {
     return meta((target: object, context: Context, owner: object) => {
-        
-        // TODO: Disable support for context.kind that is not a "class" or a "method"...
+
+        // For now, only classes and methods are supported... A future version could perhaps extend the functionality
+        // to offer support for getters, setters, ...etc.
+        if (!['class', 'method'].includes(context.kind)) {
+            throw new TypeError(`@reflect() does not support "${context.kind}" (only "class" and "method" are supported)`);
+        }
         
         // Create a key for given target
         const key: Key = [ META_REFLECTIONS, context.kind, context.name ?? 'undefined'];
