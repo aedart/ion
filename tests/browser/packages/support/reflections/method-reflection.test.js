@@ -326,7 +326,7 @@ describe('@aedart/support/reflections', () => {
                 .toEqual(A);
         });
 
-        fit('inherits method reflection even when overwritten', () => {
+        it('inherits method reflection even when overwritten', () => {
 
             class A {
 
