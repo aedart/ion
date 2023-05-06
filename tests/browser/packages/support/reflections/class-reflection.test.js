@@ -1,6 +1,4 @@
-// import {META_REFLECTIONS} from "@aedart/contracts/support/reflections";
 import { reflect, getReflection } from "@aedart/support/reflections";
-// import { getAllMeta } from "@aedart/support/meta";
 
 describe('@aedart/support/reflections', () => {
 
