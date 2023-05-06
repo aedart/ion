@@ -4,6 +4,7 @@ import {META_REFLECTIONS, type Reflection} from "@aedart/contracts/support/refle
 import {meta, getMeta} from "@aedart/support/meta";
 import Encoder, { EncodedReflection } from "./Encoder";
 import {Constructor} from "@aedart/contracts";
+import { isset } from "@aedart/support/misc";
 
 /**
  * Internal registry of targets and metadata key.
@@ -21,6 +22,8 @@ export function reflect()
 {
     return meta((target: object, context: Context, owner: object) => {
         
+        // TODO: Disable support for context.kind that is not a "class" or a "method"...
+        
         // Create a key for given target
         const key: Key = [ META_REFLECTIONS, context.kind, context.name ?? 'undefined'];
         
@@ -31,6 +34,18 @@ export function reflect()
         // be looked it up again...
         const registryEntry: [Key, WeakRef<object>] = [ key, new WeakRef(owner) ]; 
         registry.set(target, registryEntry);
+        
+        // In situations when a base class' method is reflected, but overwritten in a child
+        // class, we store another entry with the overwritten method as target in the internal
+        // registry. This allows to look up reflection for the overwritten method.
+        if (context.kind === 'method' && Reflect.has(owner, 'prototype')) {
+            // @ts-expect-error: TS2339 Owner has a prototype at this point...
+            const proto = owner.prototype;
+
+            if (isset(proto, proto[context.name]) && proto[context.name] !== target) {
+                registry.set(proto[context.name], registryEntry);
+            }
+        }
 
         // Finally, return the key-value pair to be stored as metadata.
         return {
