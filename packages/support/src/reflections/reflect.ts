@@ -29,7 +29,16 @@ export function reflect()
         }
         
         // Create a key for given target
-        const key: Key = [ META_REFLECTIONS, context.kind, context.name ?? 'undefined'];
+        const isStatic: string = (context.kind !== 'class' && context.static)
+            ? 's' // static element
+            : 'n'; // non-static element
+        
+        const key: Key = [
+            META_REFLECTIONS,
+            Encoder.encodeElementKind(context.kind).toString(),
+            isStatic,                               // Ensures that we do not overwrite static / none-static elements with same name!
+            context.name ?? 'undefined'             // The "undefined" is for anonymous classes (they do not have a name)
+        ];
         
         // Encode parts of the given context...
         const value:EncodedReflection = Encoder.encodeContext(context, owner);
@@ -42,6 +51,7 @@ export function reflect()
         // In situations when a base class' method is reflected, but overwritten in a child
         // class, we store another entry with the overwritten method as target in the internal
         // registry. This allows to look up reflection for the overwritten method.
+        // NOTE: This will work for non-static methods only...
         if (context.kind === 'method' && Reflect.has(owner, 'prototype')) {
             // @ts-expect-error: TS2339 Owner has a prototype at this point...
             const proto = owner.prototype;

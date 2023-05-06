@@ -366,5 +366,84 @@ describe('@aedart/support/reflections', () => {
                 .withContext('Element owner incorrect')
                 .toEqual(C);
         });
+
+        it('can reflect method and static method with same name', () => {
+
+            class A {
+
+                @reflect()
+                foo() {}
+                
+                @reflect()
+                static foo() {}
+            }
+
+            const reflectionOfStatic = getReflection(A.foo);
+            const a = new A();
+            const reflection = getReflection(a.foo);
+
+
+            expect(reflectionOfStatic.static)
+                .withContext('(static foo) Element static declaration incorrect')
+                .toBeTrue();
+            
+            expect(reflection.static)
+                .withContext('(foo) Element static declaration incorrect')
+                .toBeFalse();
+
+            expect(reflectionOfStatic.target)
+                .withContext('static Element target incorrect')
+                .toEqual(A.foo);
+            
+            expect(reflection.target)
+                .withContext('Element target incorrect')
+                .toEqual(a.foo);
+
+            expect(reflectionOfStatic.owner)
+                .withContext('static Element owner incorrect')
+                .toEqual(A);
+            expect(reflection.owner)
+                .withContext('Element owner incorrect')
+                .toEqual(A);
+        });
+        
+        // TODO: Not sure this can be resolved...
+        xit('inherits static method reflection even when overwritten', () => {
+
+            class A {
+
+                @reflect()
+                static foo() {}
+            }
+            class B extends A {
+
+                // Note: static method overwrite here...
+                static foo() {}
+            }
+            class C extends B {}
+            
+            const reflection = getReflection(C.foo);
+
+            expect(reflection)
+                .withContext('No reflection found for target')
+                .not
+                .toBeUndefined();
+
+            expect(reflection.name)
+                .withContext('Element name incorrect')
+                .toEqual('foo');
+
+            expect(reflection.kind)
+                .withContext('Element kind incorrect')
+                .toEqual('method');
+
+            expect(reflection.target)
+                .withContext('Element target incorrect')
+                .toEqual(C.foo);
+
+            expect(reflection.owner)
+                .withContext('Element owner incorrect')
+                .toEqual(C);
+        });
     });
 });
