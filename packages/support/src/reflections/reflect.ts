@@ -26,26 +26,11 @@ export function reflect()
         
         // Encode parts of the given context...
         const value:EncodedReflection = Encoder.encodeContext(context, owner);
-        
-        // TODO: Deus Ex... well, not yet sure how this could be utilized...
-        switch(context.kind) {
-            // TODO: Do we need to store an entire "reflection" object when it's a class, as meta?
-                // TODO: ...could perhaps just store it directly in a separate registry?
-            
-            case 'field':
-                // TODO: ...and for fields?
-                break;
-                
-            default:
-                context.addInitializer(function() {
-                    // const reflectionTarget: any = (context.static)
-                    //     ? this[context.name] 
-                    //     : owner[context.name];
-                    
-                    registry.set(target, [ key, new WeakRef(owner) ]);
-                });
-                break;
-        }
+
+        // Save the key and target owner in an internal registry for target, so it can
+        // be looked it up again...
+        const registryEntry: [Key, WeakRef<object>] = [ key, new WeakRef(owner) ]; 
+        registry.set(target, registryEntry);
 
         // Finally, return the key-value pair to be stored as metadata.
         return {
