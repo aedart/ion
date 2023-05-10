@@ -29,9 +29,9 @@ export function reflect()
         }
         
         // Create a key for given target
-        const isStatic: string = (context.kind !== 'class' && context.static)
-            ? 's' // static element
-            : 'n'; // non-static element
+        const isStatic: number = (context.kind !== 'class' && context.static)
+            ? 1  // static element
+            : 0; // non-static element
         
         const key: Key = [
             META_REFLECTIONS,
