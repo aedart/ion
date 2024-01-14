@@ -175,7 +175,7 @@ function save(
     // When the metadata originates from the decorator context, we can stop here.
     // Otherwise, we need to save it in the internal registry...
     if (useMetaFromContext) {
-        runIniCallbacks(targetContext, initCallbacks);
+        runInitCallbacks(targetContext, initCallbacks);
         return;
     }
 
@@ -197,7 +197,7 @@ function save(
     });
 
     // Invoke evt. init callbacks...
-    runIniCallbacks(targetContext, initCallbacks);
+    runInitCallbacks(targetContext, initCallbacks);
 }
 
 /**
@@ -265,7 +265,7 @@ function resolveEntry(
  * @param {MetaTargetContext} targetContext
  * @param {((this:any) => void)[]} callbacks
  */
-function runIniCallbacks(targetContext: MetaTargetContext, callbacks: ((this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void)[]): void
+function runInitCallbacks(targetContext: MetaTargetContext, callbacks: ((this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void)[]): void
 {
     callbacks.forEach((callback: (this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void) => {
         callback.call(targetContext.thisArg);
