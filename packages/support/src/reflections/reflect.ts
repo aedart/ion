@@ -7,11 +7,24 @@ import {Constructor} from "@aedart/contracts";
 import { isset } from "@aedart/support/misc";
 
 /**
+ * Internal registry entry
+ *
+ * ```
+ * 0 = Meta Key,
+ * 1 = Weak Reference to owner,
+ * ```
+ */
+type RegistryEntry = [
+    Key,
+    WeakRef<object>
+];
+
+/**
  * Internal registry of targets and metadata key.
  * 
- * @type {WeakMap<object, [ Key, WeakRef<object> ]>}
+ * @type {WeakMap<object, RegistryEntry>}
  */
-const registry: WeakMap<object, [ Key, WeakRef<object> ]> = new WeakMap<object, [Key, WeakRef<object>]>();
+const registry: WeakMap<object, RegistryEntry> = new WeakMap<object, RegistryEntry>();
 
 /**
  * Store a "reflection" of the target element, as metadata
@@ -45,7 +58,7 @@ export function reflect()
 
         // Save the key and target owner in an internal registry for target, so it can
         // be looked it up again...
-        const registryEntry: [Key, WeakRef<object>] = [ key, new WeakRef(owner) ]; 
+        const registryEntry: RegistryEntry = [ key, new WeakRef(owner) ]; 
         registry.set(target, registryEntry);
         
         // In situations when a base class' method is reflected, but overwritten in a child
@@ -78,7 +91,7 @@ export function reflect()
  */
 export function getReflection(target: object): Reflection | undefined
 {
-    const entry: [ Key, WeakRef<object> ] | undefined = findEntry(target);
+    const entry: RegistryEntry | undefined = findEntry(target);
     if (entry === undefined) {
         return undefined;
     }
@@ -88,7 +101,7 @@ export function getReflection(target: object): Reflection | undefined
         return undefined;
     }
 
-    const encoded: EncodedReflection | undefined = getMeta<EncodedReflection, undefined>(owner, entry[0]);
+    const encoded: EncodedReflection | undefined = getMeta<EncodedReflection>(owner, entry[0]);
     if (encoded === undefined) {
         return undefined;
     }
@@ -111,11 +124,11 @@ export function getReflection(target: object): Reflection | undefined
  * 
  * @param {object} target
  * 
- * @returns {[Key, WeakRef<object>] | undefined}
+ * @returns {RegistryEntry | undefined}
  */
-function findEntry(target: object): [ Key, WeakRef<object> ] | undefined
+function findEntry(target: object): RegistryEntry | undefined
 {
-    const entry: [ Key, WeakRef<object> ] | undefined = registry.get(target);
+    const entry: RegistryEntry | undefined = registry.get(target);
 
     // In case that target is a class (that has metadata), it could have a parent that
     // has reflection defined. If so, then we attempt to obtain an entry for given
