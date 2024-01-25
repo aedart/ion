@@ -55,7 +55,7 @@
     ],
     "peerDependencies": {
         "@aedart/contracts": "^0.6.1",
-        "@types/lodash-es": "^4.17.7",
+        "@types/lodash-es": "^4.17.12",
         "lodash-es": "^4.17.21"
     },
     "scripts": {
