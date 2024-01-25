@@ -132,3 +132,19 @@ isset('foo', { name: 'Jane' }, [ 1, 2, 3 ]); // true
 isset('foo', null, [ 1, 2, 3 ]); // false
 isset('foo', { name: 'Jane' }, undefined); // false
 ```
+
+## `toWeakRef`
+
+Wraps a target object into a [`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef), if not already instance of a weak reference.
+
+```js
+import { toWeakRef } from "@aedart/support/misc";
+
+const person = { name: 'Sine' };
+
+const a = toWeakRef(person); // new WeakRef of "person"
+const b = toWeakRef(a); // same WeakRef instance as "a"
+
+toWeakRef(null); // undefined
+toWeakRef(undefined); // undefined
+```
