@@ -1,6 +1,8 @@
 import { isset } from "@aedart/support/misc";
 
 /**
+ * @deprecated Use {@link import('@aedart/support/misc').toWeakRef} instead
+ * 
  * Converts target object to a weak reference, if not already
  * 
  * @param {WeakRef<object> | object | undefined} [target=undefined]
