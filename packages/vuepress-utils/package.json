@@ -53,8 +53,6 @@
     ],
     "peerDependencies": {
         "@types/luxon": "^3.4.2",
-        "@vuepress/core": "^2.0.0-rc.2",
-        "@vuepress/utils": "^2.0.0-rc.2",
         "@vuepress/bundler-webpack": "^2.0.0-rc.2",
         "luxon": "^3.4.4",
         "tslib": "^2.6.2",
