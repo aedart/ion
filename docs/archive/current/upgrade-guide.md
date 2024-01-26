@@ -7,7 +7,7 @@ sidebarDepth: 1
 
 [[TOC]]
 
-## From version 0.6.x to 0.7.x
+## From v0.6.x to v0.7.x
 
 ### Vuepress Utils
 
@@ -43,7 +43,7 @@ Please read [vuepress' changelog](https://github.com/vuepress/core/blob/main/CHA
 
 In addition to the above, the `@aedart/vuepress-utils` automatically comes with `@vuepress/bundler-webpack` as its peed dependency.
 
-## From version 0.3.x to 0.4.x
+## From v0.3.x to v0.4.x
 
 ### Rest Parameters for `forgetAll()`, `hasAll()` and `hasAny()`
 
