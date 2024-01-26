@@ -7,6 +7,42 @@ sidebarDepth: 1
 
 [[TOC]]
 
+## From version 0.6.x to 0.7.x
+
+### Vuepress Utils
+
+The `@aedart/vuepress-utils` has been upgraded to use vuepress `v2.0.0-rc.2`, meaning that you no longer should require to manually define your `vuepress` dependency, in your application's `packages.json` file.
+
+**_:x: Previously_**
+
+```json
+{
+    "devDependencies": {
+        "@aedart/vuepress-utils": "^0.6.1",
+        "vuepress": "2.0.0-beta.61",
+        "@vuepress/core": "2.0.0-beta.61",
+        "@vuepress/utils": "2.0.0-beta.61",
+        "@vuepress/client": "2.0.0-beta.61"
+    }   
+}
+```
+
+**_:heavy_check_mark: Now_**
+
+```json
+{
+    "devDependencies": {
+        "@aedart/vuepress-utils": "^0.7.0"
+    }   
+}
+```
+
+Please read [vuepress' changelog](https://github.com/vuepress/core/blob/main/CHANGELOG.md) for additional details.
+
+**Webpack Bundle**
+
+In addition to the above, the `@aedart/vuepress-utils` automatically comes with `@vuepress/bundler-webpack` as its peed dependency.
+
 ## From version 0.3.x to 0.4.x
 
 ### Rest Parameters for `forgetAll()`, `hasAll()` and `hasAny()`
