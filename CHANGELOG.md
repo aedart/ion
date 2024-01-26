@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Bumped license year.
 * Dependencies updated (_service update_).
 
 ### Removed
