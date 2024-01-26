@@ -1,4 +1,6 @@
-import {defaultTheme, defineUserConfig, Page} from 'vuepress';
+import {defineUserConfig, Page} from 'vuepress';
+import defaultTheme from "@vuepress/theme-default"
+import { webpackBundler } from "@vuepress/bundler-webpack"
 import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
 import {searchPlugin} from "@vuepress/plugin-search";
 import {baseURL, prefixPath} from "@aedart/vuepress-utils";
@@ -16,6 +18,10 @@ const BASE_URL = baseURL('ion');
  * Vuepress configuration for docs...
  */
 export default defineUserConfig({
+    bundler: webpackBundler({
+        // N/A
+    }),
+    
     base: BASE_URL,
     dest: './.build',
     lang: 'en-GB',
@@ -71,7 +77,8 @@ export default defineUserConfig({
             },
 
             getExtraFields: (page: Page) => {
-                return [page.frontmatter.description] ?? [];
+                return [page.frontmatter.description];
+                // return [page.frontmatter.description] ?? [];
             },
         }),
 
