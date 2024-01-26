@@ -181,6 +181,22 @@ let result = hasAny(target, paths);
 console.log(result); // true
 ```
 
+## `hasUniqueId` <Badge type="tip" text="Available since v0.6" vertical="middle" />
+
+Determine if an object has a unique id.
+
+_See [`uniqueId`](#uniqueid) for additional details._
+
+```js
+import {hasUniqueId} from "@aedart/support/objects";
+
+const target = {
+    name: 'Ursula'
+};
+
+console.log(hasUniqueId(target)); // false
+```
+
 ## `isset`
 
 Determine if paths are properties of given object and have values.
@@ -230,3 +246,25 @@ set(target, 'a.foo', 'bar');
 
 console.log(target); // { a: { foo: 'bar } }
 ```
+
+## `uniqueId` <Badge type="tip" text="Available since v0.6" vertical="middle" />
+
+The `uniqueId()` is able to return a "unique¹" reference identifier for any given object.
+
+```js
+import {uniqueId, hasUniqueId} from "@aedart/support/objects";
+
+const target = {
+    name: 'Ursula'
+};
+
+console.log(uniqueId(target)); // 27
+
+// ...later in your application
+console.log(hasUniqueId(target)); // true
+console.log(uniqueId(target)); // 27
+```
+
+The source code is heavily inspired by [Nicolas Gehlert's](https://github.com/ngehlert) blog post: ["_Get object reference IDs in JavaScript/TypeScript_" (September 28, 2022)](https://developapa.com/object-ids/)
+
+¹: _In this context, the returned number is unique in the current session. The number will NOT be unique across multiple sessions, nor guarantee that an object will receive the exact same identifier as in a previous session!_
