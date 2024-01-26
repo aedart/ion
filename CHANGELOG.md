@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Private `@aedart/reflections` package. Desired features added as a submodule in `@aedart/support` package.
 
+### Fixed
+
+* Docs broken due to out-of-date vuepress dependencies (_switched to `@vuepress` `v2.0.0-rc.2`_).
+
 ## [0.6.1] - 2023-04-28
 
 ### Security
