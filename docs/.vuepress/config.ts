@@ -78,7 +78,6 @@ export default defineUserConfig({
 
             getExtraFields: (page: Page) => {
                 return [page.frontmatter.description];
-                // return [page.frontmatter.description] ?? [];
             },
         }),
 
