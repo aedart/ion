@@ -5,6 +5,8 @@ import { toWeakReference } from "./toWeakReference";
 import Reflection from "./Reflection";
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * "Encoded" Reflection object 
  * 
  * ```
@@ -24,6 +26,8 @@ export type EncodedReflection = [
 ];
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Encoder
  */
 export default class Encoder

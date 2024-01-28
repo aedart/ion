@@ -7,6 +7,8 @@ import {Constructor} from "@aedart/contracts";
 import { isset } from "@aedart/support/misc";
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Internal registry entry
  *
  * ```
@@ -20,6 +22,8 @@ type RegistryEntry = [
 ];
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Internal registry of targets and metadata key.
  * 
  * @type {WeakMap<object, RegistryEntry>}
@@ -27,6 +31,8 @@ type RegistryEntry = [
 const registry: WeakMap<object, RegistryEntry> = new WeakMap<object, RegistryEntry>();
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Store a "reflection" of the target element, as metadata
  * 
  * @returns {(target: object, context: Context) => (void | ((initialValue: unknown) => unknown))}
@@ -83,6 +89,8 @@ export function reflect()
 }
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Get a "reflection" of given target, if any was stored as metadata
  * 
  * @param {object} target
@@ -101,7 +109,7 @@ export function getReflection(target: object): Reflection | undefined
         return undefined;
     }
 
-    const encoded: EncodedReflection | undefined = getMeta<EncodedReflection>(owner, entry[0]);
+    const encoded: EncodedReflection | undefined | unknown = getMeta<EncodedReflection>(owner, entry[0]);
     if (encoded === undefined) {
         return undefined;
     }
@@ -120,6 +128,8 @@ export function getReflection(target: object): Reflection | undefined
 }
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Find entry in registry for given target
  * 
  * @param {object} target

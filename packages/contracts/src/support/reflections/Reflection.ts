@@ -1,4 +1,6 @@
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Reflection
  * 
  * Contains meta information about a target element. 

@@ -2,6 +2,8 @@ import type { Reflection as ReflectionContract } from "@aedart/contracts/support
 import { isset } from "@aedart/support/misc";
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Reflection
  * 
  * @see import('@aedart/contracts/support/reflections').Reflection
