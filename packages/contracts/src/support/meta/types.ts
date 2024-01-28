@@ -9,12 +9,11 @@ import MetaEntry from "./MetaEntry";
 /**
  * Decorator context types for any decorator
  */
-export type Context =
-    | ClassContext
-    | MemberContext
-    ;
+export type Context = DecoratorContext;
 
 /**
+ * @deprecated Replaced by {@link ClassMemberDecoratorContext}
+ * 
  * Decorator context types for class element decorators
  */
 export type MemberContext =
@@ -33,4 +32,4 @@ export type MetaCallback = (target: object, context: Context, owner: object) => 
 /**
  * Metadata Record
  */
-export type MetadataRecord = Record<string | number | symbol, unknown>;
+export type MetadataRecord = DecoratorMetadata;
