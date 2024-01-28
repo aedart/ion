@@ -1,4 +1,3 @@
-import ClassContext from "./ClassContext";
 import MethodContext from "./MethodContext";
 import GetterContext from "./GetterContext";
 import SetterContext from "./SetterContext";
