@@ -79,6 +79,25 @@ empty(typedArr); // false
 `empty()` is not able to determine if a [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) or [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) is empty.
 :::
 
+## `isKey`
+
+Determine if given is a valid [key](#ispropertykey) or [property path identifier](./objects.md#has).
+
+```js
+import {isKey} from '@aedart/support/misc';
+
+isKey('foo'); // true
+isKey(12); // true
+isKey(Symbol('my-symbol')); // true
+isKey([ 'a', 'b.c', 12,  Symbol('my-other-symbol')]); // true
+
+isKey(true); // false
+isKey([]); // false
+isKey(null); // false
+isKey(undefined); // false
+isKey(() => true); // false
+```
+
 ## `isPrimitive`
 
 Determine if a value is a [primitive value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values).
