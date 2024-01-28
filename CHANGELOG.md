@@ -16,12 +16,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+**Breaking**
+
+* Decorator `Context` is now an alias for TypeScript's `DecoratorContext` (_affects `@aedart/support/meta`_).
+* Decorator `MetadataRecord` is now an alias for TypeScript's `DecoratorMetadata` (_affects `@aedart/support/meta`_).
+
+**Non-Breaking**
+
 * Bumped license year.
 * Dependencies updated (_service update_).
+* Refactored internal `save()` method to no longer attempt to overwrite `context.metadata` because it has been defined as read-only property by TypeScript.  
 
 ### Removed
 
 * Private `@aedart/reflections` package. Desired features added as a submodule in `@aedart/support` package.
+* `PropertyKey` from `@aedart/contacts/support` (_Replaced by TypeScript's own definition hereof_).
+
+### Deprecated
+
+* `ClassContext`, `MethodContext`, `GetterContext`, `SetterContext`, `FieldContext`, `AccessorContext` and `MetadataContext`, in `@aedart/contracts/support/meta` - replaced by corresponding TypeScript declarations and will be removed in next version.
+* `MemberContext` in `@aedart/contracts/support/meta` (_no longer needed_).
 
 ### Fixed
 
