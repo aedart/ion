@@ -9,7 +9,9 @@ import { isPropertyKey } from "./isPropertyKey";
  * 
  * @returns {boolean}
  */
-export function isKey(key: any): boolean
+export function isKey(
+    key: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+): boolean
 {
     if (!Array.isArray(key)) {
         key = [ key ];
