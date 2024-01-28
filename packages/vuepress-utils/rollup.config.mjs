@@ -3,6 +3,10 @@ import { createConfig } from '../../shared/rollup.config.mjs';
 export default createConfig({
     baseDir: new URL('.', import.meta.url),
 
+    // external: [
+    //     '@vuepress/utils'
+    // ],
+    
     // *.vue files offered by this package, so we must manually
     // specify the submodules to be exported or vue components
     // must be compiled...
