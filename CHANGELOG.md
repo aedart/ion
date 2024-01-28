@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Kind` enum which contains cases of the kind of element that is being decorated (_defined in a decorator context object_). 
 * `Arrayable` interface, in `@aedart/contracts/support` submodule.
 * `toWeakRef()` util method in `@aedart/support`.
+* `isKey()` util method in `@aedart/support`.
 * `isPropertyKey()` util method in `@aedart/support`.
 * Documentation for `uniqueId()` and `hasUniqueId()` util methods, in the `@aedart/support` package.
 
