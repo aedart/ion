@@ -99,6 +99,24 @@ isPrimitive({ name: 'Rian' }); // false
 isPrimitive(function() {}); // false
 ```
 
+## `isPropertyKey` <Badge type="tip" text="Available since v0.7" vertical="middle" />
+
+Determine if a key a valid property key name.
+
+```js
+import {isPropertyKey} from '@aedart/support/misc';
+
+isPropertyKey('foo'); // true
+isPropertyKey(12); // true
+isPropertyKey(Symbol('my-symbol')); // true
+
+isPropertyKey(true); // false
+isPropertyKey(['a', 'b', 'c']); // false
+isPropertyKey(null); // false
+isPropertyKey(undefined); // false
+isPropertyKey(() => true); // false
+```
+
 ## `isset`
 
 Determine if value is different from `undefined` and `null`.
