@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Docs broken due to out-of-date vuepress dependencies (_switched to `@vuepress` `v2.0.0-rc.2`_).
+* `@vuepress/utils` not resolved by rollup during tests (_missing dependency, in the `@aedart/vuepress-utils` package_).
 
 ## [0.6.1] - 2023-04-28
 
