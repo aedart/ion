@@ -149,7 +149,13 @@ function save(
     // Set context.metadata, in case that it didn't exist in the decorator context, when
     // reaching this point. This also allows "meta callback" to access previous defined
     // metadata.
-    context.metadata = metadata;
+    // ------------- NOTE: THIS SHOULD NOT BE NEEDED. -------------------------------- 
+    // const descriptor = Object.getOwnPropertyDescriptor(context, 'metadata');
+    // if (descriptor?.writable) {
+    //     context.metadata = metadata;
+    // } else {
+    //     console.warn('context.metadata is not writable for ', targetContext);
+    // }
 
     // Whenever the key is a "meta" callback, for any other kind than a class or a field,
     // we overwrite the "context.addInitializer" method, so init callbacks can be invoked
@@ -314,5 +320,5 @@ function resolveTargetOwner(thisArg: object, context: Context): object
     return (context.kind === 'class' || context.static)
         ? thisArg
         // @ts-expect-error: When target is not static, then it's obtainable via prototype
-        : Reflect.getPrototypeOf(thisArg).constructor;
+        : Reflect.getPrototypeOf(thisArg)?.constructor;
 }
