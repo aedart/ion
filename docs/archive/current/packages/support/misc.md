@@ -79,7 +79,7 @@ empty(typedArr); // false
 `empty()` is not able to determine if a [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) or [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) is empty.
 :::
 
-## `isKey`
+## `isKey` <Badge type="tip" text="Available since v0.7" vertical="middle" />
 
 Determine if given is a valid [key](#ispropertykey) or [property path identifier](./objects.md#has).
 
@@ -89,7 +89,7 @@ import {isKey} from '@aedart/support/misc';
 isKey('foo'); // true
 isKey(12); // true
 isKey(Symbol('my-symbol')); // true
-isKey([ 'a', 'b.c', 12,  Symbol('my-other-symbol')]); // true
+isKey([ 'a', 'b.c', Symbol('my-other-symbol')]); // true
 
 isKey(true); // false
 isKey([]); // false
