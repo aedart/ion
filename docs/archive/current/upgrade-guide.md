@@ -9,6 +9,24 @@ sidebarDepth: 1
 
 ## From v0.6.x to v0.7.x
 
+### Meta
+
+Various metadata related type definitions have now been deprecated in favour of TypeScript's own definitions. Mostly, this should not affect the implementation.
+However, if your decorator(s) depend on the following types (_see below_), then you are strongly encouraged to use corresponding TypeScript defined types instead.
+
+_Deprecated types and interfaces are defined in `@aedart/contracts/support/meta`:_
+
+* `ClassContext`
+* `MethodContext`
+* `GetterContext`
+* `SetterContext`
+* `FieldContext`
+* `AccessorContext`
+* `MetadataContext`
+* `MemberContext`
+
+_More information available in the source code and `CHANGELOG.md`_
+
 ### Vuepress Utils
 
 The `@aedart/vuepress-utils` has been upgraded to use vuepress `v2.0.0-rc.2`, meaning that you no longer should require to manually define your `vuepress` dependency, in your application's `packages.json` file.
