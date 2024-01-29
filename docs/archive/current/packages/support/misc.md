@@ -170,6 +170,18 @@ isset('foo', null, [ 1, 2, 3 ]); // false
 isset('foo', { name: 'Jane' }, undefined); // false
 ```
 
+## `mergeKeys` <Badge type="tip" text="Available since v0.7" vertical="middle" />
+
+The `mergeKeys()` method is able to merge two or more keys into a single key (_see [`isKey()`](#iskey)_).
+
+```js
+import { mergeKeys } from "@aedart/support/misc";
+
+const key = mergeKeys(Symbol('my-symbol'), [ 'b', 'c.d' ], 23);
+
+console.log(key); // [ Symbol('my-symbol'), 'b', 'c.d', 23 ];
+```
+
 ## `toWeakRef` <Badge type="tip" text="Available since v0.7" vertical="middle" />
 
 Wraps a target object into a [`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef), if not already instance of a weak reference.
