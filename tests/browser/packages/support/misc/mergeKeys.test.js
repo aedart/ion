@@ -3,7 +3,7 @@ import {
     mergeKeys
 } from '@aedart/support/misc';
 
-fdescribe('@aedart/support/misc', () => {
+describe('@aedart/support/misc', () => {
     describe('mergeKeys', () => {
 
         it('can merge keys', () => {
