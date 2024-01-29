@@ -8,6 +8,8 @@ import Reflection from "./Reflection";
 export const SUPPORT_REFLECTIONS: unique symbol = Symbol('@aedart/contracts/support/reflections');
 
 /**
+ * @deprecated TODO: This component must be redesigned or removed entirely...
+ * 
  * Reflections identifier in metadata
  * 
  * @type {symbol}
