@@ -1,7 +1,7 @@
 /**
  * In-memory cache of previous tested functions
  */
-const isConstructorCache: WeakMap<function, boolean> = new WeakMap<function, boolean>();
+const isConstructorCache: WeakMap<object, boolean> = new WeakMap<object, boolean>();
 
 /**
  * Determine if given argument is a constructor
