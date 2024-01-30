@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Breaking**
 
+* Node `^v20.11.0` is now required when working with the ion mono-repository.
 * Decorator `Context` is now an alias for TypeScript's `DecoratorContext` (_affects `@aedart/support/meta`_).
 * Decorator `MetadataRecord` is now an alias for TypeScript's `DecoratorMetadata` (_affects `@aedart/support/meta`_).
 
