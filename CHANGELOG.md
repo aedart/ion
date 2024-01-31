@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * `Kind` enum which contains cases of the kind of element that is being decorated (_defined in a decorator context object_). 
 * `Arrayable` interface, in `@aedart/contracts/support` submodule.
+* `targetMeta()` and `getTargetMeta()` utils method in `@aedart/support/meta`.
 * `isConstructor()` util method in `@aedart/support/reflections`.
-* `isCallable()` util method in `@aedart/support/reflections` (_Unsafe / unstable!_).
-* `isClassConstructor()` util method in `@aedart/support/reflections` (_Unsafe / unstable!_).
+* `isCallable()` and `isClassConstructor()` util methods in `@aedart/support/reflections` (_Unsafe / unstable!_).
 * `toWeakRef()` util method in `@aedart/support/misc`.
 * `mergeKets()` util method in `@aedart/support/misc`.
 * `isKey()` util method in `@aedart/support/misc`.
@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Bumped license year.
 * Dependencies updated (_service update_).
 * Refactored internal `save()` method to no longer attempt to overwrite `context.metadata` because it has been defined as read-only property by TypeScript.  
+* JSDoc now clearly states that `meta()` is intended to be used as a decorator.
 
 ### Removed
 
