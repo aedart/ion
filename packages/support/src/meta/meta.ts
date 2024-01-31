@@ -23,6 +23,14 @@ const registry: WeakMap<object, MetadataRecord> = new WeakMap<object, MetadataRe
 /**
  * Store value as metadata, for given key.
  *
+ * **Note**: _Method is intended to be used as a decorator!_
+ * 
+ * @example
+ * ```ts
+ * @meta('my-key', 'my-value)
+ * class A {}
+ * ```
+ * 
  * @see getMeta
  * @see getAllMeta
  *
