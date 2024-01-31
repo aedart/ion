@@ -29,6 +29,8 @@ const registry: WeakMap<object, MetadataRecord> = new WeakMap<object, MetadataRe
  * ```ts
  * @meta('my-key', 'my-value)
  * class A {}
+ * 
+ * getMeta(A, 'my-key'); // 'my-value'
  * ```
  * 
  * @see getMeta
