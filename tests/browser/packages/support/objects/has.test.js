@@ -27,6 +27,15 @@ describe('@aedart/support/objects', () => {
                     nested: {
                         [symbolProp]: 'foo',
                     }
+                },
+                f: {
+                    [symbolProp]: [
+                        123, // 0
+                        456, // 1
+                        {    // 2
+                            name: 'Rick'
+                        }
+                    ]
                 }
             };
 
@@ -40,7 +49,8 @@ describe('@aedart/support/objects', () => {
                 'd[1].name',
                 symbolProp,
                 // [ 'e.nested', symbolProp ] // This does not work...
-                [ 'e', 'nested', symbolProp ] // This does ...
+                [ 'e', 'nested', symbolProp ], // This does ...
+                [ 'f', symbolProp, 2, 'name' ]
             ];
 
             const invalidPaths = [
