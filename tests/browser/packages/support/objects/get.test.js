@@ -5,7 +5,7 @@ import {
 describe('@aedart/support/objects', () => {
     describe('get', () => {
 
-        fit('can get property', function () {
+        it('can get property', function () {
 
             const symbolProp = Symbol('other-symbol');
             const target = {
