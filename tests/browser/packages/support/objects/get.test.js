@@ -5,7 +5,7 @@ import {
 describe('@aedart/support/objects', () => {
     describe('get', () => {
 
-        it('can get property', function () {
+        fit('can get property', function () {
 
             const symbolProp = Symbol('other-symbol');
             const target = {
@@ -25,6 +25,15 @@ describe('@aedart/support/objects', () => {
                     nested: {
                         [symbolProp]: 'foo',
                     }
+                },
+                f: {
+                    [symbolProp]: [
+                        123, // 0
+                        456, // 1
+                        {    // 2
+                            name: 'Rick'
+                        }
+                    ]
                 }
             };
 
@@ -37,8 +46,9 @@ describe('@aedart/support/objects', () => {
                 'd[0]',
                 'd[1].name',
                 symbolProp,
-                // [ 'e.nested', symbolProp ] // This does not work...
-                ['e', 'nested', symbolProp] // This does ...
+                // [ 'e.nested', symbolProp ]   // This does not work...
+                ['e', 'nested', symbolProp],    // This does ...
+                [ 'f', symbolProp, 2, 'name' ]
             ];
 
             const invalidPaths = [
@@ -49,6 +59,10 @@ describe('@aedart/support/objects', () => {
 
             validPaths.forEach((path, index) => {
                 let result = get(target, path);
+                
+                // Debug
+                // console.log('path', path, 'result', result);
+                
                 expect(result)
                     .withContext(`Value for index ${index} resulted in undefined`)
                     .not
