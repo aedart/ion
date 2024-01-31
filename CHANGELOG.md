@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * Private `@aedart/reflections` package. Desired features added as a submodule in `@aedart/support` package.
+* Experimental reflection components in `@aedart/support/reflections` submodule (_was never published_).
 * `PropertyKey` from `@aedart/contacts/support` (_Replaced by TypeScript's own definition hereof_).
 
 ### Deprecated
