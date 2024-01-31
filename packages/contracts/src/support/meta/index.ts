@@ -24,6 +24,13 @@ export const SUPPORT_META: unique symbol = Symbol('@aedart/contracts/support/met
  */
 export const METADATA: unique symbol = Symbol.for('metadata');
 
+/**
+ * Symbol used for "target" metadata
+ * 
+ * @type {symbol}
+ */
+export const TARGET_METADATA: unique symbol = Symbol('target_metadata');
+
 export {
     type ClassContext,
     type MethodContext,
