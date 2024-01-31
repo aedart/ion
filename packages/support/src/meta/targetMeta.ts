@@ -234,7 +234,7 @@ function makeMetaEntry(
     value?: unknown
 ): MetaEntry
 {
-    let resolvedKey: Key = key;
+    let resolvedKey: Key | MetaCallback = key;
     let resolvedValue: unknown = value;
     
     // When key is a callback, invoke it and use its resulting key-value pair.
@@ -246,7 +246,7 @@ function makeMetaEntry(
     }
     
     return {
-        key: mergeKeys(prefixKey, resolvedKey),
+        key: mergeKeys(prefixKey, resolvedKey as Key),
         value: resolvedValue
     } as MetaEntry;
 }
