@@ -7,7 +7,6 @@ import type {
 } from "@aedart/contracts/support/meta";
 import { METADATA, TARGET_METADATA, Kind } from "@aedart/contracts/support/meta";
 import { mergeKeys, empty } from "@aedart/support/misc";
-import { get } from "@aedart/support/objects";
 import { meta, getMeta } from './meta'
 
 /**
@@ -17,6 +16,23 @@ import { meta, getMeta } from './meta'
  * @see {MetaAddress}
  */
 const addressesRegistry: WeakMap<object, MetaAddress> = new WeakMap<object, MetaAddress>();
+
+/**
+ * Map of identifiers to use for meta address, depending on the element kind
+ */
+const ELEMENT_KIND_IDENTIFIERS = {
+    [Kind.class]: Symbol('class'),
+    [Kind.method]: Symbol('methods'),
+    [Kind.getter]: Symbol('getters'),
+    [Kind.setter]: Symbol('setters'),
+    [Kind.field]: Symbol('fields'),
+    [Kind.accessor]: Symbol('accessors'),
+} as const;
+
+/**
+ * Static element identifier
+ */
+const STATIC_IDENTIFIER: unique symbol = Symbol('static'); 
 
 /**
  * Stores value for given key, and associates it directly with the target
@@ -144,7 +160,7 @@ export function inheritTargetMeta()
         }
         
         // Get the first key-value pair (meta entry), from the "target" metadata
-        const key: Key = Object.keys(targetMeta)[0];
+        const key: Key = Reflect.ownKeys(targetMeta)[0];
         const value: unknown = targetMeta[key];
 
         // Finally, (re)set the meta-entry. This is needed so that we do not add a "null" entry,
@@ -260,23 +276,33 @@ function saveAddress(target: object, address: MetaAddress): void
  * @param {Context} context
  * 
  * @return {Key}
+ * 
+ * @throws {TypeError} If {@link Context.kind} is not supported
  */
 function makePrefixKey(context: Context): Key
 {
     if (!Reflect.has(Kind, context.kind)) {
         throw new TypeError(`context.kind: "${context.kind}" is unsupported`);
     }
-
-    const isStatic: number = (context.kind !== 'class' && context.static)
-        ? 's'  // static element
-        : 'n'; // non-static element
-
-    return [
+    
+    // Debug
+    // console.log('@kind', ELEMENT_KIND_MAP[Kind[context.kind]]);
+    
+    const output: PropertyKey[] = [
         TARGET_METADATA,
-        context.kind,
-        isStatic,                     // Ensures that we do not overwrite static / none-static elements with same name!
-        context.name ?? 'anonymous'   // "anonymous" is for anonymous classes (they do not have a name)
-    ] as Key;
+        ELEMENT_KIND_IDENTIFIERS[Kind[context.kind]]
+    ];
+
+    // Ensures that we do not overwrite static / none-static elements with same name!
+    if (context.kind !== 'class' && context.static) {
+        output.push(STATIC_IDENTIFIER);
+    }
+
+    // "anonymous" is for anonymous classes (they do not have a name)
+    const name: string | symbol = context.name ?? 'anonymous';
+    output.push(name);
+    
+    return output as Key;
 }
 
 /**
