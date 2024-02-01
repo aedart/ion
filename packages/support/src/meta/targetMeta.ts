@@ -68,7 +68,7 @@ export function targetMeta(
         // When a method in a base class is decorated, but the method is overwritten in
         // a subclass, then we must store another address entry, using the owner's
         // method in the registry. This will allow inheriting the meta, but will NOT work
-        // on static members.
+        // on static methods.
         if (context.kind == 'method' && !context.static && Reflect.has(owner, 'prototype')) {
             // @ts-expect-error: TS2339 Owner has a prototype at this point, but Reflect.getPrototypeOf() returns undefined here!
             const proto: object | undefined = owner.prototype;
@@ -199,14 +199,14 @@ function makePrefixKey(context: Context): Key
     if (!Reflect.has(Kind, context.kind)) {
         throw new TypeError(`context.kind: "${context.kind}" is unsupported`);
     }
-    
+
     const isStatic: number = (context.kind !== 'class' && context.static)
-        ? 1  // static element
-        : 0; // non-static element
-    
+        ? 's'  // static element
+        : 'n'; // non-static element
+
     return [
         TARGET_METADATA,
-        Kind[context.kind],
+        context.kind,
         isStatic,                     // Ensures that we do not overwrite static / none-static elements with same name!
         context.name ?? 'anonymous'   // "anonymous" is for anonymous classes (they do not have a name)
     ] as Key;
