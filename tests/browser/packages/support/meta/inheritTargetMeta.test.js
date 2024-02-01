@@ -95,7 +95,7 @@ describe('@aedart/support/meta', () => {
             const result = getTargetMeta(C.foo, key);
 
             // Debug
-            //console.log('C.foo "target" metadata', C[METADATA][TARGET_METADATA].method.s.foo);
+            // console.log('C.foo "target" metadata', C[METADATA][TARGET_METADATA]);
 
             expect(result)
                 .withContext('Incorrect static method target meta')
