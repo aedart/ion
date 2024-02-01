@@ -6,7 +6,8 @@ import type {
     MetaAddress,
 } from "@aedart/contracts/support/meta";
 import { METADATA, TARGET_METADATA, Kind } from "@aedart/contracts/support/meta";
-import { mergeKeys } from "@aedart/support/misc";
+import { mergeKeys, empty } from "@aedart/support/misc";
+import { get } from "@aedart/support/objects";
 import { meta, getMeta } from './meta'
 
 /**
@@ -25,7 +26,7 @@ const addressesRegistry: WeakMap<object, MetaAddress> = new WeakMap<object, Meta
  * @example
  * ```ts
  * class A {
- *      @targetMeta('my-key', 'my-value)
+ *      @targetMeta('my-key', 'my-value')
  *      foo() {}
  * }
  * 
@@ -42,6 +43,8 @@ const addressesRegistry: WeakMap<object, MetaAddress> = new WeakMap<object, Meta
  * @param {unknown} [value] Value to store. Ignored if `key` argument is
  *                          a callback.
  * @returns {(target: object, context: Context) => (void | ((initialValue: unknown) => unknown) | undefined)}
+ * 
+ * @throws {TypeError} When decorated element is not supported
  */
 export function targetMeta(
     key: Key | MetaCallback,
@@ -87,6 +90,70 @@ export function targetMeta(
             key,
             value
         );
+    });
+}
+
+/**
+ * Inherit "target" meta from a base class.
+ * 
+ * **Note**: _Method is intended to be used as a decorator!_
+ *
+ * **Note**: _Can be used to inherit "target" meta for static methods, when they are overwritten._
+ * 
+ * @see targetMeta
+ * 
+ * @example
+ * ```ts
+ * class A {
+ *      @targetMeta('bar', 'zaz')
+ *      static foo() {}
+ * }
+ *
+ * class B extends A {
+ * 
+ *     @inheritTargetMeta()
+ *     static foo() {
+ *          // ...overwritten static method...//
+ *     }
+ * }
+ *
+ * getTargetMeta(B.foo, 'bar'); // 'zaz'
+ * ```
+ *
+ * @returns {(target: object, context: Context) => (void | ((initialValue: unknown) => unknown) | undefined)}
+ *
+ * @throws {TypeError} When decorated element's owner class has no parent, or when no "target" metadata available
+ *                     on parent element.
+ */
+export function inheritTargetMeta()
+{
+    return targetMeta((target: object, context: Context, owner: object) => {
+        // Obtain owner's parent or fail if no parent is available.
+        if (Reflect.getPrototypeOf(owner) === null) {
+            throw new TypeError(`Unable to inherit target meta for ${context.name}: Owner object does not have a parent class.`);
+        }
+
+        // Obtain "target" meta from parent, so we can obtain a meta entry and re-set it,
+        // which will cause the @targetMeta() and @meta() decorators to do the rest.
+        const prefixKey: Key = makePrefixKey(context);
+        const targetMeta: object | undefined = getMeta<object>(Reflect.getPrototypeOf(owner), prefixKey);
+        
+        // Abort in case that there is nothing to inherit...
+        if (empty(targetMeta)) {
+            throw new TypeError(`Unable to inherit target meta for ${context.name}: parent ${context.kind} does not have target meta.`);
+        }
+        
+        // Get the first key-value pair (meta entry), from the "target" metadata
+        const key: Key = Object.keys(targetMeta)[0];
+        const value: unknown = targetMeta[key];
+
+        // Finally, (re)set the meta-entry. This is needed so that we do not add a "null" entry,
+        // other kind of useless metadata. All other meta entries are automatically handled by
+        // the @meta() decorator.
+        return {
+            key,
+            value
+        } as MetaEntry;
     });
 }
 

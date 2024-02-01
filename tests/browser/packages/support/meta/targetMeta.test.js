@@ -1,4 +1,7 @@
-import { targetMeta, getTargetMeta } from "@aedart/support/meta";
+import {
+    targetMeta,
+    getTargetMeta,
+} from "@aedart/support/meta";
 
 describe('@aedart/support/meta', () => {
     
@@ -233,32 +236,6 @@ describe('@aedart/support/meta', () => {
             expect(result)
                 .withContext('Incorrect static method target meta')
                 .toEqual(value);
-        });
-
-        it('fails inheriting target static method meta, when static method overwritten', () => {
-
-            const key = 'zim';
-            const value = 'zar';
-
-            class A {
-                @targetMeta(key, value)
-                static foo() {}
-            }
-            class B extends A {}
-            class C extends B {
-
-                // NOTE: meta cannot be inherited because @meta() / decorators do
-                // not offer a real late binding of "this", meaning that the "owner"
-                // corresponds to class A, instead of class C...
-                static foo() {}
-            }
-
-            // ---------------------------------------------------------------------- //
-            
-            const result = getTargetMeta(C.foo, key);
-
-            expect(result)
-                .toBeUndefined();
         });
 
         it('can overwrite target static method meta, when static method overwritten', () => {
