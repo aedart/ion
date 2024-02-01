@@ -84,6 +84,35 @@ describe('@aedart/support/meta', () => {
                 .toEqual(value);
         });
 
+        it('can decorate method with multiple target meta', () => {
+
+            const keyA = 'baz';
+            const valueA = 123;
+            
+            const keyB = Symbol('brim');
+            const valueB = 'fib';
+            
+            class A {
+                @targetMeta(keyA, valueA)
+                @targetMeta(keyB, valueB)
+                foo() {}
+            }
+
+            // ---------------------------------------------------------------------- //
+
+            const instance = new A();
+
+            const resultA = getTargetMeta(instance.foo, keyA);
+            expect(resultA)
+                .withContext('Incorrect value A')
+                .toEqual(valueA);
+
+            const resultB = getTargetMeta(instance.foo, keyB);
+            expect(resultB)
+                .withContext('Incorrect value A')
+                .toEqual(valueB);
+        });
+        
         it('can inherit target method meta', () => {
 
             const key = 'baz';
@@ -206,9 +235,7 @@ describe('@aedart/support/meta', () => {
                 .toEqual(value);
         });
 
-        // TODO: Inheritance of metadata on overwritten static methods will NOT work. This is because @meta() (and decorators in general)
-        // TODO: do not resolve "this" as a late binding for static blocks or members. Thus, @meta() yields class A, instead of C as "this".
-        xit('can inherit target static method meta, when static method overwritten', () => {
+        it('fails inheriting target static method meta, when static method overwritten', () => {
 
             const key = 'zim';
             const value = 'zar';
@@ -220,9 +247,9 @@ describe('@aedart/support/meta', () => {
             class B extends A {}
             class C extends B {
 
-                // NOTE: meta SHOULD still apply, unless explicitly overwritten...
-                // But sadly this fails because of no late "this" binding of static
-                // blocks or members.
+                // NOTE: meta cannot be inherited because @meta() / decorators do
+                // not offer a real late binding of "this", meaning that the "owner"
+                // corresponds to class A, instead of class C...
                 static foo() {}
             }
 
@@ -231,8 +258,7 @@ describe('@aedart/support/meta', () => {
             const result = getTargetMeta(C.foo, key);
 
             expect(result)
-                .withContext('Incorrect static method target meta')
-                .toEqual(value);
+                .toBeUndefined();
         });
 
         it('can overwrite target static method meta, when static method overwritten', () => {
