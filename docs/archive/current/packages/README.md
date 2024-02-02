@@ -12,7 +12,7 @@ In here, you will find documentation for the available packages. A few things th
 
 ## Environment
 
-Badges are used to indicate the environment a package is intended for, e.g. <Badge type="success" text="Node" vertical="middle" /><Badge type="success" text="Browser" vertical="middle" />.
+Badges are used to indicate the environment that a package is intended for, e.g. <Badge type="success" text="Node" vertical="middle" /><Badge type="success" text="Browser" vertical="middle" />.
 
 _You are of course welcome to use a package in a different environment than its original intent, if it is possible._
 
