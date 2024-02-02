@@ -114,7 +114,8 @@ export function targetMeta(
  * 
  * **Note**: _Method is intended to be used as a decorator!_
  *
- * **Note**: _Can be used to inherit "target" meta for static methods, when they are overwritten._
+ * **Note**: _To be used in situations where you overwrite static methods and wish to inherit
+ * "target" meta from the parent method._
  * 
  * @see targetMeta
  * 
