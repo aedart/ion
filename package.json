@@ -33,6 +33,7 @@
         "@lerna-lite/changed": "^3.2.1",
         "@lerna-lite/cli": "^3.2.1",
         "@lerna-lite/list": "^3.2.1",
+        "@lerna-lite/publish": "^3.2.1",
         "@lerna-lite/run": "^3.2.1",
         "@rollup/plugin-commonjs": "^25.0.7",
         "@rollup/plugin-json": "^6.1.0",
