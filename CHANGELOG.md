@@ -9,11 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* `Kind` enum which contains cases of the kind of element that is being decorated (_defined in a decorator context object_). 
-* `Arrayable` interface, in `@aedart/contracts/support` submodule.
 * `targetMeta()`, `inheritTargetMeta()` and `getTargetMeta()` utils method in `@aedart/support/meta`.
 * `isConstructor()` util method in `@aedart/support/reflections`.
 * `isCallable()` and `isClassConstructor()` util methods in `@aedart/support/reflections` (_Unsafe / unstable!_).
+* `Kind` enum which contains cases of the kind of element that is being decorated (_defined in a decorator context object_).
+* `Arrayable` interface, in `@aedart/contracts/support` submodule.
 * `toWeakRef()` util method in `@aedart/support/misc`.
 * `mergeKets()` util method in `@aedart/support/misc`.
 * `isKey()` util method in `@aedart/support/misc`.
