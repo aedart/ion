@@ -20,6 +20,7 @@ describe('@aedart/support/objects', () => {
                 { key: 'd[1].name', value: 'Erica' },
                 { key: foo, value: true },
                 { key: ['e', 'nested', foo], value: 'bar' },
+                { key: ['e', foo, 3], value: 'zim' },
             ];
 
             values.forEach(({key, value}, index) => {

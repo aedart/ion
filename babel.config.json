@@ -1,16 +1,22 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "entry",
-        "corejs": "3.22"
-      }
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "entry",
+                "corejs": "3.22"
+            }
+        ]
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "version": "2023-01"
+            }
+        ],
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-private-methods",
+        "@babel/plugin-transform-class-static-block"
     ]
-  ],
-  "plugins": [
-    ["@babel/plugin-proposal-decorators", { "version": "2023-01" }],
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-private-methods"
-  ]
 }

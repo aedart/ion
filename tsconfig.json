@@ -43,9 +43,6 @@
             "@aedart/contracts/*": [
                 "./packages/contracts/src/*"
             ],
-            "@aedart/reflections/*": [
-                "./packages/reflections/src/*"
-            ],
             "@aedart/support/*": [
                 "./packages/support/src/*"
             ],
@@ -150,9 +147,6 @@
     "references": [
         {
             "path": "./packages/contracts"
-        },
-        {
-            "path": "./packages/reflections"
         },
         {
             "path": "./packages/support"

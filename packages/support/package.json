@@ -42,6 +42,11 @@
             "types": "./dist/types/objects.d.ts",
             "import": "./dist/esm/objects.js",
             "require": "./dist/cjs/objects.cjs"
+        },
+        "./reflections": {
+            "types": "./dist/types/reflections.d.ts",
+            "import": "./dist/esm/reflections.js",
+            "require": "./dist/cjs/reflections.cjs"
         }
     },
     "files": [
@@ -50,7 +55,7 @@
     ],
     "peerDependencies": {
         "@aedart/contracts": "^0.6.1",
-        "@types/lodash-es": "^4.17.7",
+        "@types/lodash-es": "^4.17.12",
         "lodash-es": "^4.17.21"
     },
     "scripts": {

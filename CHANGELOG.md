@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* `targetMeta()`, `inheritTargetMeta()` and `getTargetMeta()` utils method in `@aedart/support/meta`.
+* `isConstructor()` util method in `@aedart/support/reflections`.
+* `isCallable()` and `isClassConstructor()` util methods in `@aedart/support/reflections` (_Unsafe / unstable!_).
+* `Kind` enum which contains cases of the kind of element that is being decorated (_defined in a decorator context object_).
+* `Arrayable` interface, in `@aedart/contracts/support` submodule.
+* `toWeakRef()` util method in `@aedart/support/misc`.
+* `mergeKets()` util method in `@aedart/support/misc`.
+* `isKey()` util method in `@aedart/support/misc`.
+* `isPropertyKey()` util method in `@aedart/support/misc`.
+* Documentation for `uniqueId()` and `hasUniqueId()` util methods, in the `@aedart/support/objects` package.
+
+### Changed
+
+**Breaking**
+
+* Node `^v20.11.0` is now required when working with the ion mono-repository.
+* Decorator `Context` is now an alias for TypeScript's `DecoratorContext` (_affects `@aedart/support/meta`_).
+* Decorator `MetadataRecord` is now an alias for TypeScript's `DecoratorMetadata` (_affects `@aedart/support/meta`_).
+
+**Non-Breaking**
+
+* Bumped license year.
+* Dependencies updated (_service update_).
+* Refactored internal `save()` method to no longer attempt to overwrite `context.metadata` because it has been defined as read-only property by TypeScript.  
+* JSDoc now clearly states that `meta()` is intended to be used as a decorator.
+
+### Removed
+
+* Private `@aedart/reflections` package. Desired features added as a submodule in `@aedart/support` package.
+* Experimental reflection components in `@aedart/support/reflections` submodule (_was never published_).
+* `PropertyKey` from `@aedart/contacts/support` (_Replaced by TypeScript's own definition hereof_).
+
+### Deprecated
+
+* `ClassContext`, `MethodContext`, `GetterContext`, `SetterContext`, `FieldContext`, `AccessorContext` and `MetadataContext`, in `@aedart/contracts/support/meta` - replaced by corresponding TypeScript declarations and will be removed in next version.
+* `MemberContext` in `@aedart/contracts/support/meta` (_no longer needed_).
+
+### Fixed
+
+* Docs broken due to out-of-date vuepress dependencies (_switched to `@vuepress` `v2.0.0-rc.2`_).
+* `@vuepress/utils` not resolved by rollup during tests (_missing dependency, in the `@aedart/vuepress-utils` package_).
+
 ## [0.6.1] - 2023-04-28
 
 ### Security

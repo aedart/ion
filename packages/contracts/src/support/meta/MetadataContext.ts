@@ -1,6 +1,8 @@
 import type { MetadataRecord } from "./types";
 
 /**
+ * @deprecated Replaced by {@link DecoratorMetadata}
+ * 
  * Metadata Context
  * 
  * @see https://github.com/tc39/proposal-decorator-metadata

@@ -23,6 +23,16 @@ const registry: WeakMap<object, MetadataRecord> = new WeakMap<object, MetadataRe
 /**
  * Store value as metadata, for given key.
  *
+ * **Note**: _Method is intended to be used as a decorator!_
+ * 
+ * @example
+ * ```ts
+ * @meta('my-key', 'my-value)
+ * class A {}
+ * 
+ * getMeta(A, 'my-key'); // 'my-value'
+ * ```
+ * 
  * @see getMeta
  * @see getAllMeta
  *
@@ -149,7 +159,13 @@ function save(
     // Set context.metadata, in case that it didn't exist in the decorator context, when
     // reaching this point. This also allows "meta callback" to access previous defined
     // metadata.
-    context.metadata = metadata;
+    // ------------- NOTE: THIS SHOULD NOT BE NEEDED. -------------------------------- 
+    // const descriptor = Object.getOwnPropertyDescriptor(context, 'metadata');
+    // if (descriptor?.writable) {
+    //     context.metadata = metadata;
+    // } else {
+    //     console.warn('context.metadata is not writable for ', targetContext);
+    // }
 
     // Whenever the key is a "meta" callback, for any other kind than a class or a field,
     // we overwrite the "context.addInitializer" method, so init callbacks can be invoked
@@ -175,7 +191,7 @@ function save(
     // When the metadata originates from the decorator context, we can stop here.
     // Otherwise, we need to save it in the internal registry...
     if (useMetaFromContext) {
-        runIniCallbacks(targetContext, initCallbacks);
+        runInitCallbacks(targetContext, initCallbacks);
         return;
     }
 
@@ -197,7 +213,7 @@ function save(
     });
 
     // Invoke evt. init callbacks...
-    runIniCallbacks(targetContext, initCallbacks);
+    runInitCallbacks(targetContext, initCallbacks);
 }
 
 /**
@@ -265,7 +281,7 @@ function resolveEntry(
  * @param {MetaTargetContext} targetContext
  * @param {((this:any) => void)[]} callbacks
  */
-function runIniCallbacks(targetContext: MetaTargetContext, callbacks: ((this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void)[]): void
+function runInitCallbacks(targetContext: MetaTargetContext, callbacks: ((this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void)[]): void
 {
     callbacks.forEach((callback: (this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => void) => {
         callback.call(targetContext.thisArg);
@@ -310,13 +326,9 @@ function resolveMetaTargetContext(
  */
 function resolveTargetOwner(thisArg: object, context: Context): object
 {
-    if (context.kind === 'class') {
-        return thisArg;
-    }
-
     // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#class_context
-    return (context.static)
+    return (context.kind === 'class' || context.static)
         ? thisArg
         // @ts-expect-error: When target is not static, then it's obtainable via prototype
-        : Reflect.getPrototypeOf(thisArg).constructor;
+        : Reflect.getPrototypeOf(thisArg)?.constructor;
 }

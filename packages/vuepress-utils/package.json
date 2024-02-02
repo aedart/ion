@@ -1,67 +1,67 @@
 {
-  "name": "@aedart/vuepress-utils",
-  "version": "0.6.1",
-  "description": "A few utilities for Vuepress.",
-  "keywords": [
-    "Vuepress",
-    "Utilities",
-    "Archive",
-    "Navigation"
-  ],
-  "author": "Alin Eugen Deac <aedart@gmail.com>",
-  "license": "BSD-3-Clause",
-  "homepage": "https://aedart.github.io/ion/",
-  "bugs": {
-    "url": "https://github.com/aedart/ion/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aedart/ion.git",
-    "directory": "packages/vuepress-utils"
-  },
-  "private": false,
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/types/vuepress-utils.d.ts",
-      "import": "./dist/esm/vuepress-utils.js",
-      "require": "./dist/cjs/vuepress-utils.cjs"
+    "name": "@aedart/vuepress-utils",
+    "version": "0.6.1",
+    "description": "A few utilities for Vuepress.",
+    "keywords": [
+        "Vuepress",
+        "Utilities",
+        "Archive",
+        "Navigation"
+    ],
+    "author": "Alin Eugen Deac <aedart@gmail.com>",
+    "license": "BSD-3-Clause",
+    "homepage": "https://aedart.github.io/ion/",
+    "bugs": {
+        "url": "https://github.com/aedart/ion/issues"
     },
-    "./contracts": {
-      "types": "./dist/types/contracts.d.ts",
-      "import": "./dist/esm/contracts.js",
-      "require": "./dist/cjs/contracts.cjs"
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aedart/ion.git",
+        "directory": "packages/vuepress-utils"
     },
-    "./navigation": {
-      "types": "./dist/types/navigation.d.ts",
-      "import": "./dist/esm/navigation.js",
-      "require": "./dist/cjs/navigation.cjs"
+    "private": false,
+    "publishConfig": {
+        "access": "public"
     },
-    "./plugins": {
-      "types": "./dist/types/plugins.d.ts",
-      "import": "./dist/esm/plugins.js",
-      "require": "./dist/cjs/plugins.cjs"
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./dist/types/vuepress-utils.d.ts",
+            "import": "./dist/esm/vuepress-utils.js",
+            "require": "./dist/cjs/vuepress-utils.cjs"
+        },
+        "./contracts": {
+            "types": "./dist/types/contracts.d.ts",
+            "import": "./dist/esm/contracts.js",
+            "require": "./dist/cjs/contracts.cjs"
+        },
+        "./navigation": {
+            "types": "./dist/types/navigation.d.ts",
+            "import": "./dist/esm/navigation.js",
+            "require": "./dist/cjs/navigation.cjs"
+        },
+        "./plugins": {
+            "types": "./dist/types/plugins.d.ts",
+            "import": "./dist/esm/plugins.js",
+            "require": "./dist/cjs/plugins.cjs"
+        },
+        "./components/*": "./dist/components/*"
     },
-    "./components/*": "./dist/components/*"
-  },
-  "files": [
-    "dist",
-    "!dist/**/*.map"
-  ],
-  "peerDependencies": {
-    "@types/luxon": "^3.2.0",
-    "@vuepress/core": "^2.0.0-beta.61",
-    "@vuepress/utils": "^2.0.0-beta.61",
-    "luxon": "^3.3.0",
-    "tslib": "^2.5.0",
-    "vue": "^3.2.47",
-    "vuepress": "^2.0.0-beta.61"
-  },
-  "scripts": {
-    "compile": "rollup -c && npx cpx \"src/**/*.vue\" dist",
-    "watch": "rollup -c -w"
-  }
+    "files": [
+        "dist",
+        "!dist/**/*.map"
+    ],
+    "peerDependencies": {
+        "@types/luxon": "^3.4.2",
+        "@vuepress/bundler-webpack": "^2.0.0-rc.2",
+        "@vuepress/utils": "^2.0.0-rc.2",
+        "luxon": "^3.4.4",
+        "tslib": "^2.6.2",
+        "vue": "^3.2.47",
+        "vuepress": "^2.0.0-rc.2"
+    },
+    "scripts": {
+        "compile": "rollup -c && npx cpx \"src/**/*.vue\" dist",
+        "watch": "rollup -c -w"
+    }
 }

@@ -205,7 +205,8 @@ Inside your `theme` settings, you can create a dropdown representation of your a
 A sidebar configuration can be created via the `sidebarConfiguration()` method.
 
 ```ts
-import {defineUserConfig, defaultTheme} from 'vuepress';
+import {defineUserConfig} from 'vuepress';
+import defaultTheme from "@vuepress/theme-default"
 import archive from './my_archive'
 
 export default defineUserConfig({

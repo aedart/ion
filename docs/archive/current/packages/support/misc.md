@@ -79,6 +79,25 @@ empty(typedArr); // false
 `empty()` is not able to determine if a [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) or [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) is empty.
 :::
 
+## `isKey` <Badge type="tip" text="Available since v0.7" vertical="middle" />
+
+Determine if given is a valid [key](#ispropertykey) or [property path identifier](./objects.md#has).
+
+```js
+import {isKey} from '@aedart/support/misc';
+
+isKey('foo'); // true
+isKey(12); // true
+isKey(Symbol('my-symbol')); // true
+isKey([ 'a', 'b.c', Symbol('my-other-symbol')]); // true
+
+isKey(true); // false
+isKey([]); // false
+isKey(null); // false
+isKey(undefined); // false
+isKey(() => true); // false
+```
+
 ## `isPrimitive`
 
 Determine if a value is a [primitive value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values).
@@ -97,6 +116,24 @@ isPrimitive(Symbol('my-symbol')); // true
 isPrimitive([1, 2, 3]); // false
 isPrimitive({ name: 'Rian' }); // false
 isPrimitive(function() {}); // false
+```
+
+## `isPropertyKey` <Badge type="tip" text="Available since v0.7" vertical="middle" />
+
+Determine if a key a valid property key name.
+
+```js
+import {isPropertyKey} from '@aedart/support/misc';
+
+isPropertyKey('foo'); // true
+isPropertyKey(12); // true
+isPropertyKey(Symbol('my-symbol')); // true
+
+isPropertyKey(true); // false
+isPropertyKey(['a', 'b', 'c']); // false
+isPropertyKey(null); // false
+isPropertyKey(undefined); // false
+isPropertyKey(() => true); // false
 ```
 
 ## `isset`
@@ -131,4 +168,32 @@ isset('foo', { name: 'Jane' }, [ 1, 2, 3 ]); // true
 
 isset('foo', null, [ 1, 2, 3 ]); // false
 isset('foo', { name: 'Jane' }, undefined); // false
+```
+
+## `mergeKeys` <Badge type="tip" text="Available since v0.7" vertical="middle" />
+
+The `mergeKeys()` method is able to merge two or more keys into a single key (_see [`isKey()`](#iskey)_).
+
+```js
+import { mergeKeys } from "@aedart/support/misc";
+
+const key = mergeKeys(Symbol('my-symbol'), [ 'b', 'c.d' ], 23);
+
+console.log(key); // [ Symbol('my-symbol'), 'b', 'c.d', 23 ];
+```
+
+## `toWeakRef` <Badge type="tip" text="Available since v0.7" vertical="middle" />
+
+Wraps a target object into a [`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef), if not already instance of a weak reference.
+
+```js
+import { toWeakRef } from "@aedart/support/misc";
+
+const person = { name: 'Sine' };
+
+const a = toWeakRef(person); // new WeakRef of "person"
+const b = toWeakRef(a); // same WeakRef instance as "a"
+
+toWeakRef(null); // undefined
+toWeakRef(undefined); // undefined
 ```

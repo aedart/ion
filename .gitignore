@@ -2,6 +2,7 @@
 .idea/
 Thumbs.db
 temp/*
+.nx
 
 yarn.lock
 lerna-debug.log
