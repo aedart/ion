@@ -1,2 +1,1 @@
-// TODO: To be removed...
-export const tmp: string = 'tmp';
+export * from './mixin';
