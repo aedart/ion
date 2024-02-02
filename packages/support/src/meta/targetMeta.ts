@@ -227,9 +227,21 @@ export function getTargetMeta<T, D = unknown>(target: object, key: Key, defaultV
  */
 function findAddress(target: object): MetaAddress | undefined
 {
+    // Return target meta address, if available for target...
     let address: MetaAddress | undefined = addressesRegistry.get(target);
     if (address !== undefined) {
         return address;
+    }
+
+    // When no address is found for the target, and when a class instance is given, the actual
+    // target must be changed to the constructor
+    if (typeof target == 'object' && Reflect.has(target, 'constructor')) {
+        if (addressesRegistry.has(target.constructor)) {
+            return addressesRegistry.get(target.constructor);    
+        }
+        
+        // Otherwise, change the target to the constructor.
+        target = target.constructor;
     }
 
     // Obtain the prototype of Function...
