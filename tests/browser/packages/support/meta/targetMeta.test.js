@@ -23,6 +23,21 @@ describe('@aedart/support/meta', () => {
                 .toEqual(value);
         });
 
+        it('can obtain target meta for class instance', () => {
+            const key = 'zip';
+            const value = 'zup';
+
+            @targetMeta(key, value)
+            class A {}
+
+            // ---------------------------------------------------------------------- //
+            
+            const result = getTargetMeta(new A(), key);
+            expect(result)
+                .withContext('Incorrect target meta (for class instance)')
+                .toEqual(value);
+        });
+
         it('inherits class target meta', () => {
 
             const key = 'foo';
