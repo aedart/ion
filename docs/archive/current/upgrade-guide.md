@@ -9,6 +9,10 @@ sidebarDepth: 1
 
 ## From v0.6.x to v0.7.x
 
+### Node.js 20.11.0 Required
+
+Ion now requires [Node.js](https://nodejs.org) `v20.11.0` or greater.
+
 ### Meta
 
 Various metadata related type definitions have now been deprecated in favour of TypeScript's own definitions. Mostly, this should not affect the implementation.
