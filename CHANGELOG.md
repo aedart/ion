@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2024-02-02
+
 ### Added
 
 * `targetMeta()`, `inheritTargetMeta()` and `getTargetMeta()` utils method in `@aedart/support/meta`.
@@ -50,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Docs broken due to out-of-date vuepress dependencies (_switched to `@vuepress` `v2.0.0-rc.2`_).
 * `@vuepress/utils` not resolved by rollup during tests (_missing dependency, in the `@aedart/vuepress-utils` package_).
+* Missing `@lerna-lite/publish` as dev-dependency in root package.
 
 ## [0.6.1] - 2023-04-28
 
@@ -183,7 +186,8 @@ the version command (_configured in root `lerna.json`_).
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.6.1...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.7.0...HEAD
+[0.7.0]: https://github.com/aedart/ion/compare/0.6.1...0.7.0
 [0.6.1]: https://github.com/aedart/ion/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/aedart/ion/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/aedart/ion/compare/0.4.0...0.5.0
