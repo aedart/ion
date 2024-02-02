@@ -253,6 +253,8 @@ then this decorator will be updated respectfully to use the available metadata o
 The `targetMeta()` decorator offers the ability to associate metadata directly with a class instance or class method reference.
 This can be useful in situations when you do not know the class that owns the metadata. 
 
+Behind the scene, `targetMeta()` uses the `meta()` decorator and stores a reference to the target that is decorated inside a [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap).
+
 ::: tip Supported Elements
 
 Unlike the [`meta()` decorator](#supported-elements), `targetMeta()` only supports the following elements:
