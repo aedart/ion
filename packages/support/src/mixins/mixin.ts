@@ -1,6 +1,16 @@
 import type { ClassDecorator } from "@aedart/contracts/support/mixins";
 
-// TODO: ...
+/**
+ * Mixin one or more classes into the superclass
+ *
+ * **Note**: _Method is intended to be used as a decorator!_
+ * 
+ * @param {...ClassDecorator} mixins
+ * 
+ * @returns {(target: object, context: DecoratorContext) => (void | ((initialValue: unknown) => unknown) | undefined)}
+ * 
+ * @throws {TypeError}
+ */
 export function mixin(...mixins: ClassDecorator[])
 {
     // Fail if no mixins are provided.
