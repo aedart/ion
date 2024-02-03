@@ -1,17 +1,17 @@
-import type { ClassDecorator } from "@aedart/contracts/support/mixins";
+import type { Mixin } from "@aedart/contracts/support/mixins";
 
 /**
  * Mixin one or more classes into the superclass
  *
  * **Note**: _Method is intended to be used as a decorator!_
  * 
- * @param {...ClassDecorator} mixins
+ * @param {...Mixin} mixins
  * 
  * @returns {(target: object, context: DecoratorContext) => (void | ((initialValue: unknown) => unknown) | undefined)}
  * 
  * @throws {TypeError}
  */
-export function mixin(...mixins: ClassDecorator[])
+export function mixin(...mixins: Mixin[])
 {
     // Fail if no mixins are provided.
     if (arguments.length == 0) {
@@ -26,7 +26,7 @@ export function mixin(...mixins: ClassDecorator[])
 
         return mixins.reduce((
             superclass: typeof target,
-            mixin: ClassDecorator<typeof superclass>
+            mixin: Mixin<typeof superclass>
         ) => {
             // Return superclass, when mixin isn't a function.
             if (typeof mixin != 'function') {

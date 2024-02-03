@@ -1,9 +1,7 @@
 import type {Constructor, AbstractConstructor} from "@aedart/contracts";
 
 /**
- * Class Decorator (mixin)
- * 
- * A function that is able to decorate the given superclass argument.
+ * Class decorator (Mixin)
  * 
  * @example:
  * ```ts
@@ -12,7 +10,7 @@ import type {Constructor, AbstractConstructor} from "@aedart/contracts";
  * }
  * ```
  */
-export type ClassDecorator<
+export type Mixin<
     SuperClass extends AbstractConstructor = object,
     MixinClass extends Constructor = object
 > = (superclass: SuperClass) => SuperClass & MixinClass;
