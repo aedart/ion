@@ -1,4 +1,3 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import type { ClassDecorator } from "@aedart/contracts/support/mixins";
 
 // TODO: ...
@@ -14,10 +13,10 @@ export function mixin(...mixins: ClassDecorator[])
         if (context.kind !== 'class') {
             throw new TypeError(`@mixin() can only by applied on classes - "${context.kind}" is not support`);
         }
-        
+
         return mixins.reduce((
-            superclass: ConstructorOrAbstractConstructor<any>, /* eslint-disable-line @typescript-eslint/no-explicit-any */
-            mixin: ClassDecorator
+            superclass: typeof target,
+            mixin: ClassDecorator<typeof superclass>
         ) => {
             // Return superclass, when mixin isn't a function.
             if (typeof mixin != 'function') {
@@ -26,7 +25,7 @@ export function mixin(...mixins: ClassDecorator[])
             
             // TODO: Prevent mixin, if already mixed into the superclass!
                 // TODO: What about the "instance of" checks?
-            
+
             // Perform actual mixin and return resulting class...
             return mixin(superclass);
         }, target);
