@@ -15,4 +15,4 @@ import type {Constructor, AbstractConstructor} from "@aedart/contracts";
 export type ClassDecorator<
     SuperClass extends AbstractConstructor = object,
     MixinClass extends Constructor = object
-> = (superclass: SuperClass) => Constructor<SuperClass & MixinClass>;
+> = (superclass: SuperClass) => SuperClass & MixinClass;
