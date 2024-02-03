@@ -1,7 +1,18 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type {Constructor, AbstractConstructor} from "@aedart/contracts";
 
-// TODO: Describe this type...
+/**
+ * Class Decorator (mixin)
+ * 
+ * A function that is able to decorate the given superclass argument.
+ * 
+ * @example:
+ * ```ts
+ * const BoxMixin = <T extends AbstractConstructor>(superclass: T) => class extends superclass {
+ *      // ...not shown...
+ * }
+ * ```
+ */
 export type ClassDecorator<
-    T extends ConstructorOrAbstractConstructor<any> = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    U extends ConstructorOrAbstractConstructor<any> = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
-> = (superclass: T) => ConstructorOrAbstractConstructor<U>;
+    SuperClass extends AbstractConstructor = object,
+    MixinClass extends Constructor = object
+> = (superclass: SuperClass) => Constructor<SuperClass & MixinClass>;
