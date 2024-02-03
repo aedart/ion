@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+* Generic type is now optional (_defaults to `object`_) for `Constructor`, `AbstractConstructor` and `ConstructorOrAbstractConstructor` types, in `@aedart/contracts/support`.
+
 ## [0.7.0] - 2024-02-02
 
 ### Added
