@@ -24,8 +24,16 @@ export function mixin(...mixins: Mixin[])
             throw new TypeError(`@mixin() can only by applied on classes - "${context.kind}" is not support`);
         }
 
-        return mixins.reduce((
-            superclass: typeof target,
+        // It is important that given mixins are used to decorate the target's parent class and not
+        // the target itself. Therefore, we obtain the parent class or simply create a class, if
+        // no parent is available.
+        const parent: object = (Reflect.getPrototypeOf(target) !== Reflect.getPrototypeOf(Function))
+            ? Reflect.getPrototypeOf(target)
+            : class {};
+        
+        // Decorate the parent with given mixins.
+        const superclass: object = mixins.reduce((
+            superclass: typeof parent,
             mixin: Mixin<typeof superclass>
         ) => {
             // Return superclass, when mixin isn't a function.
@@ -38,6 +46,11 @@ export function mixin(...mixins: Mixin[])
 
             // Perform actual mixin and return resulting class...
             return mixin(superclass);
-        }, target);
+        }, parent);
+
+        // Finally, change target to inherit from the "superclass" and return it.
+        Reflect.setPrototypeOf(target.prototype, superclass.prototype);
+        
+        return target;
     };
 }
