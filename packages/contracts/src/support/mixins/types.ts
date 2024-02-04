@@ -1,4 +1,4 @@
-import type {Constructor, AbstractConstructor} from "@aedart/contracts";
+import type { AbstractConstructor } from "@aedart/contracts";
 
 /**
  * Abstract subclass or "Mix-in"
@@ -14,5 +14,5 @@ import type {Constructor, AbstractConstructor} from "@aedart/contracts";
  */
 export type Mixin<
     SuperClass extends AbstractConstructor = object,
-    MixinClass extends Constructor = object
-> = (superclass: SuperClass) => SuperClass & MixinClass;
+    AbstractSubclass extends AbstractConstructor = object
+> = (superclass: SuperClass) => AbstractSubclass & SuperClass;
