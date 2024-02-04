@@ -1,7 +1,7 @@
 import type { Mixin } from "@aedart/contracts/support/mixins";
 
 /**
- * Mixin one or more classes into the superclass
+ * Mix target class with one or more Abstract subclasses ("Mixins")
  *
  * **Note**: _Method is intended to be used as a decorator!_
  * 
@@ -11,7 +11,7 @@ import type { Mixin } from "@aedart/contracts/support/mixins";
  * 
  * @throws {TypeError}
  */
-export function mixin(...mixins: Mixin[])
+export function mix(...mixins: Mixin[])
 {
     // Fail if no mixins are provided.
     if (arguments.length == 0) {

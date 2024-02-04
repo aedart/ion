@@ -1,1 +1,1 @@
-export * from './mixin';
+export * from './mix';

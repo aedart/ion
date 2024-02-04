@@ -1,12 +1,12 @@
-import { mixin } from "@aedart/support/mixins";
+import { mix } from "@aedart/support/mixins";
 
 describe('@aedart/support/mixins', () => {
-    describe('@mixin()', () => {
+    describe('@mix()', () => {
 
         it('fails when no arguments given', () => {
             const callback = function() {
                 
-                @mixin()
+                @mix()
                 class A {}
             }
 
@@ -21,7 +21,7 @@ describe('@aedart/support/mixins', () => {
 
                 class A {
                     
-                    @mixin(MyMixin)
+                    @mix(MyMixin)
                     foo(){}
                 }
             }
@@ -41,7 +41,7 @@ describe('@aedart/support/mixins', () => {
                 }
             };
             
-            @mixin(MyMixin)
+            @mix(MyMixin)
             class A {}
             
             // -------------------------------------------------------------------------- //
@@ -71,7 +71,7 @@ describe('@aedart/support/mixins', () => {
                 zar() { return valueC }
             };
             
-            @mixin(
+            @mix(
                 MyMixinA,
                 MyMixinB,
                 MyMixinC,
@@ -102,7 +102,7 @@ describe('@aedart/support/mixins', () => {
 
             const MyMixin = (superclass) => class extends superclass {};
 
-            @mixin(MyMixin)
+            @mix(MyMixin)
             class A {}
 
             // -------------------------------------------------------------------------- //
