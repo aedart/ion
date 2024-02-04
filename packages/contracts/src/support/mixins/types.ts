@@ -1,7 +1,9 @@
 import type {Constructor, AbstractConstructor} from "@aedart/contracts";
 
 /**
- * Class decorator (Mixin)
+ * Abstract subclass or "Mix-in"
+ * 
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends#mix-ins
  * 
  * @example:
  * ```ts
