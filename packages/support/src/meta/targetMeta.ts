@@ -153,7 +153,7 @@ export function inheritTargetMeta()
         // Obtain "target" meta from parent, so we can obtain a meta entry and re-set it,
         // which will cause the @targetMeta() and @meta() decorators to do the rest.
         const prefixKey: Key = makePrefixKey(context);
-        const targetMeta: object | undefined = getMeta<object>(Reflect.getPrototypeOf(owner), prefixKey);
+        const targetMeta: object | undefined = getMeta<object, undefined>(Reflect.getPrototypeOf(owner), prefixKey);
         
         // Abort in case that there is nothing to inherit...
         if (empty(targetMeta)) {
@@ -162,7 +162,7 @@ export function inheritTargetMeta()
         
         // Get the first key-value pair (meta entry), from the "target" metadata
         const key: Key = Reflect.ownKeys(targetMeta)[0];
-        const value: unknown = targetMeta[key];
+        const value: unknown = (targetMeta as object)[key];
 
         // Finally, (re)set the meta-entry. This is needed so that we do not add a "null" entry,
         // other kind of useless metadata. All other meta entries are automatically handled by
@@ -197,7 +197,7 @@ export function getTargetMeta<T, D = unknown>(target: object, key: Key, defaultV
 {
     // Find "target" meta address for given target object
     // or return the default value if none is found.
-    const address: MetaAddress = findAddress(target);
+    const address: MetaAddress | undefined = findAddress(target);
     if (address === undefined) {
         return defaultValue;
     }
