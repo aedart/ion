@@ -5,6 +5,8 @@ import type { Mixin } from "@aedart/contracts/support/mixins";
  *
  * **Note**: _Method is intended to be used as a decorator!_
  * 
+ * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+ * 
  * @param {...Mixin} mixins
  * 
  * @returns {(target: object, context: DecoratorContext) => (void | ((initialValue: unknown) => unknown) | undefined)}
@@ -13,6 +15,9 @@ import type { Mixin } from "@aedart/contracts/support/mixins";
  */
 export function mix(...mixins: Mixin[])
 {
+    // The following code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
+    // @see https://github.com/justinfagnani/mixwith.js
+    
     // Fail if no mixins are provided.
     if (arguments.length == 0) {
         throw new TypeError(`@mixin() must be given at least one class decorator (mixin) as argument`);
