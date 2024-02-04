@@ -20,13 +20,13 @@ export function mix(...mixins: Mixin[])
     
     // Fail if no mixins are provided.
     if (arguments.length == 0) {
-        throw new TypeError(`@mixin() must be given at least one class decorator (mixin) as argument`);
+        throw new TypeError(`@mix() must be given at least one abstract subclass (mixin) as argument`);
     }
     
     return (target: object, context: DecoratorContext) => {
         // Fail if target is not a class
         if (context.kind !== 'class') {
-            throw new TypeError(`@mixin() can only by applied on classes - "${context.kind}" is not support`);
+            throw new TypeError(`@mix() can only by applied on a class - "${context.kind}" is not support`);
         }
 
         // It is important that given mixins are used to decorate the target's parent class and not
