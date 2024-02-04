@@ -32,9 +32,7 @@ export function mix(...mixins: Mixin[])
         // It is important that given mixins are used to decorate the target's parent class and not
         // the target itself. Therefore, we obtain the parent class or simply create a class, if
         // no parent is available.
-        const parent: object = (Reflect.getPrototypeOf(target) !== Reflect.getPrototypeOf(Function))
-            ? Reflect.getPrototypeOf(target)
-            : class {};
+        const parent: object = resolveParentOf(target);
         
         // Decorate the parent with given mixins.
         const superclass: object = mixins.reduce((
@@ -54,8 +52,36 @@ export function mix(...mixins: Mixin[])
         }, parent);
 
         // Finally, change target to inherit from the "superclass" and return it.
-        Reflect.setPrototypeOf(target.prototype, superclass.prototype);
-        
-        return target;
+        return mergeClasses(target, superclass);
     };
+}
+
+/**
+ * Sets the prototype of given target to that of given superclass
+ * 
+ * @param {object} target
+ * @param {object} superclass
+ * 
+ * @returns {object}
+ */
+function mergeClasses(target: object, superclass: object): object
+{
+    Reflect.setPrototypeOf(target.prototype, superclass.prototype);
+
+    return target;
+}
+
+/**
+ * Returns the parent class of given target object
+ * 
+ * @param {object} target
+ * 
+ * @returns {object} Target's parent class or a new class
+ *                   if none is available
+ */
+function resolveParentOf(target: object): object
+{
+    return (Reflect.getPrototypeOf(target) !== Reflect.getPrototypeOf(Function))
+        ? Reflect.getPrototypeOf(target)
+        : class {};
 }
