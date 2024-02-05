@@ -5,6 +5,7 @@ import type { Mixin } from "@aedart/contracts/support/mixins";
  *
  * **Note**: _Method is intended to be used as a decorator!_
  * 
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends#mix-ins
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
  * 
  * @param {...Mixin} mixins
