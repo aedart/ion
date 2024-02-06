@@ -1,4 +1,5 @@
 import type { Mixin } from "@aedart/contracts/support/mixins";
+import { PrepareMixin } from './mixins';
 
 /**
  * Mix target class with one or more Abstract subclasses ("Mixins")
@@ -16,7 +17,7 @@ import type { Mixin } from "@aedart/contracts/support/mixins";
  */
 export function mix(...mixins: Mixin[])
 {
-    // The following code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
+    // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
     
     // Fail if no mixins are provided.
@@ -45,16 +46,27 @@ export function mix(...mixins: Mixin[])
                 return superclass;
             }
             
-            // TODO: Prevent mixin, if already mixed into the superclass!
-                // TODO: What about the "instance of" checks?
-
-            // Perform actual mixin and return resulting class...
-            return mixin(superclass);
+            // Prepare the mixin and apply it...
+            return prepare(mixin)(superclass);
         }, parent);
 
         // Finally, change target to inherit from the "superclass" and return it.
         return mergeClasses(target, superclass);
     };
+}
+
+/**
+ * Prepares the given mixin, before it is applied on a superclass
+ * 
+ * @param {Mixin} mixin
+ * 
+ * @returns {Mixin}
+ */
+function prepare(mixin: Mixin): Mixin
+{
+    // TODO: This SHOULD perhaps allow for customisation?
+    
+    return PrepareMixin(mixin);
 }
 
 /**
