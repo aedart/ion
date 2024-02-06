@@ -95,10 +95,8 @@ describe('@aedart/support/mixins', () => {
                 .toEqual(valueC);
         });
 
-        // TODO: Fails... for now..
+        // TODO: Incomplete...
         xit('can determine if instance of mixin', () => {
-
-            const value = 123;
 
             const MyMixin = (superclass) => class extends superclass {};
 
@@ -109,6 +107,8 @@ describe('@aedart/support/mixins', () => {
 
             const instance = new A();
 
+            console.log('(a) instance of MyMixin', instance instanceof MyMixin);
+            
             expect(instance instanceof MyMixin)
                 .withContext('class SHOULD be instance of mixin')
                 .toBeTrue();
