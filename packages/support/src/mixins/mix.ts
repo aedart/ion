@@ -1,4 +1,4 @@
-import type { Mixin } from "@aedart/contracts/support/mixins";
+import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { PrepareMixin } from './mixins';
 
 /**
@@ -9,13 +9,13 @@ import { PrepareMixin } from './mixins';
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends#mix-ins
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
  * 
- * @param {...Mixin} mixins
+ * @param {...MixinFunction} mixins
  * 
  * @returns {(target: object, context: DecoratorContext) => (void | ((initialValue: unknown) => unknown) | undefined)}
  * 
  * @throws {TypeError}
  */
-export function mix(...mixins: Mixin[])
+export function mix(...mixins: MixinFunction[])
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
@@ -39,7 +39,7 @@ export function mix(...mixins: Mixin[])
         // Decorate the parent with given mixins.
         const superclass: object = mixins.reduce((
             superclass: typeof parent,
-            mixin: Mixin<typeof superclass>
+            mixin: MixinFunction<typeof superclass>
         ) => {
             // Return superclass, when mixin isn't a function.
             if (typeof mixin != 'function') {
@@ -58,11 +58,11 @@ export function mix(...mixins: Mixin[])
 /**
  * Prepares the given mixin, before it is applied on a superclass
  * 
- * @param {Mixin} mixin
+ * @param {MixinFunction} mixin
  * 
- * @returns {Mixin}
+ * @returns {MixinFunction}
  */
-function prepare(mixin: Mixin): Mixin
+function prepare(mixin: MixinFunction): MixinFunction
 {
     // TODO: This SHOULD perhaps allow for customisation?
     

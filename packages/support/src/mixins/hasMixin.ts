@@ -1,4 +1,4 @@
-import type { Mixin } from "@aedart/contracts/support/mixins";
+import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { isApplicationOf } from "./isApplicationOf";
 
 /**
@@ -6,11 +6,11 @@ import { isApplicationOf } from "./isApplicationOf";
  * chain.
  * 
  * @param {object} target
- * @param {Mixin} mixin
+ * @param {MixinFunction} mixin
  * 
  * @returns {boolean}
  */
-export function hasMixin(target: object, mixin: Mixin): boolean
+export function hasMixin(target: object, mixin: MixinFunction): boolean
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js

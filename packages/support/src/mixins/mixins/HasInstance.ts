@@ -1,14 +1,14 @@
-import type { Mixin } from "@aedart/contracts/support/mixins";
+import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { hasMixin } from "../hasMixin";
 
 /**
  * Adds {@link Symbol.hasInstance} to mixin, if not already in mixin
  * 
- * @param {Mixin} mixin
+ * @param {MixinFunction} mixin
  * 
- * @returns {Mixin}
+ * @returns {MixinFunction}
  */
-export const HasInstance = function(mixin: Mixin): Mixin
+export const HasInstance = function(mixin: MixinFunction): MixinFunction
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js

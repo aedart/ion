@@ -1,4 +1,4 @@
-import type { Mixin } from "@aedart/contracts/support/mixins";
+import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { Bare } from "./Bare";
 import { Cached } from "./Cached";
 import { HasInstance } from "./HasInstance";
@@ -11,7 +11,7 @@ import { DeDupe } from "./DeDupe";
  * 
  * @returns {PrepareMixin}
  */
-export const PrepareMixin = function(mixin: Mixin): Mixin
+export const PrepareMixin = function(mixin: MixinFunction): MixinFunction
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js

@@ -1,4 +1,4 @@
-import type { Mixin } from "@aedart/contracts/support/mixins";
+import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { APPLIED_MIXIN } from "@aedart/contracts/support/mixins";
 import { unwrap } from "./unwrap";
 
@@ -7,11 +7,11 @@ import { unwrap } from "./unwrap";
  * `mixin` to a superclass.
  * 
  * @param {object} proto
- * @param {Mixin} mixin
+ * @param {MixinFunction} mixin
  * 
  * @returns {boolean}
  */
-export function isApplicationOf(proto: object, mixin: Mixin): boolean
+export function isApplicationOf(proto: object, mixin: MixinFunction): boolean
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js

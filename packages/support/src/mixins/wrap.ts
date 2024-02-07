@@ -1,16 +1,16 @@
-import type { Mixin } from "@aedart/contracts/support/mixins";
+import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { WRAPPED_MIXIN } from "@aedart/contracts/support/mixins";
 
 /**
  * Setup given mixin to be wrapped by given `wrapper` and allow
  * it to be unwrapped at a later point.
  *
- * @param {Mixin} mixin
- * @param {Mixin} wrapper
+ * @param {MixinFunction} mixin
+ * @param {MixinFunction} wrapper
  *
- * @returns {Mixin}
+ * @returns {MixinFunction}
  */
-export function wrap(mixin: Mixin, wrapper: Mixin): Mixin
+export function wrap(mixin: MixinFunction, wrapper: MixinFunction): MixinFunction
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
