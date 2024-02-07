@@ -1,13 +1,23 @@
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
-import { Mixin } from './decorators';
 
 /**
- * Mix target class with one or more Abstract subclasses ("Mixins")
+ * Mix target class with one or more abstract subclasses ("Mixins")
  *
  * **Note**: _Method is intended to be used as a decorator!_
  * 
+ * @example:
+ * ```ts
+ * const BoxMixin = <T extends AbstractConstructor>(superclass: T) => class extends superclass {
+ *      // ...not shown...
+ * }
+ * 
+ * @mix(BoxMixin)
+ * class A {}
+ * ```
+ * 
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends#mix-ins
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+ * @see https://justinfagnani.com/2016/01/07/enhancing-mixins-with-decorator-functions/
  * 
  * @param {...MixinFunction} mixins
  * 
@@ -46,27 +56,13 @@ export function mix(...mixins: MixinFunction[])
                 return superclass;
             }
             
-            // Prepare the mixin and apply it...
-            return prepare(mixin)(superclass);
+            // Apply the mixin...
+            return mixin(superclass);
         }, parent);
 
         // Finally, change target to inherit from the "superclass" and return it.
         return mergeClasses(target, superclass);
     };
-}
-
-/**
- * Prepares the given mixin, before it is applied on a superclass
- * 
- * @param {MixinFunction} mixin
- * 
- * @returns {MixinFunction}
- */
-function prepare(mixin: MixinFunction): MixinFunction
-{
-    // TODO: This SHOULD perhaps allow for customisation?
-    
-    return Mixin(mixin);
 }
 
 /**
