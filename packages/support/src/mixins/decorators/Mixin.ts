@@ -7,9 +7,9 @@ import { DeDupe } from "./DeDupe";
 /**
  * Decorates given mixin to add deduplication, application caching, and instance of support
  * 
- * @param {Mixin} mixin
+ * @param {MixinFunction} mixin
  * 
- * @returns {Mixin}
+ * @returns {MixinFunction}
  */
 export const Mixin = function(mixin: MixinFunction): MixinFunction
 {
