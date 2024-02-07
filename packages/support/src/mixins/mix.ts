@@ -1,5 +1,5 @@
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
-import { PrepareMixin } from './decorators';
+import { Mixin } from './decorators';
 
 /**
  * Mix target class with one or more Abstract subclasses ("Mixins")
@@ -66,7 +66,7 @@ function prepare(mixin: MixinFunction): MixinFunction
 {
     // TODO: This SHOULD perhaps allow for customisation?
     
-    return PrepareMixin(mixin);
+    return Mixin(mixin);
 }
 
 /**
