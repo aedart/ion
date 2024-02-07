@@ -1,5 +1,5 @@
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
-import { PrepareMixin } from './mixins';
+import { PrepareMixin } from './decorators';
 
 /**
  * Mix target class with one or more Abstract subclasses ("Mixins")
