@@ -37,7 +37,7 @@ const STATIC_IDENTIFIER: unique symbol = Symbol('static');
 /**
  * Stores value for given key, and associates it directly with the target
  *
- * **Note**: _Method is intended to be used as a decorator!_
+ * **Note**: _Method is intended to be used as a class or method decorator!_
  *
  * @example
  * ```ts
@@ -112,7 +112,7 @@ export function targetMeta(
 /**
  * Inherit "target" meta from a base class.
  * 
- * **Note**: _Method is intended to be used as a decorator!_
+ * **Note**: _Method is intended to be used as a static method decorator!_
  *
  * **Note**: _To be used in situations where you overwrite static methods and wish to inherit
  * "target" meta from the parent method._

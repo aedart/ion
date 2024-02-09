@@ -3,7 +3,7 @@ import type { MixinFunction } from "@aedart/contracts/support/mixins";
 /**
  * Mix target class with one or more abstract subclasses ("Mixins")
  *
- * **Note**: _Method is intended to be used as a decorator!_
+ * **Note**: _Method is intended to be used as a class decorator!_
  * 
  * @example:
  * ```ts
