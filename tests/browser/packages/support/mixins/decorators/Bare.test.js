@@ -1,6 +1,6 @@
 import { Bare, hasMixin } from "@aedart/support/mixins";
 
-fdescribe('@aedart/support/mixins', () => {
+describe('@aedart/support/mixins', () => {
     describe('decorators', () => {
 
         describe('Bare', () => {
