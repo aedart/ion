@@ -9,6 +9,8 @@ import { wrap } from "../wrap";
  * superclass, the mixin will only create one subclass, memoize it and return
  * it for each application.
  * 
+ * @see https://justinfagnani.com/2016/01/07/enhancing-mixins-with-decorator-functions/#cachingmixinapplications
+ * 
  * @param {MixinFunction} mixin
  * 
  * @returns {MixinFunction}
