@@ -1,4 +1,4 @@
-import { mix } from "@aedart/support/mixins";
+import { mix, Mixin } from "@aedart/support/mixins";
 
 describe('@aedart/support/mixins', () => {
     describe('@mix()', () => {
@@ -160,33 +160,33 @@ describe('@aedart/support/mixins', () => {
         // TODO: ...Hmmm, edge case that might not be that good!
         xit('invokes constructors', () => {
             
-            const MyMixinA = (superclass) => class extends superclass {
+            const MyMixinA = Mixin((superclass) => class extends superclass {
                 constructor() {
                     super();
                     console.log('Mixin A');
                 }
-            };
+            });
             
-            const MyMixinB = (superclass) => class extends superclass {
+            const MyMixinB = Mixin((superclass) => class extends superclass {
                 constructor() {
                     super();
                     console.log('Mixin B');
                 }
-            };
+            });
             
-            const MyMixinC = (superclass) => class extends superclass {
+            const MyMixinC = Mixin((superclass) => class extends superclass {
                 constructor() {
                     super();
                     console.log('Mixin C');
                 }
-            };
+            });
             
-            const MyMixinD = (superclass) => class extends superclass {
+            const MyMixinD = Mixin((superclass) => class extends superclass {
                 constructor() {
                     super();
                     console.log('Mixin C');
                 }
-            };
+            });
 
             @mix(
                 MyMixinA,
@@ -197,6 +197,8 @@ describe('@aedart/support/mixins', () => {
                     // TODO: Problem here... we cannot just call super(). This
                     // TODO: class is dynamically extended and its prototype set to inherit
                     // TODO: from a class it originally does not inherit from...
+                    //super();
+                    
                     console.log('class A');
                 }
             }
@@ -215,6 +217,26 @@ describe('@aedart/support/mixins', () => {
             // -------------------------------------------------------------------------- //
 
             const instance = new B();
+
+            expect(instance instanceof A)
+                .withContext('should be instance of class A')
+                .toBeTrue();
+            expect(instance instanceof B)
+                .withContext('should also be instance of class B')
+                .toBeTrue();
+
+            expect(instance instanceof MyMixinA)
+                .withContext('should also be instance of mixin (a)')
+                .toBeTrue();
+            expect(instance instanceof MyMixinB)
+                .withContext('should also be instance of mixin (b)')
+                .toBeTrue();
+            expect(instance instanceof MyMixinC)
+                .withContext('should also be instance of mixin (c)')
+                .toBeTrue();
+            expect(instance instanceof MyMixinD)
+                .withContext('should also be instance of mixin (d)')
+                .toBeTrue();
         });
     });
 });

@@ -75,6 +75,8 @@ export function mix(...mixins: MixinFunction[])
  */
 function mergeClasses(target: object, superclass: object): object
 {
+    // TODO: Uhm, what if superclass is already in target's prototype chain?
+    
     Reflect.setPrototypeOf(target.prototype, superclass.prototype);
 
     return target;
