@@ -31,7 +31,7 @@ describe('@aedart/support/mixins', () => {
                 .toThrowError(TypeError);
         });
 
-        it('can mixin single decorator', () => {
+        it('can mix with a single mixin', () => {
 
             const value = 123;
 
@@ -54,7 +54,7 @@ describe('@aedart/support/mixins', () => {
                 .toEqual(value);
         });
 
-        it('can mixin multiple decorator', () => {
+        it('can mix with multiple mixins', () => {
 
             const valueA = 123;
             const MyMixinA = (superclass) => class extends superclass {
@@ -83,35 +83,138 @@ describe('@aedart/support/mixins', () => {
             const instance = new A();
 
             expect(instance.foo())
-                .withContext('MyMixinA not mixed in superclass')
+                .withContext('mixin (a) not applied')
                 .toEqual(valueA);
 
             expect(instance.bar())
-                .withContext('MyMixinB not mixed in superclass')
+                .withContext('mixin (b) not applied')
                 .toEqual(valueB);
 
             expect(instance.zar())
-                .withContext('MyMixinC not mixed in superclass')
+                .withContext('mixin (c) not applied')
                 .toEqual(valueC);
         });
 
-        // TODO: Incomplete...
-        xit('can determine if instance of mixin', () => {
+        it('can mix with class that extends parent with mixins applied', () => {
 
-            const MyMixin = (superclass) => class extends superclass {};
+            const valueA = 984;
+            const MyMixinA = (superclass) => class extends superclass {
+                a() { return valueA }
+            };
 
-            @mix(MyMixin)
+            const valueB = 852;
+            const MyMixinB = (superclass) => class extends superclass {
+                b() { return valueB }
+            };
+
+            const valueC = 123;
+            const MyMixinC = (superclass) => class extends superclass {
+                c() { return valueC }
+            };
+
+            const valueD = 462;
+            const MyMixinD = (superclass) => class extends superclass {
+                d() { return valueD }
+            };
+            
+            @mix(
+                MyMixinA,
+                MyMixinB,
+            )
             class A {}
+            
+            @mix(
+                MyMixinC,
+                MyMixinD
+            )
+            class B extends A {}
 
             // -------------------------------------------------------------------------- //
 
-            const instance = new A();
+            const instance = new B();
 
-            console.log('(a) instance of MyMixin', instance instanceof MyMixin);
-            
-            expect(instance instanceof MyMixin)
-                .withContext('class SHOULD be instance of mixin')
+            expect(instance instanceof A)
+                .withContext('should be instance of class A')
                 .toBeTrue();
+            expect(instance instanceof B)
+                .withContext('should also be instance of class B')
+                .toBeTrue();
+            
+            // NOTE: instance of mixin checks will only work if mixin functions are decorated
+            // with the "HasInstance" mixin decorator. Or, via the "Mixin" decorator.
+            
+            expect(instance.a())
+                .withContext('mixin (a) not applied')
+                .toEqual(valueA);
+            expect(instance.b())
+                .withContext('mixin (b) not applied')
+                .toEqual(valueB);
+            expect(instance.c())
+                .withContext('mixin (c) not applied')
+                .toEqual(valueC);
+            expect(instance.d())
+                .withContext('mixin (d) not applied')
+                .toEqual(valueD);
+        });
+
+        // TODO: ...Hmmm, edge case that might not be that good!
+        xit('invokes constructors', () => {
+            
+            const MyMixinA = (superclass) => class extends superclass {
+                constructor() {
+                    super();
+                    console.log('Mixin A');
+                }
+            };
+            
+            const MyMixinB = (superclass) => class extends superclass {
+                constructor() {
+                    super();
+                    console.log('Mixin B');
+                }
+            };
+            
+            const MyMixinC = (superclass) => class extends superclass {
+                constructor() {
+                    super();
+                    console.log('Mixin C');
+                }
+            };
+            
+            const MyMixinD = (superclass) => class extends superclass {
+                constructor() {
+                    super();
+                    console.log('Mixin C');
+                }
+            };
+
+            @mix(
+                MyMixinA,
+                MyMixinB,
+            )
+            class A {
+                constructor() {
+                    // TODO: Problem here... we cannot just call super(). This
+                    // TODO: class is dynamically extended and its prototype set to inherit
+                    // TODO: from a class it originally does not inherit from...
+                    console.log('class A');
+                }
+            }
+
+            @mix(
+                MyMixinC,
+                MyMixinD
+            )
+            class B extends A {
+                constructor() {
+                    super();
+                    console.log('class B');
+                }
+            }
+
+            // -------------------------------------------------------------------------- //
+
+            const instance = new B();
         });
     });
 });
