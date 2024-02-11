@@ -61,22 +61,20 @@ export function mix(...mixins: MixinFunction[])
         }, parent);
 
         // Finally, change target to inherit from the "superclass" and return it.
-        return mergeClasses(target, superclass);
+        return extendTarget(target, superclass);
     };
 }
 
 /**
- * Sets the prototype of given target to that of given superclass
+ * Extends the target with the given superclass
  * 
  * @param {object} target
  * @param {object} superclass
  * 
  * @returns {object}
  */
-function mergeClasses(target: object, superclass: object): object
+function extendTarget(target: object, superclass: object): object
 {
-    // TODO: Uhm, what if superclass is already in target's prototype chain?
-    
     Reflect.setPrototypeOf(target.prototype, superclass.prototype);
 
     return target;
