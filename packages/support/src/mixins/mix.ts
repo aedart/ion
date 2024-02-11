@@ -1,4 +1,5 @@
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
+import {Constructor} from "@aedart/contracts";
 
 /**
  * Mix target class with one or more abstract subclasses ("Mixins")
@@ -75,7 +76,29 @@ export function mix(...mixins: MixinFunction[])
  */
 function extendTarget(target: object, superclass: object): object
 {
+    // If the target does not extend another class...
+    if (Reflect.getPrototypeOf(target) === Reflect.getPrototypeOf(Function)) {
+        // Then the @mix() has created a new class that applies one or more mixins.
+        // However, their constructor(s) must be invoked (call to super()), which
+        // can only be done via a Proxy, by trapping calls to the constructor.
+
+        target = new Proxy(target, {
+            construct(target, argArray, newTarget): object
+            {
+                // Mimic call to super(), with target as the newTarget, for the superclass
+                // which has mixins applied.
+                Reflect.construct(superclass as Constructor, argArray, target as Constructor);
+                
+                // Return new target instance...
+                return Reflect.construct(target as Constructor, argArray, newTarget);
+            }
+        });
+    }
+
+    // Ensure correct inheritance chain.
+    // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor#changing_the_constructor_of_a_constructor_functions_prototype
     Reflect.setPrototypeOf(target.prototype, superclass.prototype);
+    Reflect.setPrototypeOf(target, superclass);
 
     return target;
 }

@@ -157,34 +157,159 @@ describe('@aedart/support/mixins', () => {
                 .toEqual(valueD);
         });
 
-        // TODO: ...Hmmm, edge case that might not be that good!
-        xit('invokes constructors', () => {
+        it('mixin constructors are automatically invoked', () => {
+
+            const invoked = [];
+            const MyMixinA = Mixin((superclass) => class extends superclass {
+                constructor() {
+                    super();
+                    invoked.push('Mixin A');
+                }
+                
+                getThis() {
+                    return this;
+                }
+            });
+
+            const MyMixinB = Mixin((superclass) => class extends superclass {
+                constructor() {
+                    super();
+                    invoked.push('Mixin B');
+                }
+            });
+            
+            @mix(
+                MyMixinA,
+                MyMixinB
+            )
+            class A {
+                constructor() {
+                    // Class A has no immediate superclass. However, the @mix() class decorator
+                    // extends it with a parent, which applies mixins. We SHOULD call super()
+                    // here, but babel and other transpilers complain about doing such...
+                    // THUS - the @mix() must somehow achieve this for us!
+
+                    //super(); // THIS WILL NOT WORK HERE...
+                    invoked.push('Class A');
+                }
+            }
+
+            // -------------------------------------------------------------------------- //
+            
+            const instance = new A();
+            
+            // Inheritance check
+            expect(instance instanceof A)
+                .withContext('should be instance of class A')
+                .toBeTrue();
+
+            expect(instance instanceof MyMixinA)
+                .withContext('should also be instance of mixin (a)')
+                .toBeTrue();
+            expect(instance instanceof MyMixinB)
+                .withContext('should also be instance of mixin (b)')
+                .toBeTrue();
+
+            // Instance check of via method in mixin
+            expect(instance.getThis() === instance)
+                .withContext('invalid instance from getThis()')
+                .toBeTrue();
+            
+            // Debug
+            //console.log('invoked constructors', invoked);
+
+            // Constructors check
+            expect(invoked.length)
+                .withContext('Incorrect amount of constructors invoked')
+                .toEqual(3);
+            expect(invoked[0])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Mixin A');
+            expect(invoked[1])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Mixin B');
+            expect(invoked[2])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Class A');
+        });
+
+        it('mixin constructors are automatically invoked, even when class has no constructor defined', () => {
+
+            const invoked = [];
+            const MyMixinA = Mixin((superclass) => class extends superclass {
+                constructor() {
+                    super();
+                    invoked.push('Mixin A');
+                }
+
+                getThis() {
+                    return this;
+                }
+            });
+
+            const MyMixinB = Mixin((superclass) => class extends superclass {
+                constructor() {
+                    super();
+                    invoked.push('Mixin B');
+                }
+            });
+
+            @mix(
+                MyMixinA,
+                MyMixinB
+            )
+            class A {
+                // NOTE: No constructor here, but mixin constructor(s) should still be invoked correctly
+            }
+
+            // -------------------------------------------------------------------------- //
+
+            const instance = new A();
+            
+            // Debug
+            //console.log('invoked constructors', invoked);
+
+            // Constructors check
+            expect(invoked.length)
+                .withContext('Incorrect amount of constructors invoked')
+                .toEqual(2);
+            expect(invoked[0])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Mixin A');
+            expect(invoked[1])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Mixin B');
+        });
+        
+        it('constructors invoked correctly, when extending parent with mixins', () => {
+
+            const invoked = [];
             
             const MyMixinA = Mixin((superclass) => class extends superclass {
                 constructor() {
                     super();
-                    console.log('Mixin A');
+                    invoked.push('Mixin A');
                 }
             });
             
             const MyMixinB = Mixin((superclass) => class extends superclass {
                 constructor() {
                     super();
-                    console.log('Mixin B');
+                    invoked.push('Mixin B');
                 }
             });
             
             const MyMixinC = Mixin((superclass) => class extends superclass {
                 constructor() {
                     super();
-                    console.log('Mixin C');
+                    invoked.push('Mixin C');
                 }
             });
             
             const MyMixinD = Mixin((superclass) => class extends superclass {
                 constructor() {
                     super();
-                    console.log('Mixin C');
+                    invoked.push('Mixin D');
                 }
             });
 
@@ -194,12 +319,7 @@ describe('@aedart/support/mixins', () => {
             )
             class A {
                 constructor() {
-                    // TODO: Problem here... we cannot just call super(). This
-                    // TODO: class is dynamically extended and its prototype set to inherit
-                    // TODO: from a class it originally does not inherit from...
-                    //super();
-                    
-                    console.log('class A');
+                    invoked.push('Class A');
                 }
             }
 
@@ -210,7 +330,7 @@ describe('@aedart/support/mixins', () => {
             class B extends A {
                 constructor() {
                     super();
-                    console.log('class B');
+                    invoked.push('Class B');
                 }
             }
 
@@ -218,6 +338,7 @@ describe('@aedart/support/mixins', () => {
 
             const instance = new B();
 
+            // Inheritance check
             expect(instance instanceof A)
                 .withContext('should be instance of class A')
                 .toBeTrue();
@@ -237,6 +358,32 @@ describe('@aedart/support/mixins', () => {
             expect(instance instanceof MyMixinD)
                 .withContext('should also be instance of mixin (d)')
                 .toBeTrue();
+
+            // Debug
+            // console.log('invoked constructors', invoked);
+            
+            // Constructors check
+            expect(invoked.length)
+                .withContext('Incorrect amount of constructors invoked')
+                .toEqual(6);
+            expect(invoked[0])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Mixin A');
+            expect(invoked[1])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Mixin B');
+            expect(invoked[2])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Class A');
+            expect(invoked[3])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Mixin C');
+            expect(invoked[4])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Mixin D');
+            expect(invoked[5])
+                .withContext('Incorrect constructor invoked')
+                .toEqual('Class B');
         });
     });
 });
