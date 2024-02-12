@@ -100,7 +100,7 @@ class Box extends mix().with(
 }
 ```
 
-### Extending Other Classes
+### Extending Superclass
 
 To extend a superclass and apply mixins onto it, pass the superclass as argument for the `mix()` function. 
 
