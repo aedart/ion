@@ -1,6 +1,10 @@
+import Builder from "./Builder";
+export {
+    Builder
+};
+
 export * from './decorators';
 export * from './apply';
-export * from './Builder';
 export * from './hasMixin';
 export * from './isApplicationOf';
 export * from './_mix';
