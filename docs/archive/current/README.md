@@ -29,6 +29,38 @@ _TBD: "To be decided"._
 
 ## `v0.x` Highlights
 
+### Mixins <Badge type="tip" text="Available since v0.8" />
+
+Adaptation of Justin Fagnani's [`mixwith.js`](https://github.com/justinfagnani/mixwith.js).
+
+```js
+import { mix, Mixin } from "@aedart/support/mixins";
+
+const NameMixin = Mixin((superclass) => class extends superclass {
+    #name;
+    
+    set name(value) {
+        this.#name = value;
+    }
+    
+    get name() {
+        return this.#name;
+    }
+});
+
+class Item extends mix().with(
+    NameMixin
+) {}
+
+// ...Later in your application
+const item = new Item();
+item.name = 'My Item';
+
+console.log(item.name); // My Item
+```
+
+See details and more examples in the [`@aedart/support/mixins` documentation](./packages/support/mixins.md).
+
 ### "Target" Meta Decorator <Badge type="tip" text="Available since v0.7" />
 
 Associate arbitrary metadata directly with the target element that is being decorated.
