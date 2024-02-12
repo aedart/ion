@@ -41,6 +41,11 @@
             "import": "./dist/esm/support/meta.js",
             "require": "./dist/cjs/support/meta.cjs"
         },
+        "./support/mixins": {
+            "types": "./dist/types/support/mixins.d.ts",
+            "import": "./dist/esm/support/mixins.js",
+            "require": "./dist/cjs/support/mixins.cjs"
+        },
         "./support/reflections": {
             "types": "./dist/types/support/reflections.d.ts",
             "import": "./dist/esm/support/reflections.js",

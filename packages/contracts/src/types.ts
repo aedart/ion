@@ -8,14 +8,14 @@ export type Primitive = null | undefined | boolean | number | bigint | string | 
 /**
  * Constructor type
  */
-export type Constructor<T> = new (...args: any[]) => T;
+export type Constructor<T = object> = new (...args: any[]) => T;
 
 /**
  * Abstract constructor type
  */
-export type AbstractConstructor<T> = abstract new (...args: any[]) => T;
+export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T;
 
 /**
  * Constructor or Abstract Constructor type
  */
-export type ConstructorOrAbstractConstructor<T> = Constructor<T> | AbstractConstructor<T>;
+export type ConstructorOrAbstractConstructor<T = object> = Constructor<T> | AbstractConstructor<T>;
