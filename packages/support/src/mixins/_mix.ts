@@ -30,7 +30,7 @@ import {Constructor} from "@aedart/contracts";
  * 
  * @throws {TypeError}
  */
-export function mix(...mixins: MixinFunction[])
+export function _mix(...mixins: MixinFunction[])
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js

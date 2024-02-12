@@ -1,4 +1,4 @@
-import { mix, Mixin } from "@aedart/support/mixins";
+import { _mix as mix, Mixin } from "@aedart/support/mixins";
 
 /**
  * @deprecated The @mix() class decorator does NOT work as desired.
