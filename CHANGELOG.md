@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2024-02-12
+
 ### Added
 
 * `@aedart/support/mixins` submodule that offers an adaptation of Justin Fagnani's [`mixwith.js`](https://github.com/justinfagnani/mixwith.js).
@@ -195,7 +197,8 @@ the version command (_configured in root `lerna.json`_).
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.7.0...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.8.0...HEAD
+[0.8.0]: https://github.com/aedart/ion/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/aedart/ion/compare/0.6.1...0.7.0
 [0.6.1]: https://github.com/aedart/ion/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/aedart/ion/compare/0.5.0...0.6.0
