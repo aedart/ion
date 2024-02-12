@@ -1,5 +1,8 @@
 import { mix, Mixin } from "@aedart/support/mixins";
 
+/**
+ * @deprecated The @mix() class decorator does NOT work as desired.
+ */
 describe('@aedart/support/mixins', () => {
     describe('@mix()', () => {
 
@@ -384,6 +387,70 @@ describe('@aedart/support/mixins', () => {
             expect(invoked[5])
                 .withContext('Incorrect constructor invoked')
                 .toEqual('Class B');
+        });
+
+        // TODO: Arrrhhhh... this will NOT work as desired. The "true" inheritance is broken, causing issues...
+        xit('constructor arguments correctly passed on', () => {
+            const MyMixinA = Mixin((superclass) => class extends superclass {
+                
+                _msg = '';
+                
+                constructor(...args) {
+                    super(...args);
+
+                    // TODO:
+                    console.log('ARGUMENTS', args);
+                    
+                    this.message = args[0];
+
+                    // TODO:
+                    console.log('   - message', this.message);
+                    console.log('   - this', this);
+                }
+                
+                set message(value) {
+                    this._msg = value;
+                }
+                
+                get message() {
+                    return this._msg;
+                }
+            });
+
+            const MyMixinB = Mixin((superclass) => class extends superclass {
+                constructor(...args) {
+                    super(...args);
+                }
+            });
+
+            @mix(
+                MyMixinA,
+                MyMixinB
+            )
+            class A {
+                constructor(...args) {
+                    // N/A - do nothing with args here...
+                }
+            }
+
+            // -------------------------------------------------------------------------- //
+
+            const messageA = 'Hi there...';
+            const instance = new A(messageA);
+            
+            // TODO:
+            console.log('instance', instance);
+            
+            expect(instance.message)
+                .withContext('Arguments not passed on correctly')
+                .toEqual(messageA)
+            
+            // Perhaps a bit redundant to test here, but better safe than sorry...
+            const messageB = 'Hi back at you...';
+            instance.message = messageB;
+            expect(instance.message)
+                .withContext('Unable to change property in mixin')
+                .toEqual(messageB);
         });
     });
 });

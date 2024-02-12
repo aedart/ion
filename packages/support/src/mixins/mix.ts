@@ -2,6 +2,10 @@ import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import {Constructor} from "@aedart/contracts";
 
 /**
+ * @deprecated The @mix() class decorator does NOT work as desired.
+ * 
+ * TODO: Replace this class decorator with the original Mixin Builder (mix(object).with(...mixins))
+ * 
  * Mix target class with one or more abstract subclasses ("Mixins")
  *
  * **Note**: _Method is intended to be used as a class decorator!_
@@ -88,7 +92,7 @@ function extendTarget(target: object, superclass: object): object
                 // Mimic call to super(), with target as the newTarget, for the superclass
                 // which has mixins applied.
                 Reflect.construct(superclass as Constructor, argArray, target as Constructor);
-                
+
                 // Return new target instance...
                 return Reflect.construct(target as Constructor, argArray, newTarget);
             }
