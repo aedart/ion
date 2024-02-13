@@ -1,4 +1,5 @@
 import Concern from "./Concern";
+import Configuration from "./Configuration";
 
 /**
  * Support Concerns identifier
@@ -8,5 +9,8 @@ import Concern from "./Concern";
 export const SUPPORT_CONCERNS: unique symbol = Symbol('@aedart/contracts/support/concerns');
 
 export {
-    type Concern
+    type Concern,
+    type Configuration
 }
+
+export * from './types';
