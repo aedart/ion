@@ -196,6 +196,128 @@ xdescribe('@aedart/xyz', () => {
             console.log('Concerns in C', cA, cB, cC, cD);
             console.log('- - - '.repeat(10));
         });
-        
+
+        it('can get concern "ownKeys"', () => {
+
+            const OWN_KEYS = Symbol('concern_own_keys');
+            const HIDDEN_KEYS = Symbol('concern_hidden_keys');
+            
+            const MY_SYMBOL = Symbol('bla');
+
+            class A {
+                // NOT OK
+                name = 'John Doe';
+
+                // NOT OK
+                #other = 'unknown other';
+
+                // NOT OK (accessor title in typescript results in get/set title, which is ok).
+                title = 'stuff'; // OK
+
+                // OK
+                foo() {
+                    return 'foo';
+                }
+
+                // OK
+                get age() {
+                    return 31;
+                }
+
+                // OK
+                set desc(value) {
+                    // N/A...
+                }
+
+                // OK
+                [MY_SYMBOL]() {
+                    return 'ccc';
+                }
+
+                /**
+                 * Returns "concern's" own keys, along with class or superclass
+                 * that defines them.
+                 * 
+                 * @return {Map<PropertyKey, Constructor>}
+                 */
+                static [OWN_KEYS]()
+                {
+                    let output = new Map();
+                    
+                    // Get evt. parent's keys.
+                    let parent = Reflect.getPrototypeOf(this);
+                    if (parent !== null && parent !== Reflect.getPrototypeOf(Function)) {
+                        let parentKeys = parent[OWN_KEYS]();
+                        parentKeys.forEach((target, key) => {
+                            output.set(key, target);
+                        });
+                    }
+                    
+                    // Obtain this class' ownKeys
+                    const hiddenKeys = this[HIDDEN_KEYS]();
+                    const keys = Reflect.ownKeys(this.prototype);
+                    for (const key of keys) {
+                        // Skip if key must be hidden...
+                        if (hiddenKeys.has(key)){
+                            continue;
+                        }
+                        
+                        output.set(key, this);
+                    }
+
+                    return output;
+                }
+
+                /**
+                 * Set of keys that must NOT be aliased into owner class
+                 * 
+                 * @return {Set<PropertyKey>}
+                 */
+                static [HIDDEN_KEYS]() {
+                    return new Set([
+                        'constructor',
+                        OWN_KEYS,
+                        HIDDEN_KEYS,
+                    ]);
+                }
+            }
+
+            class B extends A {
+                
+                bar() {
+                    return 'bar';
+                }
+            }
+            
+
+            //const keys = A[OWN_KEYS]();
+            const target = B;
+            const keys = target[OWN_KEYS]();
+            // console.log('Keys', keys); // Iterator returned here...
+
+            keys.forEach((target, key) => {
+                // Regardless of what, a concern's constructor SHOULD NEVER be aliased into the target...
+                if (key === 'constructor') {
+                    return;
+                }
+
+                const descriptor = Reflect.getOwnPropertyDescriptor(target.prototype, key)
+                console.log({
+                    target,
+                    key,
+                    descriptor,
+                    value: descriptor?.value,
+                    get: descriptor?.get,
+                    set: descriptor?.set
+                });
+                
+                // console.log(key, descriptor, descriptor?.value);
+                // console.log('value?', descriptor?.value);
+                // console.log('get?', descriptor?.get);
+                // console.log('set?', descriptor?.set);
+                console.log('- - - - '.repeat(10));                
+            });
+            
+        });
     });
 });
