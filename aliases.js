@@ -19,6 +19,7 @@ module.exports = {
 
         alias: {
             // contracts
+            '@aedart/contracts/support/concerns': path.resolve(__dirname, './packages/contracts/support/concerns'),
             '@aedart/contracts/support/meta': path.resolve(__dirname, './packages/contracts/support/meta'),
             '@aedart/contracts/support/mixins': path.resolve(__dirname, './packages/contracts/support/mixins'),
             '@aedart/contracts/support/reflections': path.resolve(__dirname, './packages/contracts/support/reflections'),
