@@ -7,9 +7,11 @@ import { CONCERNS } from "./index";
 export default interface Owner
 {
     /**
-     * Get the concerns container for this class
+     * The concerns container for this class
+     * 
+     * @readonly
      * 
      * @type {Container}
      */
-    readonly [CONCERNS](): Container;
+    readonly [CONCERNS]: Container;
 }
