@@ -12,6 +12,21 @@ export const SUPPORT_CONCERNS: unique symbol = Symbol('@aedart/contracts/support
  * Symbol used by a {@link Concern} to define properties or methods that must be
  * "hidden" and not allowed to be aliased into a target class.
  * 
+ * **Note**: _Symbol MUST be used to as name for a "static" method in the desired Concern class._
+ * 
+ * **Example**:
+ * ```ts
+ * class MyConcern implements Concern
+ * {
+ *      static [HIDDEN](): PropertyKey[]
+ *      {
+ *          // ...not shown...
+ *      }
+ *      
+ *      // ...remaining not shown...
+ * }
+ * ```
+ * 
  * @type {Symbol}
  */
 export const HIDDEN: unique symbol = Symbol('hidden');
