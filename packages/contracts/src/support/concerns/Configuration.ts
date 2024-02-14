@@ -1,6 +1,5 @@
 import type { Constructor } from "@aedart/contracts";
 import Concern from "./Concern";
-import { HIDDEN, ALWAYS_HIDDEN } from "./index";
 import type {
     Aliases 
 } from "./types";
@@ -14,7 +13,6 @@ import type {
  * 
  * @see {Concern}
  * @see {Aliases}
- * @see {HIDDEN}
  */
 export default interface Configuration<T extends Concern>
 {
@@ -39,10 +37,10 @@ export default interface Configuration<T extends Concern>
     /**
      * Properties and methods that MUST NOT be aliased into a target class.
      * 
-     * **Note**: _Defaults to list provided by the Concern Class' {@link HIDDEN},
+     * **Note**: _Defaults to list provided by the Concern Class' [HIDDEN]{@link import('@aedart/contracts/support/concerns').HIDDEN},
      * if not specified here._
      * 
-     * **Note**: _Properties and methods that are defined in {@link ALWAYS_HIDDEN}
+     * **Note**: _Properties and methods that are defined in [ALWAYS_HIDDEN]{@link import('@aedart/contracts/support/concerns').ALWAYS_HIDDEN}
      * will always be hidden, regardless of those defined here._
      * 
      * @type {PropertyKey[]|undefined}
