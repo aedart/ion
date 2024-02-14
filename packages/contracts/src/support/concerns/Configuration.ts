@@ -6,8 +6,8 @@ import type {
 /**
  * Concern Configuration
  * 
- * Defines the target Concern that must be injected into a target class,
- * along with what aliases to be created. 
+ * Defines the Concern class that must be injected into a target class,
+ * along with what aliases to be created in the target class.
  */
 export default interface Configuration<T extends Concern>
 {
