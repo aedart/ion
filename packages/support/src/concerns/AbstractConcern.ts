@@ -21,12 +21,13 @@ export default abstract class AbstractConcern implements Concern
     /**
      * Creates a new concern instance
      *
+     * @protected
      * @param {object} owner The target class instance this concern is injected into
      *
      * @throws {Error} When concern is unable to preform initialisation, e.g. caused
      *                 by the owner or other circumstances.
      */
-    constructor(owner: object)
+    protected constructor(owner: object)
     {
         if (new.target === AbstractConcern) {
             throw new Error('Unable to instantiate new instance of abstract class');
