@@ -7,7 +7,16 @@ import Concern from "./Concern";
 export default interface Container
 {
     /**
-     * Determine if a concern class exists in this map
+     * The amount of concerns in this container
+     * 
+     * @readonly
+     * 
+     * @type {number}
+     */
+    readonly size: number;
+    
+    /**
+     * Determine if a concern class exists in this container
      * 
      * @template T extends {@link Concern}
      * 
@@ -28,4 +37,18 @@ export default interface Container
     
     // TODO:
     all(): Constructor<Concern>[];
+
+    /**
+     * Determine if this container is empty
+     * 
+     * @return {boolean}
+     */
+    isEmpty(): boolean;
+
+    /**
+     * Opposite of {@link isEmpty}
+     *
+     * @return {boolean}
+     */
+    isNotEmpty(): boolean;
 }
