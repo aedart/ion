@@ -1,5 +1,5 @@
-import BaseConcern from "./BaseConcern";
+import AbstractConcern from "./AbstractConcern";
 
 export {
-    BaseConcern
+    AbstractConcern
 };

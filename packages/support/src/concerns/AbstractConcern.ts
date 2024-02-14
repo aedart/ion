@@ -2,14 +2,13 @@ import type { Concern } from "@aedart/contracts/support/concerns";
 import { HIDDEN, ALWAYS_HIDDEN } from "@aedart/contracts/support/concerns";
 
 /**
- * Base Concern
+ * Abstract Concern
  * 
- * Abstraction for a {@link Concern} component.
- * 
+ * @see {Concern}
  * @implements {Concern}
  * @abstract
  */
-export default abstract class BaseConcern implements Concern
+export default abstract class AbstractConcern implements Concern
 {
     /**
      * The target class instance this concern is injected into
@@ -29,7 +28,7 @@ export default abstract class BaseConcern implements Concern
      */
     constructor(owner: object)
     {
-        if (new.target === BaseConcern) {
+        if (new.target === AbstractConcern) {
             throw new Error('Unable to instantiate new instance of abstract class BaseConcern');
         }
         
