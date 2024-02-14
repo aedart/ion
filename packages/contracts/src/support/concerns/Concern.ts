@@ -1,7 +1,8 @@
 /**
  * Concern
- * 
- * A component that can be injected into a target class (concern owner).
+ *
+ * A "concern" is component that can be injected into a target class (concern owner).
+ * The concern itself is NOT responsible for performing the actual injection logic.
  */
 export default interface Concern
 {
@@ -10,7 +11,8 @@ export default interface Concern
      * 
      * @param {object} owner The target class instance this concern was injected into
      * 
-     * @throws {TypeError} If this concern does not support given owner
+     * @throws {Error} When concern is unable to preform initialisation, e.g. caused
+     *                 by the owner or other circumstances. 
      */
     constructor(owner: object);
     
