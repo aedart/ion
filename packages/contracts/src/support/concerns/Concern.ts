@@ -3,6 +3,8 @@
  *
  * A "concern" is component that can be injected into a target class (concern owner).
  * The concern itself is NOT responsible for performing the actual injection logic.
+ * 
+ * @interface
  */
 export default interface Concern
 {
