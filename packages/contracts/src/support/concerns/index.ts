@@ -1,6 +1,3 @@
-import Concern from "./Concern";
-import Configuration from "./Configuration";
-
 /**
  * Support Concerns identifier
  *
@@ -50,9 +47,13 @@ export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
     HIDDEN
 ];
 
+import Concern from "./Concern";
+import Configuration from "./Configuration";
+import Injector from "./Injector";
 export {
     type Concern,
-    type Configuration
+    type Configuration,
+    type Injector
 }
 
 export * from './types';
