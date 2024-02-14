@@ -47,7 +47,7 @@ export default abstract class AbstractConcern implements Concern
      * Returns a list of properties and methods that MUST NOT be aliased into the target class.
      * 
      * **Warning**: _Regardless of what properties and methods this method may return,
-     * an "injector" component that applies this concern MUST ensure that the {@link ALWAYS_HIDDEN}
+     * an "injector" that injects this concern MUST ensure that the {@link ALWAYS_HIDDEN}
      * defined properties and methods are **NEVER** aliased into a target class._
      * 
      * @return {PropertyKey[]}
