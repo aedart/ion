@@ -1,2 +1,5 @@
-// TODO: Remove this temp const...
-export const TMP: string = 'tmp';
+import BaseConcern from "./BaseConcern";
+
+export {
+    BaseConcern
+};
