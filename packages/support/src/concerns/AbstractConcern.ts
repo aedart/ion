@@ -29,7 +29,7 @@ export default abstract class AbstractConcern implements Concern
     public constructor(owner: object)
     {
         if (new.target === AbstractConcern) {
-            throw new Error('Unable to instantiate new instance of abstract class');
+            throw new Error('Unable to make a new instance of abstract class');
         }
         
         this.#concernOwner = owner;
