@@ -1,5 +1,5 @@
 import type { Constructor } from "@aedart/contracts";
-import type { Concern } from "./Concern";
+import Concern from "./Concern";
 
 /**
  * Concerns Container
