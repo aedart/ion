@@ -47,13 +47,27 @@ export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
     HIDDEN
 ];
 
+/**
+ * Symbol used to define a "concerns container" property inside a target class
+ * 
+ * @see {Owner}
+ * @see {Container}
+ * 
+ * @type {Symbol}
+ */
+export const CONCERNS: unique symbol = Symbol('concerns');
+
 import Concern from "./Concern";
 import Configuration from "./Configuration";
+import Container from "./Container";
 import Injector from "./Injector";
+import Owner from "./Owner";
 export {
     type Concern,
     type Configuration,
-    type Injector
+    type Container,
+    type Injector,
+    type Owner
 }
 
 export * from './types';
