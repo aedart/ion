@@ -24,28 +24,62 @@ export default interface Container
     get owner(): Owner;
     
     /**
-     * Determine if a concern class exists in this container
+     * Determine if concern class is registered in this container
+     *
+     * @param {Constructor<Concern>} concern
+     * 
+     * @return {boolean}
+     */
+    has(concern: Constructor<Concern>): boolean;
+
+    /**
+     * Retrieve concern instance for given concern class
+     * 
+     * **Note**: _If concern class is registered in this container, but not yet
+     * booted, then this method will boot it via the {@link boot} method, and return
+     * the resulting instance._
+     * 
+     * @template T extends {@link Concern}
+     *
+     * @param {Constructor<T>} concern
+     *
+     * @return {Concern|null} Concern instance or `null` if provided concern class
+     *                        is not registered in this container.
+     *
+     * @throws {Error}
+     */
+    get<T extends Concern>(concern: Constructor<T>): T|null;
+
+    /**
+     * Determine if concern class has been booted
+     * 
+     * @param {Constructor<Concern>} concern
+     * 
+     * @return {boolean}
+     */
+    hasBooted(concern: Constructor<Concern>): boolean
+
+    /**
+     * Boot concern class
      * 
      * @template T extends {@link Concern}
      * 
      * @param {Constructor<T>} concern
      * 
-     * @return {boolean}
+     * @return {Concern} New concern instance
+     * 
+     * @throws {Error} If provided concern class has already been booted, or
+     *                 if not registered in this container.
      */
-    has<T extends Concern>(concern: Constructor<T>): boolean;
-    
-    // TODO:
-    get<T extends Concern>(concern: Constructor<T>): Concern|null;
-    
-    // TODO:
-    hasBooted<T extends Concern>(concern: Constructor<T>): boolean
-    
-    // TODO:
-    boot<T extends Concern>(concern: Constructor<T>): T
-    
-    // TODO:
-    all(): Constructor<Concern>[];
+    boot<T extends Concern>(concern: Constructor<T>): T;
 
+    /**
+     * Boots all registered concern classes
+     *
+     * @throws {Error}
+     */
+    bootAll(): void;
+    
     /**
      * Determine if this container is empty
      * 
@@ -59,4 +93,11 @@ export default interface Container
      * @return {boolean}
      */
     isNotEmpty(): boolean;
+
+    /**
+     * Returns all concern classes
+     * 
+     * @return {Constructor<Concern>[]}
+     */
+    all(): Constructor<Concern>[];
 }
