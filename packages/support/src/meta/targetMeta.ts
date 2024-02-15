@@ -5,6 +5,7 @@ import type {
     MetaEntry,
     MetaAddress,
 } from "@aedart/contracts/support/meta";
+import { FUNCTION_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import { METADATA, TARGET_METADATA, Kind } from "@aedart/contracts/support/meta";
 import { mergeKeys, empty } from "@aedart/support/misc";
 import { meta, getMeta } from './meta'
@@ -244,15 +245,12 @@ function findAddress(target: object): MetaAddress | undefined
         target = target.constructor;
     }
 
-    // Obtain the prototype of Function...
-    const functionProto: object|null = Reflect.getPrototypeOf(Function);
-
     // When no address is found and the target is a class with metadata,
     // then attempt to find address via its parent.
     let parent:object|null = target;
     while(address === undefined && METADATA in parent) {
         parent = Reflect.getPrototypeOf(parent);
-        if (parent === null || parent === functionProto) {
+        if (parent === null || parent === FUNCTION_PROTOTYPE) {
             break;
         }
 
