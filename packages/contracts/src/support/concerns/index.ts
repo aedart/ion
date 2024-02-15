@@ -46,7 +46,7 @@ export const CONCERNS: unique symbol = Symbol('concerns');
  */
 export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
     // ----------------------------------------------------------------- //
-    // Defined by Concern:
+    // Defined by Concern interface / Abstract Concern:
     // ----------------------------------------------------------------- //
     
     // It is NOT possible, nor advised to attempt to alias a Concern's
