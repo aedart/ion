@@ -1,7 +1,7 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 
 /**
- * Returns a {@link PropertyDescriptor} object, from target class' prototype that matches given property key
+ * Returns a {@link PropertyDescriptor} object, from target's prototype that matches given property key
  *
  * @param {ConstructorOrAbstractConstructor} target Class that contains property in its prototype
  * @param {PropertyKey} key Name of the property
@@ -13,8 +13,12 @@ import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
  */
 export function getClassPropertyDescriptor(target: ConstructorOrAbstractConstructor, key: PropertyKey): PropertyDescriptor|undefined
 {
+    if (typeof target['prototype'] === 'undefined') {
+        throw new TypeError('Target has not "prototype"');
+    }
+
     return Reflect.getOwnPropertyDescriptor(
-        Reflect.getPrototypeOf(target),
+        target.prototype,
         key
     );
 }
