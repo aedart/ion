@@ -40,7 +40,7 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
         targets.reverse();
     }
     
-    let output: Record<object, PropertyDescriptor> = Object.create(null);
+    const output: Record<object, PropertyDescriptor> = Object.create(null);
     
     // Obtain property descriptors for all targets
     for (const t of targets) {
