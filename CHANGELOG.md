@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* `getClassPropertyDescriptor()` in `@aedart/support/reflections`.
+* `getClassPropertyDescriptor()` and `getClassPropertyDescriptors()` in `@aedart/support/reflections`.
 
 ## [0.8.0] - 2024-02-12
 
