@@ -1,3 +1,4 @@
+export * from './assertHasPrototypeProperty';
 export * from './getClassPropertyDescriptor';
 export * from './getClassPropertyDescriptors';
 export * from './hasPrototypeProperty';
