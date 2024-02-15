@@ -1,6 +1,6 @@
 import {hasPrototypeProperty} from "@aedart/support/reflections";
 
-fdescribe('@aedart/support/reflections', () => {
+describe('@aedart/support/reflections', () => {
     describe('hasPrototypeProperty()', () => {
 
         it('can determine if object has prototype', () => {
