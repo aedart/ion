@@ -29,12 +29,26 @@ export const SUPPORT_CONCERNS: unique symbol = Symbol('@aedart/contracts/support
 export const HIDDEN: unique symbol = Symbol('hidden');
 
 /**
+ * Symbol used to define a "concerns container" property inside a target class' prototype
+ *
+ * @see {Owner}
+ * @see {Container}
+ *
+ * @type {Symbol}
+ */
+export const CONCERNS: unique symbol = Symbol('concerns');
+
+/**
  * List of properties and methods that must always remain "hidden" and
- * NEVER be aliased into a target class.
+ * **NEVER** be aliased into a target class' prototype.
  * 
  * @type {ReadonlyArray<PropertyKey>}
  */
 export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
+    // ----------------------------------------------------------------- //
+    // Defined by Concern:
+    // ----------------------------------------------------------------- //
+    
     // It is NOT possible, nor advised to attempt to alias a Concern's
     // constructor into a target class.
     'constructor',
@@ -42,20 +56,18 @@ export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
     // The concernOwner property (getter) will not work either...
     'concernOwner',
     
-    // Lastly, if the Concern defines any hidden properties or methods,
+    // If the Concern defines any hidden properties or methods,
     // then such a method will not do any good in a target class.
-    HIDDEN
-];
+    HIDDEN,
 
-/**
- * Symbol used to define a "concerns container" property inside a target class
- * 
- * @see {Owner}
- * @see {Container}
- * 
- * @type {Symbol}
- */
-export const CONCERNS: unique symbol = Symbol('concerns');
+    // ----------------------------------------------------------------- //
+    // Other properties and methods:
+    // ----------------------------------------------------------------- //
+    
+    // In case that a concern class uses other concerns, prevent them
+    // from being aliased.
+    CONCERNS,
+];
 
 import Concern from "./Concern";
 import Configuration from "./Configuration";
