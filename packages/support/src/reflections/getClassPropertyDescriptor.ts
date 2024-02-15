@@ -3,6 +3,8 @@ import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 /**
  * Returns a {@link PropertyDescriptor} object, from target's prototype that matches given property key
  *
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/getOwnPropertyDescriptor
+ * 
  * @param {ConstructorOrAbstractConstructor} target Class that contains property in its prototype
  * @param {PropertyKey} key Name of the property
  *
