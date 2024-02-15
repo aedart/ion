@@ -1,6 +1,6 @@
 import {getClassPropertyDescriptor} from "@aedart/support/reflections";
 
-fdescribe('@aedart/support/reflections', () => {
+describe('@aedart/support/reflections', () => {
 
     describe('getClassPropertyDescriptor()', () => {
 
