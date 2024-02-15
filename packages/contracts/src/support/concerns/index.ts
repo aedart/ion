@@ -53,7 +53,7 @@ export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
     // constructor into a target class.
     'constructor',
     
-    // The concernOwner property (getter) will not work either...
+    // The concernOwner property (getter) shouldn't be aliased either
     'concernOwner',
     
     // If the Concern defines any hidden properties or methods,
@@ -63,6 +63,10 @@ export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
     // ----------------------------------------------------------------- //
     // Other properties and methods:
     // ----------------------------------------------------------------- //
+    
+    // Object "prototype" property is too dangerous to tamper with,
+    // within the context of aliasing!
+    'prototype',
     
     // In case that a concern class uses other concerns, prevent them
     // from being aliased.
