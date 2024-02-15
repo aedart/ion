@@ -1,4 +1,5 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import { FUNCTION_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import { getClassPropertyDescriptor } from "./getClassPropertyDescriptor";
 
 /**
@@ -28,9 +29,8 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
     // If recursive flag is set, then all of target's parent classes must be obtained.
     if (recursive) {
         let parent = Reflect.getPrototypeOf(target.prototype);
-        const fnProto = Reflect.getPrototypeOf(Function);
 
-        while(parent !== null && parent !== fnProto) {
+        while(parent !== null && parent !== FUNCTION_PROTOTYPE) {
             targets.push(parent);
 
             parent = Reflect.getPrototypeOf(parent);
@@ -46,7 +46,11 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
     for (const t of targets) {
         const keys: PropertyKey[] = Reflect.ownKeys(t);
         for (const key: PropertyKey of keys) {
-            const descriptor: PropertyDescriptor = getClassPropertyDescriptor(t.constructor, key);
+            const descriptor: PropertyDescriptor | undefined = getClassPropertyDescriptor(t.constructor, key);
+            if (descriptor === undefined) {
+                output[key] = undefined;
+                continue;
+            }
 
             // Merge evt. existing descriptor object with the one obtained from target.
             if (Reflect.has(output, key)) {
