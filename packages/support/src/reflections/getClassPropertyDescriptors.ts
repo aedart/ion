@@ -1,7 +1,7 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
-import { FUNCTION_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import { getClassPropertyDescriptor } from "./getClassPropertyDescriptor";
 import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty";
+import { getAllParentsOfClass } from "./getAllParentsOfClass";
 
 /**
  * Returns all property descriptors that are defined target's prototype
@@ -16,27 +16,18 @@ import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty";
  * @return {Record<object, PropertyDescriptor>} Object with the property descriptors, or empty object of target has
  *                                              properties defined.
  * 
- * @throws {TypeError} If target is not an object or has no prototype
+ * @throws {TypeError} If target is not an object or has no prototype property
  */
 export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstructor, recursive: boolean = false): Record<object, PropertyDescriptor>
 {
     assertHasPrototypeProperty(target);
 
     // Define list of targets...
-    const targets = [target.prototype];
-    
-    // If recursive flag is set, then all of target's parent classes must be obtained.
+    let targets = [target.prototype];
+
+    // Obtain target's parent classes, such that top-most descriptors can be returned, if needed.
     if (recursive) {
-        let parent = Reflect.getPrototypeOf(target.prototype);
-
-        while(parent !== null && parent !== FUNCTION_PROTOTYPE) {
-            targets.push(parent);
-
-            parent = Reflect.getPrototypeOf(parent);
-        }
-
-        // Reverse the targets, such that the top-most property descriptors are returned.
-        targets.reverse();
+        targets = getAllParentsOfClass(target.prototype, true).reverse();
     }
     
     const output: Record<object, PropertyDescriptor> = Object.create(null);
@@ -46,8 +37,9 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
         const keys: PropertyKey[] = Reflect.ownKeys(t);
         for (const key: PropertyKey of keys) {
             const descriptor: PropertyDescriptor | undefined = getClassPropertyDescriptor(t.constructor, key);
+            
+            // If for some reason we are unable to obtain a descriptor, then skip it.
             if (descriptor === undefined) {
-                output[key] = undefined;
                 continue;
             }
 
