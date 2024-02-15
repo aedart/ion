@@ -1,6 +1,7 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import { FUNCTION_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import { getClassPropertyDescriptor } from "./getClassPropertyDescriptor";
+import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty";
 
 /**
  * Returns all property descriptors that are defined target's prototype
@@ -19,9 +20,7 @@ import { getClassPropertyDescriptor } from "./getClassPropertyDescriptor";
  */
 export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstructor, recursive: boolean = false): Record<object, PropertyDescriptor>
 {
-    if (typeof target['prototype'] === 'undefined') {
-        throw new TypeError('Target has not "prototype"');
-    }
+    assertHasPrototypeProperty(target);
 
     // Define list of targets...
     const targets = [target.prototype];
