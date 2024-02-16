@@ -46,7 +46,7 @@ export default interface Container
      * @return {Concern|null} Concern instance or `null` if provided concern class
      *                        is not registered in this container.
      *
-     * @throws {Error}
+     * @throws {ConcernException}
      */
     get<T extends Concern>(concern: Constructor<T>): T|null;
 
@@ -68,8 +68,8 @@ export default interface Container
      * 
      * @return {Concern} New concern instance
      * 
-     * @throws {Error} If provided concern class is not registered in this container,
-     *                 or if concern was already booted.
+     * @throws {NotRegisteredException} If concern class is not registered in this container
+     * @throws {BootException} If concern is unable to be booted, e.g. if already booted
      */
     boot<T extends Concern>(concern: Constructor<T>): T;
 
