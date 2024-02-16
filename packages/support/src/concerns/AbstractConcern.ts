@@ -1,5 +1,6 @@
 import type { Concern } from "@aedart/contracts/support/concerns";
 import { HIDDEN, ALWAYS_HIDDEN } from "@aedart/contracts/support/concerns";
+import { AbstractClassError } from "@aedart/support/exceptions";
 
 /**
  * Abstract Concern
@@ -29,7 +30,7 @@ export default abstract class AbstractConcern implements Concern
     public constructor(owner: object)
     {
         if (new.target === AbstractConcern) {
-            throw new Error('Unable to make a new instance of abstract class');
+            throw new AbstractClassError(AbstractConcern);
         }
         
         this.#concernOwner = owner;

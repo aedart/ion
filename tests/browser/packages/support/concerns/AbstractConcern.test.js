@@ -1,5 +1,6 @@
 import { AbstractConcern } from "@aedart/support/concerns";
 import { HIDDEN } from "@aedart/contracts/support/concerns";
+import { AbstractClassError } from "@aedart/support/exceptions";
 
 describe('@aedart/support/concerns', () => {
 
@@ -11,7 +12,7 @@ describe('@aedart/support/concerns', () => {
             }
             
             expect(callback)
-                .toThrowError(Error);
+                .toThrowError(AbstractClassError);
         });
 
         it('can obtain concern owner instance', () => {
