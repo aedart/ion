@@ -19,7 +19,7 @@ export default interface Container
     /**
      * Get the concerns container owner
      * 
-     * @return {Owner}
+     * @type {Owner}
      */
     get owner(): Owner;
     

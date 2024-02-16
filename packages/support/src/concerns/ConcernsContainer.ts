@@ -68,7 +68,7 @@ export default class ConcernsContainer implements Container
      *
      * @readonly
      * 
-     * @return {Owner}
+     * @type {Owner}
      */
     public get owner(): Owner
     {
