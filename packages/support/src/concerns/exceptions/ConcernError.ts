@@ -13,7 +13,7 @@ export default class ConcernError extends Error implements ConcernException
      *
      * @private
      * 
-     * @type {Constructor<Concern>|undefined}
+     * @type {Constructor<Concern>}
      */
     readonly #concern: Constructor<Concern>
 
@@ -25,14 +25,7 @@ export default class ConcernError extends Error implements ConcernException
      * @param {ErrorOptions} [options]
      */
     constructor(concern: Constructor<Concern>, message: string, options?: ErrorOptions) {
-        super(
-            message,
-            Object.assign(
-                Object.create(null), 
-                options || {}, 
-                { cause: { concern: concern } }
-            )
-        );
+        super(message, options || { cause: {} });
 
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, ConcernError);
@@ -42,6 +35,9 @@ export default class ConcernError extends Error implements ConcernException
 
         this.name = "ConcernError";
         this.#concern = concern;
+        
+        // Force set the concern in the cause (in case custom was provided)
+        this.cause.concern = concern;
     }
 
     /**
