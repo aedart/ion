@@ -380,6 +380,14 @@ describe('@aedart/support/concerns', () => {
             expect(result)
                 .withContext('Property either not set or incorrect value returned')
                 .toBe(message);
+
+            // ----------------------------------------------------------------------------------- //
+            
+            const instance = container.get(A);
+            
+            expect(instance.message)
+                .withContext('Fatal: concern instance has changed, property value no longer retained')
+                .toEqual(message);
         });
     });
 });
