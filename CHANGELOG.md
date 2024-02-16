@@ -10,10 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * `@aedart/contracts/support/exceptions` and `@aedart/support/exceptions` submodules.
+* `Throwable` (_extends TypeScript's `Error` interface_) interface in `@aedart/contracts/support/exceptions`. 
+* `LogicalError` and `AbstractClassError` exceptions in `@aedart/support/exceptions`.
 * `FUNCTION_PROTOTYPE` const in `@aedart/contracts/support/reflections`.
 * `hasPrototypeProperty()` and `assertHasPrototypeProperty()` in `@aedart/support/reflections`.
 * `getParentOfClass()` and `getAllParentsOfClass()` in `@aedart/support/reflections`.
 * `getClassPropertyDescriptor()` and `getClassPropertyDescriptors()` in `@aedart/support/reflections`.
+* `getConstructorName()` and `getNameOrDesc()` in `@aedart/support/reflections`.
 
 ## [0.8.0] - 2024-02-12
 
