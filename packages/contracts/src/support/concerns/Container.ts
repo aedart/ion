@@ -43,12 +43,12 @@ export default interface Container
      *
      * @param {Constructor<T>} concern
      *
-     * @return {Concern|null} Concern instance or `null` if provided concern class
-     *                        is not registered in this container.
+     * @return {Concern} The booted instance of the concern class. If concern class was
+     *                   previously booted, then that instance is returned.
      *
      * @throws {ConcernException}
      */
-    get<T extends Concern>(concern: Constructor<T>): T|null;
+    get<T extends Concern>(concern: Constructor<T>): T;
 
     /**
      * Determine if concern class has been booted
