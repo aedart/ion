@@ -298,5 +298,88 @@ describe('@aedart/support/concerns', () => {
             expect(callback)
                 .toThrowError(NotRegisteredError);
         });
+
+        it('can call method in concern instance', () => {
+            
+            let wasInvoked = false;
+            const values = [ 1, 2, 3 ];
+            
+            class A extends AbstractConcern {
+                sum(...args) {
+                    wasInvoked = true;
+                    
+                    return args.reduce((x, currentValue) => {
+                        return x + currentValue
+                    }, 0);
+                }
+            }
+            const container = new ConcernsContainer(new class {}, [ A ]);
+
+            // ----------------------------------------------------------------------------------- //
+            
+            const result = container.call(A, 'sum', ...values);
+            const expected = 6;
+            
+            expect(wasInvoked)
+                .withContext('Method was not called')
+                .toBeTrue();
+            
+            expect(result)
+                .withContext('Incorrect method return value')
+                .toEqual(expected);
+        });
+
+        it('can call method without return in concern instance', () => {
+
+            let wasInvoked = false;
+            class A extends AbstractConcern {
+                foo() {
+                    wasInvoked = true;
+                }
+            }
+            const container = new ConcernsContainer(new class {}, [ A ]);
+
+            // ----------------------------------------------------------------------------------- //
+
+            const result = container.call(A, 'foo');
+            
+            expect(wasInvoked)
+                .withContext('Method was not called')
+                .toBeTrue();
+            
+            expect(result)
+                .withContext('No return value was expected')
+                .toBeUndefined();
+        });
+        
+        it('can set and get property value in concern instance', () => {
+
+            class A extends AbstractConcern {
+                
+                #msg = null;
+                
+                set message(value)
+                {
+                    this.#msg = value;    
+                }
+                
+                get message()
+                {
+                    return this.#msg
+                }
+            }
+            const container = new ConcernsContainer(new class {}, [ A ]);
+
+            // ----------------------------------------------------------------------------------- //
+
+            const message = 'Hallo World';
+
+            container.setProperty(A, 'message', message);
+            const result = container.getProperty(A, 'message');
+            
+            expect(result)
+                .withContext('Property either not set or incorrect value returned')
+                .toBe(message);
+        });
     });
 });
