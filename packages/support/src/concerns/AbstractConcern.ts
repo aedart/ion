@@ -50,10 +50,10 @@ export default abstract class AbstractConcern implements Concern
      * an "injector" that injects this concern MUST ensure that the {@link ALWAYS_HIDDEN}
      * defined properties and methods are **NEVER** aliased into a target class._
      * 
-     * @return {PropertyKey[]}
+     * @return {ReadonlyArray<PropertyKey>}
      */
-    static [HIDDEN](): PropertyKey[]
+    static [HIDDEN](): ReadonlyArray<PropertyKey>
     {
-        return ALWAYS_HIDDEN as PropertyKey[];
+        return ALWAYS_HIDDEN;
     }
 }
