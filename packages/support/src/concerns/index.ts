@@ -6,4 +6,4 @@ export {
     ConcernsContainer
 };
 
-export * from './exceptions/index';
+export * from './exceptions';
