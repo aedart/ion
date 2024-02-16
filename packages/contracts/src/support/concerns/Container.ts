@@ -97,7 +97,7 @@ export default interface Container
     /**
      * Returns all concern classes
      * 
-     * @return {Constructor<Concern>[]}
+     * @return {IterableIterator<Constructor<Concern>>}
      */
-    all(): Constructor<Concern>[];
+    all(): IterableIterator<Constructor<Concern>>;
 }
