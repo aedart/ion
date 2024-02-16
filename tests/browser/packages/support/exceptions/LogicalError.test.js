@@ -1,6 +1,6 @@
 import { LogicalError } from "@aedart/support/exceptions";
 
-fdescribe('@aedart/support/exceptions', () => {
+describe('@aedart/support/exceptions', () => {
 
     describe('LogicalError', () => {
 
