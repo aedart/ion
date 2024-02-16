@@ -76,9 +76,9 @@ export default interface Injector
      * 
      * **Note**: _Method will do nothing if a property or method already exists in the target, with the same
      * name as the given alias!_
-     *
+     * 
      * @param {object} target The target class the alias must be created in
-     * @param {PropertyKey} key Name of the property or method in the source concern class to create alias for
+     * @param {PropertyKey} key Name of the property or method in the source concern class to create an alias for
      * @param {PropertyKey} alias Alias for the key to create in the target class (the proxy property or method)
      * @param {Constructor<Concern>} source The concern to that the alias property or method must proxy to 
      *
