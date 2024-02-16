@@ -86,4 +86,6 @@ export {
     type Owner
 }
 
+export * from './exceptions/index';
+
 export * from './types';
