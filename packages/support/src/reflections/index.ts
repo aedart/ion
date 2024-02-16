@@ -2,6 +2,7 @@ export * from './assertHasPrototypeProperty';
 export * from './getAllParentsOfClass';
 export * from './getClassPropertyDescriptor';
 export * from './getClassPropertyDescriptors';
+export * from './getConstructorName';
 export * from './getParentOfClass';
 export * from './hasPrototypeProperty';
 export * from './isCallable';
