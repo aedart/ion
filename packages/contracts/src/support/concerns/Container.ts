@@ -76,7 +76,7 @@ export default interface Container
     /**
      * Boots all registered concern classes
      *
-     * @throws {Error}
+     * @throws {ConcernException}
      */
     bootAll(): void;
     
