@@ -33,6 +33,11 @@
             "import": "./dist/esm/concerns.js",
             "require": "./dist/cjs/concerns.cjs"
         },
+        "./exceptions": {
+            "types": "./dist/types/exceptions.d.ts",
+            "import": "./dist/esm/exceptions.js",
+            "require": "./dist/cjs/exceptions.cjs"
+        },
         "./meta": {
             "types": "./dist/types/meta.d.ts",
             "import": "./dist/esm/meta.js",
