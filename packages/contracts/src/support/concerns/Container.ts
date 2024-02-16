@@ -106,18 +106,14 @@ export default interface Container
      * 
      * @param {Constructor<Concern>} concern
      * @param {PropertyKey} method
-     * @param {...unknown} [arguments]
+     * @param {...unknown} [args]
      * 
      * @return {unknown}
      * 
      * @throws {ConcernException}
      * @throws {Error}
      */
-    call(
-        concern: Constructor<Concern>,
-        method: PropertyKey,
-        ...arguments: unknown
-    ): unknown;
+    call(concern: Constructor<Concern>, method: PropertyKey, ...args: unknown): unknown;
 
     /**
      * Set the value of given property in concern instance
