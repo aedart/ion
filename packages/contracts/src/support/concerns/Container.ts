@@ -100,4 +100,47 @@ export default interface Container
      * @return {IterableIterator<Constructor<Concern>>}
      */
     all(): IterableIterator<Constructor<Concern>>;
+
+    /**
+     * Invoke a method with given arguments in concern instance
+     * 
+     * @param {Constructor<Concern>} concern
+     * @param {PropertyKey} method
+     * @param {...unknown} [arguments]
+     * 
+     * @return {unknown}
+     * 
+     * @throws {ConcernException}
+     * @throws {Error}
+     */
+    call(
+        concern: Constructor<Concern>,
+        method: PropertyKey,
+        ...arguments: unknown
+    ): unknown;
+
+    /**
+     * Set the value of given property in concern instance
+     * 
+     * @param {Constructor<Concern>} concern
+     * @param {PropertyKey} property
+     * @param {unknown} value
+     *
+     * @throws {ConcernException}
+     * @throws {Error}
+     */
+    setProperty(concern: Constructor<Concern>, property: PropertyKey, value: unknown): void;
+
+    /**
+     * Get value of given property in concern instance
+     *
+     * @param {Constructor<Concern>} concern
+     * @param {PropertyKey} property
+     * 
+     * @return {unknown}
+     *
+     * @throws {ConcernException}
+     * @throws {Error}
+     */
+    getProperty(concern: Constructor<Concern>, property: PropertyKey): unknown;
 }
