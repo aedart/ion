@@ -25,7 +25,14 @@ export default class ConcernError extends Error implements ConcernException
      * @param {ErrorOptions} [options]
      */
     constructor(concern: Constructor<Concern>, message: string, options?: ErrorOptions) {
-        super(message, options || { cause: { concern: concern } });
+        super(
+            message,
+            Object.assign(
+                Object.create(null), 
+                options || {}, 
+                { cause: { concern: concern } }
+            )
+        );
 
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, ConcernError);
