@@ -203,4 +203,52 @@ export default class ConcernsContainer implements Container
     {
         return this.#map.keys();
     }
+
+    /**
+     * Invoke a method with given arguments in concern instance
+     *
+     * @param {Constructor<Concern>} concern
+     * @param {PropertyKey} method
+     * @param {...unknown} [args]
+     *
+     * @return {unknown}
+     *
+     * @throws {ConcernError}
+     * @throws {Error}
+     */
+    public call(concern: Constructor<Concern>, method: PropertyKey, ...args: unknown): unknown 
+    {
+        return this.get(concern)[method](...args);
+    }
+
+    /**
+     * Set the value of given property in concern instance
+     *
+     * @param {Constructor<Concern>} concern
+     * @param {PropertyKey} property
+     * @param {unknown} value
+     *
+     * @throws {ConcernError}
+     * @throws {Error}
+     */
+    public setProperty(concern: Constructor<Concern>, property: PropertyKey, value: unknown): void
+    {
+        this.get(concern)[property] = value;
+    }
+
+    /**
+     * Get value of given property in concern instance
+     *
+     * @param {Constructor<Concern>} concern
+     * @param {PropertyKey} property
+     *
+     * @return {unknown}
+     *
+     * @throws {ConcernError}
+     * @throws {Error}
+     */
+    public getProperty(concern: Constructor<Concern>, property: PropertyKey): unknown
+    {
+        return this.get(concern)[property];
+    }
 }
