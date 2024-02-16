@@ -61,15 +61,15 @@ export default interface Container
 
     /**
      * Boot concern class
-     * 
+     *
      * @template T extends {@link Concern}
      * 
      * @param {Constructor<T>} concern
      * 
-     * @return {Concern} New concern instance
+     * @return {Concern} New concern instance, or existing instance if concern has
+     *                   already been booted.
      * 
-     * @throws {Error} If provided concern class has already been booted, or
-     *                 if not registered in this container.
+     * @throws {Error} If provided concern class is not registered in this container.
      */
     boot<T extends Concern>(concern: Constructor<T>): T;
 
