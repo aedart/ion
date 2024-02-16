@@ -12,7 +12,6 @@
 export function hasPrototypeProperty(target: object): boolean
 {
     return Reflect.has(target, 'prototype')
-        && target.prototype !== undefined
         && target.prototype !== null
         && typeof target.prototype == 'object';
 }
