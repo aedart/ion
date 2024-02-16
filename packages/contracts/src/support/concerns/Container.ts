@@ -66,10 +66,10 @@ export default interface Container
      * 
      * @param {Constructor<T>} concern
      * 
-     * @return {Concern} New concern instance, or existing instance if concern has
-     *                   already been booted.
+     * @return {Concern} New concern instance
      * 
-     * @throws {Error} If provided concern class is not registered in this container.
+     * @throws {Error} If provided concern class is not registered in this container,
+     *                 or if concern was already booted.
      */
     boot<T extends Concern>(concern: Constructor<T>): T;
 
