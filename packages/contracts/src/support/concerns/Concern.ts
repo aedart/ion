@@ -9,9 +9,12 @@
 export default interface Concern
 {
     /**
-     * Returns the target class instance this concern is injected into
+     * The owner class instance this concern is injected into,
+     * or `this` concern instance if no owner was set.
+     *
+     * @readonly
      * 
-     * @return {object}
+     * @type {object}
      */
     get concernOwner(): object;
 }

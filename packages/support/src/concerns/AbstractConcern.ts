@@ -12,9 +12,12 @@ import { AbstractClassError } from "@aedart/support/exceptions";
 export default abstract class AbstractConcern implements Concern
 {
     /**
-     * The target class instance this concern is injected into
+     * The owner class instance this concern is injected into,
+     * or `this` concern instance.
      * 
+     * @readonly
      * @private
+     * 
      * @type {object}
      */
     readonly #concernOwner: object;
@@ -22,24 +25,30 @@ export default abstract class AbstractConcern implements Concern
     /**
      * Creates a new concern instance
      *
-     * @param {object} owner The target class instance this concern is injected into
+     * @param {object} [owner] The owner class instance this concern is injected into.
+     *                         Defaults to `this` concern instance if none given.
      *
      * @throws {Error} When concern is unable to preform initialisation, e.g. caused
      *                 by the owner or other circumstances.
      */
-    public constructor(owner: object)
+    public constructor(owner?: object)
     {
         if (new.target === AbstractConcern) {
             throw new AbstractClassError(AbstractConcern);
         }
         
-        this.#concernOwner = owner;
+        this.#concernOwner = owner || this;
     }
 
     /**
-     * @inheritdoc
+     * The owner class instance this concern is injected into,
+     * or `this` concern instance if no owner was set.
+     *
+     * @readonly
+     * 
+     * @type {object}
      */
-    get concernOwner(): object
+    public get concernOwner(): object
     {
         return this.#concernOwner;
     }

@@ -29,6 +29,17 @@ describe('@aedart/support/concerns', () => {
                 .toBe(owner);
         });
 
+        it('defaults to concern instance when no owner given', () => {
+            
+            class MyConcern extends AbstractConcern {}
+            
+            const concern = new MyConcern();
+
+            const result = concern.concernOwner;
+            expect(result)
+                .toBe(concern);
+        });
+        
         it('returns default list of hidden properties and methods', () => {
 
             class MyConcern extends AbstractConcern {}
