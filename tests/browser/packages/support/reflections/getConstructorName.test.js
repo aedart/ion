@@ -9,7 +9,7 @@ describe('@aedart/support/reflections', () => {
             const result = getConstructorName(Box);
 
             // Debug
-            console.log(result);
+            // console.log(result);
             
             expect(result)
                 .toBe('Box');
@@ -19,7 +19,7 @@ describe('@aedart/support/reflections', () => {
             const result = getConstructorName(class {});
 
             // Debug
-            console.log(result);
+            // console.log(result);
             
             expect(result)
                 .toBeNull();
@@ -31,7 +31,7 @@ describe('@aedart/support/reflections', () => {
             const result = getConstructorName(class {}, defaultValue);
             
             // Debug
-            console.log(result);
+            // console.log(result);
             
             expect(result)
                 .toBe(defaultValue)
