@@ -12,7 +12,9 @@ export default interface ConcernException extends Throwable {
     /**
      * The Concern class that caused this error or exception
      * 
-     * @type {Constructor<Concern>|undefined}
+     * @readonly
+     * 
+     * @type {Constructor<Concern>}
      */
-    concern?: Constructor<Concern>
+    readonly concern: Constructor<Concern>
 }
