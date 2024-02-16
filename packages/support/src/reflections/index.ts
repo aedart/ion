@@ -3,6 +3,7 @@ export * from './getAllParentsOfClass';
 export * from './getClassPropertyDescriptor';
 export * from './getClassPropertyDescriptors';
 export * from './getConstructorName';
+export * from './getNameOrDesc';
 export * from './getParentOfClass';
 export * from './hasPrototypeProperty';
 export * from './isCallable';
