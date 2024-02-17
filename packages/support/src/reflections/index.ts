@@ -9,3 +9,4 @@ export * from './hasPrototypeProperty';
 export * from './isCallable';
 export * from './isClassConstructor';
 export * from './isConstructor';
+export * from './isSubclass';
