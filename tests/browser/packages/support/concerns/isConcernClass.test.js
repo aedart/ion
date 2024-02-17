@@ -17,6 +17,8 @@ describe('@aedart/support/concerns', () => {
             
             class C extends AbstractConcern {}
 
+            class D extends C {}
+
             // ------------------------------------------------------------------------------------ //
             
             expect(isConcernClass(null))
@@ -37,6 +39,10 @@ describe('@aedart/support/concerns', () => {
 
             expect(isConcernClass(C))
                 .withContext('Class C is concern class')
+                .toBeTrue();
+
+            expect(isConcernClass(D))
+                .withContext('Class D is concern class (inherits from Clas C)')
                 .toBeTrue();
         });
 
