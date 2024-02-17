@@ -1,9 +1,11 @@
 import AbstractConcern from "./AbstractConcern";
 import ConcernsContainer from "./ConcernsContainer";
+import ConcernsInjector from "./ConcernsInjector";
 
 export {
     AbstractConcern,
-    ConcernsContainer
+    ConcernsContainer,
+    ConcernsInjector
 };
 
 export * from './exceptions';
