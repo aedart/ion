@@ -1,7 +1,7 @@
-import { Constructor, ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import { Constructor } from "@aedart/contracts";
 import Concern from "./Concern";
 import Configuration from "./Configuration";
-import Container from "./Container";
+import MustUseConcerns from "./MustUseConcerns";
 
 /**
  * Concerns Injector
@@ -14,85 +14,106 @@ import Container from "./Container";
 export default interface Injector
 {
     /**
-     * Inject one or more concerns into the target class and return the modified target.
+     * Injects concern classes into the target class and return the modified target.
      * 
-     * **Note**: _This method performs the following (in given order):_
+     * **Note**: _Method performs injection in the following way:_
      * 
-     * _**A**: Defines a new concerns {@link Container} in target class' prototype, via {@link defineContainer}._
+     * _**A**: Defines the concern classes in target class, via {@link defineConcerns}._
      * 
-     * _**B**: Defines aliases (proxy properties and methods) in target class' prototype, via {@link defineAliases}._
+     * _**B**: Defines a concerns container in target class' prototype, via {@link defineContainer}._ 
      * 
-     * @template T extends {@link ConstructorOrAbstractConstructor} = object
+     * _**C**: Defines "aliases" (proxy properties and methods) in target class' prototype, via {@link defineAliases}._ 
+     * 
+     * @template T = object
      * @template C = {@link Concern}
      * 
-     * @param {T} target The target class concerns must be injected into
-     * @param {...Constructor<C>|Configuration<C>} concerns
+     * @param {T} target The target class that concerns classes must be injected into
+     * @param {Constructor<C> | Configuration<C>} concerns List of concern classes / injection configurations
      * 
-     * @return {T} Given target class with concern classes injected into its prototype
-     * 
-     * @throws {TypeError|Error}
+     * @returns {MustUseConcerns<T>} The modified target class
+     *
+     * @throws {InjectionException}
      */
     inject<
-        T extends ConstructorOrAbstractConstructor = object,
+        T = object,
         C = Concern
-    >(target: T, ...concerns: Constructor<C>|Configuration<C>): T;
+    >(target: T, ...concerns: (Constructor<C>|Configuration<C>)[]): MustUseConcerns<T>;
 
     /**
-     * Defines a concerns {@link Container} in target class' prototype using
-     * [CONCERNS]{@link import('@aedart/contracts/support/concerns').CONCERNS} as its property key.
+     * Defines the concern classes that must be used by the target class.
      * 
-     * **Note**: _If target class has a parent that already has a container defined, then the
-     * concern classes it contains will be merged with those provided as argument for this method,
-     * and populated into the new container._
+     * **Note**: _Method changes the target class, such that it implements and respects the
+     * {@link MustUseConcerns} interface. The original target class' constructor remains the untouched!_
      * 
-     * @param {object} target The target class in which a concerns container must be defined
-     * @param {Constructor<Concern>[]} concerns The concern classes to populate the container with.
+     * @template T = object
+     * 
+     * @param {T} target The target class that must define the concern classes to be used 
+     * @param {Constructor<Concern>[]} concerns List of concern classes
+     * 
+     * @returns {MustUseConcerns<T>} The modified target class
      *
-     * @return {Container}
-     * 
-     * @throws {TypeError} If duplicate concern classes are provided, or if provided concern classes are already
-     *                     defined in target class' parent.
-     * @throws {Error} If unable to define concerns container in target class.
+     * @throws {InjectionException} If given concern classes conflict with target class' parent concern classes,
+     *                              e.g. in case of duplicates. Or, if unable to modify target class.
      */
-    defineContainer(target: object, concerns: Constructor<Concern>[]): Container;
-    
+    defineConcerns<T = object>(target: T, concerns: Constructor<Concern>[]): MustUseConcerns<T>;
+
     /**
-     * Create aliases (proxy properties and methods) in target class' prototype, to the properties
-     * or methods in given concerns.
+     * Defines a concerns {@link Container} in target class' prototype.
      * 
-     * **Note**: _Method creates each alias using the {@link defineAlias} method!_
+     * **Note**: _Method changes the target class, such that it implements and respects the
+     * [Owner]{@link import('@aedart/contracts/support/concerns').Owner} interface!_
+     *
+     * @template T = object
      * 
-     * @param {object} target The target class aliases must be created in
+     * @param {MustUseConcerns<T>} target The target in which a concerns container must be defined
+     * 
+     * @returns {MustUseConcerns<T>} The modified target class
+     *
+     * @throws {InjectionException} If unable to define concerns container in target class
+     */
+    defineContainer<T = object>(target: MustUseConcerns<T>): MustUseConcerns<T>;
+
+    /**
+     * Defines "aliases" (proxy properties and methods) in target class' prototype, such that they
+     * point to the properties and methods available in the concern classes.
+     *
+     * **Note**: _Method defines each alias using the {@link defineAlias} method!_
+     * 
+     * @template T = object
+     * 
+     * @param {MustUseConcerns<T>} target The target in which "aliases" must be defined in
      * @param {Configuration<Concern>[]} configurations List of concern injection configurations
+     * 
+     * @returns {MustUseConcerns<T>} The modified target class
      *
-     * @throws {TypeError} In case of conflicting aliases.
-     * @throws {Error} If unable to obtain keys from source concern or failure occurs when defining
-     *                 proxy properties or methods in target class' prototype.
+     * @throws {InjectionException} If case of alias naming conflicts. Or, if unable to define aliases in target class.
      */
-    defineAliases(target: object, configurations: Configuration<Concern>[]): void;
+    defineAliases<T = object>(target: MustUseConcerns<T>, configurations: Configuration<Concern>[]): MustUseConcerns<T>;
 
     /**
-     * Create an alias (a proxy) in target class' prototype, to a property or method in given concern.
+     * Defines an "alias" (proxy property or method) in target class' prototype, to a property or method
+     * in given concern.
      * 
-     * **Note**: _Method will do nothing if a property or method already exists in the target, with the same
-     * name as the given alias!_
+     * **Note**: _Method will do nothing, if a property or method already exists in the target class' prototype
+     * chain, with the same name as given "alias"._
      * 
-     * @param {object} target The target class the alias must be created in
-     * @param {PropertyKey} key Name of the property or method in the source concern class to create an alias for
-     * @param {PropertyKey} alias Alias for the key to create in the target class (the proxy property or method)
-     * @param {Constructor<Concern>} source The concern to that the alias property or method must proxy to 
+     * @template T = object
+     * 
+     * @param {MustUseConcerns<T>} target The target in which "alias" must be defined in
+     * @param {PropertyKey} alias Name of the "alias" in the target class (name of the proxy property or method)
+     * @param {PropertyKey} key Name of the property or method that the "alias" is for, in the concern class (`source`)
+     * @param {Constructor<Concern>} source The concern class that holds the property or methods (`key`)
+     * 
+     * @returns {boolean} `true` if "alias" was in target class. `false` if not, e.g. a property or method already
+     *                    exists in target class' prototype chain, with the same name as the alias.
      *
-     * @return {boolean} True if a proxy property or method was created in target class.
-     *                   False if not, e.g. property or method with same name or symbol as the alias
-     *                   already exists in target. 
-     * 
-     * @throws {Error} If unable to obtain key from source concern or failure occurs when defining
-     *                 proxy property or method in target class' prototype.
+     * @throws {InjectionException} If unable to define "alias" in target class, e.g. due to failure when obtaining
+     *                              or defining [property descriptors]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor#description}.
      */
-    defineAlias(
-        target: object,
-        key: PropertyKey,
+    defineAlias<T = object>(
+        target: MustUseConcerns<T>,
         alias: PropertyKey,
+        key: PropertyKey,
         source: Constructor<Concern>
     ): boolean;
 }
