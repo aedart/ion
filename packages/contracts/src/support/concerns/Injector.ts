@@ -9,9 +9,11 @@ import MustUseConcerns from "./MustUseConcerns";
  * Able to inject concerns into a target class and create alias (proxy) properties 
  * and methods to the provided concerns' properties and methods, in the target class.
  * 
+ * @template T = object The target class that concern classes must be injected into
+ * 
  * @see {Concern}
  */
-export default interface Injector
+export default interface Injector<T = object>
 {
     /**
      * Injects concern classes into the target class and return the modified target.
@@ -23,21 +25,17 @@ export default interface Injector
      * _**B**: Defines a concerns container in target class' prototype, via {@link defineContainer}._ 
      * 
      * _**C**: Defines "aliases" (proxy properties and methods) in target class' prototype, via {@link defineAliases}._ 
-     * 
-     * @template T = object
+     *
+     * @template T = object The target class that concern classes must be injected into
      * @template C = {@link Concern}
-     * 
-     * @param {T} target The target class that concerns classes must be injected into
+     *
      * @param {Constructor<C> | Configuration<C>} concerns List of concern classes / injection configurations
      * 
      * @returns {MustUseConcerns<T>} The modified target class
      *
      * @throws {InjectionException}
      */
-    inject<
-        T = object,
-        C = Concern
-    >(target: T, ...concerns: (Constructor<C>|Configuration<C>)[]): MustUseConcerns<T>;
+    inject<C = Concern>(...concerns: (Constructor<C>|Configuration<C>)[]): MustUseConcerns<T>;
 
     /**
      * Defines the concern classes that must be used by the target class.
