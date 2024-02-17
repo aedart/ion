@@ -1,5 +1,6 @@
-import { getClassPropertyDescriptors } from "@aedart/support/reflections";
+import { isSubclass, getClassPropertyDescriptors } from "@aedart/support/reflections";
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import AbstractConcern from "./AbstractConcern";
 
 /**
  * In-memory cache of classes that are determined to be of the type [Concern]{@link import('@aedart/contracts/support/concerns').Concern} 
@@ -19,6 +20,11 @@ const concernClassCache: WeakSet<object> = new WeakSet<object>();
 export function isConcernClass(target: object, force: boolean = false): boolean
 {
     if (!force && concernClassCache.has(target)) {
+        return true;
+    }
+
+    if (isSubclass(target, AbstractConcern)) {
+        concernClassCache.add(parent);
         return true;
     }
 
