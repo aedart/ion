@@ -29,6 +29,16 @@ export const SUPPORT_CONCERNS: unique symbol = Symbol('@aedart/contracts/support
 export const HIDDEN: unique symbol = Symbol('hidden');
 
 /**
+ * Symbol used to define a list of the concern classes that a given target class
+ * must use.
+ * 
+ * @see {MustUseConcerns}
+ * 
+ * @type {Symbol}
+ */
+export const CONCERN_CLASSES: unique symbol = Symbol('concern_classes');
+
+/**
  * Symbol used to define a "concerns container" property inside a target class' prototype
  *
  * @see {Owner}
@@ -76,12 +86,14 @@ export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
 import Concern from "./Concern";
 import Configuration from "./Configuration";
 import Container from "./Container";
+import MustUseConcerns from "./MustUseConcerns";
 import Injector from "./Injector";
 import Owner from "./Owner";
 export {
     type Concern,
     type Configuration,
     type Container,
+    type MustUseConcerns,
     type Injector,
     type Owner
 }
