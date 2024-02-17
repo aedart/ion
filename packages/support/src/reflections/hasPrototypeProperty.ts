@@ -11,5 +11,5 @@
  */
 export function hasPrototypeProperty(target: object): boolean
 {
-    return typeof target.prototype == 'object' && target.prototype !== null;
+    return typeof target?.prototype == 'object' && target.prototype !== null;
 }
