@@ -3,6 +3,8 @@ import { CONCERNS } from "./index";
 
 /**
  * Concerns Owner
+ * 
+ * An owner is an object, e.g. instance of a class, that offers a concerns {@link Container}.
  */
 export default interface Owner
 {
