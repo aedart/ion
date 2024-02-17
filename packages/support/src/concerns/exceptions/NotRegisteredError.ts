@@ -16,7 +16,8 @@ export default class NotRegisteredError extends ConcernError implements NotRegis
      * @param {Constructor<Concern>} concern
      * @param {ErrorOptions} [options]
      */
-    constructor(concern: Constructor<Concern>, options?: ErrorOptions) {
+    constructor(concern: Constructor<Concern>, options?: ErrorOptions)
+    {
         super(concern, `Concern ${getNameOrDesc(concern)} is not registered in concerns container`, options);
 
         if (Error.captureStackTrace) {

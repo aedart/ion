@@ -24,7 +24,8 @@ export default class ConcernError extends Error implements ConcernException
      * @param {string} message
      * @param {ErrorOptions} [options]
      */
-    constructor(concern: Constructor<Concern>, message: string, options?: ErrorOptions) {
+    constructor(concern: Constructor<Concern>, message: string, options?: ErrorOptions)
+    {
         super(message, options || { cause: {} });
 
         if (Error.captureStackTrace) {
@@ -47,7 +48,8 @@ export default class ConcernError extends Error implements ConcernException
      *
      * @type {Constructor<Concern>}
      */
-    get concern(): Constructor<Concern> {
+    get concern(): Constructor<Concern>
+    {
         return this.#concern;
     }
 }

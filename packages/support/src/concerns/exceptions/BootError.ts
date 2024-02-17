@@ -16,7 +16,8 @@ export default class BootError extends ConcernError implements BootException
      * @param {string} message
      * @param {ErrorOptions} [options]
      */
-    constructor(concern: Constructor<Concern>, message: string, options?: ErrorOptions) {
+    constructor(concern: Constructor<Concern>, message: string, options?: ErrorOptions)
+    {
         super(concern, message, options);
         
         if (Error.captureStackTrace) {
