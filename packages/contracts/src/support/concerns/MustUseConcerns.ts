@@ -25,7 +25,7 @@ export default interface MustUseConcerns<T = object>
      */
     new(
         ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    ): ConstructorOrAbstractConstructor<T> & Owner;
+    ): ConstructorOrAbstractConstructor<T & Owner>;
     
     /**
      * Returns the concern classes that this class must use.
