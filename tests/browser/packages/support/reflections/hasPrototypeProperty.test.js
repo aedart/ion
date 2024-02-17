@@ -52,5 +52,12 @@ describe('@aedart/support/reflections', () => {
                 .withContext('Class A should have a prototype')
                 .toBeTrue();
         });
+
+        it('returns false when null given', () => {
+            
+            expect(hasPrototypeProperty(null))
+                .withContext('null does not have prototype')
+                .toBeFalse();
+        });
     }); 
 });
