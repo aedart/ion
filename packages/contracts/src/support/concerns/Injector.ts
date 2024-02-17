@@ -16,6 +16,13 @@ import MustUseConcerns from "./MustUseConcerns";
 export default interface Injector<T = object>
 {
     /**
+     * The target class
+     * 
+     * @returns {T}
+     */
+    get target(): T;
+    
+    /**
      * Injects concern classes into the target class and return the modified target.
      * 
      * **Note**: _Method performs injection in the following way:_
