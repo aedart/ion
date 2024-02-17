@@ -71,9 +71,17 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     {
         // TODO: implement this method...
         
+        // Resolve arguments, such that they are of type "concern injection configuration".
+        
+        // A) Define the concern classes in target class
+        
+        // B) Define a concerns container in target class' prototype
+        
+        // C) Define "aliases" (proxy properties and methods) in target class' prototype
+        
         return this.target as MustUseConcerns<T>;
     }
-
+    
     /**
      * Defines the concern classes that must be used by the target class.
      *
