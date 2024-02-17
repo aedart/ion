@@ -144,7 +144,7 @@ export default class ConcernsContainer implements Container
         }
         
         // Fail if concern instance already exists (has booted)
-        let instance: T | undefined = this.#map.get(concern);
+        let instance: T | undefined = this.#map.get(concern) as T | undefined;
         if (instance !== undefined) {
             throw new BootError(concern, `Concern ${getNameOrDesc(concern)} is already booted`, { cause: { owner: this.owner } });
         }
