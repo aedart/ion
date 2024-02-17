@@ -33,9 +33,14 @@ describe('@aedart/support/reflections', () => {
             class A {}
             class B extends A {}
             class C extends B {}
+            class D extends A {}
 
             expect(isSubclass(C, A))
                 .toBeTrue();
+
+            expect(isSubclass(D, B))
+                .withContext('D should not be a subclass of B')
+                .toBeFalse();
         });
     }); 
 });
