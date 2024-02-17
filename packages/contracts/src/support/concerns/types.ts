@@ -1,3 +1,4 @@
+import { Constructor, ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import Concern from "./Concern";
 
 /**
@@ -13,3 +14,19 @@ export type Alias = PropertyKey;
  * concern class instance.
  */
 export type Aliases<T extends Concern> = Record<T, Alias>;
+
+/**
+ * Array that holds a {@link Concern} class / Owner class pair.
+ */
+export type ConcernOwnerClassPair = [
+    Constructor<Concern>,             // Concern Class
+    ConstructorOrAbstractConstructor  // Owner class that must use the concern class 
+];
+
+/**
+ * A list of concern classes and their owner class in which they are
+ * used.
+ * 
+ * @see ConcernOwnerClassPair
+ */
+export type ConcernClasses = ConcernOwnerClassPair[];
