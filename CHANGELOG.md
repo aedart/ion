@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `getClassPropertyDescriptor()` and `getClassPropertyDescriptors()` in `@aedart/support/reflections`.
 * `getConstructorName()` and `getNameOrDesc()` in `@aedart/support/reflections`.
 * `isSubclass()` in `@aedart/support/reflections`.
+* `merge()` in `@aedart/support/objects`.
 
 ## [0.8.0] - 2024-02-12
 
