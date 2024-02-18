@@ -9,6 +9,7 @@ export default createConfig({
         '@aedart/contracts/support/exceptions',
         '@aedart/contracts/support/meta',
         '@aedart/contracts/support/mixins',
+        '@aedart/contracts/support/objects',
         '@aedart/contracts/support/reflections',
     ]
 });

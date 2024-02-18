@@ -56,6 +56,11 @@
             "import": "./dist/esm/support/mixins.js",
             "require": "./dist/cjs/support/mixins.cjs"
         },
+        "./support/objects": {
+            "types": "./dist/types/support/objects.d.ts",
+            "import": "./dist/esm/support/objects.js",
+            "require": "./dist/cjs/support/objects.cjs"
+        },
         "./support/reflections": {
             "types": "./dist/types/support/reflections.d.ts",
             "import": "./dist/esm/support/reflections.js",
