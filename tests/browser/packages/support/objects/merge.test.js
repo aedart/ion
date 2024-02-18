@@ -289,7 +289,7 @@ describe('@aedart/support/objects', () => {
             const result = merge([ a, b ],  { mergeArrays: true });
             
             // Debug
-            console.log('result', result)
+            // console.log('result', result)
             
             const expected = JSON.stringify({
                 'foo': {
