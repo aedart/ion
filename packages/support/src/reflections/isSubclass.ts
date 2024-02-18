@@ -4,6 +4,10 @@ import { hasPrototypeProperty } from "./hasPrototypeProperty";
 /**
  * Determine if target class is a subclass (_child class_) of given superclass (_parent class_)
  * 
+ * **Note**: _Method determines if target is a child of given superclass, by checking if the `target.prototype`
+ * is an instance of given superclass (`target.prototype instanceof superclass`)
+ * However, if given target or superclass does not have a prototype property, then `false` is returned._
+ * 
  * @param {object} target
  * @param {ConstructorOrAbstractConstructor} superclass
  * 
