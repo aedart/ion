@@ -177,6 +177,38 @@ describe('@aedart/support/reflections', () => {
                 // console.log('- - - '.repeat(15));
             }
         });
+
+        it('merges property descriptors', () => {
+            
+            class A {
+                get age() {}
+            }
+            
+            class B extends A {
+                set age(value) {}
+            }
+
+            // -------------------------------------------------------------------------------- //
+
+            const descriptors = getClassPropertyDescriptors(B, true);
+            
+            expect(Reflect.has(descriptors, 'age'))
+                .withContext('age property descriptor not in output')
+                .toBeTrue();
+            
+            const ageDesc = descriptors['age'];
+            
+            // Debug
+            // console.log('Age property descriptor', ageDesc);
+            
+            expect(typeof ageDesc.set !== 'undefined')
+                .withContext('set() function not specified in descriptor')
+                .toBeTrue();
+
+            expect(typeof ageDesc.get !== 'undefined')
+                .withContext('get() function not specified in descriptor')
+                .toBeTrue();
+        });
     });
 
 });

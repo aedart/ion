@@ -2,6 +2,7 @@ import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import { getClassPropertyDescriptor } from "./getClassPropertyDescriptor";
 import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty";
 import { getAllParentsOfClass } from "./getAllParentsOfClass";
+import { merge } from "@aedart/support/objects";
 
 /**
  * Returns all property descriptors that are defined target's prototype
@@ -45,7 +46,7 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
 
             // Merge evt. existing descriptor object with the one obtained from target.
             if (Reflect.has(output, key)) {
-                output[key] = Object.assign(output[key], descriptor);
+                output[key] = merge([ output[key], descriptor ], { overwriteWithUndefined: false });
                 continue;
             }
 
