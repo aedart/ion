@@ -153,6 +153,7 @@ export const defaultMergeCallback: MergeCallback = function(
 
                 return mergeArrays(value);
             }
+            // TODO: What about Array-Like / ConcatSpreadable ???
             
             // Objects (of native kind) - - - - - - - - - - - - - - - - - - - - - - - - -
             // Clone the object value, if possible.
