@@ -119,8 +119,7 @@ export const defaultMergeCallback: MergeCallback = function(
     options: MergeOptions
 ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
-    // Determine if an existing property exists, and its type...
-    const exists: boolean = Reflect.has(result, key);
+    // Determine the type and resolve value based on it... 
     const type: string = typeof value;    
     
     switch (type) {
@@ -133,7 +132,7 @@ export const defaultMergeCallback: MergeCallback = function(
             // Do not overwrite existing value with `undefined`, if options do not allow it...
             if (value === undefined
                 && options.overwriteWithUndefined === false
-                && exists
+                && Reflect.has(result, key)
                 && result[key] !== undefined
             ) {
                 return result[key];
@@ -178,7 +177,7 @@ export const defaultMergeCallback: MergeCallback = function(
             
             // Objects  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // Merge with existing, if existing value is not null...
-            if (exists && typeof result[key] == 'object' && result[key] !== null) {
+            if (Reflect.has(result, key) && typeof result[key] == 'object' && result[key] !== null) {
                 return performMerge([ result[key], value ], options, depth + 1);
             }
 
