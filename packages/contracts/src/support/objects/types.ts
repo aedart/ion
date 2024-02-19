@@ -17,7 +17,7 @@ export type MergeCallback = (
     source: object,
     sourceIndex: number,
     depth: number,
-    options: MergeOptions
+    options: Readonly<MergeOptions>
 ) => any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
 /**

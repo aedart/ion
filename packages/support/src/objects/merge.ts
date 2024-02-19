@@ -7,9 +7,11 @@ import {
     DEFAULT_MAX_MERGE_DEPTH,
     DEFAULT_MERGE_SKIP_KEYS
 } from "@aedart/contracts/support/objects";
+import type { Constructor } from "@aedart/contracts";
 import { descTag } from "@aedart/support/misc";
 import { merge as mergeArrays } from "@aedart/support/arrays";
 import { getErrorMessage } from "@aedart/support/exceptions";
+import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import MergeError from "./exceptions/MergeError";
 
 /**
@@ -42,39 +44,9 @@ export function merge(
     options?: MergeCallback | MergeOptions
 ): object
 {
-    // Resolve merge callback
-    const callback: MergeCallback = (typeof options == 'function')
-                                    ? options
-                                    : defaultMergeCallback;
+    // Resolve the merge options
+    const resolved: Readonly<MergeOptions> = resolveOptions(options);
     
-    // Resolve user provided merge options
-    const userOptions: MergeOptions = (typeof options == 'object' && options !== null)
-                                    ? options
-                                    : Object.create(null);
-
-    // Merge the default and user provided options...
-    const resolved: MergeOptions = {
-        ...DEFAULT_MERGE_OPTIONS,
-        ...{
-            callback: callback
-        },
-        ...userOptions
-    };
-
-    // Abort in case of invalid maximum depth
-    if (typeof resolved.depth != 'number' || resolved.depth < 0) {
-        throw new MergeError('Invalid maximum "depth" merge option value', {
-            cause: {
-                options: resolved
-            }
-        });
-    }
-    
-    // Resolve the skip callback.
-    if (Array.isArray(resolved.skip)) {
-        resolved.skip = makeDefaultSkipCallback(resolved.skip);
-    }
-
     // Perform actual merge...
     try {
         return performMerge(sources, resolved);    
@@ -98,6 +70,7 @@ export function merge(
     }
 }
 
+
 /**
  * Default merge callback
  * 
@@ -107,7 +80,7 @@ export function merge(
  * @param {object} source The source object that holds the property
  * @param {number} sourceIndex Source index (relative to object depth)
  * @param {number} depth Current depth
- * @param {MergeOptions} options
+ * @param {Readonly<MergeOptions>} options
  * 
  * @returns {any} The value to be merged into the resulting object
  * 
@@ -120,7 +93,7 @@ export const defaultMergeCallback: MergeCallback = function(
     source: object,
     sourceIndex: number,
     depth: number,
-    options: MergeOptions
+    options: Readonly<MergeOptions>
 ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
     // Determine the type and resolve value based on it... 
@@ -213,14 +186,14 @@ export const defaultMergeCallback: MergeCallback = function(
  * @internal
  *
  * @param {object[]} sources
- * @param {MergeOptions} options
+ * @param {Readonly<MergeOptions>} options
  * @param {number} [depth=0]
  *
  * @returns {object}
  *
  * @throws {MergeError} If unable to merge objects
  */
-function performMerge(sources: object[], options: MergeOptions, depth: number = 0): object
+function performMerge(sources: object[], options: Readonly<MergeOptions>, depth: number = 0): object
 {
     // Abort if maximum depth has been reached
     if (depth > options.depth) {
@@ -264,6 +237,57 @@ function performMerge(sources: object[], options: MergeOptions, depth: number = 
 
         return result;
     }, Object.create(null));
+}
+
+/**
+ * Resolve the merge options
+ * 
+ * @internal
+ * 
+ * @param {MergeCallback | MergeOptions} [options]
+ * 
+ * @return {Readonly<MergeOptions>}
+ * 
+ * @throws {MergeError}
+ */
+function resolveOptions(options?: MergeCallback | MergeOptions): Readonly<MergeOptions>
+{
+    // Resolve merge callback
+    const callback: MergeCallback = (typeof options == 'function')
+        ? options
+        : defaultMergeCallback;
+
+    // Resolve user provided merge options
+    const userOptions: MergeOptions = (typeof options == 'object' && options !== null)
+        ? options
+        : Object.create(null);
+
+    // Merge the default and user provided options...
+    const resolved: MergeOptions = {
+        ...DEFAULT_MERGE_OPTIONS,
+        ...{
+            callback: callback
+        },
+        ...userOptions
+    };
+
+    // Abort in case of invalid maximum depth
+    if (typeof resolved.depth != 'number' || resolved.depth < 0) {
+        throw new MergeError('Invalid maximum "depth" merge option value', {
+            cause: {
+                options: resolved
+            }
+        });
+    }
+
+    // Resolve the skip callback.
+    if (Array.isArray(resolved.skip)) {
+        resolved.skip = makeDefaultSkipCallback(resolved.skip);
+    }
+
+    // Freeze the resolved options to avoid strange behaviour, if user provides
+    // custom merge callback and attempts to change the options...
+    return Object.freeze(resolved);
 }
 
 /**
