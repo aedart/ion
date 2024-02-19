@@ -153,9 +153,18 @@ export const defaultMergeCallback: MergeCallback = function(
 
                 return mergeArrays(value);
             }
-            // TODO: Array-Like objects ???
             
-            // Objects  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // Objects (of native kind) - - - - - - - - - - - - - - - - - - - - - - - - -
+            // Clone the object value, if possible.
+            if (canCloneObjectValue(value)) {
+                return structuredClone(value);
+            }
+
+            // TODO: WeakMap ???
+            // TODO: WeakSet ???
+            // TODO: WeakRef ???
+
+            // Objects (basic)- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // Merge with existing, if existing value is not null...
             if (Reflect.has(result, key) && typeof result[key] == 'object' && result[key] !== null) {
                 return performMerge([ result[key], value ], options, depth + 1);
@@ -237,6 +246,45 @@ function performMerge(sources: object[], options: Readonly<MergeOptions>, depth:
 
         return result;
     }, Object.create(null));
+}
+
+/**
+ * Determine if an object value can be cloned via `structuredClone()`
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/structuredClone
+ *
+ * @internal
+ *
+ * @param {object} value
+ *
+ * @return {boolean}
+ */
+function canCloneObjectValue(value: object): boolean
+{
+    const supported: Constructor[] = [
+        // Array, // Handled by array, with evt. array value merges
+        ArrayBuffer,
+        Boolean,
+        DataView,
+        Date,
+        Error,
+        Map,
+        Number,
+        // Object, // Handled by "basic" objects merging...
+        // (Primitive Types), // Also handled elsewhere...
+        RegExp,
+        Set,
+        String,
+        TYPED_ARRAY_PROTOTYPE
+    ];
+
+    for (const constructor of supported) {
+        if (value instanceof constructor) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**

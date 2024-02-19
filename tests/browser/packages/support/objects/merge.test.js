@@ -1,4 +1,5 @@
 import { DEFAULT_MERGE_SKIP_KEYS } from "@aedart/contracts/support/objects";
+import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import {
     merge,
     MergeError
@@ -443,6 +444,131 @@ describe('@aedart/support/objects', () => {
             expect(Reflect.has(result, 'foo') && result['foo'] === true)
                 .withContext('Failed to merge with maximum depth option set to zero')
                 .toBeTrue()
+        });
+
+        it('can clones objects of native kind', () => {
+            const dataSet = [
+                {
+                    name: 'ArrayBuffer',
+                    source: { value: new ArrayBuffer(8) },
+                    expectedInstanceOf: ArrayBuffer,
+                    match: (cloned) => {
+                        return cloned.byteLength === 8;
+                    }
+                },
+                {
+                    name: 'Boolean',
+                    source: { value: new Boolean(true) },
+                    expectedInstanceOf: Boolean,
+                    match: (cloned) => {
+                        return cloned.valueOf() === true;
+                    }
+                },
+                {
+                    name: 'DataView',
+                    source: { value: new DataView(new ArrayBuffer(16)) },
+                    expectedInstanceOf: DataView,
+                    match: (cloned) => {
+                        return cloned.buffer.byteLength === 16;
+                    }
+                },
+                {
+                    name: 'Date',
+                    source: { value: new Date('2024-02-19 14:13:25') },
+                    expectedInstanceOf: Date,
+                    match: (cloned) => {
+                        return cloned.valueOf() === 1708348405000; // milliseconds for since the epoch for date
+                    }
+                },
+                {
+                    name: 'Error',
+                    source: { value: new TypeError('foo') },
+                    expectedInstanceOf: Error,
+                    match: (cloned) => {
+                        return cloned.message === 'foo';
+                    }
+                },
+                {
+                    name: 'Map',
+                    source: { value: new Map([
+                        [ 'a', 1 ],    
+                        [ 'b', 2 ],    
+                        [ 'c', 3 ],    
+                    ]) },
+                    expectedInstanceOf: Map,
+                    match: (cloned) => {
+                        return cloned.has('a') && cloned.get('a') === 1
+                            && cloned.has('b') && cloned.get('b') === 2
+                            && cloned.has('c') && cloned.get('c') === 3
+                    }
+                },
+                {
+                    name: 'Number',
+                    source: { value: new Number(42) },
+                    expectedInstanceOf: Number,
+                    match: (cloned) => {
+                        return cloned.valueOf() === 42;
+                    }
+                },
+                {
+                    name: 'RegEx',
+                    source: { value: new RegExp("bar", "g") },
+                    expectedInstanceOf: RegExp,
+                    match: (cloned) => {
+                        return cloned.toString() === '/bar/g'
+                    }
+                },
+                {
+                    name: 'Set',
+                    source: { value: new Set([ 1, 2, 3 ]) },
+                    expectedInstanceOf: Set,
+                    match: (cloned) => {
+                        return cloned.has(1)
+                            && cloned.has(2)
+                            && cloned.has(3);
+                    }
+                },
+                {
+                    name: 'String',
+                    source: { value: new String('John Doe') },
+                    expectedInstanceOf: String,
+                    match: (cloned) => {
+                        return cloned.valueOf() === 'John Doe';
+                    }
+                },
+                {
+                    name: 'TypedArray',
+                    source: { value: new Int16Array(new ArrayBuffer(16)) },
+                    expectedInstanceOf: TYPED_ARRAY_PROTOTYPE,
+                    match: (cloned) => {
+                        return cloned.byteLength === 16;
+                    }
+                },
+            ];
+
+            // --------------------------------------------------------------------- //
+            
+            for (const entry of dataSet) {
+                const target = {};
+                
+                const result = merge([ target, entry.source ]);
+                
+                expect(Reflect.has(result, 'value'))
+                    .withContext(`No value property in result for ${entry.name}`)
+                    .toBeTrue();
+                
+                expect(result.value instanceof entry.expectedInstanceOf)
+                    .withContext(`Invalid instanceof for ${entry.name}`)
+                    .toBeTrue();
+                
+                expect(result.value === entry.source.value)
+                    .withContext(`Shallow copy was made for ${entry.name}`)
+                    .toBeFalse();
+                
+                expect(entry.match(result.value))
+                    .withContext(`Custom value match failed for ${entry.name}`)
+                    .toBeTrue();
+            }
         });
     });    
 });
