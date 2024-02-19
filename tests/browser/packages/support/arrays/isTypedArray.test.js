@@ -23,7 +23,7 @@ describe('@aedart/support/arrays', () => {
             
             for (const data of dataSet) {
                 expect(isTypedArray(data.value))
-                    .withContext(`${name} was expected to ${data.expected.toString()}`)
+                    .withContext(`${data.name} was expected to ${data.expected.toString()}`)
                     .toBe(data.expected);
             }
         });
