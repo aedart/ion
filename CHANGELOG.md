@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `@aedart/contracts/support/arrays` and `@aedart/support/arrays` submodules.
 * `Throwable` (_extends TypeScript's `Error` interface_) interface in `@aedart/contracts/support/exceptions`. 
 * `LogicalError` and `AbstractClassError` exceptions in `@aedart/support/exceptions`.
+* `getErrorMessage()` in `@aedart/support/exceptions`.
 * `FUNCTION_PROTOTYPE` const in `@aedart/contracts/support/reflections`.
 * `hasPrototypeProperty()` and `assertHasPrototypeProperty()` in `@aedart/support/reflections`.
 * `getParentOfClass()` and `getAllParentsOfClass()` in `@aedart/support/reflections`.
