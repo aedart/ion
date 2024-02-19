@@ -8,6 +8,8 @@ import {
     DEFAULT_MERGE_SKIP_KEYS
 } from "@aedart/contracts/support/objects";
 import { descTag } from "@aedart/support/misc";
+import { merge as mergeArrays } from "@aedart/support/arrays";
+import { getErrorMessage } from "@aedart/support/exceptions";
 import MergeError from "./exceptions/MergeError";
 
 /**
@@ -83,10 +85,12 @@ export function merge(
             
             throw error; 
         }
-        
-        throw new MergeError('Unable to merge objects', {
+
+        const reason: string = getErrorMessage(error);
+
+        throw new MergeError(`Unable to merge objects: ${reason}`, {
             cause: {
-                error: error,
+                previous: error,
                 sources: sources,
                 options: resolved
             }
@@ -287,25 +291,24 @@ function resolveArrayValue(
 ): any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
     try {
-        // Create a structured clone of the array value, to avoid unintended manipulation of the
-        // original array. However, if the array contains complex values, e.g. functions, then
-        // this can fail.
-        const clonedArray = structuredClone(value);
-
+        // Use cloned array values, to avoid unintended manipulation of the original array values (if contains objects).
+        // However, if the array contains non-cloneable values, then this can fail.
+        
         // Merge array values if required.
         if (options.mergeArrays === true
             && Reflect.has(result, key)
             && Array.isArray(result[key])
         ) {
-            return [ ...result[key], ...clonedArray ];
+            return mergeArrays(result[key], value);
         }
 
-        // Return the clone array...
-        return clonedArray;
+        return mergeArrays(value);
     } catch (error) {
-        throw new MergeError(`Unable to merge array value at source index ${sourceIndex}`, {
+        const reason: string = getErrorMessage(error);
+        
+        throw new MergeError(`Unable to merge array value at source index ${sourceIndex}: ${reason}`, {
             cause: {
-                error: error,
+                previous: error,
                 key: key,
                 value: value,
                 source: source,
