@@ -94,6 +94,41 @@ describe('@aedart/support/objects', () => {
                 .toBe(a['foo'])
         });
 
+        it('can apply custom merge callback', () => {
+            const a = {
+                'a': 1
+            };
+            const b = {
+                'b': 2
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge([ a, b ],  (result, key, value) => {
+                if (key === 'b') {
+                    return value + 1;
+                }
+                
+                return value;
+            });
+
+            // --------------------------------------------------------------------- //
+            
+            expect(Reflect.has(result, 'a'))
+                .withContext('a missing')
+                .toBeTrue();
+            expect(result['a'])
+                .withContext('Merge callback not applied for a')
+                .toBe(a['a']);
+
+            expect(Reflect.has(result, 'b'))
+                .withContext('b missing')
+                .toBeTrue()
+            expect(result['b'])
+                .withContext('Merge callback not applied for b')
+                .toBe(b['b'] + 1);
+        });
+
         it('skips default keys', () => {
             const a = {
                 'foo': 'bar'
@@ -139,6 +174,38 @@ describe('@aedart/support/objects', () => {
                 .toBeTrue();
 
             expect(Reflect.has(result, 'foo'))
+                .withContext('Skipped key is in output')
+                .toBeFalse();
+        });
+
+        it('can skip keys via callback', () => {
+            const a = {
+                'foo': 'bar'
+            };
+            const b = {
+                'bar': 'foo',
+                'ab': 'ba'
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge([ a, b ], {
+                skip: (key, source) => {
+                    return key === 'ab' && Reflect.has(source, key);
+                }
+            });
+
+            // Debug
+            // console.log('result', result);
+
+            expect(Reflect.has(result, 'foo'))
+                .withContext('Incorrect key (foo) skipped')
+                .toBeTrue();
+            expect(Reflect.has(result, 'bar'))
+                .withContext('Incorrect key (bar) skipped')
+                .toBeTrue();
+            
+            expect(Reflect.has(result, 'ab'))
                 .withContext('Skipped key is in output')
                 .toBeFalse();
         });
@@ -307,6 +374,75 @@ describe('@aedart/support/objects', () => {
             expect(JSON.stringify(result))
                 .withContext('Incorrect merge of nested objects')
                 .toBe(expected)
+        });
+
+        it('fails when invalid maximum depth option provided', () => {
+
+            const a = {
+                'foo': 'bar',
+            };
+            const b = {
+                'foo': true
+            };
+
+            // --------------------------------------------------------------------- //
+            
+            const callback = () => {
+                return merge([ a, b ],  { depth: -1 });
+            }
+            
+            // --------------------------------------------------------------------- //
+            
+            expect(callback)
+                .toThrowError(MergeError);
+        });
+
+        it('fails when maximum depth has been exceeded', () => {
+
+            const a = {
+                'person': {
+                    'name': 'Risk'
+                }
+            };
+            const b = {
+                'person': {
+                    'age': 31,
+                    'address': {
+                        'street': 'Somewhere Str. 654' // This depth level should cause failure...
+                    }
+                }
+            };
+
+            // --------------------------------------------------------------------- //
+            
+            const callback = () => {
+                return merge([ a, b ],  { depth: 1 });
+            }
+
+            // --------------------------------------------------------------------- //
+
+            expect(callback)
+                .toThrowError(MergeError);
+        });
+
+        it('can merge with maximum depth set to zero', () => {
+
+            const a = {
+                'foo': false,
+            };
+            const b = {
+                'foo': true,
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge([ a, b ],  { depth: 0 });
+
+            // --------------------------------------------------------------------- //
+
+            expect(Reflect.has(result, 'foo') && result['foo'] === true)
+                .withContext('Failed to merge with maximum depth option set to zero')
+                .toBeTrue()
         });
     });    
 });
