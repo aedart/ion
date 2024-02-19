@@ -5,12 +5,25 @@ import {
 import { isPrimitive, descTag } from "@aedart/support/misc";
 import MergeError from "./exceptions/MergeError";
 
+/**
+ * Default merge options to be applied, when none are provided to {@link merge}
+ * 
+ * @type {MergeOptions}
+ */
+export const DEFAULT_MERGE_OPTIONS: MergeOptions = {
+    skip: DEFAULT_MERGE_SKIP_KEYS,
+    overwriteWithUndefined: true,
+    mergeArrays: false,
+};
+Object.freeze(DEFAULT_MERGE_OPTIONS);
 
 /**
  * Merge two or more objects
  * 
  * @param {object[]} sources
- * @param {MergeOptions} [options] The `callback` setting defaults to {@link defaultMergeCallback} when none given  
+ * @param {MergeCallback|MergeOptions} [options] Merge callback or merge options. If merge options are given,
+ *                                     then the `callback` setting is automatically set to {@link defaultMergeCallback}
+ *                                     if not otherwise specified.  
  * 
  * @returns {object}
  * 
@@ -18,23 +31,36 @@ import MergeError from "./exceptions/MergeError";
  */
 export function merge(
     sources: object[],
-    options?: MergeOptions
+    options?: MergeCallback | MergeOptions
 ): object
 {
-    // Resolve defaults
-    const defaults: MergeOptions = {
-        skip: DEFAULT_MERGE_SKIP_KEYS,
-        overwriteWithUndefined: true,
-        mergeArrays: false,
-        callback: defaultMergeCallback
-    };
-    const resolvedOptions: MergeOptions = { ...defaults, ...options };
+    // Resolve merge callback
+    const callback: MergeCallback = (typeof options == 'function')
+                                    ? options
+                                    : defaultMergeCallback;
     
+    // Resolve user provided merge options
+    const userOptions: MergeOptions = (typeof options == 'object' && options !== null)
+                                    ? options
+                                    : Object.create(null)
+
+    // Resolve the final options to use
+    const resolved: MergeOptions = {
+        ...DEFAULT_MERGE_OPTIONS,
+        ...{
+            callback: callback
+        },
+        ...userOptions
+    };
+
     // Perform actual merge...
     try {
-        return performMerge(sources, resolvedOptions);    
+        return performMerge(sources, resolved);    
     } catch (error) {
         if (error instanceof MergeError) {
+            error.cause.sources = sources;
+            error.cause.options = resolved;
+            
             throw error; 
         }
         
@@ -42,7 +68,7 @@ export function merge(
             cause: {
                 error: error,
                 sources: sources,
-                options: options
+                options: resolved
             }
         });
     }
