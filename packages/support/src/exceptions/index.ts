@@ -4,3 +4,5 @@ export {
     AbstractClassError,
     LogicalError
 }
+
+export * from './getErrorMessage';
