@@ -6,6 +6,18 @@ import type { MergeCallback, SkipKeyCallback } from "./types";
 export default interface MergeOptions
 {
     /**
+     * The maximum merge depth
+     * 
+     * **Note**: _Value must be greater than or equal zero._
+     * 
+     * **Note**: _Defaults to [DEFAULT_MAX_MERGE_DEPTH]{@link import('@aedart/contracts/support/objects').DEFAULT_MAX_MERGE_DEPTH}
+     * when not specified._
+     * 
+     * @type {number}
+     */
+    depth?: number;
+    
+    /**
      * Property Keys that must not be merged.
      * 
      * **Note**: _Defaults to [DEFAULT_MERGE_SKIP_KEYS]{@link import('@aedart/contracts/support/objects').DEFAULT_MERGE_SKIP_KEYS}

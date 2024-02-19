@@ -3,7 +3,10 @@ import type {
     MergeCallback,
     SkipKeyCallback
 } from "@aedart/contracts/support/objects";
-import { DEFAULT_MERGE_SKIP_KEYS } from "@aedart/contracts/support/objects";
+import {
+    DEFAULT_MAX_MERGE_DEPTH,
+    DEFAULT_MERGE_SKIP_KEYS
+} from "@aedart/contracts/support/objects";
 import { isPrimitive, descTag } from "@aedart/support/misc";
 import MergeError from "./exceptions/MergeError";
 
@@ -13,6 +16,7 @@ import MergeError from "./exceptions/MergeError";
  * @type {MergeOptions}
  */
 export const DEFAULT_MERGE_OPTIONS: MergeOptions = {
+    depth: DEFAULT_MAX_MERGE_DEPTH,
     skip: DEFAULT_MERGE_SKIP_KEYS,
     overwriteWithUndefined: true,
     mergeArrays: false,
@@ -55,6 +59,15 @@ export function merge(
         ...userOptions
     };
 
+    // Abort in case of invalid maximum depth
+    if (typeof resolved.depth != 'number' || resolved.depth < 0) {
+        throw new MergeError('Invalid maximum "depth" merge option value', {
+            cause: {
+                options: resolved
+            }
+        });
+    }
+    
     // Resolve the skip callback.
     if (Array.isArray(resolved.skip)) {
         resolved.skip = makeDefaultSkipCallback(resolved.skip);
@@ -89,6 +102,7 @@ export function merge(
  * @param {any} value Value of the property in source object
  * @param {object} source The source object that holds the property
  * @param {number} sourceIndex Source index (relative to object depth)
+ * @param {number} depth Current depth
  * @param {MergeOptions} options
  * 
  * @returns {any} The value to be merged into the resulting object
@@ -101,6 +115,7 @@ export const defaultMergeCallback: MergeCallback = function(
     value: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
     source: object,
     sourceIndex: number,
+    depth: number,
     options: MergeOptions
 ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
@@ -160,11 +175,11 @@ export const defaultMergeCallback: MergeCallback = function(
     if (type == 'object') {
         // Merge with existing, if not null...
         if (exists && typeof result[key] == 'object' && result[key] !== null) {
-            return performMerge([ result[key], value ], options);
+            return performMerge([ result[key], value ], options, depth + 1);
         }
         
         // Otherwise, create a new object and merge it.
-        return performMerge([ {}, value ], options);
+        return performMerge([ {}, value ], options, depth + 1);
     }
     
     // If for some reason this point is reached, it means that we are unable to merge "something".
@@ -186,19 +201,31 @@ export const defaultMergeCallback: MergeCallback = function(
  *
  * @param {object[]} sources
  * @param {MergeOptions} options
+ * @param {number} [depth=0]
  *
  * @returns {object}
  *
  * @throws {MergeError} If unable to merge objects
  */
-function performMerge(sources: object[], options: MergeOptions): object
+function performMerge(sources: object[], options: MergeOptions, depth: number = 0): object
 {
+    // Abort if maximum depth has been reached
+    if (depth > options.depth) {
+        throw new MergeError(`Maximum merge depth (${options.depth}) has been exceeded`, {
+            cause: {
+                source: sources,
+                depth: depth
+            }
+        });
+    }
+ 
     return sources.reduce((result: object, source: object, index: number) => {
         if (Array.isArray(source)) {
             throw new MergeError(`Unable to merge object with an array source, (source index: ${index})`, {
                 cause: {
                     source: source,
-                    index: index
+                    index: index,
+                    depth: depth
                 }
             });
         }
@@ -217,6 +244,7 @@ function performMerge(sources: object[], options: MergeOptions): object
                 source[key],
                 source,
                 index,
+                depth,
                 options
             );
         }
