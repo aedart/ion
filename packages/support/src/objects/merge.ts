@@ -263,6 +263,8 @@ function performMerge(sources: object[], options: MergeOptions, depth: number = 
 /**
  * Resolves array value
  * 
+ * @internal
+ * 
  * @param {object} result
  * @param {PropertyKey} key
  * @param {any[]} value
