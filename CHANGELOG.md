@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `@aedart/contracts/support/exceptions` and `@aedart/support/exceptions` submodules.
 * `@aedart/contracts/support/objects` submodule.
 * `@aedart/contracts/support/arrays` and `@aedart/support/arrays` submodules.
+* `ConcatSpreadable` (_extends TypeScript's `ArrayLike` interface_) interface in `@aedart/contracts/support/arrays`.
 * `Throwable` (_extends TypeScript's `Error` interface_) interface in `@aedart/contracts/support/exceptions`. 
 * `LogicalError` and `AbstractClassError` exceptions in `@aedart/support/exceptions`.
 * `getErrorMessage()` in `@aedart/support/exceptions`.
@@ -23,8 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isSubclass()` in `@aedart/support/reflections`.
 * `classOwnKeys()` in `@aedart/support/reflections`.
 * `merge()` in `@aedart/support/objects`.
-* `merge()` in `@aedart/support/arrays`.
-* `isTypedArray()` in `@aedart/support/arrays`.
+* `merge()`, `isTypedArray()` and `isConcatSpreadable()` in `@aedart/support/arrays`.
 
 ## [0.8.0] - 2024-02-12
 
