@@ -1,3 +1,5 @@
+import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
+
 /**
  * Determine if given target is an instance of a `TypedArray`
  * 
@@ -9,5 +11,5 @@
  */
 export function isTypedArray(target: object): boolean
 {
-    return target instanceof Reflect.getPrototypeOf(Int8Array);
+    return target instanceof TYPED_ARRAY_PROTOTYPE;
 }
