@@ -121,7 +121,7 @@ export const defaultMergeCallback: MergeCallback = function(
 {
     // Determine the type and resolve value based on it... 
     const type: string = typeof value;    
-    
+
     switch (type) {
 
         // -------------------------------------------------------------------------------------------------------- //
