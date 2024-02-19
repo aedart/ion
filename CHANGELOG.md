@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isSubclass()` in `@aedart/support/reflections`.
 * `classOwnKeys()` in `@aedart/support/reflections`.
 * `merge()` in `@aedart/support/objects`.
+* `merge()` in `@aedart/support/arrays`.
 * `isTypedArray()` in `@aedart/support/arrays`.
 
 ## [0.8.0] - 2024-02-12
