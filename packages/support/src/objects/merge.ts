@@ -167,15 +167,18 @@ export const defaultMergeCallback: MergeCallback = function(
 
             // Arrays - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             if (Array.isArray(value)) {
-                return resolveArrayValue(
-                    result,
-                    key,
-                    value,
-                    source,
-                    sourceIndex,
-                    depth,
-                    options
-                );
+                // Use cloned array values, to avoid unintended manipulation of the original array values (if contains objects).
+                // However, if the array contains non-cloneable values, then this can fail.
+
+                // Merge array values if required.
+                if (options.mergeArrays === true
+                    && Reflect.has(result, key)
+                    && Array.isArray(result[key])
+                ) {
+                    return mergeArrays(result[key], value);
+                }
+
+                return mergeArrays(value);
             }
             // TODO: Array-Like objects ???
             
@@ -261,63 +264,6 @@ function performMerge(sources: object[], options: MergeOptions, depth: number = 
 
         return result;
     }, Object.create(null));
-}
-
-/**
- * Resolves array value
- * 
- * @internal
- * 
- * @param {object} result
- * @param {PropertyKey} key
- * @param {any[]} value
- * @param {object} source
- * @param {number} sourceIndex
- * @param {number} depth
- * @param {MergeOptions} options
- * 
- * @return {any[]}
- * 
- * @throws {MergeError}
- */
-function resolveArrayValue(
-    result: object,
-    key: PropertyKey,
-    value: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    source: object,
-    sourceIndex: number,
-    depth: number,
-    options: MergeOptions
-): any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
-{
-    try {
-        // Use cloned array values, to avoid unintended manipulation of the original array values (if contains objects).
-        // However, if the array contains non-cloneable values, then this can fail.
-        
-        // Merge array values if required.
-        if (options.mergeArrays === true
-            && Reflect.has(result, key)
-            && Array.isArray(result[key])
-        ) {
-            return mergeArrays(result[key], value);
-        }
-
-        return mergeArrays(value);
-    } catch (error) {
-        const reason: string = getErrorMessage(error);
-        
-        throw new MergeError(`Unable to merge array value at source index ${sourceIndex}: ${reason}`, {
-            cause: {
-                previous: error,
-                key: key,
-                value: value,
-                source: source,
-                sourceIndex: sourceIndex,
-                depth: depth,
-                options: options
-            }
-        });
-    }
 }
 
 /**
