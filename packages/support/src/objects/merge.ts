@@ -7,7 +7,7 @@ import {
     DEFAULT_MAX_MERGE_DEPTH,
     DEFAULT_MERGE_SKIP_KEYS
 } from "@aedart/contracts/support/objects";
-import { isPrimitive, descTag } from "@aedart/support/misc";
+import { descTag } from "@aedart/support/misc";
 import MergeError from "./exceptions/MergeError";
 
 /**
@@ -121,77 +121,84 @@ export const defaultMergeCallback: MergeCallback = function(
 {
     // Determine if an existing property exists, and its type...
     const exists: boolean = Reflect.has(result, key);
-    const type: string = typeof value;
-
-    // Primitives
-    // @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
-    if (isPrimitive(value)) {
-        
-        // Do not overwrite existing value with `undefined`, if options do not allow it...
-        if (value === undefined && options.overwriteWithUndefined === false && exists && result[key] !== undefined) {
-            return result[key];
-        }
-        
-        // Otherwise, just return the value for primitive value.
-        return value;
-    }
+    const type: string = typeof value;    
     
-    // Arrays
-    if (Array.isArray(value)) {
-        
-        // Create a structured clone of array value. However, this can fail if array contains
-        // complex values, e.g. functions, objects, ...etc.
-        try {
-            const clonedArray = structuredClone(value);
+    switch (type) {
 
-            // Merge array values if required.
-            if (options.mergeArrays === true && exists && Array.isArray(result[key])) {
-                return [ ...result[key], ...clonedArray ];
+        // -------------------------------------------------------------------------------------------------------- //
+        // Primitives
+        // @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
+
+        case 'undefined':
+            // Do not overwrite existing value with `undefined`, if options do not allow it...
+            if (value === undefined
+                && options.overwriteWithUndefined === false
+                && exists
+                && result[key] !== undefined
+            ) {
+                return result[key];
             }
 
-            // Returns the cloned array, to avoid unintended manipulation...
-            return clonedArray;
-        } catch (error) {
-            throw new MergeError(`Unable to merge array value at source index ${sourceIndex}`, {
+            return value;
+            
+        case 'string':
+        case 'number':
+        case 'bigint':
+        case 'boolean':
+        case 'symbol':
+            return value;
+
+        // -------------------------------------------------------------------------------------------------------- //
+        // Functions
+            
+        case 'function':
+            return value;
+
+        // -------------------------------------------------------------------------------------------------------- //
+        // Null, Arrays and Objects
+        case 'object':
+            // Null (primitive) - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            if (value === null) {
+                return value;
+            }
+
+            // Arrays - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            if (Array.isArray(value)) {
+                return resolveArrayValue(
+                    result,
+                    key,
+                    value,
+                    source,
+                    sourceIndex,
+                    depth,
+                    options
+                );
+            }
+            // TODO: Array-Like objects ???
+            
+            // Objects  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // Merge with existing, if existing value is not null...
+            if (exists && typeof result[key] == 'object' && result[key] !== null) {
+                return performMerge([ result[key], value ], options, depth + 1);
+            }
+
+            // Otherwise, create a new object and merge it.
+            return performMerge([ Object.create(null), value ], options, depth + 1);
+            
+        // -------------------------------------------------------------------------------------------------------- //
+        // If for some reason this point is reached, it means that we are unable to merge "something".
+        default:
+            throw new MergeError(`Unable to merge value of type ${type} (${descTag(value)}) at source index ${sourceIndex}`, {
                 cause: {
-                    error: error,
                     key: key,
                     value: value,
                     source: source,
                     sourceIndex: sourceIndex,
+                    depth: depth,
                     options: options
                 }
             });
-        }
     }
-    // TODO: Array-Like objects ???
-
-    // Functions are an exception to the copy rule. They must remain untouched...
-    if (type == 'function') {
-        return value;
-    }
-    
-    // Objects
-    if (type == 'object') {
-        // Merge with existing, if not null...
-        if (exists && typeof result[key] == 'object' && result[key] !== null) {
-            return performMerge([ result[key], value ], options, depth + 1);
-        }
-        
-        // Otherwise, create a new object and merge it.
-        return performMerge([ {}, value ], options, depth + 1);
-    }
-    
-    // If for some reason this point is reached, it means that we are unable to merge "something".
-    throw new MergeError(`Unable to merge value of type ${type} (${descTag(value)}) at source index ${sourceIndex}`, {
-        cause: {
-            key: key,
-            value: value,
-            source: source,
-            sourceIndex: sourceIndex,
-            options: options
-        }
-    });
 }
 
 /**
@@ -251,6 +258,62 @@ function performMerge(sources: object[], options: MergeOptions, depth: number = 
 
         return result;
     }, Object.create(null));
+}
+
+/**
+ * Resolves array value
+ * 
+ * @param {object} result
+ * @param {PropertyKey} key
+ * @param {any[]} value
+ * @param {object} source
+ * @param {number} sourceIndex
+ * @param {number} depth
+ * @param {MergeOptions} options
+ * 
+ * @return {any[]}
+ * 
+ * @throws {MergeError}
+ */
+function resolveArrayValue(
+    result: object,
+    key: PropertyKey,
+    value: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    source: object,
+    sourceIndex: number,
+    depth: number,
+    options: MergeOptions
+): any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+{
+    try {
+        // Create a structured clone of the array value, to avoid unintended manipulation of the
+        // original array. However, if the array contains complex values, e.g. functions, then
+        // this can fail.
+        const clonedArray = structuredClone(value);
+
+        // Merge array values if required.
+        if (options.mergeArrays === true
+            && Reflect.has(result, key)
+            && Array.isArray(result[key])
+        ) {
+            return [ ...result[key], ...clonedArray ];
+        }
+
+        // Return the clone array...
+        return clonedArray;
+    } catch (error) {
+        throw new MergeError(`Unable to merge array value at source index ${sourceIndex}`, {
+            cause: {
+                error: error,
+                key: key,
+                value: value,
+                source: source,
+                sourceIndex: sourceIndex,
+                depth: depth,
+                options: options
+            }
+        });
+    }
 }
 
 /**
