@@ -5,6 +5,9 @@ import { ArrayMergeError } from "./exceptions";
  * 
  * **Note**: _Method attempts to deep copy array values, via [structuredClone]{@link https://developer.mozilla.org/en-US/docs/Web/API/structuredClone}_
  * 
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/structuredClone
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable
+ * 
  * @param {...any[]} sources
  * 
  * @return {any[]}
