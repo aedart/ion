@@ -5,6 +5,7 @@ export default createConfig({
     external: [
         '@aedart/contracts',
         '@aedart/contracts/support',
+        '@aedart/contracts/support/arrays',
         '@aedart/contracts/support/concerns',
         '@aedart/contracts/support/exceptions',
         '@aedart/contracts/support/meta',

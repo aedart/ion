@@ -28,6 +28,11 @@
             "import": "./dist/esm/support.js",
             "require": "./dist/cjs/support.cjs"
         },
+        "./arrays": {
+            "types": "./dist/types/arrays.d.ts",
+            "import": "./dist/esm/arrays.js",
+            "require": "./dist/cjs/arrays.cjs"
+        },
         "./concerns": {
             "types": "./dist/types/concerns.d.ts",
             "import": "./dist/esm/concerns.js",
