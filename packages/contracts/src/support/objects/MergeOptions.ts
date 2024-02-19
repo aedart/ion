@@ -1,4 +1,4 @@
-import type { MergeCallback } from "./types";
+import type { MergeCallback, SkipKeyCallback } from "./types";
 
 /**
  * Merge Options
@@ -6,14 +6,17 @@ import type { MergeCallback } from "./types";
 export default interface MergeOptions
 {
     /**
-     * Property Keys to be skipped
+     * Property Keys that must not be merged.
      * 
      * **Note**: _Defaults to [DEFAULT_MERGE_SKIP_KEYS]{@link import('@aedart/contracts/support/objects').DEFAULT_MERGE_SKIP_KEYS}
      * when not specified._
      * 
-     * @type {PropertyKey[]}
+     * **Callback**: _A callback can be specified to determine if a given key,
+     * in a source object should be skipped._
+     * 
+     * @type {PropertyKey[] | SkipKeyCallback}
      */
-    skip?: PropertyKey[];
+    skip?: PropertyKey[] | SkipKeyCallback;
 
     /**
      * Flag, overwrite property values with `undefined`.

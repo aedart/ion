@@ -1,7 +1,9 @@
-import {
+import type {
     MergeOptions,
-    MergeCallback, DEFAULT_MERGE_SKIP_KEYS
+    MergeCallback,
+    SkipKeyCallback
 } from "@aedart/contracts/support/objects";
+import { DEFAULT_MERGE_SKIP_KEYS } from "@aedart/contracts/support/objects";
 import { isPrimitive, descTag } from "@aedart/support/misc";
 import MergeError from "./exceptions/MergeError";
 
@@ -42,9 +44,9 @@ export function merge(
     // Resolve user provided merge options
     const userOptions: MergeOptions = (typeof options == 'object' && options !== null)
                                     ? options
-                                    : Object.create(null)
+                                    : Object.create(null);
 
-    // Resolve the final options to use
+    // Merge the default and user provided options...
     const resolved: MergeOptions = {
         ...DEFAULT_MERGE_OPTIONS,
         ...{
@@ -52,6 +54,11 @@ export function merge(
         },
         ...userOptions
     };
+
+    // Resolve the skip callback.
+    if (Array.isArray(resolved.skip)) {
+        resolved.skip = makeDefaultSkipCallback(resolved.skip);
+    }
 
     // Perform actual merge...
     try {
@@ -75,59 +82,13 @@ export function merge(
 }
 
 /**
- * Performs merge of given objects
- *
- * @internal
- *
- * @param {object[]} sources
- * @param {MergeOptions} options
- *
- * @returns {object}
- *
- * @throws {MergeError} If unable to merge objects
- */
-function performMerge(sources: object[], options: MergeOptions): object
-{
-    return sources.reduce((result: object, current: object, index: number) => {
-        if (Array.isArray(current)) {
-            throw new MergeError(`Unable to merge object with an array source, (source index: ${index})`, {
-                cause: {
-                    current: current,
-                    index: index
-                }
-            });
-        }
-
-        const keys: PropertyKey[] = Reflect.ownKeys(current);
-        for (const key of keys){
-            // Skip key if needed ...
-            if (options.skip?.includes(key) === true) {
-                continue;
-            }
-
-            // Resolve the value via callback and set it in resulting object.
-            result[key] = options.callback(
-                result,
-                key,
-                current[key],
-                current,
-                index,
-                options
-            );
-        }
-
-        return result;
-    }, Object.create(null));
-}
-
-/**
  * Default merge callback
  * 
- * @param {object} result The final resulting object
- * @param {PropertyKey} key
- * @param {any} value
- * @param {object} source
- * @param {number} sourceIndex
+ * @param {object} result The resulting object (relative to object depth)
+ * @param {PropertyKey} key Property Key in source object
+ * @param {any} value Value of the property in source object
+ * @param {object} source The source object that holds the property
+ * @param {number} sourceIndex Source index (relative to object depth)
  * @param {MergeOptions} options
  * 
  * @returns {any} The value to be merged into the resulting object
@@ -218,3 +179,68 @@ export const defaultMergeCallback: MergeCallback = function(
     });
 }
 
+/**
+ * Performs merge of given objects
+ *
+ * @internal
+ *
+ * @param {object[]} sources
+ * @param {MergeOptions} options
+ *
+ * @returns {object}
+ *
+ * @throws {MergeError} If unable to merge objects
+ */
+function performMerge(sources: object[], options: MergeOptions): object
+{
+    return sources.reduce((result: object, source: object, index: number) => {
+        if (Array.isArray(source)) {
+            throw new MergeError(`Unable to merge object with an array source, (source index: ${index})`, {
+                cause: {
+                    source: source,
+                    index: index
+                }
+            });
+        }
+
+        const keys: PropertyKey[] = Reflect.ownKeys(source);
+        for (const key of keys){
+            // Skip key if needed ...
+            if ((options.skip as SkipKeyCallback)(key, source, result)) {
+                continue;
+            }
+
+            // Resolve the value via callback and set it in resulting object.
+            result[key] = options.callback(
+                result,
+                key,
+                source[key],
+                source,
+                index,
+                options
+            );
+        }
+
+        return result;
+    }, Object.create(null));
+}
+
+/**
+ * Returns a default "skip" callback, for given property keys
+ *
+ * @internal
+ *
+ * @param {PropertyKey[]} keys Properties that must not be merged
+ *
+ * @return {SkipKeyCallback}
+ */
+function makeDefaultSkipCallback(keys: PropertyKey[]): SkipKeyCallback
+{
+    return (
+        key: PropertyKey,
+        source: object,
+        result: object /* eslint-disable-line @typescript-eslint/no-unused-vars */
+    ) => {
+        return keys.includes(key) && Reflect.has(source, key);
+    }
+}
