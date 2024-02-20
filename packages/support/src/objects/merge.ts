@@ -335,26 +335,26 @@ function isSafeArrayLike(value: object): boolean
  */
 function resolveOptions(options?: MergeCallback | MergeOptions): Readonly<MergeOptions>
 {
-    // Resolve merge callback
-    const callback: MergeCallback = (typeof options == 'function')
-        ? options
-        : defaultMergeCallback;
-
-    // Resolve user provided merge options
-    const userOptions: MergeOptions = (typeof options == 'object' && options !== null)
-        ? options
-        : Object.create(null);
-
     // Merge the default and user provided options...
     const resolved: MergeOptions = {
+        // Use default options as a base.
         ...DEFAULT_MERGE_OPTIONS,
+
+        // Resolve merge callback.
         ...{
-            callback: callback
+            callback: (typeof options == 'function')
+                ? options
+                : defaultMergeCallback
         },
-        ...userOptions
+
+        // Resolve user provided merge options.
+        ...(typeof options == 'object' && options !== null)
+            ? options
+            : Object.create(null)
     };
 
-    // Abort in case of invalid maximum depth
+    // Abort in case of invalid maximum depth - other options can also be asserted, but they are less important.
+    // The Browser / Node.js Engine will throw an error in case that they maximum recursion level is reached!
     if (typeof resolved.depth != 'number' || resolved.depth < 0) {
         throw new MergeError('Invalid maximum "depth" merge option value', {
             cause: {
