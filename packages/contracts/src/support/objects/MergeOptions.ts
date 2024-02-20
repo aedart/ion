@@ -66,21 +66,23 @@ export default interface MergeOptions
     overwriteWithUndefined?: boolean;
 
     /**
-     * Flag, merge array properties
+     * Flag, whether to merge array, array-like, and [concat spreadable]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable}
+     * properties or not.
      *
-     * **When `true`**: _existing array property value is attempted merged with new array value._
+     * **When `true`**: _existing property is merged with new property value._
      *
-     * **When `false` (_default behaviour_)**: _existing array property value is overwritten with new array value_
+     * **When `false` (_default behaviour_)**: _existing property is overwritten with new property value_
      *
      * **Example:**
      * ```js
-     * const a { 'foo': [ 1, 2, 3 ] };
-     * const a { 'foo': [ 4, 5, 6 ] };
+     * const a = { 'foo': [ 1, 2, 3 ] };
+     * const b = { 'foo': [ 4, 5, 6 ] };
      *
      * merge([ a, b ]); // { 'foo': [ 4, 5, 6 ] }
-     *
      * merge([ a, b ], { mergeArrays: true }); // { 'foo': [ 1, 2, 3, 4, 5, 6 ] }
      * ```
+     * 
+     * @see [merge (array)]{@link import('@aedart/support/arrays').merge}
      * 
      * @type {boolean}
      */
