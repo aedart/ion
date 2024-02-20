@@ -14,7 +14,7 @@ export const SUPPORT_REFLECTIONS: unique symbol = Symbol('@aedart/contracts/supp
  * 
  * @type {object}
  */
-export const FUNCTION_PROTOTYPE: object = Reflect.getPrototypeOf(Function);
+export const FUNCTION_PROTOTYPE: object = Reflect.getPrototypeOf(Function) as object;
 
 /**
  * `TypedArray` prototype
@@ -25,4 +25,4 @@ export const FUNCTION_PROTOTYPE: object = Reflect.getPrototypeOf(Function);
  * 
  * @type {object}
  */
-export const TYPED_ARRAY_PROTOTYPE: object = Reflect.getPrototypeOf(Int8Array);
+export const TYPED_ARRAY_PROTOTYPE: object = Reflect.getPrototypeOf(Int8Array) as object;
