@@ -292,6 +292,54 @@ describe('@aedart/support/objects', () => {
                 .withContext('Array value not merged')
                 .toBe(expected);
         });
+
+        it('can merge concat spreadable object values', () => {
+
+            const a = {
+                'a': [ 1, 2, 3 ],
+                'b': [ 'foo' ],
+                'c': {
+                    [Symbol.isConcatSpreadable]: true,
+                    length: 1,
+                    0: 'bar',
+                },
+            };
+            const b = {
+                'a': {
+                    [Symbol.isConcatSpreadable]: true,
+                    length: 3,
+                    0: 'a',
+                    1: 'b',
+                    2: 'c'
+                },
+                'b': {
+                    [Symbol.isConcatSpreadable]: false,
+                    length: 2,
+                    0: 'bar',
+                    1: 'zar',
+                },
+                'c': [ 'foo' ]
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge([ a, b ],  { mergeArrays: true });
+
+            // Debug
+            console.log('result', result);
+
+            expect(result.a)
+                .withContext('a) Array was not merged correctly with concat spreadable set to true')
+                .toEqual([ 1, 2, 3, 'a', 'b', 'c' ]);
+
+            expect(JSON.stringify(result.b))
+                .withContext('b) Array was not merged correctly with concat spreadable set to false')
+                .toBe(JSON.stringify([ 'foo', b['b'] ]));
+
+            expect(result.c)
+                .withContext('c) Merged failed on top of object with concat spreadable set to true')
+                .toEqual([ 'bar', 'foo' ]);
+        });
         
         it('fails when array values contain none-cloneable values', () => {
             

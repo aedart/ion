@@ -9,7 +9,10 @@ import {
 } from "@aedart/contracts/support/objects";
 import type { Constructor } from "@aedart/contracts";
 import { descTag } from "@aedart/support/misc";
-import { merge as mergeArrays } from "@aedart/support/arrays";
+import {
+    isConcatSpreadable,
+    merge as mergeArrays
+} from "@aedart/support/arrays";
 import { getErrorMessage } from "@aedart/support/exceptions";
 import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import MergeError from "./exceptions/MergeError";
@@ -139,24 +142,33 @@ export const defaultMergeCallback: MergeCallback = function(
             }
 
             // Arrays - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            if (Array.isArray(value)) {
+            const isArray: boolean = Array.isArray(value);
+            const concatSpreadable: boolean = isConcatSpreadable(value);
+            if (isArray || concatSpreadable) {
                 // Use cloned array values, to avoid unintended manipulation of the original array values (if contains objects).
                 // However, if the array contains non-cloneable values, then this can fail.
 
                 // Merge array values if required.
                 if (options.mergeArrays === true
                     && Reflect.has(result, key)
-                    && Array.isArray(result[key])
+                    && (Array.isArray(result[key]) || isConcatSpreadable(result[key]))
                 ) {
                     return mergeArrays(result[key], value);
                 }
 
-                return mergeArrays(value);
+                // When the value is not concat spreadable, then overwrite it with new array or array-like
+                // value. Regular (basic object) merge will handle concat spreadable object.
+                if (!concatSpreadable) {
+                    return mergeArrays(value);
+                }
             }
-            // TODO: What about Array-Like / ConcatSpreadable ???
+            // TODO: What about Array-Like vs. String().length vs. TypedArrays,...etc
+
+            // Objects (when cloneable) - - - - - - - - - - - - - - - - - - - - - - - - -
+            // TODO: See what others do... perhaps an interface / Symbol
             
-            // Objects (of native kind) - - - - - - - - - - - - - - - - - - - - - - - - -
-            // Clone the object value, if possible.
+            // Objects (of "native" kind) - - - - - - - - - - - - - - - - - - - - - - - -
+            // Clone the object of a "native" kind value, if supported.
             if (canCloneObjectValue(value)) {
                 return structuredClone(value);
             }
