@@ -30,6 +30,7 @@ export const DEFAULT_MERGE_OPTIONS: MergeOptions = {
     depth: DEFAULT_MAX_MERGE_DEPTH,
     skip: DEFAULT_MERGE_SKIP_KEYS,
     overwriteWithUndefined: true,
+    useCloneable: true,
     mergeArrays: false,
 };
 Object.freeze(DEFAULT_MERGE_OPTIONS);
@@ -172,7 +173,7 @@ export const defaultMergeCallback: MergeCallback = function(
             
             // Objects (of "native" kind) - - - - - - - - - - - - - - - - - - - - - - - -
             // Clone the object of a "native" kind value, if supported.
-            if (canCloneObjectValue(value)) {
+            if (canCloneUsingStructuredClone(value)) {
                 return structuredClone(value);
             }
 
@@ -227,7 +228,7 @@ export const defaultMergeCallback: MergeCallback = function(
 function performMerge(sources: object[], options: Readonly<MergeOptions>, depth: number = 0): object
 {
     // Abort if maximum depth has been reached
-    if (depth > options.depth) {
+    if (depth > (options.depth as number)) {
         throw new MergeError(`Maximum merge depth (${options.depth}) has been exceeded`, {
             cause: {
                 source: sources,
@@ -248,22 +249,11 @@ function performMerge(sources: object[], options: Readonly<MergeOptions>, depth:
             });            
         }
 
-        // Favour "clone()" method return object instead of the source object, if the source implements
-        // the Cloneable interface.
-        const cloneable: boolean = isCloneable(source);
-        let resolvedSource: object = cloneable
-            ? (source as Cloneable).clone()
-            : source;
-       
-        // Abort if clone() returned invalid type...
-        if (cloneable && (!resolvedSource || typeof resolvedSource != 'object' || Array.isArray(resolvedSource))) {
-            throw new MergeError(`Expected clone() method to return object for source, (source index: ${index})`, {
-                cause: {
-                    source: source,
-                    index: index,
-                    depth: depth
-                }
-            });
+        let resolvedSource: object = source;
+
+        // If allowed and source implements "Cloneable" interface, favour "clone()" method's resulting object.
+        if (options.useCloneable && isCloneable(source)) {
+            resolvedSource = cloneSource(source as Cloneable);
         }
         
         // Iterate through all properties, including symbols
@@ -275,7 +265,7 @@ function performMerge(sources: object[], options: Readonly<MergeOptions>, depth:
             }
 
             // Resolve the value via callback and set it in resulting object.
-            result[key] = options.callback(
+            result[key] = (options.callback as MergeCallback)(
                 result,
                 key,
                 resolvedSource[key],
@@ -291,6 +281,32 @@ function performMerge(sources: object[], options: Readonly<MergeOptions>, depth:
 }
 
 /**
+ * Returns source object's clone, from it's
+ *
+ * @internal
+ *
+ * @param {Cloneable} source
+ *
+ * @returns {object}
+ */
+function cloneSource(source: Cloneable): object
+{
+    const clone: object = source.clone();
+
+    // Abort if resulting value from "clone()" is not a valid value...
+    if (!clone || typeof clone != 'object' || Array.isArray(clone)) {
+        throw new MergeError(`Expected clone() method to return object for source, ${descTag(clone)} was returned`, {
+            cause: {
+                source: source,
+                clone: clone,
+            }
+        });
+    }
+
+    return clone;
+}
+
+/**
  * Determine if an object value can be cloned via `structuredClone()`
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/structuredClone
@@ -301,7 +317,7 @@ function performMerge(sources: object[], options: Readonly<MergeOptions>, depth:
  *
  * @return {boolean}
  */
-function canCloneObjectValue(value: object): boolean
+function canCloneUsingStructuredClone(value: object): boolean
 {
     const supported: Constructor[] = [
         // Array, // Handled by array, with evt. array value merges
@@ -317,7 +333,7 @@ function canCloneObjectValue(value: object): boolean
         RegExp,
         Set,
         String,
-        TYPED_ARRAY_PROTOTYPE
+        TYPED_ARRAY_PROTOTYPE as Constructor
     ];
 
     for (const constructor of supported) {

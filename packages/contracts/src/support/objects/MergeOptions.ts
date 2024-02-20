@@ -66,6 +66,38 @@ export default interface MergeOptions
     overwriteWithUndefined?: boolean;
 
     /**
+     * Flag, if source object is [`Cloneable`]{@link import('@aedart/contracts/support/objects').Cloneable}, then the
+     * resulting object from the `clone()` method is used.
+     *
+     * **When `true` (_default behaviour_)**: _If source object is cloneable then the resulting object from `clone()`
+     * method is used. Its properties are then iterated by the merge function._
+     *
+     * **When `false`**: _Cloneable objects are treated like any other objects, the `clone()` method is ignored._
+     *
+     * **Example:**
+     * ```js
+     * const a = { 'foo': { 'name': 'John Doe' } };
+     * const b = { 'foo': {
+     *      'name': 'Jane Doe',
+     *      clone() {
+     *          return {
+     *              'name': 'Rick Doe',
+     *              'age': 26
+     *          }
+     *      }
+     * } };
+     *
+     * merge([ a, b ]); // { 'foo': { 'name': 'Rick Doe', 'age': 26 } }
+     * merge([ a, b ], { useCloneable: false }); // { 'foo': { 'name': 'Jane Doe', clone() {...} } }
+     * ```
+     * 
+     * @see [`Cloneable`]{@link import('@aedart/contracts/support/objects').Cloneable}
+     * 
+     * @type {boolean}
+     */
+    useCloneable?: boolean;
+    
+    /**
      * Flag, whether to merge array, array-like, and [concat spreadable]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable}
      * properties or not.
      *

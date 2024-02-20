@@ -457,7 +457,7 @@ describe('@aedart/support/objects', () => {
             const result = merge([a, b], { mergeArrays: true });
 
             // Debug
-            console.log('result', result);
+            // console.log('result', result);
 
             expect(JSON.stringify(result.a))
                 .withContext('a) should have merged existing array with array-like object')
@@ -806,6 +806,64 @@ describe('@aedart/support/objects', () => {
             expect(result.a.age)
                 .withContext('Other properties are not merged in correctly')
                 .toBe(42)
+        });
+
+        it('can disable cloneable behaviour', () => {
+
+            const a = {
+                a: {
+                    name: 'John',
+                }
+            };
+
+            const b = {
+                a: {
+                    name: 'Jim',
+                    clone: () => {
+                        return {
+                            name: 'Rick'
+                        }
+                    }
+                }
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge([ a, b ], { useCloneable: false });
+
+            // Debug
+            // console.log('result', result);
+
+            expect(result.a.name)
+                .withContext('Clone was not disabled')
+                .toBe('Jim');
+        });
+        
+        it('fails when cloneable source returns invalid value', () => {
+
+            const a = {
+                a: {
+                    name: 'John',
+                }
+            };
+
+            const b = {
+                a: {
+                    name: 'Jim',
+                    clone: () => {
+                        return null; // Should cause error
+                    }
+                }
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const callback = () => {
+                return merge([ a, b ]);
+            }
+            
+            expect(callback)
+                .toThrowError(MergeError);
         });
     });    
 });
