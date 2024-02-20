@@ -771,5 +771,41 @@ describe('@aedart/support/objects', () => {
                 .withContext('c) WeakSet not same instance')
                 .toBeTrue();
         });
+
+        it('favours cloneable object\'s clone() method', () => {
+            
+            const a = {
+                a: {
+                    name: 'John',
+                    age: 42
+                }
+            };
+
+            const b = {
+                a: {
+                    name: 'John', // Property should be ignored, due to clone()
+                    
+                    clone: () => {
+                        return {
+                            name: 'Rick'
+                        }
+                    }
+                }
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge([ a, b ]);
+
+            // Debug
+            // console.log('result', result);
+
+            expect(result.a.name)
+                .withContext('Clone method not favoured')
+                .toBe('Rick');
+            expect(result.a.age)
+                .withContext('Other properties are not merged in correctly')
+                .toBe(42)
+        });
     });    
 });

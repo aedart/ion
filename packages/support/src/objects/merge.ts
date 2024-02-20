@@ -1,7 +1,8 @@
 import type {
     MergeOptions,
     MergeCallback,
-    SkipKeyCallback
+    SkipKeyCallback,
+    Cloneable
 } from "@aedart/contracts/support/objects";
 import {
     DEFAULT_MAX_MERGE_DEPTH,
@@ -18,6 +19,7 @@ import {
 import { getErrorMessage } from "@aedart/support/exceptions";
 import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import MergeError from "./exceptions/MergeError";
+import { isCloneable } from "@aedart/support/objects/isCloneable";
 
 /**
  * Default merge options to be applied, when none are provided to {@link merge}
@@ -33,7 +35,10 @@ export const DEFAULT_MERGE_OPTIONS: MergeOptions = {
 Object.freeze(DEFAULT_MERGE_OPTIONS);
 
 /**
- * Merge two or more objects
+ * Deep merge two or more objects
+ * 
+ * **Note**: _If a source object implements the {@link Cloneable} interface, then the return value of its clone() method
+ * is iterated and merged into target object. The cloned object is resolved before the {@link MergeCallback} is applied._
  * 
  * @param {object[]} sources
  * @param {MergeCallback|MergeOptions} [options] Merge callback or merge options. If merge options are given,
@@ -75,7 +80,6 @@ export function merge(
     }
 }
 
-
 /**
  * Default merge callback
  * 
@@ -102,7 +106,7 @@ export const defaultMergeCallback: MergeCallback = function(
 ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
     // Determine the type and resolve value based on it... 
-    const type: string = typeof value;    
+    const type: string = typeof value;
 
     switch (type) {
 
@@ -144,7 +148,7 @@ export const defaultMergeCallback: MergeCallback = function(
             }
 
             // Arrays - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            const isArray: boolean = Array.isArray(value);
+            const isArray: boolean = Array.isArray(value); /* eslint-disable-line no-case-declarations */
 
             if (isArray || isConcatSpreadable(value) || isSafeArrayLike(value)) {
 
@@ -165,9 +169,6 @@ export const defaultMergeCallback: MergeCallback = function(
                 // For concat spreadable objects or array-like objects, the "basic object" merge logic
                 // will deal with them.
             }
-
-            // Objects (when cloneable) - - - - - - - - - - - - - - - - - - - - - - - - -
-            // TODO: See what others do... perhaps an interface / Symbol
             
             // Objects (of "native" kind) - - - - - - - - - - - - - - - - - - - - - - - -
             // Clone the object of a "native" kind value, if supported.
@@ -236,8 +237,27 @@ function performMerge(sources: object[], options: Readonly<MergeOptions>, depth:
     }
  
     return sources.reduce((result: object, source: object, index: number) => {
-        if (Array.isArray(source)) {
-            throw new MergeError(`Unable to merge object with an array source, (source index: ${index})`, {
+        // Abort if source is invalid...
+        if (!source || typeof source != 'object' || Array.isArray(source)) {
+            throw new MergeError(`Unable to merge source of invalid type "${descTag(source)}" (source index: ${index})`, {
+                cause: {
+                    source: source,
+                    index: index,
+                    depth: depth
+                }
+            });            
+        }
+
+        // Favour "clone()" method return object instead of the source object, if the source implements
+        // the Cloneable interface.
+        const cloneable: boolean = isCloneable(source);
+        let resolvedSource: object = cloneable
+            ? (source as Cloneable).clone()
+            : source;
+       
+        // Abort if clone() returned invalid type...
+        if (cloneable && (!resolvedSource || typeof resolvedSource != 'object' || Array.isArray(resolvedSource))) {
+            throw new MergeError(`Expected clone() method to return object for source, (source index: ${index})`, {
                 cause: {
                     source: source,
                     index: index,
@@ -245,11 +265,12 @@ function performMerge(sources: object[], options: Readonly<MergeOptions>, depth:
                 }
             });
         }
-
-        const keys: PropertyKey[] = Reflect.ownKeys(source);
+        
+        // Iterate through all properties, including symbols
+        const keys: PropertyKey[] = Reflect.ownKeys(resolvedSource);
         for (const key of keys){
             // Skip key if needed ...
-            if ((options.skip as SkipKeyCallback)(key, source, result)) {
+            if ((options.skip as SkipKeyCallback)(key, resolvedSource, result)) {
                 continue;
             }
 
@@ -257,8 +278,8 @@ function performMerge(sources: object[], options: Readonly<MergeOptions>, depth:
             result[key] = options.callback(
                 result,
                 key,
-                source[key],
-                source,
+                resolvedSource[key],
+                resolvedSource,
                 index,
                 depth,
                 options
