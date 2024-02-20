@@ -738,5 +738,38 @@ describe('@aedart/support/objects', () => {
                     .toBeTrue();
             }
         });
+
+        it('does not clone objects of "Weak Reference" kind', () => {
+            
+            class A {}
+            
+            const a = {};
+            const b = {
+                'a' : new WeakRef(new A()),
+                'b' : new WeakMap([
+                    [ new A(), 'foo' ]
+                ]),
+                'c' : new WeakSet([ new A() ])
+            }
+
+            // --------------------------------------------------------------------- //
+            
+            const result = merge([ a, b ]);
+            
+            // Debug
+            // console.log('result', result);
+            
+            expect(result['a'] === b['a'])
+                .withContext('a) WeakRef not same instance')
+                .toBeTrue();
+
+            expect(result['b'] === b['b'])
+                .withContext('b) WeakMap not same instance')
+                .toBeTrue();
+
+            expect(result['c'] === b['c'])
+                .withContext('c) WeakSet not same instance')
+                .toBeTrue();
+        });
     });    
 });

@@ -175,9 +175,11 @@ export const defaultMergeCallback: MergeCallback = function(
                 return structuredClone(value);
             }
 
-            // TODO: WeakMap ???
-            // TODO: WeakSet ???
-            // TODO: WeakRef ???
+            // Objects (WeakRef, WeakMap and WeakSet) - - - - - - - - - - - - - - - - - -
+            // "Weak Reference" kind of objects cannot, nor should they, be cloned. 
+            if (isWeakReferenceKind(value)) {
+                return value;
+            }
 
             // Objects (basic)- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // Merge with existing, if existing value is not null...
@@ -320,6 +322,22 @@ function isSafeArrayLike(value: object): boolean
     return isArrayLike(value)
         && !(value instanceof String) // String object handled by structured clone
         && !isTypedArray(value); // TypedArray object handled by structured clone
+}
+
+/**
+ * Determine if object of a "weak reference" kind, e.g. `WeakRef`, `WeakMap` or `WeakSet`
+ * 
+ * @internal
+ * 
+ * @param {object} value
+ * 
+ * @return {boolean}
+ */
+function isWeakReferenceKind(value: object): boolean
+{
+    return value instanceof WeakRef
+        || value instanceof WeakMap
+        || value instanceof WeakSet
 }
 
 /**
