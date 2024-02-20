@@ -19,9 +19,11 @@ export const DEFAULT_MERGE_SKIP_KEYS: PropertyKey[] = [ 'prototype', '__proto__'
  */
 export const DEFAULT_MAX_MERGE_DEPTH: number = 512;
 
+import Cloneable from "./Cloneable";
 import MergeOptions from "./MergeOptions";
 export {
-    type MergeOptions
+    type Cloneable,
+    type MergeOptions,
 }
 
 export * from './types';
