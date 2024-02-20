@@ -5,6 +5,7 @@ export * from './has';
 export * from './hasAll';
 export * from './hasAny';
 export * from './hasUniqueId';
+export * from './isCloneable';
 export * from './isset';
 export * from './merge';
 export * from './set';
