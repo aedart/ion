@@ -15,6 +15,8 @@ describe('@aedart/support/arrays', () => {
             }
             
             const dataSet = [
+                { value: null, expected: false, name: 'Null' },
+                
                 // Now this is funny... an array does Symbol.isConcatSpreadable !
                 { value: [ 1, 2, 3 ], expected: false, name: 'Array' },
 

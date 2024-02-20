@@ -9,5 +9,7 @@
  */
 export function isConcatSpreadable(target: object): boolean
 {
-    return Reflect.has(target, Symbol.isConcatSpreadable);
+    return typeof target == 'object'
+        && target !== null
+        && Reflect.has(target, Symbol.isConcatSpreadable);
 }
