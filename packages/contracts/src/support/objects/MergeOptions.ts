@@ -82,6 +82,10 @@ export default interface MergeOptions
      * merge([ a, b ], { mergeArrays: true }); // { 'foo': [ 1, 2, 3, 4, 5, 6 ] }
      * ```
      * 
+     * **Note**: _`String()` (object) and [Typed Arrays]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray}
+     * are not merged, even though they are considered to be "array-like" (they offer a `length` property).
+     * You need to manually handle these, via a custom [callback]{@link MergeCallback}, if such value types must be merged._
+     * 
      * @see [merge (array)]{@link import('@aedart/support/arrays').merge}
      * 
      * @type {boolean}
