@@ -345,7 +345,7 @@ describe('@aedart/support/objects', () => {
             const result = merge([ a, b ],  { mergeArrays: true });
 
             // Debug
-            console.log('result', result);
+            // console.log('result', result);
 
             expect(result.a)
                 .withContext('a) Array was not merged correctly with concat spreadable set to true')
@@ -358,6 +358,126 @@ describe('@aedart/support/objects', () => {
             expect(result.c)
                 .withContext('c) Merged failed on top of object with concat spreadable set to true')
                 .toEqual([ 'bar', 'foo' ]);
+        });
+
+        it('does not merge array-like objects by default', () => {
+
+            const a = {
+                'a': [ 1, 2, 3 ],
+                'b': {
+                    length: 2,
+                    0: 'a',
+                    1: 'b',
+                },
+                'c': {
+                    length: 1,
+                    0: 'foo',
+                },
+                'd': [ 3, 4, 5 ],
+                'e': [ 6, 7, 8 ],
+            };
+            const b = {
+                'a': {
+                    length: 2,
+                    0: 'a',
+                    1: 'b',
+                },
+                'b': [ 'foo' ],
+                'c': {
+                    length: 2,
+                    1: 'bar',
+                },
+                'd': new String('foo'),
+                'e': new Int8Array(2)
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge([ a, b ]);
+
+            // Debug
+            // console.log('result', result);
+
+            expect(JSON.stringify(result.a))
+                .withContext('a) failed to overwrite existing value with array-like object')
+                .toBe(JSON.stringify({ 0: 'a', 1: 'b', length: 2 }));
+
+            expect(JSON.stringify(result.b))
+                .withContext('b) failed to overwrite existing array-like value with array')
+                .toBe(JSON.stringify([ 'foo' ]));
+
+            expect(JSON.stringify(result.c))
+                .withContext('c) failed to merge existing array-like value with array-like object')
+                .toBe(JSON.stringify({ 0: 'foo', 1: 'bar', length: 2 }));
+            
+            expect(result.d)
+                .withContext('d) String object should not be considered array-like (in this context)')
+                .toBeInstanceOf(String);
+
+            expect(result.e)
+                .withContext('e) Typed Array object should not be considered array-like (in this context)')
+                .toBeInstanceOf(Int8Array);
+        });
+
+        it('can merge array-like objects', () => {
+
+            const a = {
+                'a': [ 1, 2, 3 ],
+                'b': {
+                    // NOTE: Object is not concat spreadable, so entire object should be expected!
+                    length: 2,
+                    0: 'a',
+                    1: 'b',
+                },
+                'c': {
+                    length: 1,
+                    0: 'foo',
+                },
+                'd': [ 3, 4, 5 ],
+                'e': [ 6, 7, 8 ],
+            };
+            const b = {
+                'a': {
+                    // NOTE: Object is not concat spreadable, so entire object should be expected!
+                    length: 2,
+                    0: 'a',
+                    1: 'b',
+                },
+                'b': [ 'foo' ],
+                'c': {
+                    length: 2,
+                    1: 'bar',
+                },
+                'd': new String('foo'),
+                'e': new Int8Array(2)
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge([a, b], { mergeArrays: true });
+
+            // Debug
+            console.log('result', result);
+
+            expect(JSON.stringify(result.a))
+                .withContext('a) should have merged existing array with array-like object')
+                .toBe(JSON.stringify([1, 2, 3, {0: 'a', 1: 'b', length: 2}]));
+
+            expect(JSON.stringify(result.b))
+                .withContext('b) should have merged array-like object with an array')
+                .toBe(JSON.stringify([{0: 'a', 1: 'b', length: 2}, 'foo']));
+
+            expect(JSON.stringify(result.c))
+                .withContext('c) failed to merge array-like value with array-like object')
+                .toBe(JSON.stringify({0: 'foo', 1: 'bar', length: 2}));
+
+            expect(result.d)
+                .withContext('d) String object should not be considered array-like (in this context)')
+                .toBeInstanceOf(String);
+
+            expect(result.e)
+                .withContext('e) Typed Array object should not be considered array-like (in this context)')
+                .toBeInstanceOf(Int8Array);
         });
         
         it('creates shallow copy of functions', () => {

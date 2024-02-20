@@ -10,7 +10,9 @@ import {
 import type { Constructor } from "@aedart/contracts";
 import { descTag } from "@aedart/support/misc";
 import {
+    isArrayLike,
     isConcatSpreadable,
+    isTypedArray,
     merge as mergeArrays
 } from "@aedart/support/arrays";
 import { getErrorMessage } from "@aedart/support/exceptions";
@@ -143,26 +145,26 @@ export const defaultMergeCallback: MergeCallback = function(
 
             // Arrays - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             const isArray: boolean = Array.isArray(value);
-            const concatSpreadable: boolean = isConcatSpreadable(value);
-            if (isArray || concatSpreadable) {
-                // Use cloned array values, to avoid unintended manipulation of the original array values (if contains objects).
-                // However, if the array contains non-cloneable values, then this can fail.
 
-                // Merge array values if required.
+            if (isArray || isConcatSpreadable(value) || isSafeArrayLike(value)) {
+
+                // If required to merge with existing value, if one exists...
                 if (options.mergeArrays === true
                     && Reflect.has(result, key)
-                    && (Array.isArray(result[key]) || isConcatSpreadable(result[key]))
+                    && (isArray || Array.isArray(result[key]))
                 ) {
+                    // If either existing or new value is of the type array, merge values into
+                    // a new array.
                     return mergeArrays(result[key], value);
-                }
-
-                // When the value is not concat spreadable, then overwrite it with new array or array-like
-                // value. Regular (basic object) merge will handle concat spreadable object.
-                if (!concatSpreadable) {
+                } else if (isArray) {
+                    // When not requested merged, just overwrite existing value with a new array,
+                    // if new value is an array.
                     return mergeArrays(value);
                 }
+
+                // For concat spreadable objects or array-like objects, the "basic object" merge logic
+                // will deal with them.
             }
-            // TODO: What about Array-Like vs. String().length vs. TypedArrays,...etc
 
             // Objects (when cloneable) - - - - - - - - - - - - - - - - - - - - - - - - -
             // TODO: See what others do... perhaps an interface / Symbol
@@ -179,7 +181,11 @@ export const defaultMergeCallback: MergeCallback = function(
 
             // Objects (basic)- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // Merge with existing, if existing value is not null...
-            if (Reflect.has(result, key) && typeof result[key] == 'object' && result[key] !== null) {
+            if (Reflect.has(result, key)
+                && typeof result[key] == 'object'
+                && result[key] !== null
+                && !(Array.isArray(result[key]))
+            ) {
                 return performMerge([ result[key], value ], options, depth + 1);
             }
 
@@ -298,6 +304,22 @@ function canCloneObjectValue(value: object): boolean
     }
 
     return false;
+}
+
+/**
+ * Determine if value is array-like, but not a String object or Typed Array
+ * 
+ * @internal
+ * 
+ * @param {object} value
+ * 
+ * @return {boolean}
+ */
+function isSafeArrayLike(value: object): boolean
+{
+    return isArrayLike(value)
+        && !(value instanceof String) // String object handled by structured clone
+        && !isTypedArray(value); // TypedArray object handled by structured clone
 }
 
 /**
