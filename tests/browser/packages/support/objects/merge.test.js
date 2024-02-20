@@ -293,6 +293,25 @@ describe('@aedart/support/objects', () => {
                 .toBe(expected);
         });
 
+        it('fails when array values contain none-cloneable values', () => {
+            
+            const callback = () => {
+                const a = {
+                    'arr': [ 1, 2, 3 ]
+                };
+                const b = {
+                    'arr': [ function() {} ]
+                };
+
+                return merge([ a, b ] );
+            }
+            
+            // --------------------------------------------------------------------- //
+            
+            expect(callback)
+                .toThrowError(MergeError);
+        });
+
         it('can merge concat spreadable object values', () => {
 
             const a = {
@@ -339,25 +358,6 @@ describe('@aedart/support/objects', () => {
             expect(result.c)
                 .withContext('c) Merged failed on top of object with concat spreadable set to true')
                 .toEqual([ 'bar', 'foo' ]);
-        });
-        
-        it('fails when array values contain none-cloneable values', () => {
-            
-            const callback = () => {
-                const a = {
-                    'arr': [ 1, 2, 3 ]
-                };
-                const b = {
-                    'arr': [ function() {} ]
-                };
-
-                return merge([ a, b ] );
-            }
-            
-            // --------------------------------------------------------------------- //
-            
-            expect(callback)
-                .toThrowError(MergeError);
         });
         
         it('creates shallow copy of functions', () => {
