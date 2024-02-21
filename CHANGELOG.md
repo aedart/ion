@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `LogicalError` and `AbstractClassError` exceptions in `@aedart/support/exceptions`.
 * `getErrorMessage()` in `@aedart/support/exceptions`.
 * `FUNCTION_PROTOTYPE` and `TYPED_ARRAY_PROTOTYPE` constants in `@aedart/contracts/support/reflections`.
+* `DANGEROUS_PROPERTIES` constant in `@aedart/contracts/support/objects`.
 * `hasPrototypeProperty()` and `assertHasPrototypeProperty()` in `@aedart/support/reflections`.
 * `getParentOfClass()` and `getAllParentsOfClass()` in `@aedart/support/reflections`.
 * `getClassPropertyDescriptor()` and `getClassPropertyDescriptors()` in `@aedart/support/reflections`.
