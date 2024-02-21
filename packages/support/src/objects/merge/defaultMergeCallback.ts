@@ -5,9 +5,9 @@ import { isWeakKind } from "@aedart/support/reflections";
 import { descTag } from "@aedart/support/misc";
 
 /**
- * Returns a new "default" merge callback
+ * The default merge callback
  * 
- * @return {MergeCallback}
+ * @type {MergeCallback}
  */
 export const defaultMergeCallback: MergeCallback = function(target: MergeSourceInfo, next: NextCallback, options: Readonly<MergeOptions>): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
