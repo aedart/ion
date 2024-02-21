@@ -1,13 +1,13 @@
 import type { SkipKeyCallback } from "@aedart/contracts/support/objects";
 
 /**
- * Returns a new "default" skip callback for given keys
+ * Returns a new skip callback for given property keys
  * 
  * @param {PropertyKey[]} keys
  * 
  * @return {SkipKeyCallback}
  */
-export function makeDefaultSkipCallback(keys: PropertyKey[]): SkipKeyCallback
+export function makeSkipCallback(keys: PropertyKey[]): SkipKeyCallback
 {
     return (
         key: PropertyKey,

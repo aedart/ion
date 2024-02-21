@@ -6,7 +6,7 @@ import type {
 import { DEFAULT_MAX_MERGE_DEPTH } from "@aedart/contracts/support/objects";
 import { MergeError } from "../exceptions";
 import { makeDefaultMergeCallback } from "./makeDefaultMergeCallback";
-import { makeDefaultSkipCallback } from "./makeDefaultSkipCallback";
+import { makeSkipCallback } from "./makeSkipCallback";
 
 /**
  * Default Merge Options
@@ -189,7 +189,7 @@ export default class DefaultMergeOptions implements MergeOptions
         
         // Resolve skip callback
         if (typeof this.skip != 'function') {
-            this.skip = makeDefaultSkipCallback(this.skip as PropertyKey[]);
+            this.skip = makeSkipCallback(this.skip as PropertyKey[]);
         }
     }
     

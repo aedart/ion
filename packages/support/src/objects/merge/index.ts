@@ -7,4 +7,4 @@ export {
 
 export * from './canCloneUsingStructuredClone';
 export * from './makeDefaultMergeCallback';
-export * from './makeDefaultSkipCallback';
+export * from './makeSkipCallback';
