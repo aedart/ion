@@ -1,4 +1,5 @@
 import { ArrayMergeError } from "./exceptions";
+import { getErrorMessage } from "@aedart/support/exceptions";
 
 /**
  * Merge two or more arrays
@@ -25,9 +26,7 @@ export function merge(
         
         return structuredClone([].concat(...sources));
     } catch (e) {
-        const reason: string = (typeof e == 'object' && Reflect.has(e, 'message'))
-                ? e.message
-                : 'unknown reason'; 
+        const reason = getErrorMessage(e);
         
         throw new ArrayMergeError('Unable to merge arrays: ' + reason, {
             cause: {
