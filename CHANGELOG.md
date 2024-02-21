@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `getParentOfClass()` and `getAllParentsOfClass()` in `@aedart/support/reflections`.
 * `getClassPropertyDescriptor()` and `getClassPropertyDescriptors()` in `@aedart/support/reflections`.
 * `isWeakKind()` in `@aedart/support/reflections`.
+* `isKeySafe()` and `isKeyUnsafe()` in `@aedart/support/reflections`.
 * `getConstructorName()` and `getNameOrDesc()` in `@aedart/support/reflections`.
 * `isSubclass()` in `@aedart/support/reflections`.
 * `classOwnKeys()` in `@aedart/support/reflections`.
