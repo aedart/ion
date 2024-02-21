@@ -9,6 +9,7 @@ export * from './isCloneable';
 export * from './isset';
 export * from './merge';
 export * from './merger';
+export * from './populate';
 export * from './set';
 export * from './uniqueId';
 
