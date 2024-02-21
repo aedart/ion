@@ -7,12 +7,12 @@ import type {
     SkipKeyCallback,
     ObjectsMerger
 } from "@aedart/contracts/support/objects";
-import { DANGEROUS_PROPERTIES } from "@aedart/contracts/support/objects";
 import DefaultMergeOptions from "./DefaultMergeOptions";
 import { MergeError } from "../exceptions";
 import { getErrorMessage } from "@aedart/support/exceptions";
 import { isCloneable } from "@aedart/support/objects";
 import { descTag } from "@aedart/support/misc";
+import { isKeyUnsafe } from "@aedart/support/reflections";
 
 /**
  * Objects Merger
@@ -146,7 +146,7 @@ export default class Merger implements ObjectsMerger
             const keys: PropertyKey[] = Reflect.ownKeys(resolved);
             for (const key of keys){
                 // Skip key if needed ...
-                if (DANGEROUS_PROPERTIES.includes(key) || skipCallback(key, resolved, result)) {
+                if (isKeyUnsafe(key) || skipCallback(key, resolved, result)) {
                     continue;
                 }
                 
