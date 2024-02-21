@@ -10,5 +10,7 @@ export * from './hasPrototypeProperty';
 export * from './isCallable';
 export * from './isClassConstructor';
 export * from './isConstructor';
+export * from './isKeySafe';
+export * from './isKeyUnsafe';
 export * from './isSubclass';
 export * from './isWeakKind';
