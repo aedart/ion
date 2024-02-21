@@ -21,12 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `hasPrototypeProperty()` and `assertHasPrototypeProperty()` in `@aedart/support/reflections`.
 * `getParentOfClass()` and `getAllParentsOfClass()` in `@aedart/support/reflections`.
 * `getClassPropertyDescriptor()` and `getClassPropertyDescriptors()` in `@aedart/support/reflections`.
+* `isWeakKind()` in `@aedart/support/reflections`.
 * `getConstructorName()` and `getNameOrDesc()` in `@aedart/support/reflections`.
 * `isSubclass()` in `@aedart/support/reflections`.
 * `classOwnKeys()` in `@aedart/support/reflections`.
-* `merge()` in `@aedart/support/objects`.
-* `merge()`, `isTypedArray()`, `isArrayLike` and `isConcatSpreadable()` in `@aedart/support/arrays`.
-* `isCloneable()` in `@aedart/support/objects`.
+* `merge()`, `merger()`, and `isCloneable()`  in `@aedart/support/objects`.
+* `merge()`, `isTypedArray()`, `isArrayLike()`, `isSafeArrayLike()`, `isTypedArray()` and `isConcatSpreadable()` in `@aedart/support/arrays`.
 
 ## [0.8.0] - 2024-02-12
 
