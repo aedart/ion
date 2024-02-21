@@ -9,6 +9,8 @@ import { isKeySafe } from "@aedart/support/reflections";
  * 
  * **Note**: _Properties that are [unsafe]{@link import('@aedart/support/reflections').isKeyUnsafe} are always disregarded!_
  * 
+ * @template T = object
+ * 
  * @param {object} target
  * @param {object} source
  * @param {PropertyKey | PropertyKey[]} [keys='*'] If wildcard (`*`) given, then all properties from the `source` are selected.
@@ -20,7 +22,12 @@ import { isKeySafe } from "@aedart/support/reflections";
  * @throws {TypeError} If a key does not exist in `target` (_when `safe = true`_).
  *                     Or, if key does not exist in `source` (_regardless of `safe` flag_).
  */
-export function populate(target: object, source: object, keys: PropertyKey|PropertyKey[] = '*', safe: boolean = true): object
+export function populate<T extends object = object>(
+    target: T,
+    source: object,
+    keys: PropertyKey|PropertyKey[] = '*',
+    safe: boolean = true
+): T
 {
     if (keys === '*') {
         keys = Reflect.ownKeys(source);
