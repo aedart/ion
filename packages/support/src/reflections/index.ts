@@ -11,3 +11,4 @@ export * from './isCallable';
 export * from './isClassConstructor';
 export * from './isConstructor';
 export * from './isSubclass';
+export * from './isWeakKind';
