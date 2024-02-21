@@ -1,4 +1,7 @@
-import type { MergeCallback, SkipKeyCallback } from "./types";
+import type {
+    MergeCallback,
+    SkipKeyCallback
+} from "./types";
 
 /**
  * Merge Options
