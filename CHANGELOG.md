@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `getConstructorName()` and `getNameOrDesc()` in `@aedart/support/reflections`.
 * `isSubclass()` in `@aedart/support/reflections`.
 * `classOwnKeys()` in `@aedart/support/reflections`.
-* `merge()`, `merger()`, and `isCloneable()`  in `@aedart/support/objects`.
+* `merge()`, `merger()`, `populate()`, and `isCloneable()`  in `@aedart/support/objects`.
 * `merge()`, `isTypedArray()`, `isArrayLike()`, `isSafeArrayLike()`, `isTypedArray()` and `isConcatSpreadable()` in `@aedart/support/arrays`.
 
 ## [0.8.0] - 2024-02-12
