@@ -8,7 +8,7 @@
  */
 export function getErrorMessage(error: unknown, defaultMessage: string = 'unknown reason'): string
 {
-    return (typeof error == 'object' && Reflect.has(error, 'message'))
+    return (typeof error == 'object' && error instanceof Error && Reflect.has(error, 'message'))
         ? error.message
         : defaultMessage;
 }
