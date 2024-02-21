@@ -2,6 +2,7 @@ import { DEFAULT_MERGE_SKIP_KEYS } from "@aedart/contracts/support/objects";
 import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import {
     merge,
+    merger,
     MergeError
 } from "@aedart/support/objects";
 
@@ -36,7 +37,8 @@ describe('@aedart/support/objects', () => {
             
             // --------------------------------------------------------------------- //
             
-            const result = merge([ a, b ]);
+            // const result = merge([a, b]);
+            const result = merger().of(a, b);
             
             // Debug
             //console.log('result', result);
@@ -105,7 +107,8 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ],  (result, key, value) => {
+            const result = merge([ a, b ],  (target, next, options) => {
+                const { key, value } = target;
                 if (key === 'b') {
                     return value + 1;
                 }

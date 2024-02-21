@@ -8,6 +8,7 @@ export * from './hasUniqueId';
 export * from './isCloneable';
 export * from './isset';
 export * from './merge';
+export * from './merger';
 export * from './set';
 export * from './uniqueId';
 
@@ -17,3 +18,4 @@ export {
 }
 
 export * from './exceptions';
+export * from './merge/index';

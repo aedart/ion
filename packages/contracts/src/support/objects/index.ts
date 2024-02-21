@@ -5,25 +5,10 @@
  */
 export const SUPPORT_OBJECTS: unique symbol = Symbol('@aedart/contracts/support/objects');
 
-/**
- * Default property keys to be skipped when merging objects
- * 
- * @type {PropertyKey[]}
- */
-export const DEFAULT_MERGE_SKIP_KEYS: PropertyKey[] = [ 'prototype', '__proto__' ];
-
-/**
- * Default maximum merge depth
- * 
- * @type {number}
- */
-export const DEFAULT_MAX_MERGE_DEPTH: number = 512;
-
 import Cloneable from "./Cloneable";
-import MergeOptions from "./MergeOptions";
 export {
     type Cloneable,
-    type MergeOptions,
 }
 
+export * from './merge';
 export * from './types';

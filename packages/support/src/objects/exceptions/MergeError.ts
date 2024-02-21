@@ -1,11 +1,11 @@
-import type { Throwable } from "@aedart/contracts/support/exceptions";
+import type { MergeException } from "@aedart/contracts/support/objects";
 
 /**
  * Merge Error
  * 
- * To be thrown when two or more objects are unable to be merged.
+ * @see MergeException
  */
-export default class MergeError extends Error implements Throwable
+export default class MergeError extends Error implements MergeException
 {
     /**
      * Create a new Merge Error instance
