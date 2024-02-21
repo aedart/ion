@@ -122,7 +122,7 @@ export default interface MergeOptions
      * 
      * @type {boolean}
      */
-    mergeArrays?: boolean,
+    mergeArrays?: boolean;
 
     /**
      * The merge callback that must be applied
