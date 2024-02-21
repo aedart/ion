@@ -3,10 +3,7 @@ import type {
     MergeOptions,
     SkipKeyCallback
 } from "@aedart/contracts/support/objects";
-import {
-    DEFAULT_MAX_MERGE_DEPTH,
-    DEFAULT_MERGE_SKIP_KEYS
-} from "@aedart/contracts/support/objects";
+import { DEFAULT_MAX_MERGE_DEPTH } from "@aedart/contracts/support/objects";
 import { MergeError } from "../exceptions";
 import { makeDefaultMergeCallback } from "./makeDefaultMergeCallback";
 import { makeDefaultSkipCallback } from "./makeDefaultSkipCallback";
@@ -33,8 +30,8 @@ export default class DefaultMergeOptions implements MergeOptions
     /**
      * Property Keys that must not be merged.
      *
-     * **Note**: _Defaults to [DEFAULT_MERGE_SKIP_KEYS]{@link import('@aedart/contracts/support/objects').DEFAULT_MERGE_SKIP_KEYS}
-     * when not specified._
+     * **Note**: [DANGEROUS_PROPERTIES]{@link import('@aedart/contracts/support/objects').DANGEROUS_PROPERTIES}
+     * are always skipped, regardless of specified keys._
      *
      * **Callback**: _A callback can be specified to determine if a given key,
      * in a source object should be skipped._
@@ -53,7 +50,7 @@ export default class DefaultMergeOptions implements MergeOptions
      *
      * @type {PropertyKey[] | SkipKeyCallback}
      */
-    skip: PropertyKey[] | SkipKeyCallback = DEFAULT_MERGE_SKIP_KEYS;
+    skip: PropertyKey[] | SkipKeyCallback = [];
 
     /**
      * Flag, overwrite property values with `undefined`.

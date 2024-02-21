@@ -1,4 +1,4 @@
-import { DEFAULT_MERGE_SKIP_KEYS } from "@aedart/contracts/support/objects";
+import { DANGEROUS_PROPERTIES } from "@aedart/contracts/support/objects";
 import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import {
     merge,
@@ -133,7 +133,7 @@ describe('@aedart/support/objects', () => {
                 .toBe(b['b'] + 1);
         });
 
-        it('skips default keys', () => {
+        it('skips dangerous keys', () => {
             const a = {
                 'foo': 'bar'
             };
@@ -151,9 +151,9 @@ describe('@aedart/support/objects', () => {
             // Debug
             // console.log('result', result);
 
-            for (const key of DEFAULT_MERGE_SKIP_KEYS) {
+            for (const key of DANGEROUS_PROPERTIES) {
                 expect(Reflect.has(result, key))
-                    .withContext(`Default skip key (${key}) is not skipped`)
+                    .withContext(`Dangerous key (${key}) is not skipped`)
                     .toBeFalse();
             }
         });
@@ -163,7 +163,8 @@ describe('@aedart/support/objects', () => {
                 'foo': 'bar'
             };
             const b = {
-                'bar': 'foo'
+                'bar': 'foo',
+                __proto__: { 'admin': true }
             };
 
             // --------------------------------------------------------------------- //
@@ -180,6 +181,12 @@ describe('@aedart/support/objects', () => {
             expect(Reflect.has(result, 'foo'))
                 .withContext('Skipped key is in output')
                 .toBeFalse();
+
+            for (const key of DANGEROUS_PROPERTIES) {
+                expect(Reflect.has(result, key))
+                    .withContext(`Dangerous key (${key}) is not skipped`)
+                    .toBeFalse();
+            }
         });
 
         it('can skip keys via callback', () => {

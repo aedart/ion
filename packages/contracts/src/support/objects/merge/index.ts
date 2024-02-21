@@ -1,11 +1,4 @@
 /**
- * Default property keys to be skipped when merging objects
- *
- * @type {PropertyKey[]}
- */
-export const DEFAULT_MERGE_SKIP_KEYS: PropertyKey[] = [ 'prototype', '__proto__' ];
-
-/**
  * Default maximum merge depth
  *
  * @type {number}

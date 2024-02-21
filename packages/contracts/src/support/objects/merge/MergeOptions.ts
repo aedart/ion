@@ -23,8 +23,8 @@ export default interface MergeOptions
     /**
      * Property Keys that must not be merged.
      * 
-     * **Note**: _Defaults to [DEFAULT_MERGE_SKIP_KEYS]{@link import('@aedart/contracts/support/objects').DEFAULT_MERGE_SKIP_KEYS}
-     * when not specified._
+     * **Note**: [DANGEROUS_PROPERTIES]{@link import('@aedart/contracts/support/objects').DANGEROUS_PROPERTIES}
+     * are always skipped, regardless of specified keys._
      * 
      * **Callback**: _A callback can be specified to determine if a given key,
      * in a source object should be skipped._
