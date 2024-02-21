@@ -1,4 +1,5 @@
 import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
+import { Constructor } from "@aedart/contracts";
 
 /**
  * Determine if given target is an instance of a `TypedArray`
@@ -11,5 +12,5 @@ import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
  */
 export function isTypedArray(target: object): boolean
 {
-    return target instanceof TYPED_ARRAY_PROTOTYPE;
+    return target instanceof (TYPED_ARRAY_PROTOTYPE as Constructor);
 }
