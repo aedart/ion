@@ -1,4 +1,5 @@
 import { isKeySafe } from "@aedart/support/reflections";
+import type { SourceKeysCallback } from "@aedart/contracts/support/objects";
 
 /**
  * Populate target object with the properties from source object
@@ -9,11 +10,14 @@ import { isKeySafe } from "@aedart/support/reflections";
  * 
  * **Note**: _Properties that are [unsafe]{@link import('@aedart/support/reflections').isKeyUnsafe} are always disregarded!_
  * 
- * @template T = object
+ * @template TargetObj extends object = object
+ * @template SourceObj extends object = object
  * 
  * @param {object} target
  * @param {object} source
- * @param {PropertyKey | PropertyKey[]} [keys='*'] If wildcard (`*`) given, then all properties from the `source` are selected.
+ * @param {PropertyKey | PropertyKey[] | SourceKeysCallback} [keys='*'] Keys to select and copy from `source` object.
+ *                                                 If wildcard (`*`) given, then all properties from the `source`
+ *                                                 are selected.
  * @param {boolean} [safe=true] When `true`, properties must exist in target (_must be defined in target_),
  *                              before they are shallow copied.
  *                              
@@ -22,23 +26,28 @@ import { isKeySafe } from "@aedart/support/reflections";
  * @throws {TypeError} If a key does not exist in `target` (_when `safe = true`_).
  *                     Or, if key does not exist in `source` (_regardless of `safe` flag_).
  */
-export function populate<T extends object = object>(
-    target: T,
-    source: object,
-    keys: PropertyKey|PropertyKey[] = '*',
+export function populate<
+    TargetObj extends object = object,
+    SourceObj extends object = object
+>(
+    target: TargetObj,
+    source: SourceObj,
+    keys: PropertyKey | PropertyKey[] | SourceKeysCallback = '*',
     safe: boolean = true
-): T
+): TargetObj
 {
     if (keys === '*') {
         keys = Reflect.ownKeys(source);
+    } else if (typeof keys == 'function') {
+        keys = (keys as SourceKeysCallback)(source, target);
     }
     
     if (!Array.isArray(keys)) {
-        keys = [ keys ];
+        keys = [ keys as PropertyKey ];
     }
 
-    // Always remove dangerous keys
-    keys = keys.filter((key: PropertyKey) => isKeySafe(key));
+    // Always remove dangerous keys, regardless of "safe" flag.
+    keys = (keys as PropertyKey[]).filter((key: PropertyKey) => isKeySafe(key));
     
     // Populate...
     for (const key of keys) {
