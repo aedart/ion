@@ -1,5 +1,6 @@
-import { Constructor, ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import Concern from "./Concern";
+import ConcernConstructor from "./ConcernConstructor";
 
 /**
  * An alias for a property or method in a {@link Concern} class
@@ -21,8 +22,8 @@ export type Aliases<T extends Concern> = {
 /**
  * Array that holds a {@link Concern} class / Owner class pair.
  */
-export type ConcernOwnerClassPair = [
-    Constructor<Concern>,             // Concern Class
+export type ConcernOwnerClassPair<T extends Concern> = [
+    ConcernConstructor<T>,             // Concern Class
     ConstructorOrAbstractConstructor  // Owner class that must use the concern class 
 ];
 
@@ -32,4 +33,4 @@ export type ConcernOwnerClassPair = [
  * 
  * @see ConcernOwnerClassPair
  */
-export type ConcernClasses = ConcernOwnerClassPair[];
+export type ConcernClasses<T extends Concern> = ConcernOwnerClassPair<T>[];

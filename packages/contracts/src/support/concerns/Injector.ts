@@ -1,5 +1,6 @@
 import { Constructor } from "@aedart/contracts";
 import Concern from "./Concern";
+import ConcernConstructor from "./ConcernConstructor";
 import Configuration from "./Configuration";
 import MustUseConcerns from "./MustUseConcerns";
 
@@ -36,13 +37,13 @@ export default interface Injector<T = object>
      * @template T = object The target class that concern classes must be injected into
      * @template C = {@link Concern}
      *
-     * @param {Constructor<C> | Configuration<C>} concerns List of concern classes / injection configurations
+     * @param {ConcernConstructor<C> | Configuration<C>} concerns List of concern classes / injection configurations
      * 
      * @returns {MustUseConcerns<T>} The modified target class
      *
      * @throws {InjectionException}
      */
-    inject<C = Concern>(...concerns: (Constructor<C>|Configuration<C>)[]): MustUseConcerns<T>;
+    inject<C extends Concern>(...concerns: (ConcernConstructor<C>|Configuration<C>)[]): MustUseConcerns<T>;
 
     /**
      * Defines the concern classes that must be used by the target class.
@@ -50,6 +51,7 @@ export default interface Injector<T = object>
      * **Note**: _Method changes the target class, such that it implements and respects the
      * {@link MustUseConcerns} interface. The original target class' constructor remains the untouched!_
      * 
+     * @template C extends Concern
      * @template T = object
      * 
      * @param {T} target The target class that must define the concern classes to be used 
@@ -60,7 +62,7 @@ export default interface Injector<T = object>
      * @throws {InjectionException} If given concern classes conflict with target class' parent concern classes,
      *                              e.g. in case of duplicates. Or, if unable to modify target class.
      */
-    defineConcerns<T = object>(target: T, concerns: Constructor<Concern>[]): MustUseConcerns<T>;
+    defineConcerns<C extends Concern, T = object>(target: T, concerns: ConcernConstructor<C>[]): MustUseConcerns<T>;
 
     /**
      * Defines a concerns {@link Container} in target class' prototype.
@@ -102,6 +104,7 @@ export default interface Injector<T = object>
      * **Note**: _Method will do nothing, if a property or method already exists in the target class' prototype
      * chain, with the same name as given "alias"._
      * 
+     * @template C extends Concern
      * @template T = object
      * 
      * @param {MustUseConcerns<T>} target The target in which "alias" must be defined in
@@ -115,10 +118,10 @@ export default interface Injector<T = object>
      * @throws {InjectionException} If unable to define "alias" in target class, e.g. due to failure when obtaining
      *                              or defining [property descriptors]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor#description}.
      */
-    defineAlias<T = object>(
+    defineAlias<C extends Concern, T = object>(
         target: MustUseConcerns<T>,
         alias: PropertyKey,
         key: PropertyKey,
-        source: Constructor<Concern>
+        source: ConcernConstructor<C>
     ): boolean;
 }

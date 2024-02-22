@@ -1,5 +1,5 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
-import type { ConcernClasses } from "./index";
+import type { ConcernClasses, Concern } from "./index";
 import { CONCERN_CLASSES } from "./index";
 import Owner from "./Owner";
 
@@ -35,5 +35,5 @@ export default interface MustUseConcerns<T = object>
      *
      * @return {ConcernClasses}
      */
-    [CONCERN_CLASSES](): ConcernClasses;
+    [CONCERN_CLASSES](): ConcernClasses<Concern>;
 }
