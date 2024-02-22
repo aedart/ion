@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `@aedart/contracts/support/arrays` and `@aedart/support/arrays` submodules.
 * `ConcatSpreadable` (_extends TypeScript's `ArrayLike` interface_) interface in `@aedart/contracts/support/arrays`.
 * `Throwable` (_extends TypeScript's `Error` interface_) interface in `@aedart/contracts/support/exceptions`. 
-* `Cloneable` interface in `@aedart/contracts/support/objects`.
+* `Cloneable` and `Populatable` interfaces in `@aedart/contracts/support/objects`.
 * `LogicalError` and `AbstractClassError` exceptions in `@aedart/support/exceptions`.
 * `getErrorMessage()` in `@aedart/support/exceptions`.
 * `FUNCTION_PROTOTYPE` and `TYPED_ARRAY_PROTOTYPE` constants in `@aedart/contracts/support/reflections`.
@@ -25,9 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isWeakKind()` in `@aedart/support/reflections`.
 * `isKeySafe()` and `isKeyUnsafe()` in `@aedart/support/reflections`.
 * `getConstructorName()` and `getNameOrDesc()` in `@aedart/support/reflections`.
-* `isSubclass()` in `@aedart/support/reflections`.
-* `classOwnKeys()` in `@aedart/support/reflections`.
-* `merge()`, `merger()`, `populate()`, and `isCloneable()`  in `@aedart/support/objects`.
+* `isSubclass()`, `classOwnKeys()`, `hasMethod()` and `hasAllMethods()` in `@aedart/support/reflections`.
+* `merge()`, `merger()`, `populate()`, `isCloneable()` and `isPopulatable()`  in `@aedart/support/objects`.
 * `merge()`, `isTypedArray()`, `isArrayLike()`, `isSafeArrayLike()`, `isTypedArray()` and `isConcatSpreadable()` in `@aedart/support/arrays`.
 
 ## [0.8.0] - 2024-02-12
