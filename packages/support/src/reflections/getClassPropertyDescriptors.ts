@@ -14,12 +14,12 @@ import { merge } from "@aedart/support/objects";
  *                                    Descriptors are merged, such that the top-most class' descriptors
  *                                    are returned.
  * 
- * @return {Record<object, PropertyDescriptor>} Object with the property descriptors, or empty object of target has
- *                                              properties defined.
+ * @return {Record<PropertyKey, PropertyDescriptor>} Object with the property descriptors, or empty object of target has
+ *                                                   properties defined.
  * 
  * @throws {TypeError} If target is not an object or has no prototype property
  */
-export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstructor, recursive: boolean = false): Record<object, PropertyDescriptor>
+export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstructor, recursive: boolean = false): Record<PropertyKey, PropertyDescriptor>
 {
     assertHasPrototypeProperty(target);
 
@@ -31,7 +31,7 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
         targets = getAllParentsOfClass(target.prototype, true).reverse();
     }
     
-    const output: Record<object, PropertyDescriptor> = Object.create(null);
+    const output: Record<PropertyKey, PropertyDescriptor> = Object.create(null);
     
     // Obtain property descriptors for all targets
     for (const t of targets) {
@@ -45,6 +45,7 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
             }
 
             // Merge evt. existing descriptor object with the one obtained from target.
+            
             if (Reflect.has(output, key)) {
                 output[key] = merge()
                     .using({ overwriteWithUndefined: false })
