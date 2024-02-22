@@ -1,4 +1,5 @@
 import type { Throwable } from "@aedart/contracts/support/exceptions";
+import { configureCustomError } from "./configureCustomError";
 
 /**
  * Logical Error
@@ -18,12 +19,6 @@ export default class LogicalError extends Error implements Throwable
     constructor(message?: string, options?: ErrorOptions) {
         super(message, options);
 
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, LogicalError);
-        } else {
-            this.stack = (new Error()).stack;    
-        }
-
-        this.name = "LogicalError";
+        configureCustomError(this);
     }
 }

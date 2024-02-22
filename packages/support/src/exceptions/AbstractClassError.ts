@@ -1,6 +1,7 @@
 import type { AbstractConstructor } from "@aedart/contracts";
 import LogicalError from "./LogicalError";
 import { getNameOrDesc } from "@aedart/support/reflections";
+import { configureCustomError } from "./configureCustomError";
 
 /**
  * Abstract Class Error
@@ -25,14 +26,8 @@ export default class AbstractClassError extends LogicalError
     constructor(target: AbstractConstructor, options?: ErrorOptions) {
         super(`Unable to create new instance of abstract class ${getNameOrDesc(target)}`, options || { cause: { target: target } });
 
-        this.target = target;
-        
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, AbstractClassError);
-        } else {
-            this.stack = (new Error()).stack;
-        }
+        configureCustomError(this);
 
-        this.name = "AbstractClassError";
+        this.target = target;
     }
 }

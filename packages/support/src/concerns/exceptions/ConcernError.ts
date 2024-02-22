@@ -1,5 +1,6 @@
 import type { ConcernException, Concern } from "@aedart/contracts/support/concerns";
 import type { Constructor } from "@aedart/contracts";
+import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
  * Concern Error
@@ -28,17 +29,12 @@ export default class ConcernError extends Error implements ConcernException
     {
         super(message, options || { cause: {} });
 
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, ConcernError);
-        } else {
-            this.stack = (new Error()).stack;
-        }
+        configureCustomError(this);
 
-        this.name = "ConcernError";
         this.#concern = concern;
         
         // Force set the concern in the cause (in case custom was provided)
-        this.cause.concern = concern;
+        (this.cause as Record<PropertyKey, unknown>).concern = concern;
     }
 
     /**

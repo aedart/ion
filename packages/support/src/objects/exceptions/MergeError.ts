@@ -1,4 +1,5 @@
 import type { MergeException } from "@aedart/contracts/support/objects";
+import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
  * Merge Error
@@ -17,12 +18,6 @@ export default class MergeError extends Error implements MergeException
     {
         super(message, options);
 
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, MergeError);
-        } else {
-            this.stack = (new Error()).stack;
-        }
-
-        this.name = "MergeError";
+        configureCustomError(this);
     }
 }

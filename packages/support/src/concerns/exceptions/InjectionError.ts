@@ -1,6 +1,7 @@
 import ConcernError from "./ConcernError";
 import { Concern, InjectionException, MustUseConcerns } from "@aedart/contracts/support/concerns";
 import type { Constructor, ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
  * Injection Error
@@ -34,17 +35,12 @@ export default class InjectionError extends ConcernError implements InjectionExc
     ) {
         super(concern, message, options);
 
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, ConcernError);
-        } else {
-            this.stack = (new Error()).stack;
-        }
+        configureCustomError(this);
 
-        this.name = "InjectionError";
         this.#target = target;
 
         // Force set the target in the cause
-        this.cause.target = target;
+        (this.cause as Record<PropertyKey, unknown>).target = target;
     }
 
     /**

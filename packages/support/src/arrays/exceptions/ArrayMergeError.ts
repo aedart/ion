@@ -1,4 +1,5 @@
 import type { Throwable } from "@aedart/contracts/support/exceptions";
+import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
  * Array Merge Error
@@ -17,12 +18,6 @@ export default class ArrayMergeError extends Error implements Throwable
     {
         super(message, options);
 
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, ArrayMergeError);
-        } else {
-            this.stack = (new Error()).stack;
-        }
-
-        this.name = "ArrayMergeError";
+        configureCustomError(this);
     }
 }

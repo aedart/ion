@@ -2,6 +2,7 @@ import type { Concern, NotRegisteredException } from "@aedart/contracts/support/
 import type { Constructor } from "@aedart/contracts";
 import ConcernError from './ConcernError';
 import { getNameOrDesc } from "@aedart/support/reflections";
+import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
  * Concern Not Registered Error
@@ -20,12 +21,6 @@ export default class NotRegisteredError extends ConcernError implements NotRegis
     {
         super(concern, `Concern ${getNameOrDesc(concern)} is not registered in concerns container`, options);
 
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, NotRegisteredError);
-        } else {
-            this.stack = (new Error()).stack;
-        }
-
-        this.name = "NotRegisteredError";
+        configureCustomError(this);
     } 
 }
