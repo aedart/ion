@@ -7,6 +7,7 @@ import { DEFAULT_MAX_MERGE_DEPTH } from "@aedart/contracts/support/objects";
 import { MergeError } from "../exceptions";
 import { defaultMergeCallback } from "./defaultMergeCallback";
 import { makeSkipCallback } from "./makeSkipCallback";
+import { populate } from "@aedart/support/objects";
 
 /**
  * Default Merge Options
@@ -152,24 +153,7 @@ export default class DefaultMergeOptions implements MergeOptions
     public constructor(options?: MergeCallback | MergeOptions) {
         // Merge provided options, if any given
         if (options && typeof options == 'object') {
-            const supported: PropertyKey[] = Reflect.ownKeys(this)
-                .filter((key: PropertyKey) => {
-                    return !['__proto__', 'prototype', 'constructor', 'makeDefaultSkipCallback'].includes(key as string);
-                });
-            
-            Reflect.ownKeys(options)
-                .forEach((key) => {
-                    if (!supported.includes(key)) {
-                        const k = (typeof key == 'symbol')
-                            ? key.description
-                            : key;
-
-                        throw new MergeError(`Unsupported merge option key: ${k}`);
-                    }
-                    
-                    // @ts-expect-error We are safe to set option value
-                    this[key] = options[key];
-                });
+            populate(this, options);
         }
 
         // Abort in case of invalid maximum depth - other options can also be asserted, but they are less important.
