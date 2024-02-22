@@ -24,10 +24,12 @@ export default interface ObjectsMerger
      *
      * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
      * of all given sources._
+     * 
+     * @template SourceA extends object
+     * 
+     * @param {SourceA} a
      *
-     * @param {object} a
-     *
-     * @returns {object}
+     * @returns {SourceA}
      *
      * @throws {MergeException}
      */
@@ -41,10 +43,13 @@ export default interface ObjectsMerger
      * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
      * of all given sources._
      *
-     * @param {object} a
-     * @param {object} b
+     * @template SourceA extends object
+     * @template SourceB extends object
+     * 
+     * @param {SourceA} a
+     * @param {SourceB} b
      *
-     * @returns {object}
+     * @returns {SourceA & SourceB}
      *
      * @throws {MergeException}
      */
@@ -59,11 +64,15 @@ export default interface ObjectsMerger
      * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
      * of all given sources._
      *
-     * @param {object} a
-     * @param {object} b
-     * @param {object} c
+     * @template SourceA extends object
+     * @template SourceB extends object
+     * @template SourceC extends object
+     * 
+     * @param {SourceA} a
+     * @param {SourceB} b
+     * @param {SourceC} c
      *
-     * @returns {object}
+     * @returns {SourceA & SourceB & SourceC}
      *
      * @throws {MergeException}
      */
@@ -79,12 +88,17 @@ export default interface ObjectsMerger
      * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
      * of all given sources._
      *
-     * @param {object} a
-     * @param {object} b
-     * @param {object} c
-     * @param {object} d
+     * @template SourceA extends object
+     * @template SourceB extends object
+     * @template SourceC extends object
+     * @template SourceD extends object
+     * 
+     * @param {SourceA} a
+     * @param {SourceB} b
+     * @param {SourceC} c
+     * @param {SourceD} d
      *
-     * @returns {object}
+     * @returns {SourceA & SourceB & SourceC & SourceD}
      *
      * @throws {MergeException}
      */
@@ -101,13 +115,19 @@ export default interface ObjectsMerger
      * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
      * of all given sources._
      *
-     * @param {object} a
-     * @param {object} b
-     * @param {object} c
-     * @param {object} d
-     * @param {object} e
+     * @template SourceA extends object
+     * @template SourceB extends object
+     * @template SourceC extends object
+     * @template SourceD extends object
+     * @template SourceE extends object
      *
-     * @returns {object}
+     * @param {SourceA} a
+     * @param {SourceB} b
+     * @param {SourceC} c
+     * @param {SourceD} d
+     * @param {SourceE} e
+     *
+     * @returns {SourceA & SourceB & SourceC & SourceD & SourceE}
      *
      * @throws {MergeException}
      */
@@ -125,14 +145,21 @@ export default interface ObjectsMerger
      * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
      * of all given sources._
      *
-     * @param {object} a
-     * @param {object} b
-     * @param {object} c
-     * @param {object} d
-     * @param {object} e
-     * @param {object} f
+     * @template SourceA extends object
+     * @template SourceB extends object
+     * @template SourceC extends object
+     * @template SourceD extends object
+     * @template SourceE extends object
+     * @template SourceF extends object
      *
-     * @returns {object}
+     * @param {SourceA} a
+     * @param {SourceB} b
+     * @param {SourceC} c
+     * @param {SourceD} d
+     * @param {SourceE} e
+     * @param {SourceF} f
+     *
+     * @returns {SourceA & SourceB & SourceC & SourceD & SourceE & SourceF}
      *
      * @throws {MergeException}
      */
