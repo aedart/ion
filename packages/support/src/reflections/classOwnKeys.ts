@@ -22,7 +22,7 @@ export function classOwnKeys(target: ConstructorOrAbstractConstructor, recursive
     }
     
     // Obtain target's parent classes...
-    const parents = getAllParentsOfClass(target.prototype, true);
+    const parents = getAllParentsOfClass(target, true).reverse();
     
     const ownKeys: Set<PropertyKey> = new Set();
     for (const parent of parents) {
