@@ -9,7 +9,6 @@ import {
 } from "@aedart/contracts/support/concerns";
 import { AbstractClassError } from "@aedart/support/exceptions";
 import { classOwnKeys } from "@aedart/support/reflections";
-import {Constructor} from "@aedart/contracts";
 
 /**
  * Abstract Concern
