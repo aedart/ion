@@ -11,5 +11,7 @@
  */
 export function hasPrototypeProperty(target: object): boolean
 {
-    return typeof target?.prototype == 'object' && target.prototype !== null;
+    return target
+        && typeof (target as Record<PropertyKey, any>)['prototype'] == 'object'
+        && (target as Record<PropertyKey, any>)['prototype'] !== null;
 }
