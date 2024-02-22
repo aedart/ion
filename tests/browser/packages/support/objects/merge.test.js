@@ -6,7 +6,7 @@ import {
     MergeError
 } from "@aedart/support/objects";
 
-fdescribe('@aedart/support/objects', () => {
+describe('@aedart/support/objects', () => {
     describe('merge', () => {
 
         it('returns object merger instance when no arguments given', () => {
