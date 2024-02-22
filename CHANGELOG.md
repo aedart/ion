@@ -26,8 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isKeySafe()` and `isKeyUnsafe()` in `@aedart/support/reflections`.
 * `getConstructorName()` and `getNameOrDesc()` in `@aedart/support/reflections`.
 * `isSubclass()`, `classOwnKeys()`, `hasMethod()` and `hasAllMethods()` in `@aedart/support/reflections`.
-* `merge()`, `merger()`, `populate()`, `isCloneable()` and `isPopulatable()`  in `@aedart/support/objects`.
+* `merge()`, `populate()`, `isCloneable()` and `isPopulatable()`  in `@aedart/support/objects`.
+* Objects `Merger` (_underlying component for the objects `merge()` util_) in `@aedart/support/objects`.
 * `merge()`, `isTypedArray()`, `isArrayLike()`, `isSafeArrayLike()`, `isTypedArray()` and `isConcatSpreadable()` in `@aedart/support/arrays`.
+
+### Fixed
+
+* Lodash JSDoc references in `get()`, `set()`, `unset()` and `forget()`, in `@aedart/support/objects`.
 
 ## [0.8.0] - 2024-02-12
 
