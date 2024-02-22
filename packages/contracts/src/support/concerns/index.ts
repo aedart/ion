@@ -100,8 +100,11 @@ export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
     // then such a method will not do any good in a target class.
     HIDDEN,
     
-    // The static properties method (just in case)
+    // The static properties and methods (just in case...)
     PROVIDES,
+    'resolvedConcernKeys',
+    'removeAlwaysHiddenKeys',
+    'rememberConcernKeys',
 
     // ----------------------------------------------------------------- //
     // Other properties and methods:
