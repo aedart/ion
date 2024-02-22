@@ -10,6 +10,8 @@ import AbstractConcern from "./AbstractConcern";
 const concernClassCache: WeakSet<object> = new WeakSet<object>();
 
 /**
+ * TODO: INCOMPLETE
+ * 
  * Determine if given target is a [Concern]{@link import('@aedart/contracts/support/concerns').Concern} class
  * 
  * @param {object} target
@@ -29,6 +31,8 @@ export function isConcernClass(target: object, force: boolean = false): boolean
     }
 
     try {
+        // TODO: THIS MUST CHANGE - its way too heavy to obtain class property descriptors here... Use hasAllMethods() on class prototype instead, or similar... 
+        
         const descriptors = getClassPropertyDescriptors(target as ConstructorOrAbstractConstructor, true);
         
         if (Reflect.has(descriptors, 'concernOwner')) {
