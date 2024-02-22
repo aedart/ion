@@ -1,3 +1,5 @@
+import { isset } from "@aedart/support/misc";
+
 /**
  * Determine if given target object contains all given methods
  * 
@@ -8,7 +10,7 @@
  */
 export function hasAllMethods(target: object, ...methods: PropertyKey[]): boolean
 {
-    if (!target || typeof target != 'object' || Array.isArray(target) || methods.length === 0) {
+    if (!isset(target) || typeof target != 'object' || Array.isArray(target) || methods.length === 0) {
         return false;
     }
     
