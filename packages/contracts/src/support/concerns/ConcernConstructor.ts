@@ -1,5 +1,5 @@
 import Concern from "./Concern";
-import { PROPERTIES } from "./index";
+import { PROVIDES } from "./index";
 
 /**
  * Concern Constructor
@@ -22,7 +22,7 @@ export default interface ConcernConstructor<T extends Concern>
     new (owner?: object): T;
 
     /**
-     * Returns list of property keys that this concern class offers
+     * Returns list of property keys that this concern class offers.
      * 
      * **Note**: _Only properties and methods returned by this method can be aliased
      * into a target class._
@@ -31,5 +31,5 @@ export default interface ConcernConstructor<T extends Concern>
      * 
      * @return {PropertyKey[]}
      */
-    [PROPERTIES](): (keyof T)[];
+    [PROVIDES](): PropertyKey[];
 }

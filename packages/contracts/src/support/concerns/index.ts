@@ -53,7 +53,7 @@ export const HIDDEN: unique symbol = Symbol('hidden');
  * 
  * @type {symbol}
  */
-export const PROPERTIES : unique symbol = Symbol('concern_properties');
+export const PROVIDES : unique symbol = Symbol('concern_properties');
 
 /**
  * Symbol used to define a list of the concern classes that a given target class
@@ -101,7 +101,7 @@ export const ALWAYS_HIDDEN: ReadonlyArray<PropertyKey> = [
     HIDDEN,
     
     // The static properties method (just in case)
-    PROPERTIES,
+    PROVIDES,
 
     // ----------------------------------------------------------------- //
     // Other properties and methods:
