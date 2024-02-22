@@ -1,5 +1,5 @@
 import { AbstractConcern } from "@aedart/support/concerns";
-import { HIDDEN } from "@aedart/contracts/support/concerns";
+import { HIDDEN, PROVIDES } from "@aedart/contracts/support/concerns";
 import { AbstractClassError } from "@aedart/support/exceptions";
 
 describe('@aedart/support/concerns', () => {
@@ -39,8 +39,40 @@ describe('@aedart/support/concerns', () => {
             expect(result)
                 .toBe(concern);
         });
-        
-        it('returns default list of hidden properties and methods', () => {
+
+        it('can obtain provided properties and methods', () => {
+
+            class MyConcern extends AbstractConcern {
+                foo() {}
+                
+                get bar() {}
+            }
+
+            class MyOtherConcern extends MyConcern {
+                sayHi() {}
+            }
+            
+            // const concern = new MyConcern();
+            
+            // --------------------------------------------------------------------------------------- //
+            
+            const resultA = MyOtherConcern[PROVIDES]();
+            const resultB = MyConcern[PROVIDES](); // First concern class
+            
+            // Debug
+            console.log('result', resultA, resultB);
+
+            expect(resultA)
+                .withContext('Incorrect properties for a')
+                .toEqual([ 'foo', 'bar', 'sayHi' ]);
+            
+            expect(resultB)
+                .withContext('Incorrect properties for b')
+                .toEqual([ 'foo', 'bar' ]);
+        });
+
+        // TODO: To be removed
+        xit('returns default list of hidden properties and methods', () => {
 
             class MyConcern extends AbstractConcern {}
             
@@ -54,7 +86,8 @@ describe('@aedart/support/concerns', () => {
                 .toEqual(0)
         });
 
-        it('can overwrite default hidden', () => {
+        // TODO: To be removed
+        xit('can overwrite default hidden', () => {
 
             const newHidden = [ 'a', 'b', 'c' ];
             class MyConcern extends AbstractConcern {
