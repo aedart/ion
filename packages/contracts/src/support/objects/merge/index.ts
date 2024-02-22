@@ -15,3 +15,5 @@ export {
     type MergeSourceInfo,
     type ObjectsMerger
 }
+
+export * from './types';

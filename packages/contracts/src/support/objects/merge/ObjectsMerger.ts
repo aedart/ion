@@ -1,4 +1,5 @@
-import type {MergeCallback, MergeOptions} from "@aedart/contracts/support/objects";
+import type { MergeCallback } from "./types";
+import type MergeOptions from "./MergeOptions";
 
 /**
  * Objects Merger
