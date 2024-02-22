@@ -8,6 +8,8 @@ import {
 import type { Constructor } from "@aedart/contracts";
 
 /**
+ * TODO: Incomplete
+ * 
  * Concerns Injector
  * 
  * @see Injector
