@@ -8,7 +8,7 @@ import { PROVIDES } from "./index";
  * 
  * @see Concern
  */
-export default interface ConcernConstructor<T extends Concern>
+export default interface ConcernConstructor<T extends Concern = Concern>
 {
     /**
      * Creates a new concern instance
