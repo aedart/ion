@@ -18,8 +18,10 @@ export const SUPPORT_OBJECTS: unique symbol = Symbol('@aedart/contracts/support/
 export const DANGEROUS_PROPERTIES: PropertyKey[] = [ '__proto__' ];
 
 import Cloneable from "./Cloneable";
+import Populatable from "./Populatable";
 export {
     type Cloneable,
+    type Populatable,
 }
 
 export * from './merge';
