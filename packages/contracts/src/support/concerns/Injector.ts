@@ -1,4 +1,3 @@
-import { Constructor } from "@aedart/contracts";
 import Concern from "./Concern";
 import ConcernConstructor from "./ConcernConstructor";
 import Configuration from "./Configuration";
