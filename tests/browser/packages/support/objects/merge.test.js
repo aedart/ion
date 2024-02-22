@@ -2,13 +2,21 @@ import { DANGEROUS_PROPERTIES } from "@aedart/contracts/support/objects";
 import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import {
     merge,
-    merger,
+    Merger,
     MergeError
 } from "@aedart/support/objects";
 
-describe('@aedart/support/objects', () => {
+fdescribe('@aedart/support/objects', () => {
     describe('merge', () => {
-        
+
+        it('returns object merger instance when no arguments given', () => {
+            
+            const result = merge();
+            
+            expect(result)
+                .toBeInstanceOf(Merger);
+        });
+
         it('can merge primitive values', () => {
             
             const MY_SYMBOL_A = Symbol('a');
@@ -37,9 +45,8 @@ describe('@aedart/support/objects', () => {
             
             // --------------------------------------------------------------------- //
             
-            // const result = merge([a, b]);
-            const result = merger().of(a, b);
-            
+            const result = merge(a, b);
+
             // Debug
             //console.log('result', result);
             
@@ -67,7 +74,7 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ]);
+            const result = merge(a, b);
 
             // Debug
             //console.log('result', result);
@@ -86,8 +93,10 @@ describe('@aedart/support/objects', () => {
             };
 
             // --------------------------------------------------------------------- //
-
-            const result = merge([ a, b ],  { overwriteWithUndefined: false });
+            
+            const result = merge()
+                .using({ overwriteWithUndefined: false })
+                .of(a, b);
 
             // Debug
             // console.log('result', result);
@@ -107,14 +116,16 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ],  (target, next, options) => {
-                const { key, value } = target;
-                if (key === 'b') {
-                    return value + 1;
-                }
-                
-                return value;
-            });
+            const result = merge()
+                .using((target, next, options) => {
+                    const { key, value } = target;
+                    if (key === 'b') {
+                        return value + 1;
+                    }
+
+                    return value;
+                })
+                .of(a, b);
 
             // --------------------------------------------------------------------- //
             
@@ -146,7 +157,7 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b, c ]);
+            const result = merge(a, b, c);
 
             // Debug
             // console.log('result', result);
@@ -169,7 +180,9 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ], { skip: [ 'foo' ] });
+            const result = merge()
+                .using({ skip: [ 'foo' ] })
+                .of(a, b);
 
             // Debug
             // console.log('result', result);
@@ -200,11 +213,13 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ], {
-                skip: (key, source) => {
-                    return key === 'ab' && Reflect.has(source, key);
-                }
-            });
+            const result = merge()
+                .using({
+                    skip: (key, source) => {
+                        return key === 'ab' && Reflect.has(source, key);
+                    }
+                })
+                .of(a, b);
 
             // Debug
             // console.log('result', result);
@@ -234,7 +249,7 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ]);
+            const result = merge(a, b);
 
             // Debug
             //console.log('result', result);
@@ -264,7 +279,7 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ]);
+            const result = merge(a, b);
 
             // Debug
             // console.log('result', result);
@@ -290,7 +305,11 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ],  { mergeArrays: true });
+            const result = merge()
+                .using({
+                    mergeArrays: true
+                })
+                .of(a, b);
 
             // Debug
             // console.log('result', result);
@@ -313,7 +332,7 @@ describe('@aedart/support/objects', () => {
                     'arr': [ function() {} ]
                 };
 
-                return merge([ a, b ] );
+                return merge(a, b);
             }
             
             // --------------------------------------------------------------------- //
@@ -352,7 +371,11 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ],  { mergeArrays: true });
+            const result = merge()
+                .using({
+                    mergeArrays: true
+                })
+                .of(a, b);
 
             // Debug
             // console.log('result', result);
@@ -403,7 +426,7 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ]);
+            const result = merge(a, b);
 
             // Debug
             // console.log('result', result);
@@ -464,7 +487,11 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([a, b], { mergeArrays: true });
+            const result = merge()
+                .using({
+                    mergeArrays: true
+                })
+                .of(a, b);
 
             // Debug
             // console.log('result', result);
@@ -500,7 +527,11 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ],  { mergeArrays: true });
+            const result = merge()
+                .using({
+                    mergeArrays: true
+                })
+                .of(a, b);
             
             expect(Reflect.has(result, 'foo'))
                 .withContext('Key with function value not merged')
@@ -532,7 +563,11 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ],  { mergeArrays: true });
+            const result = merge()
+                .using({
+                    mergeArrays: true
+                })
+                .of(a, b);
             
             // Debug
             // console.log('result', result)
@@ -567,7 +602,11 @@ describe('@aedart/support/objects', () => {
             // --------------------------------------------------------------------- //
             
             const callback = () => {
-                return merge([ a, b ],  { depth: -1 });
+                return merge()
+                    .using({
+                        depth: -1
+                    })
+                    .of(a, b);
             }
             
             // --------------------------------------------------------------------- //
@@ -595,7 +634,11 @@ describe('@aedart/support/objects', () => {
             // --------------------------------------------------------------------- //
             
             const callback = () => {
-                return merge([ a, b ],  { depth: 1 });
+                return merge()
+                    .using({
+                        depth: 1
+                    })
+                    .of(a, b);
             }
 
             // --------------------------------------------------------------------- //
@@ -615,7 +658,11 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ],  { depth: 0 });
+            const result = merge()
+                .using({
+                    depth: 0
+                })
+                .of(a, b);
 
             // --------------------------------------------------------------------- //
 
@@ -729,7 +776,7 @@ describe('@aedart/support/objects', () => {
             for (const entry of dataSet) {
                 const target = {};
                 
-                const result = merge([ target, entry.source ]);
+                const result = merge(target, entry.source);
                 
                 expect(Reflect.has(result, 'value'))
                     .withContext(`No value property in result for ${entry.name}`)
@@ -764,7 +811,7 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
             
-            const result = merge([ a, b ]);
+            const result = merge(a, b);
             
             // Debug
             // console.log('result', result);
@@ -805,7 +852,7 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ]);
+            const result = merge(a, b);
 
             // Debug
             // console.log('result', result);
@@ -839,7 +886,11 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge([ a, b ], { useCloneable: false });
+            const result = merge()
+                .using({
+                    useCloneable: false
+                })
+                .of(a, b);
 
             // Debug
             // console.log('result', result);
@@ -869,7 +920,7 @@ describe('@aedart/support/objects', () => {
             // --------------------------------------------------------------------- //
 
             const callback = () => {
-                return merge([ a, b ]);
+                return merge(a, b);
             }
             
             expect(callback)
