@@ -1,3 +1,5 @@
+import type { Cloneable } from "@aedart/contracts/support/objects";
+
 /**
  * Determine if target object is cloneable.
  * 
@@ -13,5 +15,5 @@ export function isCloneable(target: object): boolean
     return typeof target == 'object'
         && target !== null
         && Reflect.has(target, 'clone')
-        && typeof target.clone == 'function';
+        && typeof (target as Cloneable)['clone'] == 'function';
 }
