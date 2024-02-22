@@ -1,4 +1,4 @@
-import type { Cloneable } from "@aedart/contracts/support/objects";
+import { hasMethod } from "@aedart/support/reflections";
 
 /**
  * Determine if target object is cloneable.
@@ -12,8 +12,5 @@ import type { Cloneable } from "@aedart/contracts/support/objects";
  */
 export function isCloneable(target: object): boolean
 {
-    return typeof target == 'object'
-        && target !== null
-        && Reflect.has(target, 'clone')
-        && typeof (target as Cloneable)['clone'] == 'function';
+    return hasMethod(target, 'clone');
 }
