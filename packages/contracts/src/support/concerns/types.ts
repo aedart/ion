@@ -7,13 +7,16 @@ import Concern from "./Concern";
 export type Alias = PropertyKey;
 
 /**
- * A record that defines one or more aliases for a {@link Concern}'s properties or methods.
- * 
+ * Key-value pair where the key corresponds to a property or method inside the {@link Concern} instance,
+ * and value is an "alias" for that property or method.
+ *
  * In this context an "alias" means a property or method that is added onto a target
  * class' prototype and acts as a proxy to the original property or method inside the
- * concern class instance.
+ * concern class instance. 
  */
-export type Aliases<T extends Concern> = Record<T, Alias>;
+export type Aliases<T extends Concern> = {
+    [K in keyof T]: Alias
+};
 
 /**
  * Array that holds a {@link Concern} class / Owner class pair.
