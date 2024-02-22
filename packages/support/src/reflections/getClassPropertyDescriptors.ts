@@ -36,7 +36,7 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
     // Obtain property descriptors for all targets
     for (const t of targets) {
         const keys: PropertyKey[] = Reflect.ownKeys(t);
-        for (const key: PropertyKey of keys) {
+        for (const key of keys) {
             const descriptor: PropertyDescriptor | undefined = getClassPropertyDescriptor(t.constructor, key);
             
             // If for some reason we are unable to obtain a descriptor, then skip it.
@@ -46,7 +46,9 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
 
             // Merge evt. existing descriptor object with the one obtained from target.
             if (Reflect.has(output, key)) {
-                output[key] = merge([ output[key], descriptor ], { overwriteWithUndefined: false });
+                output[key] = merge()
+                    .using({ overwriteWithUndefined: false })
+                    .of(output[key], descriptor);
                 continue;
             }
 
