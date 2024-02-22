@@ -54,6 +54,8 @@ export default abstract class AbstractConcern implements Concern
     }
 
     /**
+     * @deprecated TODO: This must be removed again... To be replaced by [PROPERTIES]...
+     * 
      * Returns a list of properties and methods that MUST NOT be aliased into the target class.
      * 
      * **Warning**: _Regardless of what properties and methods this method may return,
