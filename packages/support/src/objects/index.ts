@@ -6,6 +6,7 @@ export * from './hasAll';
 export * from './hasAny';
 export * from './hasUniqueId';
 export * from './isCloneable';
+export * from './isPopulatable';
 export * from './isset';
 export * from './merge';
 export * from './merger';
