@@ -19,5 +19,5 @@ export function isSubclass(target: object, superclass: ConstructorOrAbstractCons
         return false;
     }
 
-    return (target as Record<PropertyKey, any>).prototype instanceof superclass;
+    return (target as Record<PropertyKey, unknown>).prototype instanceof superclass;
 }

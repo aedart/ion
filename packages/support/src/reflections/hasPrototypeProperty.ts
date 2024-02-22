@@ -17,6 +17,6 @@ import {isset} from "@aedart/support/misc";
 export function hasPrototypeProperty(target: object): boolean
 {
     return isset(target)
-        && typeof (target as Record<PropertyKey, any>)['prototype'] == 'object'
-        && (target as Record<PropertyKey, any>)['prototype'] !== null;
+        && typeof (target as Record<PropertyKey, unknown>)['prototype'] == 'object'
+        && (target as Record<PropertyKey, unknown>)['prototype'] !== null;
 }

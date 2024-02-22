@@ -13,7 +13,7 @@ export function hasAllMethods(target: object, ...methods: PropertyKey[]): boolea
     }
     
     for (const method of methods) {
-        if (!Reflect.has(target, method) || typeof (target as Record<PropertyKey, any>)[method] != 'function') {
+        if (!Reflect.has(target, method) || typeof (target as Record<PropertyKey, unknown>)[method] != 'function') {
             return false;
         }
     }
