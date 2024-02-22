@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Throwable` (_extends TypeScript's `Error` interface_) interface in `@aedart/contracts/support/exceptions`. 
 * `Cloneable` and `Populatable` interfaces in `@aedart/contracts/support/objects`.
 * `LogicalError` and `AbstractClassError` exceptions in `@aedart/support/exceptions`.
-* `getErrorMessage()` in `@aedart/support/exceptions`.
+* `getErrorMessage()`, `configureCustomError()` and `configureStackTrace()` in `@aedart/support/exceptions`.
 * `FUNCTION_PROTOTYPE` and `TYPED_ARRAY_PROTOTYPE` constants in `@aedart/contracts/support/reflections`.
 * `DANGEROUS_PROPERTIES` constant in `@aedart/contracts/support/objects`.
 * `hasPrototypeProperty()` and `assertHasPrototypeProperty()` in `@aedart/support/reflections`.
