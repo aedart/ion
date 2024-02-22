@@ -5,5 +5,6 @@ export {
     LogicalError
 }
 
+export * from './configureCustomError';
 export * from './configureStackTrace';
 export * from './getErrorMessage';
