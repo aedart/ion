@@ -6,6 +6,8 @@ export * from './getClassPropertyDescriptors';
 export * from './getConstructorName';
 export * from './getNameOrDesc';
 export * from './getParentOfClass';
+export * from './hasAllMethods';
+export * from './hasMethod';
 export * from './hasPrototypeProperty';
 export * from './isCallable';
 export * from './isClassConstructor';
