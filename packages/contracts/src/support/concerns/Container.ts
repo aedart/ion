@@ -113,7 +113,7 @@ export default interface Container
      * @throws {ConcernException}
      * @throws {Error}
      */
-    call(concern: Constructor<Concern>, method: PropertyKey, ...args: unknown): unknown;
+    call(concern: Constructor<Concern>, method: PropertyKey, ...args: unknown[]): unknown;
 
     /**
      * Set the value of given property in concern instance

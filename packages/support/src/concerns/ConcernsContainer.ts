@@ -216,7 +216,7 @@ export default class ConcernsContainer implements Container
      * @throws {ConcernError}
      * @throws {Error}
      */
-    public call(concern: Constructor<Concern>, method: PropertyKey, ...args: unknown): unknown 
+    public call(concern: Constructor<Concern>, method: PropertyKey, ...args: unknown[]): unknown 
     {
         return this.get(concern)[method](...args);
     }
