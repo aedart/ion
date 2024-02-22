@@ -19,5 +19,5 @@ import { getConstructorName } from "./getConstructorName";
  */
 export function getNameOrDesc(target: ConstructorOrAbstractConstructor): string
 {
-    return getConstructorName(target, descTag(target));
+    return getConstructorName(target, descTag(target)) as string;
 }
