@@ -122,14 +122,10 @@ import Configuration from "./Configuration";
 import Container from "./Container";
 import MustUseConcerns from "./MustUseConcerns";
 import Injector from "./Injector";
-import ConcernsMap from "./ConcernsMap";
-import ConcernsMapConstructor from "./ConcernsMapConstructor";
 import Owner from "./Owner";
 export {
     type Concern,
     type ConcernConstructor,
-    type ConcernsMap,
-    type ConcernsMapConstructor,
     type Configuration,
     type Container,
     type Injector,

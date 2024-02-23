@@ -1,6 +1,6 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import { CONCERN_CLASSES } from "./index";
-import ConcernsMap from "./ConcernsMap";
+import ConcernConstructor from "./ConcernConstructor";
 import Owner from "./Owner";
 
 /**
@@ -28,14 +28,15 @@ export default interface MustUseConcerns<T = object>
     ): ConstructorOrAbstractConstructor<T & Owner>;
     
     /**
-     * A map of the concern classes to be used by this target class / Concern Owner instance.
+     * A list of the concern classes to be used by this target class.
      * 
-     * **Note**: _If this class' parent class also must use concern classes,
-     * then those concern classes are included in the resulting concerns map._
+     * **Note**: _If this class' parent class also uses concerns, then those
+     * concern classes are included recursively in this list, in the order
+     * that they have been registered._
      *
      * @static
      * 
-     * @type {ConcernsMap}
+     * @type {ConcernConstructor}
      */
-    [CONCERN_CLASSES]: ConcernsMap;
+    [CONCERN_CLASSES]: ConcernConstructor[];
 }
