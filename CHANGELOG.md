@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `merge()`, `populate()`, `isCloneable()` and `isPopulatable()`  in `@aedart/support/objects`.
 * Objects `Merger` (_underlying component for the objects `merge()` util_) in `@aedart/support/objects`.
 * `merge()`, `isTypedArray()`, `isArrayLike()`, `isSafeArrayLike()`, `isTypedArray()` and `isConcatSpreadable()` in `@aedart/support/arrays`.
+* `includesAny()` and `includesAll()` in `@aedart/support/arrays`.
 
 ### Fixed
 
