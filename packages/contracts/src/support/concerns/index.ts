@@ -122,6 +122,7 @@ import Configuration from "./Configuration";
 import Container from "./Container";
 import MustUseConcerns from "./MustUseConcerns";
 import Injector from "./Injector";
+import ConcernsMap from "./ConcernsMap";
 import Owner from "./Owner";
 export {
     type Concern,
@@ -130,6 +131,7 @@ export {
     type Container,
     type MustUseConcerns,
     type Injector,
+    type ConcernsMap,
     type Owner
 }
 
