@@ -1,6 +1,5 @@
 import { Throwable } from "@aedart/contracts/support/exceptions";
-import { Constructor } from "@aedart/contracts";
-import Concern from "../Concern";
+import ConcernConstructor from '../ConcernConstructor'
 
 /**
  * Concern Exception
@@ -14,7 +13,7 @@ export default interface ConcernException extends Throwable {
      * 
      * @readonly
      * 
-     * @type {Constructor<Concern>}
+     * @type {ConcernConstructor}
      */
-    readonly concern: Constructor<Concern>
+    readonly concern: ConcernConstructor
 }

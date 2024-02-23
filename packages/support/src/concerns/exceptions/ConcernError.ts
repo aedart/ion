@@ -1,5 +1,4 @@
-import type { ConcernException, Concern } from "@aedart/contracts/support/concerns";
-import type { Constructor } from "@aedart/contracts";
+import type { ConcernException, ConcernConstructor } from "@aedart/contracts/support/concerns";
 import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
@@ -14,18 +13,18 @@ export default class ConcernError extends Error implements ConcernException
      *
      * @private
      * 
-     * @type {Constructor<Concern>}
+     * @type {ConcernConstructor}
      */
-    readonly #concern: Constructor<Concern>
+    readonly #concern: ConcernConstructor
 
     /**
      * Create a new Concern Error instance
      *
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * @param {string} message
      * @param {ErrorOptions} [options]
      */
-    constructor(concern: Constructor<Concern>, message: string, options?: ErrorOptions)
+    constructor(concern: ConcernConstructor, message: string, options?: ErrorOptions)
     {
         super(message, options || { cause: {} });
 
@@ -42,9 +41,9 @@ export default class ConcernError extends Error implements ConcernException
      *
      * @readonly
      *
-     * @type {Constructor<Concern>}
+     * @type {ConcernConstructor}
      */
-    get concern(): Constructor<Concern>
+    get concern(): ConcernConstructor
     {
         return this.#concern;
     }
