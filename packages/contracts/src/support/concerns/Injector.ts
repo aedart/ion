@@ -48,7 +48,7 @@ export default interface Injector<T = object>
      * Defines the concern classes that must be used by the target class.
      * 
      * **Note**: _Method changes the target class, such that it implements and respects the
-     * {@link MustUseConcerns} interface. The original target class' constructor remains the untouched!_
+     * {@link MustUseConcerns} interface._
      * 
      * @template C extends Concern
      * @template T = object
@@ -58,8 +58,9 @@ export default interface Injector<T = object>
      * 
      * @returns {MustUseConcerns<T>} The modified target class
      *
-     * @throws {InjectionException} If given concern classes conflict with target class' parent concern classes,
-     *                              e.g. in case of duplicates. Or, if unable to modify target class.
+     * @throws {AlreadyRegisteredException} If given concern classes conflict with target class' parent concern classes,
+     *                                      e.g. in case of duplicates.
+     * @throws {InjectionException} If unable to register concern classes in target class
      */
     defineConcerns<C extends Concern, T = object>(target: T, concerns: ConcernConstructor<C>[]): MustUseConcerns<T>;
 
