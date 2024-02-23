@@ -1,9 +1,9 @@
 import type {
     Container,
     Concern,
+    ConcernConstructor,
     Owner
 } from "@aedart/contracts/support/concerns";
-import type { Constructor } from "@aedart/contracts";
 import { getNameOrDesc } from "@aedart/support/reflections";
 import BootError from "./exceptions/BootError";
 import NotRegisteredError from "./exceptions/NotRegisteredError";
@@ -22,9 +22,9 @@ export default class ConcernsContainer implements Container
      * @private
      * @readonly
      * 
-     * @type {Map<Constructor<Concern>, Concern|undefined>}
+     * @type {Map<ConcernConstructor, Concern|undefined>}
      */
-    readonly #map: Map<Constructor<Concern>, Concern|undefined>;
+    readonly #map: Map<ConcernConstructor, Concern|undefined>;
 
     /**
      * The concerns owner of this container
@@ -40,13 +40,13 @@ export default class ConcernsContainer implements Container
      * Create a new Concerns Container instance
      * 
      * @param {Owner} owner
-     * @param {Constructor<Concern>[]} concerns
+     * @param {ConcernConstructor[]} concerns
      */
-    public constructor(owner: Owner, concerns: Constructor<Concern>[]) {
+    public constructor(owner: Owner, concerns: ConcernConstructor[]) {
         this.#owner = owner;
-        this.#map = new Map<Constructor<Concern>, Concern | undefined>();
+        this.#map = new Map<ConcernConstructor, Concern | undefined>();
         
-        for(const concern: Constructor<Concern> of concerns) {
+        for(const concern of concerns) {
             this.#map.set(concern, undefined);
         }
     }
@@ -78,11 +78,11 @@ export default class ConcernsContainer implements Container
     /**
      * Determine if concern class is registered in this container
      *
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      *
      * @return {boolean}
      */
-    public has(concern: Constructor<Concern>): boolean
+    public has(concern: ConcernConstructor): boolean
     {
         return this.#map.has(concern);
     }
@@ -103,7 +103,7 @@ export default class ConcernsContainer implements Container
      *
      * @throws {ConcernError}
      */
-    public get<T extends Concern>(concern: Constructor<T>): T
+    public get<T extends Concern>(concern: ConcernConstructor<T>): T
     {
         if (!this.hasBooted(concern)) {
             return this.boot(concern);
@@ -115,11 +115,11 @@ export default class ConcernsContainer implements Container
     /**
      * Determine if concern class has been booted
      *
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      *
      * @return {boolean}
      */
-    public hasBooted(concern: Constructor<Concern>): boolean
+    public hasBooted(concern: ConcernConstructor): boolean
     {
         return this.has(concern) && this.#map.get(concern) !== undefined;
     }
@@ -129,14 +129,14 @@ export default class ConcernsContainer implements Container
      *
      * @template T extends {@link Concern}
      *
-     * @param {Constructor<T>} concern
+     * @param {ConcernConstructor<T>} concern
      *
      * @return {Concern} New concern instance
      *
      * @throws {NotRegisteredError} If concern class is not registered in this container
      * @throws {BootError} If concern is unable to be booted, e.g. if already booted
      */
-    public boot<T extends Concern>(concern: Constructor<T>): T
+    public boot<T extends Concern>(concern: ConcernConstructor<T>): T
     {
         // Fail if given concern is not in this container
         if (!this.has(concern)) {
@@ -168,8 +168,8 @@ export default class ConcernsContainer implements Container
      */
     public bootAll(): void
     {
-        const concerns: IterableIterator<Constructor<Concern>> = this.all();
-        for (const concern: Constructor<Concern> of concerns) {
+        const concerns = this.all();
+        for (const concern of concerns) {
             this.boot(concern);
         }
     }
@@ -197,9 +197,9 @@ export default class ConcernsContainer implements Container
     /**
      * Returns all concern classes
      *
-     * @return {IterableIterator<Constructor<Concern>>}
+     * @return {IterableIterator<ConcernConstructor>}
      */
-    public all(): IterableIterator<Constructor<Concern>>
+    public all(): IterableIterator<ConcernConstructor>
     {
         return this.#map.keys();
     }
@@ -207,7 +207,7 @@ export default class ConcernsContainer implements Container
     /**
      * Invoke a method with given arguments in concern instance
      *
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * @param {PropertyKey} method
      * @param {...any} [args]
      *
@@ -217,7 +217,7 @@ export default class ConcernsContainer implements Container
      * @throws {Error}
      */
     public call(
-        concern: Constructor<Concern>,
+        concern: ConcernConstructor,
         method: PropertyKey,
         ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
@@ -229,7 +229,7 @@ export default class ConcernsContainer implements Container
     /**
      * Set the value of given property in concern instance
      *
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * @param {PropertyKey} property
      * @param {any} value
      *
@@ -237,7 +237,7 @@ export default class ConcernsContainer implements Container
      * @throws {Error}
      */
     public setProperty(
-        concern: Constructor<Concern>,
+        concern: ConcernConstructor,
         property: PropertyKey,
         value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): void
@@ -249,7 +249,7 @@ export default class ConcernsContainer implements Container
     /**
      * Get value of given property in concern instance
      *
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * @param {PropertyKey} property
      *
      * @return {any}
@@ -258,7 +258,7 @@ export default class ConcernsContainer implements Container
      * @throws {Error}
      */
     public getProperty(
-        concern: Constructor<Concern>,
+        concern: ConcernConstructor,
         property: PropertyKey
     ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {

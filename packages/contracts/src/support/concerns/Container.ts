@@ -1,4 +1,4 @@
-import type { Constructor } from "@aedart/contracts";
+import ConcernConstructor from "./ConcernConstructor";
 import Concern from "./Concern";
 import Owner from "./Owner";
 
@@ -26,11 +26,11 @@ export default interface Container
     /**
      * Determine if concern class is registered in this container
      *
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * 
      * @return {boolean}
      */
-    has(concern: Constructor<Concern>): boolean;
+    has(concern: ConcernConstructor): boolean;
 
     /**
      * Retrieve concern instance for given concern class
@@ -41,37 +41,37 @@ export default interface Container
      * 
      * @template T extends {@link Concern}
      *
-     * @param {Constructor<T>} concern
+     * @param {ConcernConstructor<T>} concern
      *
      * @return {Concern} The booted instance of the concern class. If concern class was
      *                   previously booted, then that instance is returned.
      *
      * @throws {ConcernException}
      */
-    get<T extends Concern>(concern: Constructor<T>): T;
+    get<T extends Concern>(concern: ConcernConstructor<T>): T;
 
     /**
      * Determine if concern class has been booted
      * 
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * 
      * @return {boolean}
      */
-    hasBooted(concern: Constructor<Concern>): boolean
+    hasBooted(concern: ConcernConstructor): boolean
 
     /**
      * Boot concern class
      *
      * @template T extends {@link Concern}
      * 
-     * @param {Constructor<T>} concern
+     * @param {ConcernConstructor<T>} concern
      * 
      * @return {Concern} New concern instance
      * 
      * @throws {NotRegisteredException} If concern class is not registered in this container
      * @throws {BootException} If concern is unable to be booted, e.g. if already booted
      */
-    boot<T extends Concern>(concern: Constructor<T>): T;
+    boot<T extends Concern>(concern: ConcernConstructor<T>): T;
 
     /**
      * Boots all registered concern classes
@@ -97,14 +97,14 @@ export default interface Container
     /**
      * Returns all concern classes
      * 
-     * @return {IterableIterator<Constructor<Concern>>}
+     * @return {IterableIterator<ConcernConstructor>}
      */
-    all(): IterableIterator<Constructor<Concern>>;
+    all(): IterableIterator<ConcernConstructor>;
 
     /**
      * Invoke a method with given arguments in concern instance
      * 
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * @param {PropertyKey} method
      * @param {...any} [args]
      * 
@@ -114,7 +114,7 @@ export default interface Container
      * @throws {Error}
      */
     call(
-        concern: Constructor<Concern>,
+        concern: ConcernConstructor,
         method: PropertyKey,
         ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
@@ -122,7 +122,7 @@ export default interface Container
     /**
      * Set the value of given property in concern instance
      * 
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * @param {PropertyKey} property
      * @param {any} value
      *
@@ -130,7 +130,7 @@ export default interface Container
      * @throws {Error}
      */
     setProperty(
-        concern: Constructor<Concern>,
+        concern: ConcernConstructor,
         property: PropertyKey,
         value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): void;
@@ -138,7 +138,7 @@ export default interface Container
     /**
      * Get value of given property in concern instance
      *
-     * @param {Constructor<Concern>} concern
+     * @param {ConcernConstructor} concern
      * @param {PropertyKey} property
      * 
      * @return {any}
@@ -147,7 +147,7 @@ export default interface Container
      * @throws {Error}
      */
     getProperty(
-        concern: Constructor<Concern>,
+        concern: ConcernConstructor,
         property: PropertyKey
     ): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 }
