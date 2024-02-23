@@ -77,6 +77,11 @@
         "webpack": "^5.90.0",
         "webpack-cli": "^5.1.4"
     },
+    "overrides": {
+        "karma-jasmine": {
+            "jasmine-core": "^5.1.2"
+        }
+    },
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "clean": "lerna clean && sh clean.sh",

@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Lodash JSDoc references in `get()`, `set()`, `unset()` and `forget()`, in `@aedart/support/objects`.
+* `jasmine-core` `v4.x` was used by `karma-jasmine`, which caused thrown exceptions that contained `ErrorOptions` to not being rendered correctly in the CLI.  
 
 ## [0.8.0] - 2024-02-12
 
