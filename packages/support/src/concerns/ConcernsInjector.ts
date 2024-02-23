@@ -106,7 +106,6 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * **Note**: _Method changes the target class, such that it implements and respects the
      * {@link MustUseConcerns} interface._
      *
-     * @template C extends Concern
      * @template T = object
      *
      * @param {T} target The target class that must define the concern classes to be used
@@ -117,7 +116,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * @throws {AlreadyRegisteredError}
      * @throws {InjectionError}
      */
-    public defineConcerns<C extends Concern, T = object>(target: T, concerns: ConcernConstructor<C>[]): MustUseConcerns<T>
+    public defineConcerns<T = object>(target: T, concerns: ConcernConstructor[]): MustUseConcerns<T>
     {
         // Obtain evt. previous defined concern classes in target.
         const alreadyRegistered: ConcernConstructor[] = (Reflect.has(target as object, CONCERN_CLASSES))
