@@ -5,7 +5,12 @@ describe('@aedart/support/arrays', () => {
 
         it('can determine if object is Typed Array', () => {
             const dataSet = [
+                { value: undefined, expected: false, name: 'Undefined' },
+                { value: null, expected: false, name: 'Null' },
                 { value: [], expected: false, name: 'Array' },
+                { value: {}, expected: false, name: 'Object (empty)' },
+                { value: 123, expected: false, name: 'Number' },
+                { value: 'foo', expected: false, name: 'String' },
                 { value: new Map(), expected: false, name: 'Map' },
                 
                 { value: new Int8Array(), expected: true, name: 'Int8Array' },
