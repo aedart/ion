@@ -1,4 +1,5 @@
 export * from './assertHasPrototypeProperty';
+export * from './classLooksLike';
 export * from './classOwnKeys';
 export * from './getAllParentsOfClass';
 export * from './getClassPropertyDescriptor';
