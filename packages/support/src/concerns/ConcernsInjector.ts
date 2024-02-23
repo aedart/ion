@@ -122,12 +122,11 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         const alreadyRegistered: ConcernConstructor[] = (Reflect.has(target as object, CONCERN_CLASSES))
             ? target[CONCERN_CLASSES as keyof typeof target] as ConcernConstructor[]
             : [];
-        
-        // Make a new list with already registered concern classes
+
+        // Make a registry of concern classes to be registered in given target
         const registry: ConcernConstructor[] = [ ...alreadyRegistered ];
-        
-        // Loop through provided concerns and add them to the new list
         for (const concern of concerns) {
+
             // Fail if concern is already registered
             if (registry.includes(concern)) {
                 const source = this.findSourceOf(concern, target as object);
