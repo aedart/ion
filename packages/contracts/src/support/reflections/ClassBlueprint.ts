@@ -15,5 +15,5 @@ export default interface ClassBlueprint
      *
      * @type {PropertyKey[]}
      */
-    members: PropertyKey[];
+    members?: PropertyKey[];
 }
