@@ -76,6 +76,8 @@ export const CONCERN_CLASSES: unique symbol = Symbol('concern_classes');
 export const CONCERNS: unique symbol = Symbol('concerns');
 
 /**
+ * @deprecated TODO: Move this into support/concerns. It is way too implementation specific to belong here.
+ * 
  * List of properties and methods that must always remain "hidden" and
  * **NEVER** be aliased into a target class' prototype.
  * 
