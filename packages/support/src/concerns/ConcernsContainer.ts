@@ -5,6 +5,7 @@ import type {
     Owner
 } from "@aedart/contracts/support/concerns";
 import { getNameOrDesc } from "@aedart/support/reflections";
+import { getErrorMessage } from "@aedart/support/exceptions";
 import BootError from "./exceptions/BootError";
 import NotRegisteredError from "./exceptions/NotRegisteredError";
 
@@ -146,7 +147,11 @@ export default class ConcernsContainer implements Container
         // Fail if concern instance already exists (has booted)
         let instance: T | undefined = this.#map.get(concern) as T | undefined;
         if (instance !== undefined) {
-            throw new BootError(concern, `Concern ${getNameOrDesc(concern)} is already booted`, { cause: { owner: this.owner } });
+            throw new BootError(
+                concern, 
+                `Concern ${getNameOrDesc(concern)} is already booted`, 
+                { cause: { owner: this.owner } }
+            );
         }
         
         // Boot the concern (create new instance) and register it...
@@ -154,8 +159,11 @@ export default class ConcernsContainer implements Container
             instance = new concern(this.owner);
             this.#map.set(concern, instance);            
         } catch (error) {
-            const reason: string  = error?.message || 'unknown reason!';
-            throw new BootError(concern, `Unable to boot concern ${getNameOrDesc(concern)}: ${reason}`, { cause: { previous: error, owner: this.owner } });
+            throw new BootError(
+                concern, 
+                `Unable to boot concern ${getNameOrDesc(concern)}: ${getErrorMessage(error)}`, 
+                { cause: { previous: error, owner: this.owner } }
+            );
         }
 
         return instance;
