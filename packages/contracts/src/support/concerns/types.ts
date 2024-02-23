@@ -1,6 +1,4 @@
-import { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import Concern from "./Concern";
-import ConcernConstructor from "./ConcernConstructor";
 
 /**
  * An alias for a property or method in a {@link Concern} class
@@ -18,8 +16,3 @@ export type Alias = PropertyKey;
 export type Aliases<T extends Concern> = {
     [K in keyof T]: Alias
 };
-
-/**
- * A list of concern classes and their owner class in which they are used.
- */
-export type ConcernClasses = Map<ConcernConstructor, ConstructorOrAbstractConstructor>
