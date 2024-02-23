@@ -1,11 +1,5 @@
-import type {
-    Concern,
-} from "@aedart/contracts/support/concerns";
-import {
-    HIDDEN,
-    PROVIDES,
-    ALWAYS_HIDDEN
-} from "@aedart/contracts/support/concerns";
+import type { Concern } from "@aedart/contracts/support/concerns";
+import { PROVIDES } from "@aedart/contracts/support/concerns";
 import { AbstractClassError } from "@aedart/support/exceptions";
 import { classOwnKeys } from "@aedart/support/reflections";
 
@@ -61,22 +55,6 @@ export default abstract class AbstractConcern implements Concern
     public get concernOwner(): object
     {
         return this.#concernOwner;
-    }
-
-    /**
-     * @deprecated TODO: This must be removed again... To be replaced by [PROPERTIES]...
-     * 
-     * Returns a list of properties and methods that MUST NOT be aliased into the target class.
-     * 
-     * **Warning**: _Regardless of what properties and methods this method may return,
-     * an "injector" that injects this concern MUST ensure that the {@link ALWAYS_HIDDEN}
-     * defined properties and methods are **NEVER** aliased into a target class._
-     * 
-     * @return {ReadonlyArray<PropertyKey>}
-     */
-    static [HIDDEN](): ReadonlyArray<PropertyKey>
-    {
-        return ALWAYS_HIDDEN;
     }
 
     /**

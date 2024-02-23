@@ -1,5 +1,5 @@
 import { AbstractConcern } from "@aedart/support/concerns";
-import { HIDDEN, PROVIDES } from "@aedart/contracts/support/concerns";
+import { PROVIDES } from "@aedart/contracts/support/concerns";
 import { AbstractClassError } from "@aedart/support/exceptions";
 
 describe('@aedart/support/concerns', () => {
@@ -72,46 +72,6 @@ describe('@aedart/support/concerns', () => {
             expect(resultB)
                 .withContext('Incorrect properties for b')
                 .toEqual([ 'constructor', 'concernOwner', 'foo', 'bar' ]);
-        });
-
-        // TODO: To be removed
-        xit('returns default list of hidden properties and methods', () => {
-
-            class MyConcern extends AbstractConcern {}
-            
-            const result = MyConcern[HIDDEN]();
-            
-            // Debug
-            // console.log('Hidden', result);
-            
-            expect(result.length)
-                .not
-                .toEqual(0)
-        });
-
-        // TODO: To be removed
-        xit('can overwrite default hidden', () => {
-
-            const newHidden = [ 'a', 'b', 'c' ];
-            class MyConcern extends AbstractConcern {
-                static [HIDDEN]()
-                {
-                    return newHidden;
-                }
-            }
-
-            // --------------------------------------------------------------- /7
-            
-            const result = MyConcern[HIDDEN]();
-            for (const key of result) {
-                const k = typeof key == 'symbol'
-                    ? key.toString()
-                    : key;
-                
-                expect(newHidden.includes(key))
-                    .withContext(`${k} not part of HIDDEN`)
-                    .toBeTrue()
-            }
         });
     });
 });
