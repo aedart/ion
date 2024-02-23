@@ -20,17 +20,6 @@ export type Aliases<T extends Concern> = {
 };
 
 /**
- * Array that holds a {@link Concern} class / Owner class pair.
+ * A list of concern classes and their owner class in which they are used.
  */
-export type ConcernOwnerClassPair<T extends Concern> = [
-    ConcernConstructor<T>,             // Concern Class
-    ConstructorOrAbstractConstructor  // Owner class that must use the concern class 
-];
-
-/**
- * A list of concern classes and their owner class in which they are
- * used.
- * 
- * @see ConcernOwnerClassPair
- */
-export type ConcernClasses<T extends Concern> = ConcernOwnerClassPair<T>[];
+export type ConcernClasses = Map<ConcernConstructor, ConstructorOrAbstractConstructor>

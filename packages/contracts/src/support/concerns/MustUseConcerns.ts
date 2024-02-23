@@ -28,12 +28,14 @@ export default interface MustUseConcerns<T = object>
     ): ConstructorOrAbstractConstructor<T & Owner>;
     
     /**
-     * Returns the concern classes that this class must use.
+     * Returns the concern classes that must be used by this target class / Concern Owner.
      * 
      * **Note**: _If this class' parent class also must use concern classes,
-     * then those concern classes are included in the resulting list, ordered first!_
+     * then those concern classes are included in the resulting list._
      *
+     * @static
+     * 
      * @return {ConcernClasses}
      */
-    [CONCERN_CLASSES](): ConcernClasses<Concern>;
+    [CONCERN_CLASSES](): ConcernClasses;
 }
