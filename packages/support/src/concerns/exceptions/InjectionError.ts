@@ -23,13 +23,13 @@ export default class InjectionError extends ConcernError implements InjectionExc
      * Create a new Injection Error instance
      * 
      * @param {ConstructorOrAbstractConstructor | MustUseConcerns} target
-     * @param {ConcernConstructor} concern
+     * @param {ConcernConstructor | null} concern
      * @param {string} message
      * @param {ErrorOptions} [options]
      */
     constructor(
         target: ConstructorOrAbstractConstructor | MustUseConcerns,
-        concern: ConcernConstructor,
+        concern: ConcernConstructor | null,
         message: string,
         options?: ErrorOptions
     ) {

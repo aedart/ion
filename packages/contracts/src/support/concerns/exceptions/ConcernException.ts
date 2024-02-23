@@ -13,7 +13,7 @@ export default interface ConcernException extends Throwable {
      * 
      * @readonly
      * 
-     * @type {ConcernConstructor}
+     * @type {ConcernConstructor | null}
      */
-    readonly concern: ConcernConstructor
+    readonly concern: ConcernConstructor | null;
 }

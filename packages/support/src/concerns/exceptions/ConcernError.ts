@@ -13,18 +13,18 @@ export default class ConcernError extends Error implements ConcernException
      *
      * @private
      * 
-     * @type {ConcernConstructor}
+     * @type {ConcernConstructor | null}
      */
-    readonly #concern: ConcernConstructor
+    readonly #concern: ConcernConstructor | null
 
     /**
      * Create a new Concern Error instance
      *
-     * @param {ConcernConstructor} concern
+     * @param {ConcernConstructor | null} concern
      * @param {string} message
      * @param {ErrorOptions} [options]
      */
-    constructor(concern: ConcernConstructor, message: string, options?: ErrorOptions)
+    constructor(concern: ConcernConstructor | null, message: string, options?: ErrorOptions)
     {
         super(message, options || { cause: {} });
 
@@ -41,9 +41,9 @@ export default class ConcernError extends Error implements ConcernException
      *
      * @readonly
      *
-     * @type {ConcernConstructor}
+     * @type {ConcernConstructor | null}
      */
-    get concern(): ConcernConstructor
+    get concern(): ConcernConstructor | null
     {
         return this.#concern;
     }
