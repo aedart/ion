@@ -53,7 +53,7 @@ export const HIDDEN: unique symbol = Symbol('hidden');
  * 
  * @type {symbol}
  */
-export const PROVIDES : unique symbol = Symbol('concern_properties');
+export const PROVIDES : unique symbol = Symbol('concern_provides');
 
 /**
  * Symbol used to define a list of the concern classes that a given target class
