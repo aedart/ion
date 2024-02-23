@@ -56,8 +56,7 @@ export const HIDDEN: unique symbol = Symbol('hidden');
 export const PROVIDES : unique symbol = Symbol('concern_provides');
 
 /**
- * Symbol used to define a list of the concern classes that a given target class
- * must use.
+ * Symbol used to define a list of the concern classes to be used by a target class.
  * 
  * @see {MustUseConcerns}
  * 
