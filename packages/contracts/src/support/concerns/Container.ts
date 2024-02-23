@@ -106,26 +106,34 @@ export default interface Container
      * 
      * @param {Constructor<Concern>} concern
      * @param {PropertyKey} method
-     * @param {...unknown} [args]
+     * @param {...any} [args]
      * 
-     * @return {unknown}
+     * @return {any}
      * 
      * @throws {ConcernException}
      * @throws {Error}
      */
-    call(concern: Constructor<Concern>, method: PropertyKey, ...args: unknown[]): unknown;
+    call(
+        concern: Constructor<Concern>,
+        method: PropertyKey,
+        ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
     /**
      * Set the value of given property in concern instance
      * 
      * @param {Constructor<Concern>} concern
      * @param {PropertyKey} property
-     * @param {unknown} value
+     * @param {any} value
      *
      * @throws {ConcernException}
      * @throws {Error}
      */
-    setProperty(concern: Constructor<Concern>, property: PropertyKey, value: unknown): void;
+    setProperty(
+        concern: Constructor<Concern>,
+        property: PropertyKey,
+        value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): void;
 
     /**
      * Get value of given property in concern instance
@@ -133,10 +141,13 @@ export default interface Container
      * @param {Constructor<Concern>} concern
      * @param {PropertyKey} property
      * 
-     * @return {unknown}
+     * @return {any}
      *
      * @throws {ConcernException}
      * @throws {Error}
      */
-    getProperty(concern: Constructor<Concern>, property: PropertyKey): unknown;
+    getProperty(
+        concern: Constructor<Concern>,
+        property: PropertyKey
+    ): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 }

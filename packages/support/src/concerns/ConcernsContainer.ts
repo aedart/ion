@@ -209,14 +209,18 @@ export default class ConcernsContainer implements Container
      *
      * @param {Constructor<Concern>} concern
      * @param {PropertyKey} method
-     * @param {...unknown} [args]
+     * @param {...any} [args]
      *
-     * @return {unknown}
+     * @return {any}
      *
      * @throws {ConcernError}
      * @throws {Error}
      */
-    public call(concern: Constructor<Concern>, method: PropertyKey, ...args: unknown[]): unknown 
+    public call(
+        concern: Constructor<Concern>,
+        method: PropertyKey,
+        ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         return this.get(concern)[method](...args);
     }
@@ -226,12 +230,16 @@ export default class ConcernsContainer implements Container
      *
      * @param {Constructor<Concern>} concern
      * @param {PropertyKey} property
-     * @param {unknown} value
+     * @param {any} value
      *
      * @throws {ConcernError}
      * @throws {Error}
      */
-    public setProperty(concern: Constructor<Concern>, property: PropertyKey, value: unknown): void
+    public setProperty(
+        concern: Constructor<Concern>,
+        property: PropertyKey,
+        value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): void
     {
         this.get(concern)[property] = value;
     }
@@ -242,12 +250,15 @@ export default class ConcernsContainer implements Container
      * @param {Constructor<Concern>} concern
      * @param {PropertyKey} property
      *
-     * @return {unknown}
+     * @return {any}
      *
      * @throws {ConcernError}
      * @throws {Error}
      */
-    public getProperty(concern: Constructor<Concern>, property: PropertyKey): unknown
+    public getProperty(
+        concern: Constructor<Concern>,
+        property: PropertyKey
+    ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         return this.get(concern)[property];
     }
