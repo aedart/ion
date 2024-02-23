@@ -60,15 +60,18 @@ describe('@aedart/support/concerns', () => {
             const resultB = MyConcern[PROVIDES](); // First concern class
             
             // Debug
-            console.log('result', resultA, resultB);
+            // console.log('result', resultA, resultB);
 
+            // Note: Abstract Concern is NOT responsible for filtering out unsafe (ALWAYS_HIDDEN)
+            // properties and methods!
+            
             expect(resultA)
                 .withContext('Incorrect properties for a')
-                .toEqual([ 'foo', 'bar', 'sayHi' ]);
+                .toEqual([ 'constructor', 'concernOwner', 'foo', 'bar', 'sayHi' ]);
             
             expect(resultB)
                 .withContext('Incorrect properties for b')
-                .toEqual([ 'foo', 'bar' ]);
+                .toEqual([ 'constructor', 'concernOwner', 'foo', 'bar' ]);
         });
 
         // TODO: To be removed

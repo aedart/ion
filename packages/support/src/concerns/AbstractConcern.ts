@@ -1,6 +1,5 @@
 import type {
     Concern,
-    ConcernConstructor
 } from "@aedart/contracts/support/concerns";
 import {
     HIDDEN,
@@ -22,17 +21,6 @@ import { classOwnKeys } from "@aedart/support/reflections";
  */
 export default abstract class AbstractConcern implements Concern
 {
-    /**
-     * In-memory cache of resolved keys (properties and methods), which
-     * are offered by concern(s) and can be aliased. 
-     * 
-     * @type {WeakMap<ThisType<ConcernConstructor>, PropertyKey[]>}
-     * 
-     * @protected
-     * @static
-     */
-    protected static resolvedConcernKeys: WeakMap<ThisType<ConcernConstructor>, PropertyKey[]> = new WeakMap();
-    
     /**
      * The owner class instance this concern is injected into,
      * or `this` concern instance.
@@ -106,58 +94,6 @@ export default abstract class AbstractConcern implements Concern
         // Feel free to overwrite this static method in your concern class and specify
         // the properties and methods that your concern offers (those that can be aliased).
         
-        return this.rememberConcernKeys(this, () => {
-            return this.removeAlwaysHiddenKeys(
-                classOwnKeys(this, true)
-            );
-        });
-    }
-
-    /**
-     * Removes keys that should remain hidden
-     * 
-     * @see ALWAYS_HIDDEN
-     * 
-     * @param {PropertyKey[]} keys
-     * 
-     * @returns {PropertyKey[]}
-     * 
-     * @protected
-     * @static
-     */
-    protected static removeAlwaysHiddenKeys(keys: PropertyKey[]): PropertyKey[]
-    {
-        return keys.filter((key: PropertyKey) => {
-            return !ALWAYS_HIDDEN.includes(key);
-        });
-    }
-
-    /**
-     * Remember the resolved keys (properties and methods) for given target concern class
-     * 
-     * @param {ThisType<ConcernConstructor>} concern
-     * @param {() => PropertyKey[]} callback
-     * @param {boolean} [force=false] 
-     * 
-     * @returns {PropertyKey[]}
-     * 
-     * @protected
-     * @static
-     */
-    protected static rememberConcernKeys(
-        concern: ThisType<ConcernConstructor>,
-        callback: () => PropertyKey[],
-        force: boolean = false
-    ): PropertyKey[]
-    {
-        if (!force && this.resolvedConcernKeys.has(concern)) {
-            return this.resolvedConcernKeys.get(concern) as PropertyKey[]; 
-        }
-        
-        const keys: PropertyKey[] = callback();
-        
-        this.resolvedConcernKeys.set(concern, keys);
-        
-        return keys;
+        return classOwnKeys(this, true);
     }
 }
