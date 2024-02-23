@@ -33,7 +33,9 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
         message?: string,
         options?: ErrorOptions
     ) {
-        const resolved = message || `Concern ${getNameOrDesc(concern)} is already registered in class ${getNameOrDesc(target)} (via class ${getNameOrDesc(target)})`;
+        const resolved = message || (target === source)
+            ? `Concern ${getNameOrDesc(concern)} is already registered in class ${getNameOrDesc(target)}`
+            : `Concern ${getNameOrDesc(concern)} is already registered in class ${getNameOrDesc(target)} (via parent class ${getNameOrDesc(source)})`
 
         super(target, concern, resolved, options);
 
