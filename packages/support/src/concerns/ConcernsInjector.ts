@@ -5,8 +5,19 @@ import type {
     MustUseConcerns,
     Configuration,
 } from "@aedart/contracts/support/concerns";
-import { ALWAYS_HIDDEN } from "@aedart/contracts/support/concerns";
-import type { Constructor } from "@aedart/contracts";
+import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import {
+    ALWAYS_HIDDEN,
+    CONCERN_CLASSES
+} from "@aedart/contracts/support/concerns";
+import {
+    getAllParentsOfClass,
+    getNameOrDesc
+} from "@aedart/support/reflections";
+import {
+    AlreadyRegisteredError,
+    InjectionError
+} from "./exceptions";
 
 /**
  * TODO: Incomplete
@@ -88,29 +99,62 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //    
     //     return this.target as MustUseConcerns<T>;
     // }
-    //
-    // /**
-    //  * Defines the concern classes that must be used by the target class.
-    //  *
-    //  * **Note**: _Method changes the target class, such that it implements and respects the
-    //  * {@link MustUseConcerns} interface. The original target class' constructor remains the untouched!_
-    //  *
-    //  * @template T = object
-    //  *
-    //  * @param {T} target The target class that must define the concern classes to be used
-    //  * @param {Constructor<Concern>[]} concerns List of concern classes
-    //  *
-    //  * @returns {MustUseConcerns<T>} The modified target class
-    //  *
-    //  * @throws {InjectionException} If given concern classes conflict with target class' parent concern classes,
-    //  *                              e.g. in case of duplicates. Or, if unable to modify target class.
-    //  */
-    // public defineConcerns<T = object>(target: T, concerns: Constructor<Concern>[]): MustUseConcerns<T>
-    // {
-    //     // TODO: implement this method...
-    //
-    //     return target as MustUseConcerns<T>;
-    // }
+
+    /**
+     * Defines the concern classes that must be used by the target class.
+     *
+     * **Note**: _Method changes the target class, such that it implements and respects the
+     * {@link MustUseConcerns} interface._
+     *
+     * @template C extends Concern
+     * @template T = object
+     *
+     * @param {T} target The target class that must define the concern classes to be used
+     * @param {Constructor<Concern>[]} concerns List of concern classes
+     *
+     * @returns {MustUseConcerns<T>} The modified target class
+     *
+     * @throws {AlreadyRegisteredError} If given concern classes conflict with target class' parent concern classes,
+     *                                      e.g. in case of duplicates.
+     * @throws {InjectionError} If unable to register concern classes in target class
+     */
+    public defineConcerns<C extends Concern, T = object>(target: T, concerns: ConcernConstructor<C>[]): MustUseConcerns<T>
+    {
+        // Obtain evt. previous defined concern classes in target.
+        const alreadyRegistered: ConcernConstructor[] = (Reflect.has(target as object, CONCERN_CLASSES))
+            ? target[CONCERN_CLASSES as keyof typeof target] as ConcernConstructor[]
+            : [];
+        
+        // Make a new list with already registered concern classes
+        const register: ConcernConstructor[] = [ ...alreadyRegistered ];
+        
+        // Loop through provided concerns and add them to the new list
+        for (const concern of concerns) {
+            // Fail if concern is already registered
+            if (register.includes(concern)) {
+                const source = this.findSourceOf(concern, target as object);
+                throw new AlreadyRegisteredError(target as ConstructorOrAbstractConstructor, concern, source as ConstructorOrAbstractConstructor);
+            }
+
+            register.push(concern);
+        }
+        
+        // Define static property that contains concern classes in target.
+        const wasDefined: boolean = Reflect.defineProperty(target as object, CONCERN_CLASSES, {
+            get: function() {
+                return register;
+            }
+        });
+        
+        if (!wasDefined) {
+            const reason: string = `Unable to define concern classes in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
+            throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason);
+        }
+        
+        // Finally, return the modified target...
+        return target as MustUseConcerns<T>;
+    }
+    
     //
     // /**
     //  * Defines a concerns {@link Container} in target class' prototype.
@@ -186,8 +230,37 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //
     //     return false;
     // }
-    
-    
+
+
+    /*****************************************************************
+     * Internals
+     ****************************************************************/
+
+    /**
+     * Find the source class where given concern is registered
+     *
+     * @param {ConcernConstructor} concern
+     * @param {object} target
+     * @param {boolean} [includeTarget=false]
+     *
+     * @returns {object | null} The source class, e.g. parent of target class, or `null` if concern is not registered
+     *                          in target or target's parents.
+     *
+     * @protected
+     */
+    protected findSourceOf(concern: ConcernConstructor, target: object, includeTarget: boolean = false): object | null
+    {
+        const parents = getAllParentsOfClass(target as ConstructorOrAbstractConstructor, includeTarget).reverse();
+
+        for (const parent of parents) {
+            if (Reflect.has(target, CONCERN_CLASSES) && (target[CONCERN_CLASSES as keyof typeof target] as ConcernConstructor[]).includes(concern)) {
+                return parent;
+            }
+        }
+
+        return null;
+    }
+
     // ------------------------------------------------------------------------- //
     // TODO: Was previously part of AbstractConcern, but the logic should belong here
     // TODO: instead...
