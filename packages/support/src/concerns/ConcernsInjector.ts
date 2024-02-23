@@ -124,33 +124,21 @@ export default class ConcernsInjector<T = object> implements Injector<T>
             : [];
         
         // Make a new list with already registered concern classes
-        const register: ConcernConstructor[] = [ ...alreadyRegistered ];
+        const registry: ConcernConstructor[] = [ ...alreadyRegistered ];
         
         // Loop through provided concerns and add them to the new list
         for (const concern of concerns) {
             // Fail if concern is already registered
-            if (register.includes(concern)) {
+            if (registry.includes(concern)) {
                 const source = this.findSourceOf(concern, target as object);
                 throw new AlreadyRegisteredError(target as ConstructorOrAbstractConstructor, concern, source as ConstructorOrAbstractConstructor);
             }
 
-            register.push(concern);
+            registry.push(concern);
         }
         
-        // Define static property that contains concern classes in target.
-        const wasDefined: boolean = Reflect.defineProperty(target as object, CONCERN_CLASSES, {
-            get: function() {
-                return register;
-            }
-        });
-        
-        if (!wasDefined) {
-            const reason: string = `Unable to define concern classes in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
-            throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason);
-        }
-        
-        // Finally, return the modified target...
-        return target as MustUseConcerns<T>;
+        // Finally, define concern classes property
+        return this.defineConcernClassesProperty<T>(target, registry);
     }
     
     //
@@ -234,6 +222,38 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * Internals
      ****************************************************************/
 
+    /**
+     * Defines the {@link CONCERN_CLASSES} static property in given target
+     *
+     * @template T = object
+     *
+     * @param {T} target
+     * @param {ConcernConstructor[]} registry
+     *
+     * @returns {MustUseConcerns<T>}
+     *
+     * @throws {InjectionError}
+     * 
+     * @protected
+     */
+    protected defineConcernClassesProperty<T = object>(target: T, registry: ConcernConstructor[]): MustUseConcerns<T>
+    {
+        // Define static property that contains concern classes in target.
+        const wasDefined: boolean = Reflect.defineProperty(target as object, CONCERN_CLASSES, {
+            get: function() {
+                return registry;
+            }
+        });
+
+        if (!wasDefined) {
+            const reason: string = `Unable to define concern classes in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
+            throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason);
+        }
+
+        // Finally, return the modified target...
+        return target as MustUseConcerns<T>;
+    }
+    
     /**
      * Find the source class where given concern is registered
      *
