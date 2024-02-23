@@ -17,15 +17,14 @@ import NotRegisteredError from "./exceptions/NotRegisteredError";
 export default class ConcernsContainer implements Container
 {
     /**
-     * Map that holds concern class constructors
-     * and actual concern instances
+     * Map of concern class constructors and actual concern instances
      * 
-     * @private
+     * @protected
      * @readonly
      * 
      * @type {Map<ConcernConstructor, Concern|undefined>}
      */
-    readonly #map: Map<ConcernConstructor, Concern|undefined>;
+    protected readonly map: Map<ConcernConstructor, Concern|undefined>;
 
     /**
      * The concerns owner of this container
@@ -45,10 +44,10 @@ export default class ConcernsContainer implements Container
      */
     public constructor(owner: Owner, concerns: ConcernConstructor[]) {
         this.#owner = owner;
-        this.#map = new Map<ConcernConstructor, Concern | undefined>();
+        this.map = new Map<ConcernConstructor, Concern | undefined>();
         
         for(const concern of concerns) {
-            this.#map.set(concern, undefined);
+            this.map.set(concern, undefined);
         }
     }
     
@@ -61,7 +60,7 @@ export default class ConcernsContainer implements Container
      */
     public get size(): number
     {
-        return this.#map.size;
+        return this.map.size;
     }
     
     /**
@@ -85,7 +84,7 @@ export default class ConcernsContainer implements Container
      */
     public has(concern: ConcernConstructor): boolean
     {
-        return this.#map.has(concern);
+        return this.map.has(concern);
     }
 
     /**
@@ -110,7 +109,7 @@ export default class ConcernsContainer implements Container
             return this.boot(concern);
         }
         
-        return this.#map.get(concern) as T;
+        return this.map.get(concern) as T;
     }
 
     /**
@@ -122,7 +121,7 @@ export default class ConcernsContainer implements Container
      */
     public hasBooted(concern: ConcernConstructor): boolean
     {
-        return this.has(concern) && this.#map.get(concern) !== undefined;
+        return this.has(concern) && this.map.get(concern) !== undefined;
     }
 
     /**
@@ -145,7 +144,7 @@ export default class ConcernsContainer implements Container
         }
         
         // Fail if concern instance already exists (has booted)
-        let instance: T | undefined = this.#map.get(concern) as T | undefined;
+        let instance: T | undefined = this.map.get(concern) as T | undefined;
         if (instance !== undefined) {
             throw new BootError(
                 concern, 
@@ -157,7 +156,7 @@ export default class ConcernsContainer implements Container
         // Boot the concern (create new instance) and register it...
         try {
             instance = new concern(this.owner);
-            this.#map.set(concern, instance);            
+            this.map.set(concern, instance);            
         } catch (error) {
             throw new BootError(
                 concern, 
@@ -209,7 +208,7 @@ export default class ConcernsContainer implements Container
      */
     public all(): IterableIterator<ConcernConstructor>
     {
-        return this.#map.keys();
+        return this.map.keys();
     }
 
     /**
