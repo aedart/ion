@@ -129,7 +129,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
 
             // Fail if concern is already registered
             if (registry.includes(concern)) {
-                const source = this.findSourceOf(concern, target as object);
+                const source = this.findSourceOf(concern, target as object, true);
                 throw new AlreadyRegisteredError(target as ConstructorOrAbstractConstructor, concern, source as ConstructorOrAbstractConstructor);
             }
 
@@ -270,7 +270,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         const parents = getAllParentsOfClass(target as ConstructorOrAbstractConstructor, includeTarget).reverse();
 
         for (const parent of parents) {
-            if (Reflect.has(target, CONCERN_CLASSES) && (target[CONCERN_CLASSES as keyof typeof target] as ConcernConstructor[]).includes(concern)) {
+            if (Reflect.has(parent, CONCERN_CLASSES) && (parent[CONCERN_CLASSES as keyof typeof parent] as ConcernConstructor[]).includes(concern)) {
                 return parent;
             }
         }
