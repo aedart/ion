@@ -42,7 +42,7 @@ export const HIDDEN: unique symbol = Symbol('hidden');
  * ```ts
  * class MyConcern implements Concern
  * {
- *      static [PROPERTIES](): PropertyKey[]
+ *      static [PROVIDES](): PropertyKey[]
  *      {
  *          // ...not shown...
  *      }
@@ -56,7 +56,7 @@ export const HIDDEN: unique symbol = Symbol('hidden');
 export const PROVIDES : unique symbol = Symbol('concern_provides');
 
 /**
- * Symbol used to define a list of the concern classes to be used by a target class.
+ * Symbol used to define a map of the concern classes to be used by a target class.
  * 
  * @see {MustUseConcerns}
  * 
@@ -123,15 +123,17 @@ import Container from "./Container";
 import MustUseConcerns from "./MustUseConcerns";
 import Injector from "./Injector";
 import ConcernsMap from "./ConcernsMap";
+import ConcernsMapConstructor from "./ConcernsMapConstructor";
 import Owner from "./Owner";
 export {
     type Concern,
     type ConcernConstructor,
+    type ConcernsMap,
+    type ConcernsMapConstructor,
     type Configuration,
     type Container,
-    type MustUseConcerns,
     type Injector,
-    type ConcernsMap,
+    type MustUseConcerns,
     type Owner
 }
 
