@@ -9,5 +9,5 @@ export {
 };
 
 export * from './exceptions';
-export * from './isConcernClass';
+export * from './isConcernConstructor';
 export * from './use';
