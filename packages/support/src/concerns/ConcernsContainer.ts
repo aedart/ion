@@ -222,6 +222,7 @@ export default class ConcernsContainer implements Container
         ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
+        // @ts-expect-error Can fail when dynamically invoking method in concern instance...
         return this.get(concern)[method](...args);
     }
 
@@ -241,6 +242,7 @@ export default class ConcernsContainer implements Container
         value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): void
     {
+        // @ts-expect-error Can fail when dynamically retrieving property in concern instance...
         this.get(concern)[property] = value;
     }
 
@@ -260,6 +262,7 @@ export default class ConcernsContainer implements Container
         property: PropertyKey
     ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
+        // @ts-expect-error Can fail when dynamically setting property in concern instance...
         return this.get(concern)[property];
     }
 }
