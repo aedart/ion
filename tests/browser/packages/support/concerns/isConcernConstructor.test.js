@@ -4,7 +4,7 @@ import { isConcernConstructor, AbstractConcern } from "@aedart/support/concerns"
 describe('@aedart/support/concerns', () => {
     describe('isConcernConstructor()', () => {
 
-        it('can determine if is a concern class', () => {
+        it('can determine if target is a concern constructor', () => {
 
             class A {}
             
@@ -29,7 +29,7 @@ describe('@aedart/support/concerns', () => {
                 { value: [], expected: false, name: 'Array' },
                 { value: {}, expected: false, name: 'Object (empty)' },
                 { value: A, expected: false, name: 'Class A (empty)' },
-                
+
                 { value: B, expected: true, name: 'Class B (custom implementation of concern)' },
                 { value: C, expected: true, name: 'Class C (inherits from custom implementation)' },
                 { value: D, expected: true, name: 'Class D (inherits from AbstractConcern)' },
@@ -37,7 +37,7 @@ describe('@aedart/support/concerns', () => {
             ];
 
             for (const entry of data) {
-                expect(isConcernClass(entry.value))
+                expect(isConcernConstructor(entry.value))
                     .withContext(`${entry.name} was expected to ${entry.expected.toString()}`)
                     .toBe(entry.expected);
             }
