@@ -58,9 +58,8 @@ export default interface Injector<T = object>
      * 
      * @returns {MustUseConcerns<T>} The modified target class
      *
-     * @throws {AlreadyRegisteredException} If given concern classes conflict with target class' parent concern classes,
-     *                                      e.g. in case of duplicates.
-     * @throws {InjectionException} If unable to register concern classes in target class
+     * @throws {AlreadyRegisteredException}
+     * @throws {InjectionException}
      */
     defineConcerns<C extends Concern, T = object>(target: T, concerns: ConcernConstructor<C>[]): MustUseConcerns<T>;
 
