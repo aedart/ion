@@ -26,3 +26,8 @@ export const FUNCTION_PROTOTYPE: object = Reflect.getPrototypeOf(Function) as ob
  * @type {object}
  */
 export const TYPED_ARRAY_PROTOTYPE: object = Reflect.getPrototypeOf(Int8Array) as object;
+
+import ClassBlueprint from "./ClassBlueprint";
+export {
+    type ClassBlueprint
+}
