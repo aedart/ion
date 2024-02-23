@@ -6,7 +6,7 @@ import type {
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import { configureCustomError } from "@aedart/support/exceptions";
 import { getNameOrDesc } from "@aedart/support/reflections";
-import { InjectionError } from "@aedart/support/concerns";
+import InjectionError from "./InjectionError";
 
 /**
  * Already Registered Error
