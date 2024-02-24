@@ -11,5 +11,6 @@ export {
 };
 
 export * from './exceptions';
+export * from './isConcernConfiguration';
 export * from './isConcernConstructor';
 export * from './use';
