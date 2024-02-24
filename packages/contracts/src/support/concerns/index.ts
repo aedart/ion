@@ -120,6 +120,7 @@ import Concern from "./Concern";
 import ConcernConstructor from "./ConcernConstructor";
 import Configuration from "./Configuration";
 import Container from "./Container";
+import Factory from "./Factory";
 import MustUseConcerns from "./MustUseConcerns";
 import Injector from "./Injector";
 import Owner from "./Owner";
@@ -128,6 +129,7 @@ export {
     type ConcernConstructor,
     type Configuration,
     type Container,
+    type Factory,
     type Injector,
     type MustUseConcerns,
     type Owner
