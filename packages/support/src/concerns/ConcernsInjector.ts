@@ -249,15 +249,8 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     // TODO: Incomplete
     protected resolveConfiguration(entry: ConcernConstructor|Configuration): Configuration
     {
-        // TODO: If a concern class is given, create a new configuration for it
+        // TODO: Use Concern Configuration Factory to resolve configuration
 
-        // TODO: If configuration is given, create a new one and merge given into it
-        
-        // TODO: Otherwise, fail! (entry is of unsupported type)
-        
-        // TODO: Remove unsafe property keys
-        
-        // TODO: Finally, return configuration
         return {} as Configuration;
     }
 
@@ -329,11 +322,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         const wasDefined: boolean = Reflect.defineProperty((target as object), property, descriptor);
 
         if (!wasDefined) {
-            const key = typeof property == 'symbol'
-                ? property.description
-                : property.toString();
-
-            const reason: string = failMessage || `Unable to define "${key}" property in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
+            const reason: string = failMessage || `Unable to define "${property.toString()}" property in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
             throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason);
         }
 
