@@ -159,7 +159,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         this.definePropertyInTarget<T>(target.prototype, CONCERNS, {
             get: function() {
                 // @ts-expect-error This = target instance. TypeScript just doesn't understand context here...
-                const instance: T & Owner = this;
+                const instance: T & Owner = this; /* eslint-disable-line @typescript-eslint/no-this-alias */
 
                 if (!CONTAINERS_REGISTRY.has(instance)) {
                     CONTAINERS_REGISTRY.set(instance, new ConcernsContainer(instance, concerns));
