@@ -1,4 +1,5 @@
-import { UNSAFE_PROPERTY_KEYS } from "@aedart/support/concerns/index";
+import { DANGEROUS_PROPERTIES } from "@aedart/contracts/support/objects";
+import { CONCERN_CLASSES, CONCERNS, PROVIDES } from "@aedart/contracts/support/concerns";
 
 /**
  * Determine if given property key is considered "unsafe"
@@ -11,5 +12,30 @@ import { UNSAFE_PROPERTY_KEYS } from "@aedart/support/concerns/index";
  */
 export function isUnsafeKey(key: PropertyKey): boolean
 {
-    return UNSAFE_PROPERTY_KEYS.includes(key);
+    return [
+        ...DANGEROUS_PROPERTIES,
+    
+        // ----------------------------------------------------------------- //
+        // Defined by Concern interface / Abstract Concern:
+        // ----------------------------------------------------------------- //
+    
+        // It is NOT possible, nor advised to attempt to alias a Concern's
+        // constructor into a target class.
+        'constructor',
+    
+        // The concernOwner property (getter) shouldn't be aliased either
+        'concernOwner',
+    
+        // The static properties and methods (just in case...)
+        PROVIDES,
+    
+        // ----------------------------------------------------------------- //
+        // Other properties and methods:
+        // ----------------------------------------------------------------- //
+    
+        // In case that a concern class uses other concerns, prevent them
+        // from being aliased.
+        CONCERN_CLASSES,
+        CONCERNS,
+    ].includes(key);
 }
