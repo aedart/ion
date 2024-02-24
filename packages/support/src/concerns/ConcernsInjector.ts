@@ -226,6 +226,40 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //     return false;
     // }
 
+    /**
+     * Normalises given concerns into a list of concern configurations  
+     * 
+     * @param {(ConcernConstructor | Configuration)[]} concerns
+     * 
+     * @returns {Configuration[]}
+     * 
+     * @throws {InjectionError}
+     */
+    public normalise(concerns: (ConcernConstructor|Configuration)[]): Configuration[]
+    {
+        const output: Configuration[] = [];
+        
+        for (const entry of concerns) {
+            output.push(this.resolveConfiguration(entry));
+        }
+        
+        return output;
+    }
+
+    // TODO: Incomplete
+    protected resolveConfiguration(entry: ConcernConstructor|Configuration): Configuration
+    {
+        // TODO: If a concern class is given, create a new configuration for it
+
+        // TODO: If configuration is given, create a new one and merge given into it
+        
+        // TODO: Otherwise, fail! (entry is of unsupported type)
+        
+        // TODO: Remove unsafe property keys
+        
+        // TODO: Finally, return configuration
+        return {} as Configuration;
+    }
 
     /*****************************************************************
      * Internals
