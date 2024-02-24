@@ -1,15 +1,14 @@
 import type {
-    Concern,
     ConcernConstructor,
     Injector,
     MustUseConcerns,
     Configuration,
     Owner,
     Container,
+    Factory,
 } from "@aedart/contracts/support/concerns";
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import {
-    ALWAYS_HIDDEN,
     CONCERN_CLASSES,
     CONCERNS
 } from "@aedart/contracts/support/concerns";
@@ -22,6 +21,7 @@ import {
     InjectionError
 } from "./exceptions";
 import ConcernsContainer from './ConcernsContainer';
+import ConfigurationFactory from "./ConfigurationFactory";
 
 /**
  * A map of the concern owner instances and their concerns container
@@ -52,6 +52,15 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     readonly #target: T;
 
     /**
+     * Concern Configuration Factory
+     * 
+     * @type {Factory}
+     * 
+     * @protected
+     */
+    protected factory: Factory;
+    
+    /**
      * Create a new Concerns Injector instance
      * 
      * @template T = object
@@ -61,6 +70,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     public constructor(target: T)
     {
         this.#target = target;
+        this.factory = this.makeConfigurationFactory();
     }
     
     /**
@@ -241,18 +251,10 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         const output: Configuration[] = [];
         
         for (const entry of concerns) {
-            output.push(this.resolveConfiguration(entry));
+            output.push(this.normaliseEntry(entry));
         }
         
         return output;
-    }
-
-    // TODO: Incomplete
-    protected resolveConfiguration(entry: ConcernConstructor|Configuration): Configuration
-    {
-        // TODO: Use Concern Configuration Factory to resolve configuration
-
-        return {} as Configuration;
     }
 
     /*****************************************************************
@@ -295,6 +297,22 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         }
 
         return registry;
+    }
+
+    /**
+     * Normalises the given entry into a concern configuration
+     *
+     * @param {ConcernConstructor | Configuration} entry
+     *
+     * @returns {Configuration}
+     *
+     * @throws {InjectionError}
+     * 
+     * @protected
+     */
+    protected normaliseEntry(entry: ConcernConstructor|Configuration): Configuration
+    {
+        return this.factory.make(this.target as object, entry);
     }
     
     /**
@@ -355,72 +373,15 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         return null;
     }
 
-    // ------------------------------------------------------------------------- //
-    // TODO: Was previously part of AbstractConcern, but the logic should belong here
-    // TODO: instead...
-
     /**
-     * TODO: Adapt this...
+     * Returns a new concern configuration factory instance
      * 
-     * In-memory cache of resolved keys (properties and methods), which
-     * are offered by concern(s) and can be aliased.
-     *
-     * @type {WeakMap<ThisType<ConcernConstructor>, PropertyKey[]>}
-     *
-     * @protected
-     * @static
-     */
-    protected static resolvedConcernKeys: WeakMap<ThisType<ConcernConstructor>, PropertyKey[]> = new WeakMap();
-
-    /**
-     * TODO: Adapt this...
+     * @returns {Factory}
      * 
-     * Removes keys that should remain hidden
-     *
-     * @see ALWAYS_HIDDEN
-     *
-     * @param {PropertyKey[]} keys
-     *
-     * @returns {PropertyKey[]}
-     *
      * @protected
-     * @static
      */
-    protected static removeAlwaysHiddenKeys(keys: PropertyKey[]): PropertyKey[]
+    protected makeConfigurationFactory(): Factory
     {
-        return keys.filter((key: PropertyKey) => {
-            return !ALWAYS_HIDDEN.includes(key);
-        });
-    }
-
-    /**
-     * TODO: Adapt this...
-     * 
-     * Remember the resolved keys (properties and methods) for given target concern class
-     *
-     * @param {ThisType<ConcernConstructor>} concern
-     * @param {() => PropertyKey[]} callback
-     * @param {boolean} [force=false]
-     *
-     * @returns {PropertyKey[]}
-     *
-     * @protected
-     * @static
-     */
-    protected static rememberConcernKeys(
-        concern: ThisType<ConcernConstructor>,
-        callback: () => PropertyKey[],
-        force: boolean = false
-    ): PropertyKey[]
-    {
-        if (!force && this.resolvedConcernKeys.has(concern)) {
-            return this.resolvedConcernKeys.get(concern) as PropertyKey[];
-        }
-
-        const keys: PropertyKey[] = callback();
-
-        this.resolvedConcernKeys.set(concern, keys);
-
-        return keys;
+        return new ConfigurationFactory();
     }
 }
