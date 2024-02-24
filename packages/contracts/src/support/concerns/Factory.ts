@@ -26,8 +26,7 @@ export default interface Factory
      * @param {ConcernConstructor | Configuration} entry
      * 
      * @returns {Configuration}
-     * 
-     * @throws {UnsafeAliasException} If an alias points to an "unsafe" property or method in concern
+     *
      * @throws {InjectionException} If entry is unsupported or invalid
      */
     make(target: object, entry: ConcernConstructor | Configuration): Configuration;

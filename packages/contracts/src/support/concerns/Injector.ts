@@ -112,6 +112,7 @@ export default interface Injector<T = object>
      * @returns {boolean} `true` if "alias" was in target class. `false` if not, e.g. a property or method already
      *                    exists in target class' prototype chain, with the same name as the alias.
      *
+     * @throws {UnsafeAliasException} If an alias points to an "unsafe" property or method in concern
      * @throws {InjectionException} If unable to define "alias" in target class, e.g. due to failure when obtaining
      *                              or defining [property descriptors]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor#description}.
      */
