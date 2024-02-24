@@ -2,14 +2,14 @@ import AbstractConcern from "./AbstractConcern";
 import { ConcernClassBlueprint } from "./ConcernClassBlueprint";
 import ConcernsContainer from "./ConcernsContainer";
 import ConcernsInjector from "./ConcernsInjector";
-// import ConfigurationFactory from "./ConfigurationFactory";
+import ConfigurationFactory from "./ConfigurationFactory";
 
 export {
     AbstractConcern,
     ConcernClassBlueprint,
     ConcernsContainer,
     ConcernsInjector,
-    // ConfigurationFactory
+    ConfigurationFactory
 };
 
 export * from './exceptions';
