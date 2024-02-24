@@ -19,7 +19,7 @@ export default interface Factory
      * configuration is merged into the new configuration._
      * 
      * _**C**: Configuration's `aliases` are automatically populated. When a concern
-     * configuration is provided, its evt. aliases are merged with the default ones,
+     * configuration is provided, its evt. aliases merged with the default ones,
      * unless `allowAliases` is set to `false`, in which case all aliases are removed._
      * 
      * @param {object} target
