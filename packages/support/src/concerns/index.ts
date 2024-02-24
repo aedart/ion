@@ -53,4 +53,5 @@ export {
 export * from './exceptions';
 export * from './isConcernConfiguration';
 export * from './isConcernConstructor';
+export * from './isUnsafeKey';
 export * from './use';
