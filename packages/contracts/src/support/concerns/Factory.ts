@@ -10,7 +10,7 @@ export default interface Factory
 {
     /**
      * Returns a new normalised concern configuration for given concern "entry"
-     * 
+     *
      * **Note**: _"normalised" in this context means:_
      * 
      * _**A**: If a concern class is given, then a new concern configuration made._
@@ -22,11 +22,13 @@ export default interface Factory
      * configuration is provided, its evt. aliases are merged with the default ones,
      * unless `allowAliases` is set to `false`, in which case all aliases are removed._
      * 
+     * @param {object} target
      * @param {ConcernConstructor | Configuration} entry
      * 
      * @returns {Configuration}
      * 
+     * @throws {UnsafeAliasException} If an alias points to an "unsafe" property or method in concern
      * @throws {InjectionException} If entry is unsupported or invalid
      */
-    make(entry: ConcernConstructor | Configuration): Configuration;
+    make(target: object, entry: ConcernConstructor | Configuration): Configuration;
 }
