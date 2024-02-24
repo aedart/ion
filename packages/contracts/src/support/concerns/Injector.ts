@@ -34,15 +34,14 @@ export default interface Injector<T = object>
      * _**C**: Defines "aliases" (proxy properties and methods) in target class' prototype, via {@link defineAliases}._ 
      *
      * @template T = object The target class that concern classes must be injected into
-     * @template C = {@link Concern}
      *
-     * @param {ConcernConstructor<C> | Configuration<C>} concerns List of concern classes / injection configurations
+     * @param {ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
      * 
      * @returns {MustUseConcerns<T>} The modified target class
      *
      * @throws {InjectionException}
      */
-    inject<C extends Concern>(...concerns: (ConcernConstructor<C>|Configuration<C>)[]): MustUseConcerns<T>;
+    inject(...concerns: (ConcernConstructor|Configuration)[]): MustUseConcerns<T>;
 
     /**
      * Defines the concern classes that must be used by the target class.

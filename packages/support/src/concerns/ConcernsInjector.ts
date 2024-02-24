@@ -76,7 +76,6 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     }
     
     // TODO: INCOMPLETE...
-    
     //
     // /**
     //  * Injects concern classes into the target class and return the modified target.
@@ -90,15 +89,14 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //  * _**C**: Defines "aliases" (proxy properties and methods) in target class' prototype, via {@link defineAliases}._
     //  *
     //  * @template T = object The target class that concern classes must be injected into
-    //  * @template C = {@link Concern}
     //  *
-    //  * @param {Constructor<C> | Configuration<C>} concerns List of concern classes / injection configurations
+    //  * @param {ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
     //  *
     //  * @returns {MustUseConcerns<T>} The modified target class
     //  *
     //  * @throws {InjectionException}
     //  */
-    // public inject<C = Concern>(...concerns: (Constructor<C>|Configuration<C>)[]): MustUseConcerns<T>
+    // inject(...concerns: (ConcernConstructor|Configuration)[]): MustUseConcerns<T>;
     // {
     //     // TODO: implement this method...
     //    
