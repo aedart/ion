@@ -32,10 +32,7 @@ export default interface Configuration<T extends Concern = Concern>
      * 
      * **Note**: _Defaults to same property and method names as "aliases", as those defined by
      * a concern class' [PROVIDES]{@link import('@aedart/contracts/support/concerns').PROVIDES},
-     * if this property is `undefined`._
-     * 
-     * **Note**: _If an empty array is given, then it has the same effect as setting {@link allowAliases}
-     * to `false`._
+     * if this property is empty or `undefined`._
      * 
      * @template T extends Concern = Concern
      * 
