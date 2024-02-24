@@ -131,26 +131,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      */
     public defineConcerns<T = object>(target: T, concerns: ConcernConstructor[]): MustUseConcerns<T>
     {
-        // Obtain evt. previous defined concern classes in target.
-        const alreadyRegistered: ConcernConstructor[] = (Reflect.has(target as object, CONCERN_CLASSES))
-            ? target[CONCERN_CLASSES as keyof typeof target] as ConcernConstructor[]
-            : [];
-
-        // Make a registry of concern classes to be registered in given target
-        const registry: ConcernConstructor[] = [ ...alreadyRegistered ];
-        for (const concern of concerns) {
-
-            // Fail if concern is already registered
-            if (registry.includes(concern)) {
-                const source = this.findSourceOf(concern, target as object, true);
-                throw new AlreadyRegisteredError(target as ConstructorOrAbstractConstructor, concern, source as ConstructorOrAbstractConstructor);
-            }
-
-            registry.push(concern);
-        }
+        const registry = this.resolveConcernsRegistry(target as object, concerns);
         
-        // Finally, define concern classes property
-        return this.defineConcernClassesProperty<T>(target, registry);
+        return this.definePropertyInTarget<T>(target, CONCERN_CLASSES, {
+            get: function() {
+                return registry;
+            }
+        }) as MustUseConcerns<T>;
     }
 
     /**
@@ -170,11 +157,11 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     public defineContainer<T = object>(target: MustUseConcerns<T>): MustUseConcerns<T>
     {
         const concerns: ConcernConstructor[] = target[CONCERN_CLASSES];
-        
-        // Define concerns property in target's prototype
-        const wasDefined: boolean = Reflect.defineProperty(target.prototype, CONCERNS, {
+
+        this.definePropertyInTarget<T>(target.prototype, CONCERNS, {
             get: function() {
-                const instance: T & Owner = this; // This = target instance
+                // @ts-expect-error This = target instance. TypeScript just doesn't understand context here...
+                const instance: T & Owner = this;
 
                 if (!CONTAINERS_REGISTRY.has(instance)) {
                     CONTAINERS_REGISTRY.set(instance, new ConcernsContainer(instance, concerns));
@@ -183,11 +170,6 @@ export default class ConcernsInjector<T = object> implements Injector<T>
                 return CONTAINERS_REGISTRY.get(instance);
             }
         });
-
-        if (!wasDefined) {
-            const reason: string = `Unable to define concerns container in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
-            throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason);
-        }
         
         return target;
     }
@@ -252,35 +234,78 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      ****************************************************************/
 
     /**
-     * Defines the {@link CONCERN_CLASSES} static property in given target
+     * Resolves the concern classes to be registered (registry), for the given target
      *
+     * **Note**: _Method ensures that if target already has concern classes defined, then those
+     * are merged into the resulting list._
+     *
+     * @param {object} target
+     * @param {ConcernConstructor[]} concerns
+     *
+     * @returns {ConcernConstructor[]} Registry with concern classes that are ready to be registered in given target
+     *
+     * @throws {AlreadyRegisteredError} If a concern has already been registered in the target
+     *
+     * @protected
+     */
+    protected resolveConcernsRegistry(target: object, concerns: ConcernConstructor[]): ConcernConstructor[]
+    {
+        // Obtain evt. previous defined concern classes in target.
+        const alreadyRegistered: ConcernConstructor[] = (Reflect.has(target as object, CONCERN_CLASSES))
+            ? target[CONCERN_CLASSES as keyof typeof target] as ConcernConstructor[]
+            : [];
+
+        // Make a registry of concern classes to be registered in given target
+        const registry: ConcernConstructor[] = [ ...alreadyRegistered ];
+        for (const concern of concerns) {
+
+            // Fail if concern is already registered
+            if (registry.includes(concern)) {
+                const source = this.findSourceOf(concern, target as object, true);
+                throw new AlreadyRegisteredError(target as ConstructorOrAbstractConstructor, concern, source as ConstructorOrAbstractConstructor);
+            }
+
+            registry.push(concern);
+        }
+
+        return registry;
+    }
+    
+    /**
+     * Defines a property in given target
+     * 
      * @template T = object
-     *
+     * 
      * @param {T} target
-     * @param {ConcernConstructor[]} registry
-     *
-     * @returns {MustUseConcerns<T>}
-     *
+     * @param {PropertyKey} property
+     * @param {PropertyDescriptor} descriptor
+     * @param {string} [failMessage]
+     * 
+     * @returns {T}
+     * 
      * @throws {InjectionError}
      * 
      * @protected
      */
-    protected defineConcernClassesProperty<T = object>(target: T, registry: ConcernConstructor[]): MustUseConcerns<T>
+    protected definePropertyInTarget<T = object>(
+        target: T,
+        property: PropertyKey,
+        descriptor: PropertyDescriptor,
+        failMessage?: string
+    ): T
     {
-        // Define static property that contains concern classes in target.
-        const wasDefined: boolean = Reflect.defineProperty(target as object, CONCERN_CLASSES, {
-            get: function() {
-                return registry;
-            }
-        });
+        const wasDefined: boolean = Reflect.defineProperty((target as object), property, descriptor);
 
         if (!wasDefined) {
-            const reason: string = `Unable to define concern classes in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
+            const key = typeof property == 'symbol'
+                ? property.description
+                : property.toString();
+
+            const reason: string = failMessage || `Unable to define "${key}" property in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
             throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason);
         }
 
-        // Finally, return the modified target...
-        return target as MustUseConcerns<T>;
+        return target;
     }
     
     /**
