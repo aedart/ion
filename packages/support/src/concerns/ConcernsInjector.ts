@@ -4,11 +4,14 @@ import type {
     Injector,
     MustUseConcerns,
     Configuration,
+    Owner,
+    Container,
 } from "@aedart/contracts/support/concerns";
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import {
     ALWAYS_HIDDEN,
-    CONCERN_CLASSES
+    CONCERN_CLASSES,
+    CONCERNS
 } from "@aedart/contracts/support/concerns";
 import {
     getAllParentsOfClass,
@@ -18,6 +21,16 @@ import {
     AlreadyRegisteredError,
     InjectionError
 } from "./exceptions";
+import ConcernsContainer from './ConcernsContainer';
+
+/**
+ * A map of the concern owner instances and their concerns container
+ * 
+ * @internal
+ * 
+ * @type {WeakMap<Owner, Container>}
+ */
+const CONTAINERS_REGISTRY: WeakMap<Owner, Container> = new WeakMap();
 
 /**
  * TODO: Incomplete
@@ -139,29 +152,46 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         // Finally, define concern classes property
         return this.defineConcernClassesProperty<T>(target, registry);
     }
+
+    /**
+     * Defines a concerns {@link Container} in target class' prototype.
+     *
+     * **Note**: _Method changes the target class, such that it implements and respects the
+     * [Owner]{@link import('@aedart/contracts/support/concerns').Owner} interface!_
+     *
+     * @template T = object
+     *
+     * @param {MustUseConcerns<T>} target The target in which a concerns container must be defined
+     *
+     * @returns {MustUseConcerns<T>} The modified target class
+     *
+     * @throws {InjectionError} If unable to define concerns container in target class
+     */
+    public defineContainer<T = object>(target: MustUseConcerns<T>): MustUseConcerns<T>
+    {
+        const concerns: ConcernConstructor[] = target[CONCERN_CLASSES];
+        
+        // Define concerns property in target's prototype
+        const wasDefined: boolean = Reflect.defineProperty(target.prototype, CONCERNS, {
+            get: function() {
+                const instance: T & Owner = this; // This = target instance
+
+                if (!CONTAINERS_REGISTRY.has(instance)) {
+                    CONTAINERS_REGISTRY.set(instance, new ConcernsContainer(instance, concerns));
+                }
+
+                return CONTAINERS_REGISTRY.get(instance);
+            }
+        });
+
+        if (!wasDefined) {
+            const reason: string = `Unable to define concerns container in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
+            throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason);
+        }
+        
+        return target;
+    }
     
-    //
-    // /**
-    //  * Defines a concerns {@link Container} in target class' prototype.
-    //  *
-    //  * **Note**: _Method changes the target class, such that it implements and respects the
-    //  * [Owner]{@link import('@aedart/contracts/support/concerns').Owner} interface!_
-    //  *
-    //  * @template T = object
-    //  *
-    //  * @param {MustUseConcerns<T>} target The target in which a concerns container must be defined
-    //  *
-    //  * @returns {MustUseConcerns<T>} The modified target class
-    //  *
-    //  * @throws {InjectionException} If unable to define concerns container in target class
-    //  */
-    // public defineContainer<T = object>(target: MustUseConcerns<T>): MustUseConcerns<T>
-    // {
-    //     // TODO: implement this method...
-    //
-    //     return target;
-    // }
-    //
     // /**
     //  * Defines "aliases" (proxy properties and methods) in target class' prototype, such that they
     //  * point to the properties and methods available in the concern classes.
