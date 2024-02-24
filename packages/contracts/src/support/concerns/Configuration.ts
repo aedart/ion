@@ -1,5 +1,5 @@
-import type { Constructor } from "@aedart/contracts";
 import Concern from "./Concern";
+import ConcernConstructor from "./ConcernConstructor";
 import type {
     Aliases 
 } from "./types";
@@ -11,50 +11,47 @@ import type {
  * along with other aspects of the injection, such as what aliases to use
  * and what properties or methods should not be aliased.
  * 
+ * @template T extends Concern = Concern
+ * 
  * @see {Concern}
  * @see {Aliases}
  */
-export default interface Configuration<T extends Concern>
+export default interface Configuration<T extends Concern = Concern>
 {
     /**
      * The Concern Class that must be injected into a target class
      * 
-     * @type {Constructor<Concern>}
+     * @template T extends Concern = Concern
+     * 
+     * @type {ConcernConstructor<T>}
      */
-    concern: Constructor<T>;
+    concern: ConcernConstructor<T>;
 
     /**
      * Aliases for Concern's properties or methods.
      * 
-     * **Note**: _An "injector" must always default to the same property and
-     * method names as those defined in the Concern Class, if a given property or
-     * method is not specified here._
+     * **Note**: _Defaults to same property and method names as "aliases", as those defined by
+     * a concern class' [PROVIDES]{@link import('@aedart/contracts/support/concerns').PROVIDES},
+     * if this property is `undefined`._
      * 
-     * @type {Aliases<Concern>|undefined}
+     * **Note**: _If an empty array is given, then it has the same effect as setting {@link allowAliases}
+     * to `false`._
+     * 
+     * @template T extends Concern = Concern
+     * 
+     * @type {Aliases<T>|undefined}
      */
     aliases?: Aliases<T>;
-
-    /**
-     * Properties and methods that MUST NOT be aliased into a target class.
-     * 
-     * **Note**: _Defaults to list provided by the Concern Class' [HIDDEN]{@link import('@aedart/contracts/support/concerns').HIDDEN},
-     * if not specified here._
-     * 
-     * **Note**: _Properties and methods that are defined in [ALWAYS_HIDDEN]{@link import('@aedart/contracts/support/concerns').ALWAYS_HIDDEN}
-     * will always be hidden, regardless of those defined here._
-     * 
-     * @type {PropertyKey[]|undefined}
-     */
-    hidden?: PropertyKey[];
 
     /**
      * Flag that indicates whether an "injector" is allowed to create
      * "aliases" (proxy) properties and methods into a target class's prototype.
      * 
-     * If set to `false`, then {@link aliases} and {@link hidden} settings
-     * are ignored.
+     * **Note**: _Defaults to `true` if this property is `undefined`._
+     * 
+     * **Note**: _If set to `false`, then {@link aliases} are ignored._
      * 
      * @type {boolean}
      */
-    allowAliases: boolean;
+    allowAliases?: boolean;
 }
