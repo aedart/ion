@@ -2,10 +2,10 @@ import { configureStackTrace } from "./configureStackTrace";
 
 /**
  * Configures the custom error
- * 
- * **Note**: _Method configures error by setting its [stack trace]{@link configureStackTrace}
- * and setting the error's common properties, e.g. name_
  *
+ * **Note**: _Method sets the custom error's name and optionally captures a [stack trace]{@link configureStackTrace}
+ * and sets it as the custom error's stack._
+ * 
  * **Example**:
  * ```
  * class MyCustomError extends Error
@@ -22,12 +22,15 @@ import { configureStackTrace } from "./configureStackTrace";
  * @template T extends Error
  *  
  * @param {Error} error
+ * @param {boolean} [captureStackTrace=false]
  * 
  * @return {Error}
  */
-export function configureCustomError<T extends Error>(error: T): T
+export function configureCustomError<T extends Error>(error: T, captureStackTrace: boolean = false): T
 {
-    configureStackTrace(error);
+    if (captureStackTrace) {
+        configureStackTrace(error);    
+    }
 
     error.name = Reflect.getPrototypeOf(error)?.constructor.name as string;
     
