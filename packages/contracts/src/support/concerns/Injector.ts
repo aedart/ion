@@ -90,7 +90,8 @@ export default interface Injector<T = object>
      * 
      * @returns {UsesConcerns<T>} The modified target class
      *
-     * @throws {InjectionException} If case of alias naming conflicts. Or, if unable to define aliases in target class.
+     * @throws {AliasConflictException} If case of alias naming conflicts.
+     * @throws {InjectionException} If unable to define aliases in target class.
      */
     defineAliases<T = object>(target: UsesConcerns<T>, configurations: Configuration<Concern>[]): UsesConcerns<T>;
 
