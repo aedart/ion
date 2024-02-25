@@ -672,6 +672,9 @@ describe('@aedart/support/objects', () => {
         });
 
         it('can clones objects of native kind', () => {
+            
+            const now = new Date();
+            
             const dataSet = [
                 {
                     name: 'ArrayBuffer',
@@ -699,10 +702,10 @@ describe('@aedart/support/objects', () => {
                 },
                 {
                     name: 'Date',
-                    source: { value: new Date('2024-02-19 14:13:25') },
+                    source: { value: now },
                     expectedInstanceOf: Date,
                     match: (cloned) => {
-                        return cloned.valueOf() === 1708348405000; // milliseconds for since the epoch for date
+                        return cloned.valueOf() === now.valueOf(); // milliseconds for since the epoch for date
                     }
                 },
                 {
