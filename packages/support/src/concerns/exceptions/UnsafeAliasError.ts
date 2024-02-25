@@ -48,7 +48,7 @@ export default class UnsafeAliasError extends InjectionError implements UnsafeAl
         message?: string,
         options?: ErrorOptions
     ) {
-        const reason: string = message || `Alias ${alias.toString()} points to "unsafe" property or method ${key.toString()} in concern ${getNameOrDesc(concern)}, in target ${getNameOrDesc(target)}`;
+        const reason: string = message || `Alias "${alias.toString()}" in target ${getNameOrDesc(target)} points to unsafe property or method: "${key.toString()}", in concern ${getNameOrDesc(concern)}.`;
         super(target, concern, reason, options);
 
         configureCustomError(this);
