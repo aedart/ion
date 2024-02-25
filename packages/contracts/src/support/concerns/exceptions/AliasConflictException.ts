@@ -1,5 +1,4 @@
 import { InjectionException } from "@aedart/contracts/support/concerns";
-import ConcernConstructor from "../ConcernConstructor";
 import {ConstructorOrAbstractConstructor} from "@aedart/contracts";
 import UsesConcerns from "../UsesConcerns";
 
