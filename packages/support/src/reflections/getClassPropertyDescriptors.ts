@@ -45,7 +45,6 @@ export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstru
             }
 
             // Merge evt. existing descriptor object with the one obtained from target.
-            
             if (Reflect.has(output, key)) {
                 output[key] = merge()
                     .using({ overwriteWithUndefined: false })
