@@ -14,14 +14,15 @@ import {
 } from "@aedart/contracts/support/concerns";
 import {
     getAllParentsOfClass,
-    getNameOrDesc
+    getNameOrDesc,
+    getClassPropertyDescriptors,
 } from "@aedart/support/reflections";
-import {
-    AlreadyRegisteredError,
-    InjectionError
-} from "./exceptions";
+import AlreadyRegisteredError from './exceptions/AlreadyRegisteredError';
+import InjectionError from './exceptions/InjectionError';
+import UnsafeAliasError from './exceptions/UnsafeAliasError';
 import ConcernsContainer from './ConcernsContainer';
 import ConfigurationFactory from "./ConfigurationFactory";
+import { isUnsafeKey } from "./isUnsafeKey";
 
 /**
  * A map of the concern owner instances and their concerns container
@@ -59,6 +60,18 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * @protected
      */
     protected factory: Factory;
+
+    /**
+     * In-memory cache property descriptors for target class and concern classes
+     *
+     * @type {WeakMap<ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor, Record<PropertyKey, PropertyDescriptor>>}
+     *
+     * @private
+     */
+    #cachedDescriptors: WeakMap<
+        ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
+        Record<PropertyKey, PropertyDescriptor>
+    > = new WeakMap();
     
     /**
      * Create a new Concerns Injector instance
@@ -181,7 +194,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         
         return target;
     }
-    
+
     // /**
     //  * Defines "aliases" (proxy properties and methods) in target class' prototype, such that they
     //  * point to the properties and methods available in the concern classes.
@@ -191,52 +204,73 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //  * @template T = object
     //  *
     //  * @param {UsesConcerns<T>} target The target in which "aliases" must be defined in
-    //  * @param {Configuration<Concern>[]} configurations List of concern injection configurations
+    //  * @param {Configuration[]} configurations List of concern injection configurations
     //  *
     //  * @returns {UsesConcerns<T>} The modified target class
     //  *
     //  * @throws {AliasConflictException} If case of alias naming conflicts.
     //  * @throws {InjectionException} If unable to define aliases in target class.
     //  */
-    // public defineAliases<T = object>(target: UsesConcerns<T>, configurations: Configuration<Concern>[]): UsesConcerns<T>
+    // defineAliases<T = object>(target: UsesConcerns<T>, configurations: Configuration[]): UsesConcerns<T>
     // {
     //     // TODO: implement this method...
+    //          // TODO: cache target property descriptors
+    //          // TODO: cache concern property descriptors
+    //          // TODO:  - delete concern property descriptors after its aliases are defined
+    //          // TODO: clear all cached descriptors, after all aliases defined
     //
     //     return target;
     // }
-    //
-    // /**
-    //  * Defines an "alias" (proxy property or method) in target class' prototype, to a property or method
-    //  * in given concern.
-    //  *
-    //  * **Note**: _Method will do nothing, if a property or method already exists in the target class' prototype
-    //  * chain, with the same name as given "alias"._
-    //  *
-    //  * @template T = object
-    //  *
-    //  * @param {UsesConcerns<T>} target The target in which "alias" must be defined in
-    //  * @param {PropertyKey} alias Name of the "alias" in the target class (name of the proxy property or method)
-    //  * @param {PropertyKey} key Name of the property or method that the "alias" is for, in the concern class (`source`)
-    //  * @param {Constructor<Concern>} source The concern class that holds the property or methods (`key`)
-    //  *
-    //  * @returns {boolean} `true` if "alias" was in target class. `false` if not, e.g. a property or method already
-    //  *                    exists in target class' prototype chain, with the same name as the alias.
-    //  *
-    //  * @throws {UnsafeAliasException} If an alias points to an "unsafe" property or method in concern
-    //  * @throws {InjectionException} If unable to define "alias" in target class, e.g. due to failure when obtaining
-    //  *                              or defining [property descriptors]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor#description}.
-    //  */
-    // public defineAlias<T = object>(
-    //     target: UsesConcerns<T>,
-    //     alias: PropertyKey,
-    //     key: PropertyKey,
-    //     source: Constructor<Concern>
-    // ): boolean
-    // {
-    //     // TODO: implement this method...
-    //
-    //     return false;
-    // }
+
+    /**
+     * Defines an "alias" (proxy property or method) in target class' prototype, which points to a property or method
+     * in the given concern.
+     *
+     * **Note**: _Method will do nothing, if a property or method already exists in the target class' prototype
+     * chain, with the same name as given "alias"._
+     *
+     * @template T = object
+     *
+     * @param {UsesConcerns<T>} target The target in which "alias" must be defined in
+     * @param {PropertyKey} alias Name of the "alias" in the target class (name of the proxy property or method)
+     * @param {PropertyKey} key Name of the property or method that the "alias" points to, in the concern class (`source`)
+     * @param {Constructor} source The source concern class that contains the property or methods that is pointed to (`key`)
+     *
+     * @returns {boolean} `true` if "alias" was in target class. `false` if a property or method already exists in the
+     *                     target, with the same name as the "alias".
+     *
+     * @throws {UnsafeAliasError} If an alias points to an "unsafe" property or method in the source concern class.
+     * @throws {InjectionException} If unable to define "alias" in target class.
+     */
+    public defineAlias<T = object>(
+        target: UsesConcerns<T>,
+        alias: PropertyKey,
+        key: PropertyKey,
+        source: ConcernConstructor
+    ): boolean
+    {
+        // Abort if key is "unsafe"
+        if (this.isUnsafe(key)) {
+            throw new UnsafeAliasError(target, source, alias, key);
+        }
+
+        // Skip if a property key already exists with same name as the "alias"
+        const targetDescriptors = this.getDescriptorsFor(target);
+        if (Reflect.has(targetDescriptors, alias)) {
+            return false;
+        }
+        
+        // Abort if unable to find descriptor that matches given key in concern class.
+        const concernDescriptors = this.getDescriptorsFor(source);
+        if (!Reflect.has(concernDescriptors, key)) {
+            throw new InjectionError(target, source, `"${key.toString()}" does not exist in concern ${getNameOrDesc(source)} - attempted aliased as "${alias.toString()}" in target ${getNameOrDesc(target)}`);
+        }
+
+        // Define the proxy property or method, using the concern's property descriptor to determine what must be defined.
+        const proxy = this.resolveProxyDescriptor(key, source, concernDescriptors[key])
+
+        return this.definePropertyInTarget<T>(target.prototype, alias, proxy) !== undefined;
+    }
 
     /**
      * Normalises given concerns into a list of concern configurations  
@@ -375,6 +409,168 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     }
 
     /**
+     * Resolves the proxy property descriptor for given key in source concern
+     *
+     * @param {PropertyKey} key
+     * @param {ConcernConstructor} source
+     * @param {PropertyDescriptor} keyDescriptor Descriptor of `key` in `source`
+     *
+     * @returns {PropertyDescriptor} Descriptor to be used for defining alias in a target class
+     *
+     * @protected
+     */
+    protected resolveProxyDescriptor(key: PropertyKey, source: ConcernConstructor, keyDescriptor: PropertyDescriptor): PropertyDescriptor
+    {
+        const proxy: PropertyDescriptor = Object.assign(Object.create(null), {
+            configurable: keyDescriptor.configurable,
+            enumerable: keyDescriptor.enumerable,
+            // writable: keyDescriptor.writable // Do not specify here...            
+        });
+
+        // A descriptor can only have an accessor, a value or writable attribute. Depending on the "value"
+        // a different kind of proxy must be defined.
+        const hasValue: boolean = Reflect.has(keyDescriptor, 'value');
+
+        if (hasValue && typeof keyDescriptor.value == 'function') {
+            proxy.value = this.makeMethodProxy(key, source);
+        } else if (hasValue) {
+            // When value is not a function, it could be a writable attribute.
+            // To alias such a property, we first define a getter for it.
+            proxy.get = this.makeGetPropertyProxy(key, source);
+
+            // Secondly, if the property is writable, then define a setter for
+            if (keyDescriptor.writable) {
+                proxy.set = this.makeSetPropertyProxy(key, source);
+            }
+        } else {
+            // Otherwise, the property can a getter and or a setter...
+            if (Reflect.has(keyDescriptor, 'get')) {
+                proxy.get = this.makeGetPropertyProxy(key, source);
+            }
+
+            if (Reflect.has(keyDescriptor, 'set')) {
+                proxy.set = this.makeSetPropertyProxy(key, source);
+            }
+        }
+
+        return proxy;
+    }
+    
+    /**
+     * Returns a new proxy "method" for given method in this concern
+     *
+     * @param {PropertyKey} method
+     * @param {ConcernConstructor} concern
+     *
+     * @returns {(...args: any[]) => any}
+     *
+     * @protected
+     */
+    protected makeMethodProxy(method: PropertyKey, concern: ConcernConstructor)
+    {
+        return function(
+            ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        {
+            // @ts-expect-error This = concern instance
+            return (this as Owner)[CONCERNS].call(concern, method, ...args);
+        }
+    }
+
+    /**
+     * Returns a new proxy "get" for given property in this concern
+     *
+     * @param {PropertyKey} property
+     * @param {ConcernConstructor} concern
+     *
+     * @returns {() => any}
+     *
+     * @protected
+     */
+    protected makeGetPropertyProxy(property: PropertyKey, concern: ConcernConstructor)
+    {
+        return function(): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        {
+            // @ts-expect-error This = concern instance
+            return (this as Owner)[CONCERNS].getProperty(concern, property);
+        }
+    }
+
+    /**
+     * Returns a new proxy "set" for given property in this concern
+     *
+     * @param {PropertyKey} property
+     * @param {ConcernConstructor} concern
+     *
+     * @returns {(value: any) => void}
+     *
+     * @protected
+     */
+    protected makeSetPropertyProxy(property: PropertyKey, concern: ConcernConstructor)
+    {
+        return function(
+            value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ): void
+        {
+            // @ts-expect-error This = concern instance
+            (this as Owner)[CONCERNS].setProperty(concern, property, value);
+        }
+    }
+
+    /**
+     * Returns property descriptors for given target class (recursively)
+     *
+     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target The target class, or concern class
+     * @param {boolean} [force=false] If `true` then method will not return evt. cached descriptors.
+     * @param {boolean} [cache=false] Caches the descriptors if `true`.
+     *
+     * @returns {Record<PropertyKey, PropertyDescriptor>}
+     *
+     * @protected
+     */
+    protected getDescriptorsFor(
+        target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
+        force: boolean = false,
+        cache: boolean = false
+    ): Record<PropertyKey, PropertyDescriptor>
+    {
+        if (!force && this.#cachedDescriptors.has(target)) {
+            return this.#cachedDescriptors.get(target) as Record<PropertyKey, PropertyDescriptor>;
+        }
+
+        const descriptors = getClassPropertyDescriptors(target, true);
+        if (cache) {
+            this.#cachedDescriptors.set(target, descriptors);
+        }
+
+        return descriptors;
+    }
+
+    /**
+     * Deletes cached property descriptors for target
+     *
+     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target
+     *
+     * @returns {boolean} `true` if cached descriptors were removed, `false` if none were cached
+     *
+     * @protected
+     */
+    protected deleteCachedDescriptorsFor(target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor): boolean
+    {
+        return this.#cachedDescriptors.delete(target);
+    }
+
+    /**
+     * Clears all cached property descriptors
+     *
+     * @protected
+     */
+    protected clearCachedDescriptors(): void
+    {
+        this.#cachedDescriptors = new WeakMap();
+    }
+
+    /**
      * Returns a new concern configuration factory instance
      * 
      * @returns {Factory}
@@ -384,5 +580,19 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     protected makeConfigurationFactory(): Factory
     {
         return new ConfigurationFactory();
+    }
+
+    /**
+     * Determine if key is "unsafe"
+     *
+     * @param {PropertyKey} key
+     *
+     * @returns {boolean}
+     *
+     * @protected
+     */
+    protected isUnsafe(key: PropertyKey): boolean
+    {
+        return isUnsafeKey(key);
     }
 }
