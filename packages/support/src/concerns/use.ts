@@ -26,7 +26,7 @@ import ConcernsInjector from "./ConcernsInjector";
  * 
  * @param {...Constructor<C> | Configuration<C>} concerns
  * 
- * @returns {(target: object) => MustUseConcerns<object>}
+ * @returns {(target: object) => UsesConcerns<object>}
  * 
  * @throws {InjectionException}
  */

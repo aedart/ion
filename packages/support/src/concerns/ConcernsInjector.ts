@@ -1,7 +1,7 @@
 import type {
     ConcernConstructor,
     Injector,
-    MustUseConcerns,
+    UsesConcerns,
     Configuration,
     Owner,
     Container,
@@ -102,11 +102,11 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //  *
     //  * @param {ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
     //  *
-    //  * @returns {MustUseConcerns<T>} The modified target class
+    //  * @returns {UsesConcerns<T>} The modified target class
     //  *
     //  * @throws {InjectionException}
     //  */
-    // inject(...concerns: (ConcernConstructor|Configuration)[]): MustUseConcerns<T>;
+    // inject(...concerns: (ConcernConstructor|Configuration)[]): UsesConcerns<T>;
     // {
     //     // TODO: implement this method...
     //    
@@ -118,26 +118,26 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //    
     //     // C) Define "aliases" (proxy properties and methods) in target class' prototype
     //    
-    //     return this.target as MustUseConcerns<T>;
+    //     return this.target as UsesConcerns<T>;
     // }
 
     /**
      * Defines the concern classes that must be used by the target class.
      *
      * **Note**: _Method changes the target class, such that it implements and respects the
-     * {@link MustUseConcerns} interface._
+     * {@link UsesConcerns} interface._
      *
      * @template T = object
      *
      * @param {T} target The target class that must define the concern classes to be used
      * @param {Constructor<Concern>[]} concerns List of concern classes
      *
-     * @returns {MustUseConcerns<T>} The modified target class
+     * @returns {UsesConcerns<T>} The modified target class
      *
      * @throws {AlreadyRegisteredError}
      * @throws {InjectionError}
      */
-    public defineConcerns<T = object>(target: T, concerns: ConcernConstructor[]): MustUseConcerns<T>
+    public defineConcerns<T = object>(target: T, concerns: ConcernConstructor[]): UsesConcerns<T>
     {
         const registry = this.resolveConcernsRegistry(target as object, concerns);
         
@@ -145,7 +145,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
             get: function() {
                 return registry;
             }
-        }) as MustUseConcerns<T>;
+        }) as UsesConcerns<T>;
     }
 
     /**
@@ -156,13 +156,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      *
      * @template T = object
      *
-     * @param {MustUseConcerns<T>} target The target in which a concerns container must be defined
+     * @param {UsesConcerns<T>} target The target in which a concerns container must be defined
      *
-     * @returns {MustUseConcerns<T>} The modified target class
+     * @returns {UsesConcerns<T>} The modified target class
      *
      * @throws {InjectionError} If unable to define concerns container in target class
      */
-    public defineContainer<T = object>(target: MustUseConcerns<T>): MustUseConcerns<T>
+    public defineContainer<T = object>(target: UsesConcerns<T>): UsesConcerns<T>
     {
         const concerns: ConcernConstructor[] = target[CONCERN_CLASSES];
 
@@ -190,14 +190,14 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //  *
     //  * @template T = object
     //  *
-    //  * @param {MustUseConcerns<T>} target The target in which "aliases" must be defined in
+    //  * @param {UsesConcerns<T>} target The target in which "aliases" must be defined in
     //  * @param {Configuration<Concern>[]} configurations List of concern injection configurations
     //  *
-    //  * @returns {MustUseConcerns<T>} The modified target class
+    //  * @returns {UsesConcerns<T>} The modified target class
     //  *
     //  * @throws {InjectionException} If case of alias naming conflicts. Or, if unable to define aliases in target class.
     //  */
-    // public defineAliases<T = object>(target: MustUseConcerns<T>, configurations: Configuration<Concern>[]): MustUseConcerns<T>
+    // public defineAliases<T = object>(target: UsesConcerns<T>, configurations: Configuration<Concern>[]): UsesConcerns<T>
     // {
     //     // TODO: implement this method...
     //
@@ -213,7 +213,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //  *
     //  * @template T = object
     //  *
-    //  * @param {MustUseConcerns<T>} target The target in which "alias" must be defined in
+    //  * @param {UsesConcerns<T>} target The target in which "alias" must be defined in
     //  * @param {PropertyKey} alias Name of the "alias" in the target class (name of the proxy property or method)
     //  * @param {PropertyKey} key Name of the property or method that the "alias" is for, in the concern class (`source`)
     //  * @param {Constructor<Concern>} source The concern class that holds the property or methods (`key`)
@@ -226,7 +226,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //  *                              or defining [property descriptors]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor#description}.
     //  */
     // public defineAlias<T = object>(
-    //     target: MustUseConcerns<T>,
+    //     target: UsesConcerns<T>,
     //     alias: PropertyKey,
     //     key: PropertyKey,
     //     source: Constructor<Concern>

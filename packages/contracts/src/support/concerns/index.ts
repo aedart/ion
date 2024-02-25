@@ -31,7 +31,7 @@ export const PROVIDES : unique symbol = Symbol('concern_provides');
 /**
  * Symbol used to define a list of the concern classes to be used by a target class.
  * 
- * @see {MustUseConcerns}
+ * @see {UsesConcerns}
  * 
  * @type {Symbol}
  */
@@ -52,9 +52,9 @@ import ConcernConstructor from "./ConcernConstructor";
 import Configuration from "./Configuration";
 import Container from "./Container";
 import Factory from "./Factory";
-import MustUseConcerns from "./MustUseConcerns";
 import Injector from "./Injector";
 import Owner from "./Owner";
+import UsesConcerns from "./UsesConcerns";
 export {
     type Concern,
     type ConcernConstructor,
@@ -62,8 +62,8 @@ export {
     type Container,
     type Factory,
     type Injector,
-    type MustUseConcerns,
-    type Owner
+    type Owner,
+    type UsesConcerns
 }
 
 export * from './exceptions/index';

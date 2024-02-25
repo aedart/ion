@@ -1,6 +1,6 @@
 import { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import ConcernException from "./ConcernException";
-import MustUseConcerns from "../MustUseConcerns";
+import UsesConcerns from "../UsesConcerns";
 
 /**
  * Concern Injection Exception
@@ -14,7 +14,7 @@ export default interface InjectionException extends ConcernException
      * 
      * @readonly
      * 
-     * @type {ConstructorOrAbstractConstructor|MustUseConcerns}
+     * @type {ConstructorOrAbstractConstructor|UsesConcerns}
      */
-    readonly target: ConstructorOrAbstractConstructor | MustUseConcerns;
+    readonly target: ConstructorOrAbstractConstructor | UsesConcerns;
 }

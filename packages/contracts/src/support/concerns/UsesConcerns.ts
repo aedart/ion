@@ -4,15 +4,13 @@ import ConcernConstructor from "./ConcernConstructor";
 import Owner from "./Owner";
 
 /**
- * Must Use Concerns
+ * Uses Concerns
  * 
- * Defines a list of concern classes that this class instance must use.
- * 
- * **Note**: _The herein defined properties and methods MUST be implemented as static_
+ * A target class that uses one or more concern classes.
  * 
  * @template T = object
  */
-export default interface MustUseConcerns<T = object>
+export default interface UsesConcerns<T = object>
 {
     /**
      * Constructor
