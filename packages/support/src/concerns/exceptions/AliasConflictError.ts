@@ -61,8 +61,8 @@ export default class AliasConflictError extends InjectionError implements AliasC
         options?: ErrorOptions
     ) {
         const reason: string = (target === source)
-            ? `Alias "${alias.toString()}" for property key "${key.toString()}" in concern ${getNameOrDesc(concern)} conflicts with alias "${alias.toString()}", in target ${getNameOrDesc(target)}`
-            : `Alias "${alias.toString()}" for property key "${key.toString()}" in concern ${getNameOrDesc(concern)} conflicts with alias "${alias.toString()}" (defined in parent ${getNameOrDesc(source)}), in target ${getNameOrDesc(target)}`;
+            ? `Alias "${alias.toString()}" for property key "${key.toString()}" (concern ${getNameOrDesc(concern)}) conflicts with previous defined alias "${alias.toString()}", in target ${getNameOrDesc(target)}`
+            : `Alias "${alias.toString()}" for property key "${key.toString()}" (concern ${getNameOrDesc(concern)}) conflicts with previous defined alias "${alias.toString()}" (defined in parent ${getNameOrDesc(source)}), in target ${getNameOrDesc(target)}`;
         super(target, concern, reason, options);
 
         configureCustomError(this);
