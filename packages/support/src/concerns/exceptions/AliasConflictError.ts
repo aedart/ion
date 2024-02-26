@@ -1,5 +1,5 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
-import type { AliasConflictException, ConcernConstructor, UsesConcerns } from "@aedart/contracts/support/concerns";
+import type { AliasConflictException, ConcernConstructor, UsesConcerns, Alias } from "@aedart/contracts/support/concerns";
 import InjectionError from "./InjectionError";
 import { getNameOrDesc } from "@aedart/support/reflections";
 import { configureCustomError } from "@aedart/support/exceptions";
@@ -16,15 +16,27 @@ export default class AliasConflictError extends InjectionError implements AliasC
      * of the same name.
      *
      * @readonly
+     * @private
+     *
+     * @type {Alias}
+     */
+    readonly #alias: Alias;
+
+    /**
+     * the property key that the conflicting alias points to
+     *
+     * @readonly
+     * @private
      *
      * @type {PropertyKey}
      */
-    readonly #alias: PropertyKey;
-
+    readonly #key: PropertyKey;
+    
     /**
-     * The source class that defines that originally defined the alias
+     * The source class (e.g. parent class) that defines that originally defined the alias
      *
      * @readonly
+     * @private
      *
      * @type {ConstructorOrAbstractConstructor | UsesConcerns}
      */
@@ -35,25 +47,28 @@ export default class AliasConflictError extends InjectionError implements AliasC
      * 
      * @param {ConstructorOrAbstractConstructor | UsesConcerns} target
      * @param {ConcernConstructor} concern
-     * @param {PropertyKey} alias
+     * @param {Alias} alias
+     * @param {PropertyKey} key
      * @param {ConstructorOrAbstractConstructor | UsesConcerns} source
      * @param {ErrorOptions} [options]
      */
     constructor(
         target: ConstructorOrAbstractConstructor | UsesConcerns,
         concern: ConcernConstructor,
-        alias: PropertyKey,
+        alias: Alias,
+        key: PropertyKey,
         source: ConstructorOrAbstractConstructor | UsesConcerns,
         options?: ErrorOptions
     ) {
         const reason: string = (target === source)
-                ? `Alias "${alias.toString()}" conflicts with alias "${alias.toString()}", in target ${getNameOrDesc(target)}`
-                : `Alias "${alias.toString()}" conflicts with alias "${alias.toString()}" (defined in source ${getNameOrDesc(source)}), in target ${getNameOrDesc(target)}`;
+            ? `Alias "${alias.toString()}" for property key "${key.toString()}" in concern ${getNameOrDesc(concern)} conflicts with alias "${alias.toString()}", in target ${getNameOrDesc(target)}`
+            : `Alias "${alias.toString()}" for property key "${key.toString()}" in concern ${getNameOrDesc(concern)} conflicts with alias "${alias.toString()}" (defined in parent ${getNameOrDesc(source)}), in target ${getNameOrDesc(target)}`;
         super(target, concern, reason, options);
 
         configureCustomError(this);
 
         this.#alias = alias;
+        this.#key = key;
         this.#source = source;
 
         // Force set the properties in the cause
@@ -67,15 +82,27 @@ export default class AliasConflictError extends InjectionError implements AliasC
      *
      * @readonly
      *
-     * @type {PropertyKey}
+     * @type {Alias}
      */
-    get alias(): PropertyKey
+    get alias(): Alias
     {
         return this.#alias;
     }
 
     /**
-     * The source class that defines that originally defined the alias
+     * the property key that the conflicting alias points to
+     *
+     * @readonly
+     *
+     * @type {PropertyKey}
+     */
+    get key(): PropertyKey
+    {
+        return this.#key;
+    }
+    
+    /**
+     * The source class (e.g. parent class) that defines that originally defined the alias
      *
      * @readonly
      *

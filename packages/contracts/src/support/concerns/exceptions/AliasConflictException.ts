@@ -1,6 +1,7 @@
-import { InjectionException } from "@aedart/contracts/support/concerns";
-import {ConstructorOrAbstractConstructor} from "@aedart/contracts";
+import { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import InjectionException from "./InjectionException";
 import UsesConcerns from "../UsesConcerns";
+import { Alias } from '../types'
 
 /**
  * Alias Conflict Exception
@@ -15,12 +16,21 @@ export default interface AliasConflictException extends InjectionException
      *
      * @readonly
      *
-     * @type {PropertyKey}
+     * @type {Alias}
      */
-    readonly alias: PropertyKey;
+    readonly alias: Alias;
 
     /**
-     * The source class that defines that originally defined the alias
+     * the property key that the conflicting alias points to
+     *
+     * @readonly
+     *
+     * @type {Alias}
+     */
+    readonly key: PropertyKey;
+
+    /**
+     * The source class (e.g. parent class) that defines that originally defined the alias
      *
      * @readonly
      *
