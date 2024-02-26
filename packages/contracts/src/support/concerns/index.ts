@@ -38,6 +38,15 @@ export const PROVIDES : unique symbol = Symbol('concern_provides');
 export const CONCERN_CLASSES: unique symbol = Symbol('concern_classes');
 
 /**
+ * Symbol used to list the aliases applied in a target class
+ *
+ * @see {UsesConcerns}
+ *
+ * @type {Symbol}
+ */
+export const ALIASES: unique symbol = Symbol('aliases');
+
+/**
  * Symbol used to define a "concerns container" property inside a target class' prototype
  *
  * @see {Owner}

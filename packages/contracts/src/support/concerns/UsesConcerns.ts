@@ -1,5 +1,5 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
-import { CONCERN_CLASSES } from "./index";
+import { CONCERN_CLASSES, ALIASES, Alias } from "./index";
 import ConcernConstructor from "./ConcernConstructor";
 import Owner from "./Owner";
 
@@ -32,9 +32,24 @@ export default interface UsesConcerns<T = object>
      * concern classes are included recursively in this list, in the order
      * that they have been registered._
      *
+     * **Note**: _This property is usually automatically defined and populated
+     * by an {@link Injector}, and used to prevent duplicate concern injections._
+     * 
      * @static
      * 
-     * @type {ConcernConstructor}
+     * @type {ConcernConstructor[]}
      */
     [CONCERN_CLASSES]: ConcernConstructor[];
+
+    /**
+     * List of aliases applied in this target class.
+     * 
+     * **Note**: _This property is usually automatically defined and populated
+     * by an {@link Injector}, and used to prevent alias conflicts._
+     * 
+     * @static
+     *
+     * @type {Alias[]}
+     */
+    [ALIASES]: Alias[];
 }
