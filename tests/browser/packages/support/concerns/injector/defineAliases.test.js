@@ -2,7 +2,7 @@ import makeConcernsInjector from "../helpers/makeConcernsInjector";
 import { ALIASES } from "@aedart/contracts/support/concerns";
 import { AbstractConcern, AliasConflictError } from "@aedart/support/concerns";
 
-fdescribe('@aedart/support/concerns', () => {
+describe('@aedart/support/concerns', () => {
     describe('ConcernsInjector', () => {
         describe('defineAliases()', () => {
 
