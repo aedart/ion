@@ -576,6 +576,20 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     }
 
     /**
+     * Determine if key is "unsafe"
+     *
+     * @param {PropertyKey} key
+     *
+     * @returns {boolean}
+     *
+     * @protected
+     */
+    protected isUnsafe(key: PropertyKey): boolean
+    {
+        return isUnsafeKey(key);
+    }
+
+    /**
      * Returns a new Descriptors (cache) instance
      * 
      * @return {DescriptorsCache}
@@ -609,19 +623,5 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     protected makeConfigurationFactory(): Factory
     {
         return new ConfigurationFactory();
-    }
-
-    /**
-     * Determine if key is "unsafe"
-     *
-     * @param {PropertyKey} key
-     *
-     * @returns {boolean}
-     *
-     * @protected
-     */
-    protected isUnsafe(key: PropertyKey): boolean
-    {
-        return isUnsafeKey(key);
     }
 }
