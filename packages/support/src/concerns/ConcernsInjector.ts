@@ -102,9 +102,9 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     )
     {
         this.#target = target;
-        this.factory = factory || this.makeConfigurationFactory();
-        this.proxyResolver = resolver || this.makeProxyResolver();
-        this.descriptors = descriptors || this.makeDescriptorsCache();
+        this.factory = factory || new ConfigurationFactory();
+        this.proxyResolver = resolver || new ProxyResolver();
+        this.descriptors = descriptors || new Descriptors();
     }
     
     /**
@@ -584,41 +584,5 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     protected isUnsafe(key: PropertyKey): boolean
     {
         return isUnsafeKey(key);
-    }
-
-    /**
-     * Returns a new Descriptors (cache) instance
-     * 
-     * @return {DescriptorsCache}
-     * 
-     * @protected
-     */
-    protected makeDescriptorsCache(): DescriptorsCache
-    {
-        return new Descriptors();
-    }
-
-    /**
-     * Returns a new Proxy Descriptor Resolver
-     * 
-     * @return {Resolver}
-     * 
-     * @protected
-     */
-    protected makeProxyResolver(): Resolver
-    {
-        return new ProxyResolver();
-    }
-    
-    /**
-     * Returns a new concern configuration factory instance
-     * 
-     * @returns {Factory}
-     * 
-     * @protected
-     */
-    protected makeConfigurationFactory(): Factory
-    {
-        return new ConfigurationFactory();
     }
 }
