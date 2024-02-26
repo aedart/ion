@@ -189,11 +189,13 @@ describe('@aedart/support/concerns', () => {
                 
                 const instance = new A();
 
+                // Method
                 const result = instance.greetings('Timmy');
                 expect(result)
                     .withContext('Method interaction failed')
                     .toBe('Hi Timmy');
 
+                // Getter / Setter (Accessor)
                 const message = 'There goes an elephant...';
                 instance.message = message;
                 expect(instance.message)
@@ -201,6 +203,7 @@ describe('@aedart/support/concerns', () => {
                     .toBe(message);
 
 
+                // "Writable" property, defined on prototype
                 expect(instance.title)
                     .withContext('getter/setter interaction for "writable" property failed (A)')
                     .toBe('ABC');

@@ -434,11 +434,11 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         if (hasValue && typeof keyDescriptor.value == 'function') {
             proxy.value = this.makeMethodProxy(key, source);
         } else if (hasValue) {
-            // When value is not a function, it could be a writable attribute.
-            // To alias such a property, we first define a getter for it.
+            // When value is not a function, it could be a readonly property...
             proxy.get = this.makeGetPropertyProxy(key, source);
 
-            // Secondly, if the property is writable, then define a setter for
+            // However, if the descriptor claims that its writable, then
+            // a setter must be defined too.
             if (keyDescriptor.writable) {
                 proxy.set = this.makeSetPropertyProxy(key, source);
             }
