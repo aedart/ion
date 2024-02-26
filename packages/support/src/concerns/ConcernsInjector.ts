@@ -85,20 +85,28 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * @protected
      */
     protected proxyResolver: Resolver;
-    
+
     /**
      * Create a new Concerns Injector instance
-     * 
+     *
      * @template T = object
      * 
      * @param {T} target The target class that concerns must be injected into
+     * @param {Factory} [factory]
+     * @param {Resolver} [resolver]
+     * @param {DescriptorsCache} [descriptors]
      */
-    public constructor(target: T)
+    public constructor(
+        target: T,
+        factory?: Factory,
+        resolver?: Resolver,
+        descriptors?: DescriptorsCache
+    )
     {
         this.#target = target;
-        this.factory = this.makeConfigurationFactory();
-        this.descriptors = this.makeDescriptorsCache();
-        this.proxyResolver = this.makeProxyResolver();
+        this.factory = factory || this.makeConfigurationFactory();
+        this.proxyResolver = resolver || this.makeProxyResolver();
+        this.descriptors = descriptors || this.makeDescriptorsCache();
     }
     
     /**
