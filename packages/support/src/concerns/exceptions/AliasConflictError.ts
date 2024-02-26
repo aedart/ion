@@ -52,8 +52,8 @@ export default class AliasConflictError extends InjectionError implements AliasC
         options?: ErrorOptions
     ) {
         const reason: string = (target === source)
-                ? `Alias ${alias.toString()} conflicts with ${conflictsWithAlias.toString()}, in target ${getNameOrDesc(target)}`
-                : `Alias ${alias.toString()} conflicts with ${conflictsWithAlias.toString()} (alias defined in source ${getNameOrDesc(source)}), in target ${getNameOrDesc(target)}`;
+                ? `Alias "${alias.toString()}" conflicts with alias "${conflictsWithAlias.toString()}", in target ${getNameOrDesc(target)}`
+                : `Alias "${alias.toString()}" conflicts with alias "${conflictsWithAlias.toString()}" (defined in source ${getNameOrDesc(source)}), in target ${getNameOrDesc(target)}`;
         super(target, concern, reason, options);
 
         configureCustomError(this);
