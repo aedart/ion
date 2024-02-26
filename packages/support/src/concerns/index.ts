@@ -3,13 +3,15 @@ import { ConcernClassBlueprint } from "./ConcernClassBlueprint";
 import ConcernsContainer from "./ConcernsContainer";
 import ConcernsInjector from "./ConcernsInjector";
 import ConfigurationFactory from "./ConfigurationFactory";
+import Descriptors from "./Descriptors";
 
 export {
     AbstractConcern,
     ConcernClassBlueprint,
     ConcernsContainer,
     ConcernsInjector,
-    ConfigurationFactory
+    ConfigurationFactory,
+    Descriptors
 };
 
 export * from './exceptions';

@@ -60,6 +60,7 @@ import Concern from "./Concern";
 import ConcernConstructor from "./ConcernConstructor";
 import Configuration from "./Configuration";
 import Container from "./Container";
+import DescriptorsCache from "./DescriptorsCache";
 import Factory from "./Factory";
 import Injector from "./Injector";
 import Owner from "./Owner";
@@ -69,6 +70,7 @@ export {
     type ConcernConstructor,
     type Configuration,
     type Container,
+    type DescriptorsCache,
     type Factory,
     type Injector,
     type Owner,
