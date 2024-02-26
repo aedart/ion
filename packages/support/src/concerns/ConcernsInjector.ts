@@ -1,4 +1,4 @@
-import type {
+import {
     ConcernConstructor,
     Injector,
     UsesConcerns,
@@ -6,10 +6,13 @@ import type {
     Owner,
     Container,
     Factory,
+    Alias,
+    Aliases,
 } from "@aedart/contracts/support/concerns";
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import {
     CONCERN_CLASSES,
+    ALIASES,
     CONCERNS
 } from "@aedart/contracts/support/concerns";
 import {
@@ -17,6 +20,7 @@ import {
     getNameOrDesc,
     getClassPropertyDescriptors,
 } from "@aedart/support/reflections";
+import AliasConflictError from './exceptions/AliasConflictError';
 import AlreadyRegisteredError from './exceptions/AlreadyRegisteredError';
 import InjectionError from './exceptions/InjectionError';
 import UnsafeAliasError from './exceptions/UnsafeAliasError';
@@ -195,32 +199,57 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         return target;
     }
 
-    // /**
-    //  * Defines "aliases" (proxy properties and methods) in target class' prototype, such that they
-    //  * point to the properties and methods available in the concern classes.
-    //  *
-    //  * **Note**: _Method defines each alias using the {@link defineAlias} method!_
-    //  *
-    //  * @template T = object
-    //  *
-    //  * @param {UsesConcerns<T>} target The target in which "aliases" must be defined in
-    //  * @param {Configuration[]} configurations List of concern injection configurations
-    //  *
-    //  * @returns {UsesConcerns<T>} The modified target class
-    //  *
-    //  * @throws {AliasConflictException} If case of alias naming conflicts.
-    //  * @throws {InjectionException} If unable to define aliases in target class.
-    //  */
-    // defineAliases<T = object>(target: UsesConcerns<T>, configurations: Configuration[]): UsesConcerns<T>
-    // {
-    //     // TODO: implement this method...
-    //          // TODO: cache target property descriptors
-    //          // TODO: cache concern property descriptors
-    //          // TODO:  - delete concern property descriptors after its aliases are defined
-    //          // TODO: clear all cached descriptors, after all aliases defined
-    //
-    //     return target;
-    // }
+    /**
+     * Defines "aliases" (proxy properties and methods) in target class' prototype, such that they
+     * point to the properties and methods available in the concern classes.
+     *
+     * **Note**: _Method defines each alias using the {@link defineAlias} method!_
+     *
+     * @template T = object
+     *
+     * @param {UsesConcerns<T>} target The target in which "aliases" must be defined in
+     * @param {Configuration[]} configurations List of concern injection configurations
+     *
+     * @returns {UsesConcerns<T>} The modified target class
+     *
+     * @throws {AliasConflictError} If case of alias naming conflicts.
+     * @throws {InjectionError} If unable to define aliases in target class.
+     */
+    defineAliases<T = object>(target: UsesConcerns<T>, configurations: Configuration[]): UsesConcerns<T>
+    {
+        const applied: Alias[] = [];
+        
+        // Obtain previous applied aliases, form the target's parents.
+        const appliedByParents: Map<Alias, UsesConcerns> = this.getAllAppliedAliases(target as UsesConcerns);
+
+        this.cacheDescriptorsDuring(target, () => {
+            for (const configuration of configurations) {
+                if (!configuration.allowAliases) {
+                    continue;
+                }
+
+                this.cacheDescriptorsDuring(configuration.concern, () => {
+                    // Process the configuration aliases and define them. Merge returned aliases with the
+                    // applied aliases for the target class.
+                    const newApplied: Alias[] = this.processAliases(
+                        target as UsesConcerns,
+                        configuration,
+                        applied,
+                        appliedByParents
+                    );
+
+                    applied.push(...newApplied);
+                });
+            }
+        });
+
+        // (Re)define the "ALIASES" static property in target.
+        return this.definePropertyInTarget(target, ALIASES, {
+            get: function() {
+                return applied;
+            }
+        });
+    }
 
     /**
      * Defines an "alias" (proxy property or method) in target class' prototype, which points to a property or method
@@ -409,6 +438,123 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     }
 
     /**
+     * Returns all applied aliases for given target and its parent classes
+     *
+     * @param {UsesConcerns} target
+     * @param {boolean} [includeTarget=false]
+     *
+     * @return {Map<Alias, UsesConcerns>}
+     *
+     * @protected
+     */
+    protected getAllAppliedAliases(target: UsesConcerns, includeTarget: boolean = false): Map<Alias, UsesConcerns>
+    {
+        const output: Map<Alias, UsesConcerns> = new Map();
+
+        const parents = getAllParentsOfClass(target as ConstructorOrAbstractConstructor, includeTarget).reverse();
+        for (const parent of parents) {
+            if (!Reflect.has(parent, ALIASES)) {
+                continue;
+            }
+
+            (parent as UsesConcerns)[ALIASES].forEach((alias) => {
+                output.set(alias, (parent as UsesConcerns));
+            });
+        }
+
+        return output;
+    }
+
+    /**
+     * Processes given configuration's aliases by defining them
+     *
+     * @param {UsesConcerns} target
+     * @param {Configuration} configuration
+     * @param {Alias[]} applied
+     * @param {Map<Alias, UsesConcerns>} appliedByParents
+     *
+     * @return {Alias[]} New applied aliases (does not include aliases from `applied` argument)
+     *
+     * @protected
+     *
+     * @throws {AliasConflictError}
+     */
+    protected processAliases(
+        target: UsesConcerns,
+        configuration: Configuration,
+        applied: Alias[],
+        appliedByParents: Map<Alias, UsesConcerns>
+    ): Alias[]
+    {
+        // Aliases that have been applied by this method...
+        const output: Alias[] = [];
+        
+        // Already applied aliases in target + aliases applied by this method
+        const alreadyApplied: Alias[] = [...applied];
+        
+        const aliases: Aliases = configuration.aliases as Aliases;
+        const properties: PropertyKey[] = Reflect.ownKeys(aliases);
+
+        for (const key of properties) {
+            // @ts-expect-error Alias is obtained correctly here...
+            const alias: Alias = aliases[key] as Alias;
+
+            // Ensure that alias does not conflict with previous applied aliases.
+            this.assertAliasDoesNotConflict(
+                target as UsesConcerns,
+                configuration.concern,
+                alias,
+                key,
+                alreadyApplied, // Applied aliases in this context...
+                appliedByParents
+            );
+
+            // Define the alias in target and mark it as "applied"
+            this.defineAlias(target, alias, key, configuration.concern);
+
+            alreadyApplied.push(alias);
+            output.push(alias);
+        }
+
+        return output;
+    }
+    
+    /**
+     * Assert that given alias does not conflict with an already applied alias
+     *
+     * @param {UsesConcerns} target
+     * @param {ConcernConstructor} concern
+     * @param {Alias} alias
+     * @param {PropertyKey} key
+     * @param {Alias} applied Aliases that are applied directly in the target class
+     * @param {Map<Alias, UsesConcerns>} appliedByParents Aliases that are applied in target's parents
+     *
+     * @protected
+     *
+     * @throws {AliasConflictError}
+     */
+    protected assertAliasDoesNotConflict(
+        target: UsesConcerns,
+        concern: ConcernConstructor,
+        alias: Alias,
+        key: PropertyKey,
+        applied: Alias[],
+        appliedByParents: Map<Alias, UsesConcerns>
+    ): void
+    {
+        const isAppliedByTarget: boolean = applied.includes(alias);
+        const isAppliedByParents: boolean = appliedByParents.has(alias);
+
+        if (isAppliedByTarget || isAppliedByParents) {
+            const source: UsesConcerns = (isAppliedByTarget)
+                ? target as UsesConcerns
+                : appliedByParents.get(alias) as UsesConcerns;
+
+            throw new AliasConflictError(target, concern, alias, key, source);
+        }
+    }
+    
+    /**
      * Resolves the proxy property descriptor for given key in source concern
      *
      * @param {PropertyKey} key
@@ -517,6 +663,47 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         }
     }
 
+    /**
+     * Caches property descriptors during the given callback.
+     * Once the callback has been invoked, the cached descriptors are deleted again
+     * 
+     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target
+     * @param {() => any} callback
+     * 
+     * @return {any} Callback's return value, if any
+     * 
+     * @protected
+     */
+    protected cacheDescriptorsDuring(
+        target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
+        callback: () => any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        this.cacheDescriptorsFor(target);
+        
+        const output = callback();
+        
+        this.deleteCachedDescriptorsFor(target);
+        
+        return output;
+    }
+    
+    /**
+     * Retrieves the property descriptors for given target and caches them
+     * 
+     * @see getDescriptorsFor
+     *
+     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target The target class, or concern class
+     *
+     * @returns {Record<PropertyKey, PropertyDescriptor>}
+     * 
+     * @protected
+     */
+    protected cacheDescriptorsFor(target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor): Record<PropertyKey, PropertyDescriptor>
+    {
+        return this.getDescriptorsFor(target, true, true);
+    }
+    
     /**
      * Returns property descriptors for given target class (recursively)
      *
