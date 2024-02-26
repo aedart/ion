@@ -64,6 +64,7 @@ import DescriptorsCache from "./DescriptorsCache";
 import Factory from "./Factory";
 import Injector from "./Injector";
 import Owner from "./Owner";
+import Resolver from "./Resolver";
 import UsesConcerns from "./UsesConcerns";
 export {
     type Concern,
@@ -74,6 +75,7 @@ export {
     type Factory,
     type Injector,
     type Owner,
+    type Resolver,
     type UsesConcerns
 }
 
