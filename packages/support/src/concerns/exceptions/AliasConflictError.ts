@@ -1,13 +1,19 @@
-import type {AliasConflictException, ConcernConstructor, UsesConcerns} from "@aedart/contracts/support/concerns";
+import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { AliasConflictException, ConcernConstructor, UsesConcerns } from "@aedart/contracts/support/concerns";
 import InjectionError from "./InjectionError";
-import type {ConstructorOrAbstractConstructor} from "@aedart/contracts";
-import {getNameOrDesc} from "@aedart/support/reflections";
-import {configureCustomError} from "@aedart/support/exceptions";
+import { getNameOrDesc } from "@aedart/support/reflections";
+import { configureCustomError } from "@aedart/support/exceptions";
 
+/**
+ * Alias Conflict Error
+ * 
+ * @see AliasConflictException
+ */
 export default class AliasConflictError extends InjectionError implements AliasConflictException
 {
     /**
-     * The requested alias
+     * The requested alias that conflicts with another alias
+     * of the same name.
      *
      * @readonly
      *
@@ -16,16 +22,7 @@ export default class AliasConflictError extends InjectionError implements AliasC
     readonly #alias: PropertyKey;
 
     /**
-     * The alias that {@link alias} conflicts with
-     *
-     * @readonly
-     *
-     * @type {PropertyKey}
-     */
-    readonly #conflictAlias: PropertyKey;
-
-    /**
-     * The source class that defines the {@link conflictAlias}
+     * The source class that defines that originally defined the alias
      *
      * @readonly
      *
@@ -39,7 +36,6 @@ export default class AliasConflictError extends InjectionError implements AliasC
      * @param {ConstructorOrAbstractConstructor | UsesConcerns} target
      * @param {ConcernConstructor} concern
      * @param {PropertyKey} alias
-     * @param {PropertyKey} conflictsWithAlias
      * @param {ConstructorOrAbstractConstructor | UsesConcerns} source
      * @param {ErrorOptions} [options]
      */
@@ -47,29 +43,27 @@ export default class AliasConflictError extends InjectionError implements AliasC
         target: ConstructorOrAbstractConstructor | UsesConcerns,
         concern: ConcernConstructor,
         alias: PropertyKey,
-        conflictsWithAlias: PropertyKey,
         source: ConstructorOrAbstractConstructor | UsesConcerns,
         options?: ErrorOptions
     ) {
         const reason: string = (target === source)
-                ? `Alias "${alias.toString()}" conflicts with alias "${conflictsWithAlias.toString()}", in target ${getNameOrDesc(target)}`
-                : `Alias "${alias.toString()}" conflicts with alias "${conflictsWithAlias.toString()}" (defined in source ${getNameOrDesc(source)}), in target ${getNameOrDesc(target)}`;
+                ? `Alias "${alias.toString()}" conflicts with alias "${alias.toString()}", in target ${getNameOrDesc(target)}`
+                : `Alias "${alias.toString()}" conflicts with alias "${alias.toString()}" (defined in source ${getNameOrDesc(source)}), in target ${getNameOrDesc(target)}`;
         super(target, concern, reason, options);
 
         configureCustomError(this);
 
         this.#alias = alias;
-        this.#conflictAlias = conflictsWithAlias;
         this.#source = source;
 
         // Force set the properties in the cause
         (this.cause as Record<PropertyKey, unknown>).alias = alias;
-        (this.cause as Record<PropertyKey, unknown>).conflictsWithAlias = conflictsWithAlias;
         (this.cause as Record<PropertyKey, unknown>).source = source;
     }
     
     /**
-     * The requested alias
+     * The requested alias that conflicts with another alias
+     * of the same name.
      *
      * @readonly
      *
@@ -81,19 +75,7 @@ export default class AliasConflictError extends InjectionError implements AliasC
     }
 
     /**
-     * The alias that {@link alias} conflicts with
-     *
-     * @readonly
-     *
-     * @type {PropertyKey}
-     */
-    get conflictAlias(): PropertyKey
-    {
-        return this.#conflictAlias;
-    }
-
-    /**
-     * The source class that defines the {@link conflictAlias}
+     * The source class that defines that originally defined the alias
      *
      * @readonly
      *

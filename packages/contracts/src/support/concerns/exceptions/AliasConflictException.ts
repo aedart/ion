@@ -10,7 +10,8 @@ import UsesConcerns from "../UsesConcerns";
 export default interface AliasConflictException extends InjectionException
 {
     /**
-     * The requested alias
+     * The requested alias that conflicts with another alias
+     * of the same name.
      *
      * @readonly
      *
@@ -19,16 +20,7 @@ export default interface AliasConflictException extends InjectionException
     readonly alias: PropertyKey;
 
     /**
-     * The alias that {@link alias} conflicts with
-     *
-     * @readonly
-     *
-     * @type {PropertyKey}
-     */
-    readonly conflictAlias: PropertyKey;
-
-    /**
-     * The source class that defines the {@link conflictAlias}
+     * The source class that defines that originally defined the alias
      *
      * @readonly
      *
