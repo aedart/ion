@@ -18,8 +18,7 @@ import {
 } from "@aedart/contracts/support/concerns";
 import {
     getAllParentsOfClass,
-    getNameOrDesc,
-    getClassPropertyDescriptors,
+    getNameOrDesc
 } from "@aedart/support/reflections";
 import AliasConflictError from './exceptions/AliasConflictError';
 import AlreadyRegisteredError from './exceptions/AlreadyRegisteredError';
