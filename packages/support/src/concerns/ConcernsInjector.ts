@@ -41,8 +41,6 @@ import ProxyResolver from "./ProxyResolver";
 const CONTAINERS_REGISTRY: WeakMap<Owner, Container> = new WeakMap();
 
 /**
- * TODO: Incomplete
- * 
  * Concerns Injector
  * 
  * @see Injector
