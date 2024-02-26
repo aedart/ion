@@ -5,6 +5,7 @@ import {
     Configuration,
     Owner,
     Container,
+    DescriptorsCache,
     Factory,
     Alias,
     Aliases,
@@ -26,6 +27,7 @@ import InjectionError from './exceptions/InjectionError';
 import UnsafeAliasError from './exceptions/UnsafeAliasError';
 import ConcernsContainer from './ConcernsContainer';
 import ConfigurationFactory from "./ConfigurationFactory";
+import Descriptors from "./Descriptors";
 import { isUnsafeKey } from "./isUnsafeKey";
 
 /**
@@ -66,16 +68,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     protected factory: Factory;
 
     /**
-     * In-memory cache property descriptors for target class and concern classes
-     *
-     * @type {WeakMap<ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor, Record<PropertyKey, PropertyDescriptor>>}
-     *
-     * @private
+     * Descriptors Cache
+     * 
+     * @type {DescriptorsCache}
+     * 
+     * @protected
      */
-    #cachedDescriptors: WeakMap<
-        ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
-        Record<PropertyKey, PropertyDescriptor>
-    > = new WeakMap();
+    protected descriptors: DescriptorsCache;
     
     /**
      * Create a new Concerns Injector instance
@@ -88,6 +87,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     {
         this.#target = target;
         this.factory = this.makeConfigurationFactory();
+        this.descriptors = this.makeDescriptorsCache();
     }
     
     /**
@@ -134,6 +134,8 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     //     // B) Define a concerns container in target class' prototype
     //    
     //     // C) Define "aliases" (proxy properties and methods) in target class' prototype
+    //
+    //     // TODO: Clear all cached descriptors
     //    
     //     return this.target as UsesConcerns<T>;
     // }
@@ -222,13 +224,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         // Obtain previous applied aliases, form the target's parents.
         const appliedByParents: Map<Alias, UsesConcerns> = this.getAllAppliedAliases(target as UsesConcerns);
 
-        this.cacheDescriptorsDuring(target, () => {
+        this.descriptors.rememberDuring(target, () => {
             for (const configuration of configurations) {
                 if (!configuration.allowAliases) {
                     continue;
                 }
 
-                this.cacheDescriptorsDuring(configuration.concern, () => {
+                this.descriptors.rememberDuring(configuration.concern, () => {
                     // Process the configuration aliases and define them. Merge returned aliases with the
                     // applied aliases for the target class.
                     const newApplied: Alias[] = this.processAliases(
@@ -284,13 +286,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         }
 
         // Skip if a property key already exists with same name as the "alias"
-        const targetDescriptors = this.getDescriptorsFor(target);
+        const targetDescriptors = this.descriptors.get(target);
         if (Reflect.has(targetDescriptors, alias)) {
             return false;
         }
         
         // Abort if unable to find descriptor that matches given key in concern class.
-        const concernDescriptors = this.getDescriptorsFor(source);
+        const concernDescriptors = this.descriptors.get(source);
         if (!Reflect.has(concernDescriptors, key)) {
             throw new InjectionError(target, source, `"${key.toString()}" does not exist in concern ${getNameOrDesc(source)} - attempted aliased as "${alias.toString()}" in target ${getNameOrDesc(target)}`);
         }
@@ -664,97 +666,15 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     }
 
     /**
-     * Caches property descriptors during the given callback.
-     * Once the callback has been invoked, the cached descriptors are deleted again
+     * Returns a new Descriptors (cache) instance
      * 
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target
-     * @param {() => any} callback
-     * 
-     * @return {any} Callback's return value, if any
+     * @return {DescriptorsCache}
      * 
      * @protected
      */
-    protected cacheDescriptorsDuring(
-        target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
-        callback: () => any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    protected makeDescriptorsCache(): DescriptorsCache
     {
-        this.cacheDescriptorsFor(target);
-        
-        const output = callback();
-        
-        this.deleteCachedDescriptorsFor(target);
-        
-        return output;
-    }
-    
-    /**
-     * Retrieves the property descriptors for given target and caches them
-     * 
-     * @see getDescriptorsFor
-     *
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target The target class, or concern class
-     *
-     * @returns {Record<PropertyKey, PropertyDescriptor>}
-     * 
-     * @protected
-     */
-    protected cacheDescriptorsFor(target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor): Record<PropertyKey, PropertyDescriptor>
-    {
-        return this.getDescriptorsFor(target, true, true);
-    }
-    
-    /**
-     * Returns property descriptors for given target class (recursively)
-     *
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target The target class, or concern class
-     * @param {boolean} [force=false] If `true` then method will not return evt. cached descriptors.
-     * @param {boolean} [cache=false] Caches the descriptors if `true`.
-     *
-     * @returns {Record<PropertyKey, PropertyDescriptor>}
-     *
-     * @protected
-     */
-    protected getDescriptorsFor(
-        target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
-        force: boolean = false,
-        cache: boolean = false
-    ): Record<PropertyKey, PropertyDescriptor>
-    {
-        if (!force && this.#cachedDescriptors.has(target)) {
-            return this.#cachedDescriptors.get(target) as Record<PropertyKey, PropertyDescriptor>;
-        }
-
-        const descriptors = getClassPropertyDescriptors(target, true);
-        if (cache) {
-            this.#cachedDescriptors.set(target, descriptors);
-        }
-
-        return descriptors;
-    }
-
-    /**
-     * Deletes cached property descriptors for target
-     *
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target
-     *
-     * @returns {boolean} `true` if cached descriptors were removed, `false` if none were cached
-     *
-     * @protected
-     */
-    protected deleteCachedDescriptorsFor(target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor): boolean
-    {
-        return this.#cachedDescriptors.delete(target);
-    }
-
-    /**
-     * Clears all cached property descriptors
-     *
-     * @protected
-     */
-    protected clearCachedDescriptors(): void
-    {
-        this.#cachedDescriptors = new WeakMap();
+        return new Descriptors();
     }
 
     /**
