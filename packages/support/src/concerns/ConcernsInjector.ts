@@ -120,44 +120,43 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     {
        return this.#target; 
     }
-    
-    // TODO: INCOMPLETE...
-    //
-    // /**
-    //  * Injects concern classes into the target class and return the modified target.
-    //  *
-    //  * **Note**: _Method performs injection in the following way:_
-    //  *
-    //  * _**A**: Defines the concern classes in target class, via {@link defineConcerns}._
-    //  *
-    //  * _**B**: Defines a concerns container in target class' prototype, via {@link defineContainer}._
-    //  *
-    //  * _**C**: Defines "aliases" (proxy properties and methods) in target class' prototype, via {@link defineAliases}._
-    //  *
-    //  * @template T = object The target class that concern classes must be injected into
-    //  *
-    //  * @param {ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
-    //  *
-    //  * @returns {UsesConcerns<T>} The modified target class
-    //  *
-    //  * @throws {InjectionException}
-    //  */
-    // inject(...concerns: (ConcernConstructor|Configuration)[]): UsesConcerns<T>;
-    // {
-    //     // TODO: implement this method...
-    //    
-    //     // Resolve arguments, such that they are of type "concern injection configuration".
-    //    
-    //     // A) Define the concern classes in target class
-    //    
-    //     // B) Define a concerns container in target class' prototype
-    //    
-    //     // C) Define "aliases" (proxy properties and methods) in target class' prototype
-    //
-    //     // TODO: Clear all cached descriptors
-    //    
-    //     return this.target as UsesConcerns<T>;
-    // }
+
+    /**
+     * Injects concern classes into the target class and return the modified target.
+     *
+     * **Note**: _Method performs injection in the following way:_
+     *
+     * _**A**: Defines the concern classes in target class, via {@link defineConcerns}._
+     *
+     * _**B**: Defines a concerns container in target class' prototype, via {@link defineContainer}._
+     *
+     * _**C**: Defines "aliases" (proxy properties and methods) in target class' prototype, via {@link defineAliases}._
+     *
+     * @template T = object The target class that concern classes must be injected into
+     *
+     * @param {ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
+     *
+     * @returns {UsesConcerns<T>} The modified target class
+     *
+     * @throws {InjectionException}
+     */
+    inject(...concerns: (ConcernConstructor|Configuration)[]): UsesConcerns<T>
+    {
+        const configurations: Configuration[] = this.normalise(concerns);
+        const concernClasses: ConcernConstructor[] = configurations.map((configuration) => configuration.concern);
+
+        const modifiedTarget = this.defineAliases(
+            this.defineContainer(
+                this.defineConcerns(this.target, concernClasses)
+            ),
+            configurations
+        );
+
+        // Clear evt. cached descriptors...
+        this.descriptors.clear();
+
+        return modifiedTarget;
+    }
 
     /**
      * Defines the concern classes that must be used by the target class.
