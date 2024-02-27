@@ -18,6 +18,8 @@ export {
 
 export * from './exceptions';
 export * from './assertIsConcernsOwner';
+export * from './bootAllConcerns';
+export * from './bootConcerns';
 export * from './getConcernsContainer';
 export * from './getContainer';
 export * from './isConcernConfiguration';
