@@ -18,22 +18,38 @@ describe('@aedart/support/concerns', () => {
                 get hi() {
                     return 'Hi...'
                 }
+                
+                sayHi(name) {
+                    const hi = this.hi;
+                    return `${hi} ${name}`;
+                }
             }
 
             /** @type {Configuration<ConcernC>} */
-            const config = { concern: ConcernC, aliases: { 'hi': 'message' } }; 
+            const config = {
+                concern: ConcernC,
+                aliases: {
+                    'hi': 'message',
+                    'sayHi': 'write'
+                }
+            }; 
             
             /**
              * @property {() => string} ping
              * @property {() => string} foo
              * @property {string} message
+             * @property {(name: string) => string} write
              */
             @use(
                 ConcernA,
                 ConcernB,
                 config                
             )
-            class MyService {}
+            class MyService {
+                sayHi(name) {
+                   return this.write(name) + '!';
+                }
+            }
 
             // --------------------------------------------------------------------------- //
 
@@ -45,6 +61,8 @@ describe('@aedart/support/concerns', () => {
                 .toBe('bar');
             expect(instance.message)
                 .toBe('Hi...');
+            expect(instance.sayHi('Hans'))
+                .toBe('Hi... Hans!');
         });
 
     });
