@@ -1,4 +1,4 @@
-import { AbstractConcern, use } from "@aedart/support/concerns";
+import {AbstractConcern, AliasConflictError, use} from "@aedart/support/concerns";
 
 describe('@aedart/support/concerns', () => {
     describe('Edge Cases', () => {
@@ -38,6 +38,28 @@ describe('@aedart/support/concerns', () => {
                 .toBe('pong');
             expect(instance.pong())
                 .toBe('ping');
+        });
+
+        it('fails when getter and setter are declared in different concerns', () => {
+
+            class ConcernA extends AbstractConcern {
+                get title() {}
+            }
+
+            class ConcernB extends AbstractConcern {
+                set title(value) {}
+            }
+            
+            const callback = () => {
+                @use(
+                    ConcernA,
+                    ConcernB // Conflicts with "title" from Concern A - same property key!
+                )
+                class A {}  
+            }
+            
+            expect(callback)
+                .toThrowError(AliasConflictError);
         });
     });
 });
