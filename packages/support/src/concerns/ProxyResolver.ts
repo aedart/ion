@@ -31,28 +31,33 @@ export default class ProxyResolver implements Resolver
 
         // A descriptor can only have an accessor, a value or writable attribute. Depending on the "value"
         // a different kind of proxy must be defined.
-        const hasValue: boolean = Reflect.has(keyDescriptor, 'value');
 
-        if (hasValue && typeof keyDescriptor.value == 'function') {
-            proxy.value = this.makeMethodProxy(key, source);
-        } else if (hasValue) {
-            // When value is not a function, it could be a readonly property...
+        if (Reflect.has(keyDescriptor, 'value')) {
+            // When value is a method...
+            if (typeof keyDescriptor.value == 'function') {
+                proxy.value = this.makeMethodProxy(key, source);
+                return proxy;
+            }
+
+            // Otherwise, when value isn't a method, it can be a readonly property...
             proxy.get = this.makeGetPropertyProxy(key, source);
 
-            // However, if the descriptor claims that its writable, then
-            // a setter must be defined too.
+            // But, if the descriptor claims that its writable, then a setter must
+            // also be defined.
             if (keyDescriptor.writable) {
                 proxy.set = this.makeSetPropertyProxy(key, source);
             }
-        } else {
-            // Otherwise, the property can a getter and or a setter...
-            if (Reflect.has(keyDescriptor, 'get')) {
-                proxy.get = this.makeGetPropertyProxy(key, source);
-            }
+            
+            return proxy;
+        }
 
-            if (Reflect.has(keyDescriptor, 'set')) {
-                proxy.set = this.makeSetPropertyProxy(key, source);
-            }
+        // Otherwise, the property can a getter and or a setter...
+        if (Reflect.has(keyDescriptor, 'get')) {
+            proxy.get = this.makeGetPropertyProxy(key, source);
+        }
+
+        if (Reflect.has(keyDescriptor, 'set')) {
+            proxy.set = this.makeSetPropertyProxy(key, source);
         }
 
         return proxy;
