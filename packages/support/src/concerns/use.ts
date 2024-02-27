@@ -1,36 +1,38 @@
-import {
-    Concern,
+import type {
+    ConcernConstructor,
     Configuration
 } from "@aedart/contracts/support/concerns";
-import type { Constructor } from "@aedart/contracts";
 import ConcernsInjector from "./ConcernsInjector";
 
 /**
- * Injects the given concern classes into target class
+ * Injects the concern classes into the target class
  *
- * **Note**: _Method is intended to be used as a decorator!_
+ * **Note**: _Method is intended to be used as a class decorator!_
  * 
  * **Example**:
  * ```
  * @use(
  *      MyConcernA,
  *      MyConcernB,
- *      MyConcernC,
+ *      { concern: MyConcernC, aliases: { 'foo': 'bar' } },
  * )
  * class MyClass {}
  * ```
  * 
  * @see Injector
+ * @see ConcernConstructor
+ * @see Configuration
+ * @see UsesConcerns
  * 
- * @template C = {@link Concern}
+ * @template T = object
  * 
- * @param {...Constructor<C> | Configuration<C>} concerns
+ * @param {...Constructor | Configuration<} concerns
  * 
- * @returns {(target: object) => UsesConcerns<object>}
+ * @returns {(target: T) => UsesConcerns<T>}
  * 
  * @throws {InjectionException}
  */
-export function use<C = Concern>(...concerns: (Constructor<C>|Configuration<C>)[])
+export function use(...concerns: (ConcernConstructor|Configuration)[])
 {
     return (target: object) => {
         return (new ConcernsInjector<typeof target>(target)).inject(...concerns);
