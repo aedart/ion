@@ -34,7 +34,7 @@ export default interface Injector<T = object>
      *
      * @template T = object The target class that concern classes must be injected into
      *
-     * @param {ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
+     * @param {...ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
      * 
      * @returns {UsesConcerns<T>} The modified target class
      *
