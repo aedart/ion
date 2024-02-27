@@ -93,5 +93,30 @@ describe('@aedart/support/concerns', () => {
             expect(result)
                 .toBe('done');
         });
+
+        it('does not alias property key inherited by parent', () => {
+            
+            class A {
+                driver() {
+                    return 'xyz';
+                }
+            }
+            
+            class ConcernsDriver extends AbstractConcern {
+                driver() {
+                    return 'special';
+                }
+            }
+            
+            @use(ConcernsDriver) // driver() is NOT aliased - method inherited from class A!
+            class B extends A {}
+
+            // --------------------------------------------------------------------------- //
+            
+            const instance = new B();
+            
+            expect(instance.driver())
+                .toBe('xyz');
+        });
     });
 });
