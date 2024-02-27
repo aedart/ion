@@ -1,5 +1,5 @@
 import { DANGEROUS_PROPERTIES } from "@aedart/contracts/support/objects";
-import { CONCERN_CLASSES, CONCERNS, PROVIDES } from "@aedart/contracts/support/concerns";
+import { CONCERN_CLASSES, CONCERNS, PROVIDES, ALIASES } from "@aedart/contracts/support/concerns";
 
 /**
  * List of property keys that are considered "unsafe" to alias (proxy to)
@@ -29,6 +29,7 @@ export const UNSAFE_PROPERTY_KEYS = [
     // from being aliased.
     CONCERN_CLASSES,
     CONCERNS,
+    ALIASES,
 ];
 
 /**
