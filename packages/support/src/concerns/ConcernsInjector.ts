@@ -514,8 +514,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         const properties: PropertyKey[] = Reflect.ownKeys(aliases);
 
         for (const key of properties) {
-            // @ts-expect-error Alias is obtained correctly here...
-            const alias: Alias = aliases[key] as Alias;
+            const alias: Alias = aliases[key as keyof typeof aliases] as Alias;
 
             // Ensure that alias does not conflict with previous applied aliases.
             this.assertAliasDoesNotConflict(

@@ -124,11 +124,10 @@ export default class ConfigurationFactory implements Factory
      */
     protected removeUnsafeKeys(configuration: Configuration): Configuration
     {
-        const keys: PropertyKey[] = Reflect.ownKeys(configuration.aliases as object);
+        const keys: PropertyKey[] = Reflect.ownKeys(configuration.aliases as Aliases);
         for (const key of keys) {
             if (this.isUnsafe(key)) {
-                // @ts-expect-error Property Key does exist at this point. 
-                delete configuration.aliases[key];
+                delete (configuration.aliases as Aliases)[key as keyof typeof configuration.aliases];
             }
         }
         
