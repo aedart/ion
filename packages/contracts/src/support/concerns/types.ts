@@ -13,6 +13,4 @@ export type Alias = PropertyKey;
  * class' prototype and acts as a proxy to the original property or method inside the
  * concern class instance. 
  */
-export type Aliases<T extends Concern = Concern> = {
-    [K in keyof T]: Alias
-};
+export type Aliases<T extends Concern = Concern> = { [key in keyof T]: Alias } | { [key: PropertyKey]: Alias };
