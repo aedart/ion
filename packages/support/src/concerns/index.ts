@@ -17,6 +17,7 @@ export {
 };
 
 export * from './exceptions';
+export * from './getConcernsContainer';
 export * from './isConcernConfiguration';
 export * from './isConcernConstructor';
 export * from './isConcernsOwner';
