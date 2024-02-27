@@ -1,13 +1,14 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import type { Container, Owner } from "@aedart/contracts/support/concerns";
-import { CONCERNS } from "@aedart/contracts/support/concerns";
 import { isConcernsOwner } from "./isConcernsOwner";
 import { getNameOrDesc } from "@aedart/support/reflections";
+import { getContainer } from "./getContainer";
 
 /**
  * Returns [owner's]{@link Owner} [concerns container]{@link Container}
  * 
  * @see isConcernsOwner
+ * @see getContainer
  * 
  * @param {object|Owner} instance
  * 
@@ -22,5 +23,5 @@ export function getConcernsContainer(instance: object|Owner): Container
         throw new TypeError(msg, { cause: { instance: instance } });
     }
     
-    return (instance as Owner)[CONCERNS];
+    return getContainer(instance as Owner);
 }

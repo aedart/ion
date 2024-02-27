@@ -1,6 +1,6 @@
 import type { ConcernConstructor, Container, Owner } from "@aedart/contracts/support/concerns";
 import { isConcernsOwner } from "./isConcernsOwner";
-import { getConcernsContainer } from "./getConcernsContainer";
+import { getContainer } from "./getContainer";
 
 /**
  * Determine if [concerns owner]{@link Owner} uses the given concerns
@@ -16,7 +16,7 @@ export function usesConcerns(instance: object|Owner, ...concerns: ConcernConstru
         return false;
     }
     
-    const container: Container = getConcernsContainer(instance);
+    const container: Container = getContainer(instance as Owner);
     for (const concern of concerns){
         if (!container.has(concern)) {
             return false;
