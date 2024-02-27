@@ -23,3 +23,4 @@ export * from './isConcernConstructor';
 export * from './isConcernsOwner';
 export * from './isUnsafeKey';
 export * from './use';
+export * from './usesConcerns';
