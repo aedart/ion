@@ -61,5 +61,37 @@ describe('@aedart/support/concerns', () => {
             expect(callback)
                 .toThrowError(AliasConflictError);
         });
+
+        it('can make "fluent" methods', () => {
+
+            class ConcernA extends AbstractConcern {
+                with(value) {
+                    // ...value ignored here...
+                    
+                    return this.concernOwner;
+                }
+            }
+
+            /**
+             * @property {(value: string) => this} with Add a value to the request...
+             */
+            @use(ConcernA)
+            class Service {
+                request() {
+                    return 'done';
+                }
+            }
+            
+            const instance = new Service();
+            
+            const result = instance
+                .with('a')
+                .with('b')
+                .with('c')
+                .request();
+            
+            expect(result)
+                .toBe('done');
+        });
     });
 });
