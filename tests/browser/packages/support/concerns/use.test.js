@@ -3,7 +3,7 @@ import { AbstractConcern, use } from "@aedart/support/concerns";
 describe('@aedart/support/concerns', () => {
     describe('use()', () => {
 
-        it('can inject concerns into target via @use() class decorator new instance', () => {
+        it('can inject concerns into target via @use() class decorator', () => {
             class ConcernA extends AbstractConcern {
                 ping() {
                     return 'pong';
