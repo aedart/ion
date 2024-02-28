@@ -1,4 +1,4 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type {AbstractConstructor, ConstructorOrAbstractConstructor} from "@aedart/contracts";
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
 
 /**
@@ -28,7 +28,7 @@ export default class Builder<T = object>
      * 
      * @param {ConstructorOrAbstractConstructor<T>} [superclass=class {}]
      */
-    constructor(superclass:ConstructorOrAbstractConstructor<T> = class {}) {
+    constructor(superclass:ConstructorOrAbstractConstructor<T> = class {} as ConstructorOrAbstractConstructor<T>) {
         this.#superclass = superclass;
     }
 
@@ -42,7 +42,7 @@ export default class Builder<T = object>
     public with(...mixins: MixinFunction[]): ConstructorOrAbstractConstructor<T>
     {
         return mixins.reduce((
-            superclass: T,
+            superclass: ConstructorOrAbstractConstructor,
             mixin: MixinFunction<typeof superclass>
         ) => {
             // Return superclass, when mixin isn't a function.
@@ -52,7 +52,7 @@ export default class Builder<T = object>
 
             // Apply the mixin...
             return mixin(superclass);
-        }, this.#superclass);
+        }, this.#superclass as ConstructorOrAbstractConstructor) as ConstructorOrAbstractConstructor<T>;
     }
 
     /**
