@@ -5,6 +5,10 @@ describe('@aedart/support/concerns', () => {
 
         it('concern can use other concern', () => {
 
+            /**
+             * @mixin
+             * @extends AbstractConcern
+             */
             class ConcernA extends AbstractConcern {
                 ping() {
                     return 'pong';
@@ -12,7 +16,8 @@ describe('@aedart/support/concerns', () => {
             }
 
             /**
-             * @property {() => string} ping
+             * @mixes ConcernA
+             * @extends AbstractConcern
              */
             @use(ConcernA)
             class ConcernB extends AbstractConcern {
@@ -22,8 +27,7 @@ describe('@aedart/support/concerns', () => {
             }
 
             /**
-             * @property {() => string} ping
-             * @property {() => string} pong
+             * @mixes ConcernB
              */
             @use(ConcernB)
             class Game {}
