@@ -5,7 +5,7 @@ import UsesConcerns from "./UsesConcerns";
  * Registration Aware
  * 
  * Concern class is aware of when it is being registered by a target class
- * and performs pre-/post-registration logic.
+ * and is able to performs pre-/post-registration logic.
  */
 export default interface RegistrationAware
 {
