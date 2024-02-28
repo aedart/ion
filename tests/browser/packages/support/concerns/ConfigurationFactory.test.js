@@ -213,5 +213,35 @@ describe('@aedart/support/concerns', () => {
                     .toBeFalse();
             }
         });
+
+        it('can make configuration from shorthand', () => {
+
+            class MyConcern extends AbstractConcern {
+                foo() {}
+            }
+
+            const aliases = {
+                'foo': 'a',
+            };
+            const entry = [ MyConcern, aliases ];
+
+            const factory = makeConfigurationFactory();
+
+            // ------------------------------------------------------------------ //
+
+            const configuration = factory.make(class {}, entry);
+
+            expect(configuration.concern)
+                .withContext('Incorrect aliases object in configuration')
+                .toEqual(MyConcern);
+            
+            expect(configuration.aliases)
+                .withContext('Incorrect aliases object in configuration')
+                .toEqual({ ...aliases });
+
+            expect(configuration.allowAliases)
+                .withContext('Incorrect allowAliases in configuration')
+                .toBeTrue();
+        });
     }); 
 });

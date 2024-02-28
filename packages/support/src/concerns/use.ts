@@ -1,6 +1,7 @@
 import type {
     ConcernConstructor,
-    Configuration
+    Configuration,
+    ShorthandConfiguration
 } from "@aedart/contracts/support/concerns";
 import ConcernsInjector from "./ConcernsInjector";
 
@@ -26,13 +27,13 @@ import ConcernsInjector from "./ConcernsInjector";
  * 
  * @template T = object
  * 
- * @param {...Constructor | Configuration<} concerns
+ * @param {...Constructor | Configuration | ShorthandConfiguration} concerns
  * 
  * @returns {(target: T) => UsesConcerns<T>}
  * 
  * @throws {InjectionException}
  */
-export function use(...concerns: (ConcernConstructor|Configuration)[])
+export function use(...concerns: (ConcernConstructor|Configuration|ShorthandConfiguration)[])
 {
     return (target: object) => {
         return (new ConcernsInjector<typeof target>(target)).inject(...concerns);

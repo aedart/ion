@@ -1,5 +1,6 @@
 import ConcernConstructor from "./ConcernConstructor";
 import Configuration from './Configuration';
+import { ShorthandConfiguration } from "./types";
 
 /**
  * Concern Configuration Factory
@@ -23,11 +24,11 @@ export default interface Factory
      * unless `allowAliases` is set to `false`, in which case all aliases are removed._
      * 
      * @param {object} target
-     * @param {ConcernConstructor | Configuration} entry
+     * @param {ConcernConstructor | Configuration | ShorthandConfiguration} entry
      * 
      * @returns {Configuration}
      *
      * @throws {InjectionException} If entry is unsupported or invalid
      */
-    make(target: object, entry: ConcernConstructor | Configuration): Configuration;
+    make(target: object, entry: ConcernConstructor | Configuration | ShorthandConfiguration): Configuration;
 }

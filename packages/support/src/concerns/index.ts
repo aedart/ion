@@ -25,6 +25,7 @@ export * from './getContainer';
 export * from './isConcernConfiguration';
 export * from './isConcernConstructor';
 export * from './isConcernsOwner';
+export * from './isShorthandConfiguration';
 export * from './isUnsafeKey';
 export * from './use';
 export * from './usesConcerns';

@@ -1,8 +1,9 @@
-import {
+import type {
     ConcernConstructor,
     Injector,
     UsesConcerns,
     Configuration,
+    ShorthandConfiguration,
     Owner,
     Container,
     DescriptorsCache,
@@ -132,13 +133,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      *
      * @template T = object The target class that concern classes must be injected into
      *
-     * @param {...ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
+     * @param {...ConcernConstructor | Configuration | ShorthandConfiguration} concerns List of concern classes / injection configurations
      *
      * @returns {UsesConcerns<T>} The modified target class
      *
      * @throws {InjectionException}
      */
-    inject(...concerns: (ConcernConstructor|Configuration)[]): UsesConcerns<T>
+    inject(...concerns: (ConcernConstructor|Configuration|ShorthandConfiguration)[]): UsesConcerns<T>
     {
         const configurations: Configuration[] = this.normalise(concerns);
         const concernClasses: ConcernConstructor[] = configurations.map((configuration) => configuration.concern);
@@ -322,13 +323,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     /**
      * Normalises given concerns into a list of concern configurations  
      * 
-     * @param {(ConcernConstructor | Configuration)[]} concerns
+     * @param {(ConcernConstructor | Configuration | ShorthandConfiguration)[]} concerns
      * 
      * @returns {Configuration[]}
      * 
      * @throws {InjectionError}
      */
-    public normalise(concerns: (ConcernConstructor|Configuration)[]): Configuration[]
+    public normalise(concerns: (ConcernConstructor|Configuration|ShorthandConfiguration)[]): Configuration[]
     {
         const output: Configuration[] = [];
         
@@ -384,7 +385,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     /**
      * Normalises the given entry into a concern configuration
      *
-     * @param {ConcernConstructor | Configuration} entry
+     * @param {ConcernConstructor | Configuration | ShorthandConfiguration} entry
      *
      * @returns {Configuration}
      *
@@ -392,7 +393,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * 
      * @protected
      */
-    protected normaliseEntry(entry: ConcernConstructor|Configuration): Configuration
+    protected normaliseEntry(entry: ConcernConstructor|Configuration|ShorthandConfiguration): Configuration
     {
         return this.factory.make(this.target as object, entry);
     }

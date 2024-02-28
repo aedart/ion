@@ -36,13 +36,15 @@ describe('@aedart/support/concerns', () => {
             
             /**
              * @property {() => string} ping
-             * @property {() => string} foo
+             * @property {() => string} bar
              * @property {string} message
              * @property {(name: string) => string} write
              */
             @use(
                 ConcernA,
-                ConcernB,
+                [ConcernB, {
+                    'foo': 'bar'
+                }],
                 config                
             )
             class MyService {
@@ -57,7 +59,7 @@ describe('@aedart/support/concerns', () => {
 
             expect(instance.ping())
                 .toBe('pong');
-            expect(instance.foo())
+            expect(instance.bar())
                 .toBe('bar');
             expect(instance.message)
                 .toBe('Hi...');

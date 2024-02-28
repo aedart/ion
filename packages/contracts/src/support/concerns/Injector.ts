@@ -1,6 +1,7 @@
 import ConcernConstructor from "./ConcernConstructor";
 import Configuration from "./Configuration";
 import UsesConcerns from "./UsesConcerns";
+import { ShorthandConfiguration } from "./types";
 
 /**
  * Concerns Injector
@@ -34,13 +35,13 @@ export default interface Injector<T = object>
      *
      * @template T = object The target class that concern classes must be injected into
      *
-     * @param {...ConcernConstructor | Configuration} concerns List of concern classes / injection configurations
+     * @param {...ConcernConstructor | Configuration | ShorthandConfiguration} concerns List of concern classes / injection configurations
      * 
      * @returns {UsesConcerns<T>} The modified target class
      *
      * @throws {InjectionException}
      */
-    inject(...concerns: (ConcernConstructor|Configuration)[]): UsesConcerns<T>;
+    inject(...concerns: (ConcernConstructor|Configuration|ShorthandConfiguration)[]): UsesConcerns<T>;
 
     /**
      * Defines the concern classes that must be used by the target class.

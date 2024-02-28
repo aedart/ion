@@ -1,3 +1,4 @@
+import ConcernConstructor from "./ConcernConstructor";
 import Concern from "./Concern";
 
 /**
@@ -14,3 +15,13 @@ export type Alias = PropertyKey;
  * concern class instance. 
  */
 export type Aliases<T extends Concern = Concern> = { [key in keyof T]: Alias } | { [key: PropertyKey]: Alias };
+
+/**
+ * Shorthand Concern Injection Configuration
+ * 
+ * @see [Configuration]{@link import('@aedart/contracts/support/concerns').Configuration}
+ */
+export type ShorthandConfiguration<T extends Concern = Concern> =
+    [ ConcernConstructor<T> ]                           // concern class
+    | [ ConcernConstructor<T>, Aliases<T> ]             // concern class with aliases
+    | [ ConcernConstructor<T>, boolean ]                // concern class with "allowAliases" flag
