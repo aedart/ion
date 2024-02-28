@@ -62,6 +62,7 @@ describe('@aedart/support/concerns', () => {
                 .toThrowError(AliasConflictError);
         });
 
+        // Note: this isn't really an edge case, - its more a test of intended behaviour!
         it('can make "fluent" methods', () => {
 
             class ConcernA extends AbstractConcern {
