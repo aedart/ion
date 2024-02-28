@@ -131,7 +131,7 @@ export default class ConcernsContainer implements Container
      *
      * @param {ConcernConstructor<T>} concern
      *
-     * @return {Concern} New concern instance
+     * @return {T} New concern instance
      *
      * @throws {NotRegisteredError} If concern class is not registered in this container
      * @throws {BootError} If concern is unable to be booted, e.g. if already booted
