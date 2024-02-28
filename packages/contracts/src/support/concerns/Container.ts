@@ -44,7 +44,7 @@ export default interface Container
      * @param {ConcernConstructor<T>} concern
      *
      * @return {T} The booted instance of the concern class. If concern class was
-     *                   previously booted, then that instance is returned.
+     *             previously booted, then that instance is returned.
      *
      * @throws {ConcernException}
      */
@@ -66,7 +66,7 @@ export default interface Container
      * 
      * @param {ConcernConstructor<T>} concern
      * 
-     * @return {Concern} New concern instance
+     * @return {T} New concern instance
      * 
      * @throws {NotRegisteredException} If concern class is not registered in this container
      * @throws {BootException} If concern is unable to be booted, e.g. if already booted

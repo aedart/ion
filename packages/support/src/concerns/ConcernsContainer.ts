@@ -96,10 +96,10 @@ export default class ConcernsContainer implements Container
      *
      * @template T extends {@link Concern}
      *
-     * @param {Constructor<T>} concern
+     * @param {ConcernConstructor<T>} concern
      *
-     * @return {Concern} The booted instance of the concern class. If concern class was
-     *                   previously booted, then that instance is returned.
+     * @return {T}  The booted instance of the concern class. If concern class was
+     *              previously booted, then that instance is returned.
      *
      * @throws {ConcernError}
      */
