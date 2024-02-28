@@ -23,10 +23,34 @@ export const SUPPORT_CONCERNS: unique symbol = Symbol('@aedart/contracts/support
  *      // ...remaining not shown...
  * }
  * ```
+ *
+ * @see ConcernConstructor
  * 
  * @type {symbol}
  */
 export const PROVIDES : unique symbol = Symbol('concern_provides');
+
+/**
+ * Symbol that can be used by a [concern class]{@link ConcernConstructor} to perform
+ * pre-registration logic
+ * 
+ * @see RegistrationAware
+ * @see ConcernConstructor
+ * 
+ * @type {symbol}
+ */
+export const BEFORE: unique symbol = Symbol('concern_before_registration');
+
+/**
+ * Symbol that can be used by a [concern class]{@link ConcernConstructor} to perform
+ * post-registration logic.
+ *
+ * @see RegistrationAware
+ * @see ConcernConstructor
+ *
+ * @type {symbol}
+ */
+export const AFTER: unique symbol = Symbol('concern_after_registration');
 
 /**
  * Symbol used to define a list of the concern classes to be used by a target class.
@@ -63,6 +87,7 @@ import Container from "./Container";
 import DescriptorsCache from "./DescriptorsCache";
 import Factory from "./Factory";
 import Injector from "./Injector";
+import RegistrationAware from "./RegistrationAware";
 import Owner from "./Owner";
 import Resolver from "./Resolver";
 import UsesConcerns from "./UsesConcerns";
@@ -74,6 +99,7 @@ export {
     type DescriptorsCache,
     type Factory,
     type Injector,
+    type RegistrationAware,
     type Owner,
     type Resolver,
     type UsesConcerns

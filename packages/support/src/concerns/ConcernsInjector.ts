@@ -11,17 +11,21 @@ import type {
     Alias,
     Aliases,
     Resolver,
+    RegistrationAware
 } from "@aedart/contracts/support/concerns";
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import {
     CONCERN_CLASSES,
     ALIASES,
-    CONCERNS
+    CONCERNS,
+    BEFORE,
+    AFTER
 } from "@aedart/contracts/support/concerns";
 import {
     getAllParentsOfClass,
     getNameOrDesc
 } from "@aedart/support/reflections";
+import { getErrorMessage } from "@aedart/support/exceptions";
 import AliasConflictError from './exceptions/AliasConflictError';
 import AlreadyRegisteredError from './exceptions/AlreadyRegisteredError';
 import InjectionError from './exceptions/InjectionError';
@@ -29,8 +33,8 @@ import UnsafeAliasError from './exceptions/UnsafeAliasError';
 import ConcernsContainer from './ConcernsContainer';
 import ConfigurationFactory from "./ConfigurationFactory";
 import Descriptors from "./Descriptors";
-import { isUnsafeKey } from "./isUnsafeKey";
 import ProxyResolver from "./ProxyResolver";
+import { isUnsafeKey } from "./isUnsafeKey";
 
 /**
  * A map of the concern owner instances and their concerns container
@@ -143,17 +147,28 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     {
         const configurations: Configuration[] = this.normalise(concerns);
         const concernClasses: ConcernConstructor[] = configurations.map((configuration) => configuration.concern);
+        
+        // Define the concerns classes in target.
+        let modifiedTarget: UsesConcerns<T> = this.defineConcerns(this.target, concernClasses);
 
-        const modifiedTarget = this.defineAliases(
+        // Run before registration hook
+        this.runBeforeRegistration(this.target as UsesConcerns, modifiedTarget[CONCERN_CLASSES]);
+        
+        // Define concerns, container and aliases
+        modifiedTarget = this.defineAliases(
             this.defineContainer(
-                this.defineConcerns(this.target, concernClasses)
+                modifiedTarget
             ),
             configurations
         );
+  
+        // Run after registration hook
+        this.runAfterRegistration(modifiedTarget as UsesConcerns,  modifiedTarget[CONCERN_CLASSES]);
 
-        // Clear evt. cached descriptors...
+        // Clear evt. cached items.
         this.descriptors.clear();
 
+        // Finally, return the modified target
         return modifiedTarget;
     }
 
@@ -584,5 +599,68 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     protected isUnsafe(key: PropertyKey): boolean
     {
         return isUnsafeKey(key);
+    }
+
+    /**
+     * Invokes the {@link BEFORE} hook method in concern classes
+     * 
+     * @param {UsesConcerns} target
+     * @param {ConcernConstructor[]} concerns All concern classes in target's prototype chain
+     * 
+     * @protected
+     * 
+     * @throws {InjectionError}
+     */
+    protected runBeforeRegistration(target: UsesConcerns, concerns: ConcernConstructor[]): void
+    {
+        this.runRegistrationHook(target, concerns, BEFORE, 'Before');
+    }
+
+    /**
+     * Invokes the {@link AFTER} hook method in concern classes
+     *
+     * @param {UsesConcerns} target
+     * @param {ConcernConstructor[]} concerns All concern classes in target's prototype chain
+     *
+     * @protected
+     *
+     * @throws {InjectionError}
+     */
+    protected runAfterRegistration(target: UsesConcerns, concerns: ConcernConstructor[]): void
+    {
+        this.runRegistrationHook(target, concerns, AFTER, 'After');
+    }
+
+    /**
+     * Run registration hook on given concern classes
+     * 
+     * @param {UsesConcerns} target
+     * @param {ConcernConstructor} concerns
+     * @param {symbol}  hook
+     * @param {string} name
+     * 
+     * @protected
+     * 
+     * @throws {InjectionError}
+     */
+    protected runRegistrationHook(
+        target: UsesConcerns,
+        concerns: ConcernConstructor[], 
+        hook: symbol,
+        name: string
+    ): void
+    {
+        for (const concern of concerns) {
+            if (!Reflect.has(concern, hook)) {
+                continue;
+            }
+
+            try {
+                (concern as ConcernConstructor & RegistrationAware)[hook as keyof RegistrationAware](target);
+            } catch (e) {
+                const reason = getErrorMessage(e);
+                throw new InjectionError(target, concern, `${name} registration failure: ${reason}`, { cause: { previous: e }});
+            }
+        }
     }
 }
