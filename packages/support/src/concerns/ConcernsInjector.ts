@@ -152,7 +152,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         let modifiedTarget: UsesConcerns<T> = this.defineConcerns(this.target, concernClasses);
 
         // Run before registration hook
-        this.runBeforeRegistration(this.target as UsesConcerns, modifiedTarget[CONCERN_CLASSES]);
+        this.callBeforeRegistration(this.target as UsesConcerns, modifiedTarget[CONCERN_CLASSES]);
         
         // Define concerns, container and aliases
         modifiedTarget = this.defineAliases(
@@ -163,7 +163,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         );
   
         // Run after registration hook
-        this.runAfterRegistration(modifiedTarget as UsesConcerns,  modifiedTarget[CONCERN_CLASSES]);
+        this.callAfterRegistration(modifiedTarget as UsesConcerns,  modifiedTarget[CONCERN_CLASSES]);
 
         // Clear evt. cached items.
         this.repository.clear();
@@ -611,9 +611,9 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * 
      * @throws {InjectionError}
      */
-    protected runBeforeRegistration(target: UsesConcerns, concerns: ConcernConstructor[]): void
+    protected callBeforeRegistration(target: UsesConcerns, concerns: ConcernConstructor[]): void
     {
-        this.runRegistrationHook(target, concerns, BEFORE, 'Before');
+        this.callRegistrationHook(target, concerns, BEFORE, 'Before');
     }
 
     /**
@@ -626,13 +626,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      *
      * @throws {InjectionError}
      */
-    protected runAfterRegistration(target: UsesConcerns, concerns: ConcernConstructor[]): void
+    protected callAfterRegistration(target: UsesConcerns, concerns: ConcernConstructor[]): void
     {
-        this.runRegistrationHook(target, concerns, AFTER, 'After');
+        this.callRegistrationHook(target, concerns, AFTER, 'After');
     }
 
     /**
-     * Run registration hook on given concern classes
+     * Invokes the registration hook in given concern classes
      * 
      * @param {UsesConcerns} target
      * @param {ConcernConstructor} concerns
@@ -643,7 +643,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * 
      * @throws {InjectionError}
      */
-    protected runRegistrationHook(
+    protected callRegistrationHook(
         target: UsesConcerns,
         concerns: ConcernConstructor[], 
         hook: symbol,
