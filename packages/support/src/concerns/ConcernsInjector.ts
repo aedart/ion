@@ -69,7 +69,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * 
      * @protected
      */
-    protected factory: Factory;
+    protected configFactory: Factory;
 
     /**
      * Descriptors Repository
@@ -95,19 +95,19 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * @template T = object
      * 
      * @param {T} target The target class that concerns must be injected into
-     * @param {Factory} [factory]
+     * @param {Factory} [configFactory]
      * @param {AliasDescriptorFactory} [descriptorFactory]
      * @param {DescriptorsRepository} [repository]
      */
     public constructor(
         target: T,
-        factory?: Factory,
+        configFactory?: Factory,
         descriptorFactory?: AliasDescriptorFactory,
         repository?: DescriptorsRepository
     )
     {
         this.#target = target;
-        this.factory = factory || new ConfigurationFactory();
+        this.configFactory = configFactory || new ConfigurationFactory();
         this.descriptorFactory = descriptorFactory || new DescriptorFactory();
         this.repository = repository || new Repository();
     }
@@ -410,7 +410,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      */
     protected normaliseEntry(entry: ConcernConstructor|Configuration|ShorthandConfiguration): Configuration
     {
-        return this.factory.make(this.target as object, entry);
+        return this.configFactory.make(this.target as object, entry);
     }
     
     /**
