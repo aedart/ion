@@ -1,16 +1,16 @@
 import type {
-    Resolver,
+    AliasDescriptorFactory,
     ConcernConstructor,
     Owner
 } from "@aedart/contracts/support/concerns";
 import { CONCERNS } from "@aedart/contracts/support/concerns";
 
 /**
- * Proxy Descriptor Resolver
+ * Alias Descriptor Factory
  * 
- * @see Resolver
+ * @see AliasDescriptorFactory
  */
-export default class ProxyResolver implements Resolver
+export default class DescriptorFactory implements AliasDescriptorFactory
 {
     /**
      * Returns a property descriptor to be used for an "alias" property or method in a target class
@@ -21,7 +21,7 @@ export default class ProxyResolver implements Resolver
      *
      * @returns {PropertyDescriptor} Descriptor to be used for defining alias in a target class
      */
-    resolve(key: PropertyKey, source: ConcernConstructor, keyDescriptor: PropertyDescriptor): PropertyDescriptor
+    make(key: PropertyKey, source: ConcernConstructor, keyDescriptor: PropertyDescriptor): PropertyDescriptor
     {
         const proxy: PropertyDescriptor = Object.assign(Object.create(null), {
             configurable: keyDescriptor.configurable,

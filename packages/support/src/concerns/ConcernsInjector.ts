@@ -10,7 +10,7 @@ import type {
     Factory,
     Alias,
     Aliases,
-    Resolver,
+    AliasDescriptorFactory,
     RegistrationAware
 } from "@aedart/contracts/support/concerns";
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
@@ -33,7 +33,7 @@ import UnsafeAliasError from './exceptions/UnsafeAliasError';
 import ConcernsContainer from './ConcernsContainer';
 import ConfigurationFactory from "./ConfigurationFactory";
 import Descriptors from "./Descriptors";
-import ProxyResolver from "./ProxyResolver";
+import DescriptorFactory from "./DescriptorFactory";
 import { isUnsafeKey } from "./isUnsafeKey";
 
 /**
@@ -81,13 +81,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     protected descriptors: DescriptorsCache;
 
     /**
-     * Proxy Descriptor Resolver
+     * Alias Descriptor Factory
      * 
-     * @type {Resolver}
+     * @type {AliasDescriptorFactory}
      * 
      * @protected
      */
-    protected proxyResolver: Resolver;
+    protected descriptorFactory: AliasDescriptorFactory;
 
     /**
      * Create a new Concerns Injector instance
@@ -96,19 +96,19 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * 
      * @param {T} target The target class that concerns must be injected into
      * @param {Factory} [factory]
-     * @param {Resolver} [resolver]
+     * @param {AliasDescriptorFactory} [descriptorFactory]
      * @param {DescriptorsCache} [descriptors]
      */
     public constructor(
         target: T,
         factory?: Factory,
-        resolver?: Resolver,
+        descriptorFactory?: AliasDescriptorFactory,
         descriptors?: DescriptorsCache
     )
     {
         this.#target = target;
         this.factory = factory || new ConfigurationFactory();
-        this.proxyResolver = resolver || new ProxyResolver();
+        this.descriptorFactory = descriptorFactory || new DescriptorFactory();
         this.descriptors = descriptors || new Descriptors();
     }
     
@@ -330,7 +330,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         }
 
         // Define the proxy property or method, using the concern's property descriptor to determine what must be defined.
-        const proxy = this.proxyResolver.resolve(key, source, concernDescriptors[key]);
+        const proxy = this.descriptorFactory.make(key, source, concernDescriptors[key]);
 
         return this.definePropertyInTarget<T>(target.prototype, alias, proxy) !== undefined;
     }

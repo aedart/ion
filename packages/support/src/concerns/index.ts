@@ -4,7 +4,7 @@ import ConcernsContainer from "./ConcernsContainer";
 import ConcernsInjector from "./ConcernsInjector";
 import ConfigurationFactory from "./ConfigurationFactory";
 import Descriptors from "./Descriptors";
-import ProxyResolver from "./ProxyResolver";
+import DescriptorFactory from "./DescriptorFactory";
 
 export {
     AbstractConcern,
@@ -13,7 +13,7 @@ export {
     ConcernsInjector,
     ConfigurationFactory,
     Descriptors,
-    ProxyResolver
+    DescriptorFactory
 };
 
 export * from './exceptions';

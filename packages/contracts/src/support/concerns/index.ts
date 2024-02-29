@@ -89,7 +89,7 @@ import Factory from "./Factory";
 import Injector from "./Injector";
 import RegistrationAware from "./RegistrationAware";
 import Owner from "./Owner";
-import Resolver from "./Resolver";
+import AliasDescriptorFactory from "./AliasDescriptorFactory";
 import UsesConcerns from "./UsesConcerns";
 export {
     type Concern,
@@ -101,7 +101,7 @@ export {
     type Injector,
     type RegistrationAware,
     type Owner,
-    type Resolver,
+    type AliasDescriptorFactory,
     type UsesConcerns
 }
 
