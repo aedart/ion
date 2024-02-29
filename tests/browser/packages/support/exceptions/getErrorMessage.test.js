@@ -23,6 +23,21 @@ describe('@aedart/support/exceptions', () => {
             expect(result)
                 .toBe(defaultMessage);
         });
+
+        it('defaults when expression is given', () => {
+            
+            let result;
+            const defaultMessage = 'Everyone just loves the saltyness of popcorn kebab brushd with sugar.';
+            
+            try {
+                throw 'Some expression';
+            } catch (e) {
+                result = getErrorMessage(e, defaultMessage);
+            }
+
+            expect(result)
+                .toBe(defaultMessage);
+        });
     });
 
 });
