@@ -36,6 +36,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                 children: [
                     'packages/support/',
                     'packages/support/install',
+                    'packages/support/arrays',
                     'packages/support/mixins',
                     'packages/support/meta',
                     'packages/support/objects',
