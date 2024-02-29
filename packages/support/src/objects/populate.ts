@@ -1,5 +1,5 @@
-import { isKeySafe } from "@aedart/support/reflections";
-import type { SourceKeysCallback } from "@aedart/contracts/support/objects";
+import {isKeySafe} from "@aedart/support/reflections";
+import type {SourceKeysCallback} from "@aedart/contracts/support/objects";
 
 /**
  * Populate target object with the properties from source object
@@ -17,7 +17,8 @@ import type { SourceKeysCallback } from "@aedart/contracts/support/objects";
  * @param {object} source
  * @param {PropertyKey | PropertyKey[] | SourceKeysCallback} [keys='*'] Keys to select and copy from `source` object.
  *                                                 If wildcard (`*`) given, then all properties from the `source`
- *                                                 are selected.
+ *                                                 are selected. If a callback is given, then that callback must return
+ *                                                 key or keys to select from `source`.
  * @param {boolean} [safe=true] When `true`, properties must exist in target (_must be defined in target_),
  *                              before they are shallow copied.
  *                              
