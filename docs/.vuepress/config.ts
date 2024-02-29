@@ -1,5 +1,5 @@
 import {defineUserConfig, Page} from 'vuepress';
-import defaultTheme from "@vuepress/theme-default"
+import { defaultTheme } from "@vuepress/theme-default"
 import { webpackBundler } from "@vuepress/bundler-webpack"
 import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
 import {searchPlugin} from "@vuepress/plugin-search";
