@@ -1,4 +1,4 @@
-import type {AbstractConstructor, ConstructorOrAbstractConstructor} from "@aedart/contracts";
+import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
 
 /**
