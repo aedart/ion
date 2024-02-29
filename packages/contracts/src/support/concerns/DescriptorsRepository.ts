@@ -3,12 +3,27 @@ import ConcernConstructor from './ConcernConstructor';
 import UsesConcerns from './UsesConcerns';
 
 /**
- * Descriptors Cache
+ * Descriptors Repository
  * 
  * Utility for obtaining property descriptors for a target class or concern.
  */
-export default interface DescriptorsCache
+export default interface DescriptorsRepository
 {
+    /**
+     * Returns property descriptors for given target class (recursively)
+     *
+     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target The target class, or concern class
+     * @param {boolean} [force=false] If `true` then method will not return evt. cached descriptors.
+     * @param {boolean} [cache=false] Caches the descriptors if `true`.
+     *
+     * @returns {Record<PropertyKey, PropertyDescriptor>}
+     */
+    get(
+        target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
+        force?: boolean,
+        cache?: boolean
+    ): Record<PropertyKey, PropertyDescriptor>;
+    
     /**
      * Caches property descriptors for target during the execution of callback.
      *
@@ -33,21 +48,6 @@ export default interface DescriptorsCache
      * @returns {Record<PropertyKey, PropertyDescriptor>}
      */
     remember(target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor, force?: boolean): Record<PropertyKey, PropertyDescriptor>;
-
-    /**
-     * Returns property descriptors for given target class (recursively)
-     *
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target The target class, or concern class
-     * @param {boolean} [force=false] If `true` then method will not return evt. cached descriptors.
-     * @param {boolean} [cache=false] Caches the descriptors if `true`.
-     *
-     * @returns {Record<PropertyKey, PropertyDescriptor>}
-     */
-    get(
-        target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
-        force?: boolean,
-        cache?: boolean
-    ): Record<PropertyKey, PropertyDescriptor>;
 
     /**
      * Deletes cached descriptors for target

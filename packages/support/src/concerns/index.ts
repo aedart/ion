@@ -3,7 +3,7 @@ import { ConcernClassBlueprint } from "./ConcernClassBlueprint";
 import ConcernsContainer from "./ConcernsContainer";
 import ConcernsInjector from "./ConcernsInjector";
 import ConfigurationFactory from "./ConfigurationFactory";
-import Descriptors from "./Descriptors";
+import Repository from "./Repository";
 import DescriptorFactory from "./DescriptorFactory";
 
 export {
@@ -12,7 +12,7 @@ export {
     ConcernsContainer,
     ConcernsInjector,
     ConfigurationFactory,
-    Descriptors,
+    Repository,
     DescriptorFactory
 };
 

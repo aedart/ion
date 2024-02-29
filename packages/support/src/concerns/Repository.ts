@@ -1,13 +1,13 @@
 import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
-import type { ConcernConstructor, UsesConcerns, DescriptorsCache } from "@aedart/contracts/support/concerns";
+import type { ConcernConstructor, UsesConcerns, DescriptorsRepository } from "@aedart/contracts/support/concerns";
 import { getClassPropertyDescriptors } from "@aedart/support/reflections";
 
 /**
- * Descriptors
+ * Repository
  * 
- * @see DescriptorsCache
+ * @see DescriptorsRepository
  */
-export default class Descriptors implements DescriptorsCache
+export default class Repository implements DescriptorsRepository
 {
     /**
      * In-memory cache property descriptors for target class and concern classes
@@ -16,7 +16,7 @@ export default class Descriptors implements DescriptorsCache
      *
      * @private
      */
-    #cached: WeakMap<
+    #store: WeakMap<
         ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
         Record<PropertyKey, PropertyDescriptor>
     >;
@@ -25,9 +25,36 @@ export default class Descriptors implements DescriptorsCache
      * Create new Descriptors instance
      */
     constructor() {
-        this.#cached = new WeakMap();
+        this.#store = new WeakMap();
     }
 
+    /**
+     * Returns property descriptors for given target class (recursively)
+     *
+     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target The target class, or concern class
+     * @param {boolean} [force=false] If `true` then method will not return evt. cached descriptors.
+     * @param {boolean} [cache=false] Caches the descriptors if `true`.
+     *
+     * @returns {Record<PropertyKey, PropertyDescriptor>}
+     */
+    public get(
+        target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
+        force: boolean = false,
+        cache: boolean = false
+    ): Record<PropertyKey, PropertyDescriptor>
+    {
+        if (!force && this.#store.has(target)) {
+            return this.#store.get(target) as Record<PropertyKey, PropertyDescriptor>;
+        }
+
+        const descriptors = getClassPropertyDescriptors(target, true);
+        if (cache) {
+            this.#store.set(target, descriptors);
+        }
+
+        return descriptors;
+    }
+    
     /**
      * Caches property descriptors for target during the execution of callback.
      *
@@ -66,33 +93,6 @@ export default class Descriptors implements DescriptorsCache
     }
     
     /**
-     * Returns property descriptors for given target class (recursively)
-     *
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target The target class, or concern class
-     * @param {boolean} [force=false] If `true` then method will not return evt. cached descriptors.
-     * @param {boolean} [cache=false] Caches the descriptors if `true`.
-     *
-     * @returns {Record<PropertyKey, PropertyDescriptor>}
-     */
-    public get(
-        target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor,
-        force: boolean = false,
-        cache: boolean = false
-    ): Record<PropertyKey, PropertyDescriptor>
-    {
-        if (!force && this.#cached.has(target)) {
-            return this.#cached.get(target) as Record<PropertyKey, PropertyDescriptor>;
-        }
-
-        const descriptors = getClassPropertyDescriptors(target, true);
-        if (cache) {
-            this.#cached.set(target, descriptors);
-        }
-
-        return descriptors;
-    }
-    
-    /**
      * Deletes cached descriptors for target
      * 
      * @param {ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor} target
@@ -101,7 +101,7 @@ export default class Descriptors implements DescriptorsCache
      */
     public forget(target: ConstructorOrAbstractConstructor | UsesConcerns | ConcernConstructor): boolean
     {
-        return this.#cached.delete(target);
+        return this.#store.delete(target);
     }
     
     /**
@@ -111,7 +111,7 @@ export default class Descriptors implements DescriptorsCache
      */
     public clear(): this
     {
-        this.#cached = new WeakMap();
+        this.#store = new WeakMap();
         
         return this;
     }

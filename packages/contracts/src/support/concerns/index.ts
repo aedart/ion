@@ -84,7 +84,7 @@ import Concern from "./Concern";
 import ConcernConstructor from "./ConcernConstructor";
 import Configuration from "./Configuration";
 import Container from "./Container";
-import DescriptorsCache from "./DescriptorsCache";
+import DescriptorsRepository from "./DescriptorsRepository";
 import Factory from "./Factory";
 import Injector from "./Injector";
 import RegistrationAware from "./RegistrationAware";
@@ -96,7 +96,7 @@ export {
     type ConcernConstructor,
     type Configuration,
     type Container,
-    type DescriptorsCache,
+    type DescriptorsRepository,
     type Factory,
     type Injector,
     type RegistrationAware,

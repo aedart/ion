@@ -6,7 +6,7 @@ import type {
     ShorthandConfiguration,
     Owner,
     Container,
-    DescriptorsCache,
+    DescriptorsRepository,
     Factory,
     Alias,
     Aliases,
@@ -32,7 +32,7 @@ import InjectionError from './exceptions/InjectionError';
 import UnsafeAliasError from './exceptions/UnsafeAliasError';
 import ConcernsContainer from './ConcernsContainer';
 import ConfigurationFactory from "./ConfigurationFactory";
-import Descriptors from "./Descriptors";
+import Repository from "./Repository";
 import DescriptorFactory from "./DescriptorFactory";
 import { isUnsafeKey } from "./isUnsafeKey";
 
@@ -72,13 +72,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     protected factory: Factory;
 
     /**
-     * Descriptors Cache
+     * Descriptors Repository
      * 
-     * @type {DescriptorsCache}
+     * @type {DescriptorsRepository}
      * 
      * @protected
      */
-    protected descriptors: DescriptorsCache;
+    protected repository: DescriptorsRepository;
 
     /**
      * Alias Descriptor Factory
@@ -97,19 +97,19 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * @param {T} target The target class that concerns must be injected into
      * @param {Factory} [factory]
      * @param {AliasDescriptorFactory} [descriptorFactory]
-     * @param {DescriptorsCache} [descriptors]
+     * @param {DescriptorsRepository} [repository]
      */
     public constructor(
         target: T,
         factory?: Factory,
         descriptorFactory?: AliasDescriptorFactory,
-        descriptors?: DescriptorsCache
+        repository?: DescriptorsRepository
     )
     {
         this.#target = target;
         this.factory = factory || new ConfigurationFactory();
         this.descriptorFactory = descriptorFactory || new DescriptorFactory();
-        this.descriptors = descriptors || new Descriptors();
+        this.repository = repository || new Repository();
     }
     
     /**
@@ -166,7 +166,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         this.runAfterRegistration(modifiedTarget as UsesConcerns,  modifiedTarget[CONCERN_CLASSES]);
 
         // Clear evt. cached items.
-        this.descriptors.clear();
+        this.repository.clear();
 
         // Finally, return the modified target
         return modifiedTarget;
@@ -256,13 +256,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         // Obtain previous applied aliases, form the target's parents.
         const appliedByParents: Map<Alias, UsesConcerns> = this.getAllAppliedAliases(target as UsesConcerns);
 
-        this.descriptors.rememberDuring(target, () => {
+        this.repository.rememberDuring(target, () => {
             for (const configuration of configurations) {
                 if (!configuration.allowAliases) {
                     continue;
                 }
 
-                this.descriptors.rememberDuring(configuration.concern, () => {
+                this.repository.rememberDuring(configuration.concern, () => {
                     // Process the configuration aliases and define them. Merge returned aliases with the
                     // applied aliases for the target class.
                     const newApplied: Alias[] = this.processAliases(
@@ -318,13 +318,13 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         }
 
         // Skip if a property key already exists with same name as the "alias"
-        const targetDescriptors = this.descriptors.get(target);
+        const targetDescriptors = this.repository.get(target);
         if (Reflect.has(targetDescriptors, alias)) {
             return false;
         }
         
         // Abort if unable to find descriptor that matches given key in concern class.
-        const concernDescriptors = this.descriptors.get(source);
+        const concernDescriptors = this.repository.get(source);
         if (!Reflect.has(concernDescriptors, key)) {
             throw new InjectionError(target, source, `"${key.toString()}" does not exist in concern ${getNameOrDesc(source)} - attempted aliased as "${alias.toString()}" in target ${getNameOrDesc(target)}`);
         }
