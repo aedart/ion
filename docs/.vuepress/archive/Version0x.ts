@@ -36,13 +36,101 @@ export default PagesCollection.make('v0.x', '/v0x', [
                 children: [
                     'packages/support/',
                     'packages/support/install',
-                    'packages/support/arrays',
-                    'packages/support/exceptions',
-                    'packages/support/meta',
-                    'packages/support/mixins',
-                    'packages/support/objects',
-                    'packages/support/reflections',
-                    'packages/support/misc',
+                    {
+                        text: 'Arrays',
+                        collapsible: true,
+                        children: [
+                            'packages/support/arrays/',
+                            'packages/support/arrays/includesAll',
+                            'packages/support/arrays/includesAny',
+                            'packages/support/arrays/isArrayLike',
+                            'packages/support/arrays/isConcatSpreadable',
+                            'packages/support/arrays/isSafeArrayLike',
+                            'packages/support/arrays/isTypedArray',
+                            'packages/support/arrays/merge',
+                        ]
+                    },
+                    {
+                        text: 'Exceptions',
+                        collapsible: true,
+                        children: [
+                            'packages/support/exceptions/',
+                            'packages/support/exceptions/configureCustomError',
+                            'packages/support/exceptions/configureStackTrace',
+                            'packages/support/exceptions/getErrorMessage',
+                            'packages/support/exceptions/customErrors',
+                        ]
+                    },
+                    {
+                        text: 'Meta',
+                        collapsible: true,
+                        children: [
+                            'packages/support/meta/',
+                            'packages/support/meta/prerequisites',
+                            'packages/support/meta/supported',
+                            'packages/support/meta/setAndGet',
+                            'packages/support/meta/inheritance',
+                            'packages/support/meta/outsideChanges',
+                            'packages/support/meta/tc39',
+                            'packages/support/meta/targetMeta',
+                        ]
+                    },
+                    {
+                        text: 'Mixins',
+                        collapsible: true,
+                        children: [
+                            'packages/support/mixins/',
+                            'packages/support/mixins/newMixin',
+                            'packages/support/mixins/apply',
+                            'packages/support/mixins/instanceof',
+                            'packages/support/mixins/inheritance',
+                            'packages/support/mixins/onward',
+                        ]
+                    },
+                    {
+                        text: 'Object',
+                        collapsible: true,
+                        children: [
+                            'packages/support/objects/',
+                            'packages/support/objects/forget',
+                            'packages/support/objects/forgetAll',
+                            'packages/support/objects/get',
+                            'packages/support/objects/has',
+                            'packages/support/objects/hasAll',
+                            'packages/support/objects/hasAny',
+                            'packages/support/objects/hasUniqueId',
+                            'packages/support/objects/isCloneable',
+                            'packages/support/objects/isPopulatable',
+                            'packages/support/objects/isset',
+                            'packages/support/objects/populate',
+                            'packages/support/objects/set',
+                            'packages/support/objects/uniqueId',
+                        ]
+                    },
+                    {
+                        text: 'Reflections',
+                        collapsible: true,
+                        children: [
+                            'packages/support/reflections/',
+                            'packages/support/reflections/isConstructor',
+                            'packages/support/reflections/isKeyUnsafe',
+                        ]
+                    },
+                    {
+                        text: 'Misc',
+                        collapsible: true,
+                        children: [
+                            'packages/support/misc/',
+                            'packages/support/misc/descTag',
+                            'packages/support/misc/empty',
+                            'packages/support/misc/isKey',
+                            'packages/support/misc/isPrimitive',
+                            'packages/support/misc/isPropertyKey',
+                            'packages/support/misc/isset',
+                            'packages/support/misc/mergeKeys',
+                            'packages/support/misc/toWeakRef',
+                        ]
+                    },
                 ]
             },
             {
