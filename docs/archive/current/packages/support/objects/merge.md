@@ -26,7 +26,7 @@ const address = {
     },
 };
 
-const result = merge(a, b);
+const result = merge(person, address);
 
 console.log(result);
 ```
