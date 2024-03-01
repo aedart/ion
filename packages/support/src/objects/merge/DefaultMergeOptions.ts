@@ -39,14 +39,14 @@ export default class DefaultMergeOptions implements MergeOptions
      *
      * **Example:**
      * ```js
-     * const a { 'foo': true };
-     * const a { 'bar': true, 'zar': true };
+     * const a = { 'foo': true };
+     * const b = { 'bar': true, 'zar': true };
      *
-     * merge([ a, b ], { skip: [ 'zar' ] }); // { 'foo': true, 'bar': true }
+     * merge().using({ skip: [ 'zar' ] }).of(a, b); // { 'foo': true, 'bar': true }
      *
-     * merge([ a, b ], { skip: (key, source) => {
+     * merge().using({ skip: (key, source) => {
      *      return key === 'bar' && Reflect.has(source, key);
-     * } }); // { 'foo': true, 'zar': true }
+     * } }).of(a, b); // { 'foo': true, 'zar': true }
      * ```
      *
      * @type {PropertyKey[] | SkipKeyCallback}
@@ -64,12 +64,12 @@ export default class DefaultMergeOptions implements MergeOptions
      *
      * **Example:**
      * ```js
-     * const a { 'foo': true };
-     * const a { 'foo': undefined };
+     * const a = { 'foo': true };
+     * const b = { 'foo': undefined };
      *
-     * merge([ a, b ]); // { 'foo': undefined }
+     * merge(a, b); // { 'foo': undefined }
      *
-     * merge([ a, b ], { overwriteWithUndefined: false }); // { 'foo': true }
+     * merge().using({ overwriteWithUndefined: false }).of(a, b) // { 'foo': true }
      * ```
      *
      * @type {boolean}
@@ -83,7 +83,7 @@ export default class DefaultMergeOptions implements MergeOptions
      * **When `true` (_default behaviour_)**: _If source object is cloneable then the resulting object from `clone()`
      * method is used. Its properties are then iterated by the merge function._
      *
-     * **When `false`**: _Cloneable objects are treated like any other objects (`clone()` method ignored)._
+     * **When `false`**: _Cloneable objects are treated like any other objects, the `clone()` method is ignored._
      *
      * **Example:**
      * ```js
@@ -98,8 +98,9 @@ export default class DefaultMergeOptions implements MergeOptions
      *      }
      * } };
      *
-     * merge([ a, b ]); // { 'foo': { 'name': 'Rick Doe', 'age': 26 } }
-     * merge([ a, b ], { useCloneable: false }); // { 'foo': { 'name': 'Jane Doe', clone() {...} } }
+     * merge(a, b); // { 'foo': { 'name': 'Rick Doe', 'age': 26 } }
+     *
+     * merge().using({ useCloneable: false }).of(a, b); // { 'foo': { 'name': 'Jane Doe', clone() {...} } }
      * ```
      *
      * @see [`Cloneable`]{@link import('@aedart/contracts/support/objects').Cloneable}
