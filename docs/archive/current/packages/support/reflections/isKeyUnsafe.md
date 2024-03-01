@@ -11,10 +11,10 @@ Determines if a property key is considered "unsafe".
 ```js
 import { isKeyUnsafe } from '@aedart/support/reflections';
 
-isKeyUnsafe('name'); // true
-isKeyUnsafe('length'); // true
-isKeyUnsafe('constructor'); // true
-isKeyUnsafe('__proto__'); // false
+isKeyUnsafe('name'); // false
+isKeyUnsafe('length'); // false
+isKeyUnsafe('constructor'); // false
+isKeyUnsafe('__proto__'); // true
 ```
 
 ::: tip Note
@@ -25,3 +25,16 @@ which is defined in the `@aedart/contracts/support/objects` submodule;
 import { DANGEROUS_PROPERTIES } from "@aedart/contracts/support/objects";
 ```
 :::
+
+## `isKeySafe` <Badge type="tip" text="Available since v0.9" vertical="middle" />
+
+Opposite of `isKeyUnsafe()`.
+
+```js
+import { isKeySafe } from '@aedart/support/reflections';
+
+isKeySafe('name'); // true
+isKeySafe('length'); // true
+isKeySafe('constructor'); // true
+isKeySafe('__proto__'); // false
+```
