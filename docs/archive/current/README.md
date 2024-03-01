@@ -79,12 +79,12 @@ item.name = 'My Item';
 console.log(item.name); // My Item
 ```
 
-See details and more examples in the [`@aedart/support/mixins` documentation](./packages/support/mixins.md).
+See details and more examples in the [`@aedart/support/mixins` documentation](./packages/support/mixins/README.md).
 
 ### "Target" Meta Decorator <Badge type="tip" text="Available since v0.7" />
 
 Associate arbitrary metadata directly with the target element that is being decorated.
-_See [target meta decorator](./packages/support/meta.md) fro additional details._
+_See [target meta decorator](./packages/support/meta/targetMeta.md) fro additional details._
 
 ```js
 import {targetMeta, getTargetMeta} from '@aedart/support/meta';
@@ -105,7 +105,7 @@ getTargetMeta(instance.search, 'desc'); // Seaches for cities
 
 ### Meta Decorator <Badge type="tip" text="Available since v0.6" />
 
-The [meta decorator](./packages/support/meta.md) is able to associate arbitrary metadata with a class and its elements.
+The [meta decorator](./packages/support/meta/README.md) is able to associate arbitrary metadata with a class and its elements.
 
 ```js
 import {meta, getMeta} from '@aedart/support/meta';
