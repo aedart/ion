@@ -29,6 +29,26 @@ _TBD: "To be decided"._
 
 ## `v0.x` Highlights
 
+### Merge <Badge type="tip" text="Available since v0.9" />
+
+Objects [merge](./packages/support/objects/merge.md) utility, using [deep copy](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy).
+
+```js
+import { merge } from "@aedart/support/objects";
+
+const a = {
+    'name': 'Alin',
+};
+
+const b = {
+    'address': {
+        'street': 'Northern Street 1'
+    },
+};
+
+const result = merge(a, b); // { 'name': 'Alin', 'address': { 'street': '...' } }
+```
+
 ### Mixins <Badge type="tip" text="Available since v0.8" />
 
 Adaptation of Justin Fagnani's [`mixwith.js`](https://github.com/justinfagnani/mixwith.js).
