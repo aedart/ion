@@ -32,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `merge()`, `isTypedArray()`, `isArrayLike()`, `isSafeArrayLike()`, `isTypedArray()` and `isConcatSpreadable()` in `@aedart/support/arrays`.
 * `includesAny()` and `includesAll()` in `@aedart/support/arrays`.
 
+### Changed
+
+* Split the "support" submodules docs into several smaller pages.
+
 ### Fixed
 
 * Lodash JSDoc references in `get()`, `set()`, `unset()` and `forget()`, in `@aedart/support/objects`.
