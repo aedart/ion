@@ -102,6 +102,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/objects/isCloneable',
                             'packages/support/objects/isPopulatable',
                             'packages/support/objects/isset',
+                            'packages/support/objects/merge',
                             'packages/support/objects/populate',
                             'packages/support/objects/set',
                             'packages/support/objects/uniqueId',
