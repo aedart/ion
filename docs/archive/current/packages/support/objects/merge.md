@@ -180,8 +180,8 @@ When specifying a list of property keys, then the depth level in which the prope
 
 #### Skip Callback
 
-In situations when you need to perform more advanced skip logic, then you can use a callback.
-It is given the following arguments:
+You can use a callback, if you need to handle more advanced skip logic.
+The callback accepts the the following arguments:
 
 - `key: PropertyKey` - The current property that is being processed.
 - `source: object` - The source object that contains the key.
@@ -280,9 +280,9 @@ merge()
 
 ### `mergeArrays`
 
-Determines whether to merge array, [array-like](../arrays/isArrayLike.md), and [concat spreadable](../arrays/isConcatSpreadable.md) properties or not.
+When enabled, arrays, [array-like](../arrays/isArrayLike.md), and [concat spreadable](../arrays/isConcatSpreadable.md) objects are merged.  
 
-**Note**: _By default, existing property is overwritten with new property value._
+**Note**: _By default, existing array values are NOT merged._
 
 ```js
 const a = { 'foo': [ 1, 2, 3 ] };
@@ -295,11 +295,11 @@ merge()
     .of(a, b); // { 'foo': [ 1, 2, 3, 4, 5, 6 ] }
 ```
 
-Behind the scene, the [array merge](../arrays/merge.md) utility is used for merging array properties.
+Behind the scene, the [array merge](../arrays/merge.md) utility is used for merging arrays.
 
 ### `callback`
 
-In situations when you need more advanced merging of objects, you may specify a custom callback.
+In situations when you need more advanced merge logic, you may specify a custom callback.
 
 The callback is _**responsible**_ for returning the value to be merged, from a given source object. 
 
@@ -313,6 +313,24 @@ const b = {
 };
 
 const result = merge()
+    .using({
+        callback: (target, next, options) => {
+            const { key, value } = target;
+            if (key === 'b') {
+                return value + 1;
+            }
+
+            return value;
+        }
+    })
+    .of(a, b); // { 'a': 1, 'b': 3 }
+```
+
+If you do not have other merge options to specify, then you can simply provide a merge callback directly as argument for
+the `using()` method.
+
+```js
+const result = merge()
     .using((target, next, options) => {
         const { key, value } = target;
         if (key === 'b') {
@@ -321,7 +339,7 @@ const result = merge()
 
         return value;
     })
-    .of(a, b); // { 'a': 1, 'b': 3 }
+    .of(a, b);
 ```
 
 #### Arguments
