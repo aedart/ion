@@ -87,7 +87,7 @@ _See [`isUnsafeKey()`](../reflections/isKeyUnsafe.md) for additional details._
 
 ## Merge Options
 
-`merge()` supports a number of options, which can be customised. You do so via the `using()` method.
+`merge()` supports a number of options. To specify thom, use the `using()` method.
 
 ```js
 merge()
@@ -96,7 +96,7 @@ merge()
 ```
 
 ::: tip Note
-When invoking `merge()` without any arguments, then the underlying objects `Merger` instance is returned.
+When invoking `merge()` without any arguments, an underlying objects `Merger` instance is returned.
 :::
 
 ### `depth`
