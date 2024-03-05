@@ -14,6 +14,6 @@ import type { AbstractConstructor } from "@aedart/contracts";
  * ```
  */
 export type MixinFunction<
-    SuperClass extends AbstractConstructor = object,
-    AbstractSubclass extends AbstractConstructor = object
+    SuperClass extends AbstractConstructor = AbstractConstructor,
+    AbstractSubclass extends AbstractConstructor = AbstractConstructor
 > = (superclass: SuperClass) => AbstractSubclass & SuperClass;

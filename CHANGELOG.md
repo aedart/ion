@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Concerns - an alternative to mixins, in `@aedart/contracts/support/concerns`. 
+* `@aedart/contracts/support/exceptions` and `@aedart/support/exceptions` submodules.
+* `@aedart/contracts/support/objects` submodule.
+* `@aedart/contracts/support/arrays` and `@aedart/support/arrays` submodules.
+* `ConcatSpreadable` (_extends TypeScript's `ArrayLike` interface_) interface in `@aedart/contracts/support/arrays`.
+* `Throwable` (_extends TypeScript's `Error` interface_) interface in `@aedart/contracts/support/exceptions`. 
+* `Cloneable` and `Populatable` interfaces in `@aedart/contracts/support/objects`.
+* `LogicalError` and `AbstractClassError` exceptions in `@aedart/support/exceptions`.
+* `getErrorMessage()`, `configureCustomError()` and `configureStackTrace()` in `@aedart/support/exceptions`.
+* `FUNCTION_PROTOTYPE` and `TYPED_ARRAY_PROTOTYPE` constants in `@aedart/contracts/support/reflections`.
+* `ClassBlueprint` interface in `@aedart/contracts/support/reflections`.
+* `DANGEROUS_PROPERTIES` constant in `@aedart/contracts/support/objects`.
+* `hasPrototypeProperty()` and `assertHasPrototypeProperty()` in `@aedart/support/reflections`.
+* `getParentOfClass()` and `getAllParentsOfClass()` in `@aedart/support/reflections`.
+* `getClassPropertyDescriptor()` and `getClassPropertyDescriptors()` in `@aedart/support/reflections`.
+* `isWeakKind()` in `@aedart/support/reflections`.
+* `isKeySafe()` and `isKeyUnsafe()` in `@aedart/support/reflections`.
+* `getConstructorName()` and `getNameOrDesc()` in `@aedart/support/reflections`.
+* `isSubclass()`, `classLooksLike()`, `isSubclassOrLooksLike()`, `classOwnKeys()`, `hasMethod()` and `hasAllMethods()` in `@aedart/support/reflections`.
+* `merge()`, `populate()`, `isCloneable()` and `isPopulatable()`  in `@aedart/support/objects`.
+* Objects `Merger` (_underlying component for the objects `merge()` util_) in `@aedart/support/objects`.
+* `merge()`, `isTypedArray()`, `isArrayLike()`, `isSafeArrayLike()`, `isTypedArray()` and `isConcatSpreadable()` in `@aedart/support/arrays`.
+* `includesAny()` and `includesAll()` in `@aedart/support/arrays`.
+
+### Changed
+
+* Split the "support" submodules docs into several smaller pages.
+
+### Fixed
+
+* Lodash JSDoc references in `get()`, `set()`, `unset()` and `forget()`, in `@aedart/support/objects`.
+* `jasmine-core` `v4.x` was used by `karma-jasmine`, which caused thrown exceptions that contained `ErrorOptions` to not being rendered correctly in the CLI. [_See GitHub issue for details_](https://github.com/jasmine/jasmine/issues/2028).  
+* Default `defaultTheme` deprecated, replaced with named import, in docs `config.ts`.
+* `defineClientConfig()` does not exist in docs `client.ts` (_replaced with an object of the type `ClientConfig`_).
+
 ## [0.8.0] - 2024-02-12
 
 ### Added

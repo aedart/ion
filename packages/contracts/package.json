@@ -36,6 +36,21 @@
             "import": "./dist/esm/support.js",
             "require": "./dist/cjs/support.cjs"
         },
+        "./support/arrays": {
+            "types": "./dist/types/support/arrays.d.ts",
+            "import": "./dist/esm/support/arrays.js",
+            "require": "./dist/cjs/support/arrays.cjs"
+        },
+        "./support/concerns": {
+            "types": "./dist/types/support/concerns.d.ts",
+            "import": "./dist/esm/support/concerns.js",
+            "require": "./dist/cjs/support/concerns.cjs"
+        },
+        "./support/exceptions": {
+            "types": "./dist/types/support/exceptions.d.ts",
+            "import": "./dist/esm/support/exceptions.js",
+            "require": "./dist/cjs/support/exceptions.cjs"
+        },
         "./support/meta": {
             "types": "./dist/types/support/meta.d.ts",
             "import": "./dist/esm/support/meta.js",
@@ -45,6 +60,11 @@
             "types": "./dist/types/support/mixins.d.ts",
             "import": "./dist/esm/support/mixins.js",
             "require": "./dist/cjs/support/mixins.cjs"
+        },
+        "./support/objects": {
+            "types": "./dist/types/support/objects.d.ts",
+            "import": "./dist/esm/support/objects.js",
+            "require": "./dist/cjs/support/objects.cjs"
         },
         "./support/reflections": {
             "types": "./dist/types/support/reflections.d.ts",

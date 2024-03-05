@@ -17,17 +17,20 @@ export function mergeKeys(...keys: Key[]): Key
         return [];
     }
     
-    keys = keys.map<Key>((key: Key, index: number) => {
-        if (!isKey(key)) {
+    const mapped = keys.map<Key>((key: Key, index: number) => {
+        let modifiedKey = key;
+        
+        if (!isKey(modifiedKey)) {
             throw new TypeError(`mergeKeys(): Argument #${index} must be a valid "key", ${typeof key} given`);
         }
         
-        if (!Array.isArray(key)) {
-            key = [ key ];
+        if (!Array.isArray(modifiedKey)) {
+            modifiedKey = [ modifiedKey ] as Key;
         }
         
-        return key;
+        return modifiedKey;
     });
     
-    return [].concat(...keys);
+    // @ts-expect-error This should be fine here. TS does not understand this merge...
+    return [].concat(...mapped) as Key;
 }

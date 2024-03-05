@@ -1,0 +1,18 @@
+import type { Owner } from "@aedart/contracts/support/concerns";
+import { getConcernsContainer } from "@aedart/support/concerns/getConcernsContainer";
+
+/**
+ * Boot all concerns for [owner]{@link Owner} instance
+ *
+ * @param {object|Owner} instance
+ *
+ * @return {void}
+ *
+ * @throws {TypeError} If `instance` is not of the type [Concerns Owner]{@link import('@aedart/contracts/support/concerns').Owner}
+ * @throws {NotRegisteredError} If a concern class is not registered in this container
+ * @throws {BootError} If a concern is unable to be booted, e.g. if already booted
+ */
+export function bootAllConcerns(instance: object|Owner): void
+{
+    getConcernsContainer(instance).bootAll();
+}

@@ -8,7 +8,7 @@ sidebarDepth: 0
 
 ::: danger
 Ion is still in development.
-You _SHOULD NOT_ use any of the packages in production.
+You _SHOULD NOT_ use any of the packages in a production environment.
 Breaking changes _**MUST**_ be expected for all `v0.x` releases!
 
 _Please review the [`CHANGELOG.md`](https://github.com/aedart/ion/blob/main/CHANGELOG.md) for additional details._
@@ -28,6 +28,51 @@ _*: current supported version._
 _TBD: "To be decided"._
 
 ## `v0.x` Highlights
+
+### Concerns <Badge type="tip" text="Available since v0.9" />
+
+Intended as an alternative to mixins, the [Concerns](./packages/support/concerns/README.md) submodule offers a different
+way to overcome some of the limitations of single inheritance.
+
+```js
+import { use, AbstractConcern } from "@aedart/support/concerns";
+
+// A concern class...
+class Role extends AbstractConcern {
+    addRole(name) {
+        /* ...not shown... */
+    }
+}
+
+// Use concern in target class...
+@use(Role)
+class User {}
+
+// Later in your application...
+const user = new User();
+user.addRole('maintainer');
+user.addRole('supporter');
+```
+
+### Merge <Badge type="tip" text="Available since v0.9" />
+
+Objects [merge](./packages/support/objects/merge.md) utility, using [deep copy](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy).
+
+```js
+import { merge } from "@aedart/support/objects";
+
+const a = {
+    'name': 'Alin',
+};
+
+const b = {
+    'address': {
+        'street': 'Northern Street 1'
+    },
+};
+
+const result = merge(a, b); // { 'name': 'Alin', 'address': { 'street': '...' } }
+```
 
 ### Mixins <Badge type="tip" text="Available since v0.8" />
 
@@ -59,12 +104,12 @@ item.name = 'My Item';
 console.log(item.name); // My Item
 ```
 
-See details and more examples in the [`@aedart/support/mixins` documentation](./packages/support/mixins.md).
+See details and more examples in the [`@aedart/support/mixins` documentation](./packages/support/mixins/README.md).
 
 ### "Target" Meta Decorator <Badge type="tip" text="Available since v0.7" />
 
 Associate arbitrary metadata directly with the target element that is being decorated.
-_See [target meta decorator](./packages/support/meta.md) fro additional details._
+_See [target meta decorator](./packages/support/meta/targetMeta.md) fro additional details._
 
 ```js
 import {targetMeta, getTargetMeta} from '@aedart/support/meta';
@@ -85,7 +130,7 @@ getTargetMeta(instance.search, 'desc'); // Seaches for cities
 
 ### Meta Decorator <Badge type="tip" text="Available since v0.6" />
 
-The [meta decorator](./packages/support/meta.md) is able to associate arbitrary metadata with a class and its elements.
+The [meta decorator](./packages/support/meta/README.md) is able to associate arbitrary metadata with a class and its elements.
 
 ```js
 import {meta, getMeta} from '@aedart/support/meta';
