@@ -14,7 +14,7 @@ export default interface RegistrationAware
      *
      * **Note**: _This hook method is intended to be invoked by an
      * [Injector]{@link import('@aedart/contracts/support/concerns').Injector}, before
-     * a concern container is and aliases are defined in the target class._
+     * the concern container and aliases are defined in the target class._
      *
      * @static
      *
