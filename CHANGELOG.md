@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Concerns - an alternative to mixins, in `@aedart/contracts/support/concerns`. 
 * `@aedart/contracts/support/exceptions` and `@aedart/support/exceptions` submodules.
 * `@aedart/contracts/support/objects` submodule.
 * `@aedart/contracts/support/arrays` and `@aedart/support/arrays` submodules.
