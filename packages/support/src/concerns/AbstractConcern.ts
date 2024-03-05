@@ -81,7 +81,7 @@ export default abstract class AbstractConcern implements Concern
      *
      * **Note**: _This hook method is intended to be invoked by an
      * [Injector]{@link import('@aedart/contracts/support/concerns').Injector}, before
-     * any concern classes are registered in the target class._
+     * a concern container is and aliases are defined in the target class._
      *
      * @static
      *
