@@ -4,7 +4,7 @@ description: Alternative mixin utility.
 sidebarDepth: 0
 ---
 
-# About Concerns
+# About Concerns  <Badge type="tip" text="Available since v0.9" vertical="middle" />
 
 Inspired by PHP's [Traits](https://www.php.net/manual/en/language.oop5.traits.php), traditional [mixins](https://javascript.info/mixins), and a few concepts from [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection),
 the `@aedart/support/concerns` submodule offers an alternative approach to reducing some of the limitations of [single inheritance](https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)#Types). 
