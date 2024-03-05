@@ -51,6 +51,22 @@ export default PagesCollection.make('v0.x', '/v0x', [
                         ]
                     },
                     {
+                        text: 'Concerns',
+                        collapsible: true,
+                        children: [
+                            'packages/support/concerns/',
+                            'packages/support/concerns/prerequisites',
+                            'packages/support/concerns/concernClass',
+                            'packages/support/concerns/usage',
+                            'packages/support/concerns/aliases',
+                            'packages/support/concerns/conflictResolution',
+                            'packages/support/concerns/booting',
+                            'packages/support/concerns/hooks',
+                            'packages/support/concerns/edgeCases',
+                            'packages/support/concerns/jsdoc',
+                        ]
+                    },
+                    {
                         text: 'Exceptions',
                         collapsible: true,
                         children: [
