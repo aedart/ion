@@ -15,7 +15,7 @@ Configures a custom error by automatically setting the error's `name` property t
 * `error: Error`  - the custom error instance
 * `captureStackTrace: boolean = false` (_optional_) Captures and sets error's stack trace¹.
 
-¹: _See [`configureStackTrace()`](./configurestacktrace.md) for details._
+¹: _See [`configureStackTrace()`](./configureStackTrace.md) for details._
 
 ```js
 import { configureCustomError } from "@aedart/support/exceptions";

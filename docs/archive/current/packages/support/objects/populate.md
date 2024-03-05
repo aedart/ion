@@ -29,7 +29,7 @@ The `target` object is mutated by this function.
 :::
 
 ::: tip Note
-["Unsafe" properties](./reflections.md#iskeyunsafe) are disregarded, regardless of what `keys` are given.
+["Unsafe" properties](../reflections/isKeyUnsafe.md) are disregarded, regardless of what `keys` are given.
 :::
 
 ```js
