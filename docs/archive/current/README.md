@@ -29,6 +29,31 @@ _TBD: "To be decided"._
 
 ## `v0.x` Highlights
 
+### Concerns <Badge type="tip" text="Available since v0.9" />
+
+Intended as an alternative to mixins, the [Concerns](./packages/support/concerns/README.md) submodule offers a different
+way to overcome some of the limitations of single inheritance.
+
+```js
+import { use, AbstractConcern } from "@aedart/support/concerns";
+
+// A concern class...
+class Role extends AbstractConcern {
+    addRole(name) {
+        /* ...not shown... */
+    }
+}
+
+// Use concern in target class...
+@use(Role)
+class User {}
+
+// Later in your application...
+const user = new User();
+user.addRole('maintainer');
+user.addRole('supporter');
+```
+
 ### Merge <Badge type="tip" text="Available since v0.9" />
 
 Objects [merge](./packages/support/objects/merge.md) utility, using [deep copy](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy).
