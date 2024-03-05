@@ -39,3 +39,5 @@ item.name = 'My Item';
 
 console.log(item.name); // My Item
 ```
+
+See also [Concerns](../concerns/README.md) as an alternative.
