@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Broken links in support/exceptions and in support/objects docs. 
 
+### Removed
+
+* `ClassContext`, `MethodContext`, `GetterContext`, `SetterContext`, `FieldContext`, `AccessorContext` and `MetadataContext`, in `@aedart/contracts/support/meta` (_components were deprecated in `v0.7.0`_).
+* `MemberContext` type in `@aedart/contracts/support/meta` (_type was deprecated in `v0.7.0`_).
+
 ## [0.9.0] - 2024-03-05
 
 ### Added
