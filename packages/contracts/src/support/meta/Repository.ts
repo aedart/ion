@@ -53,6 +53,8 @@ export default interface Repository
      * Determine if value exists for key
      * 
      * @param {Key} key
+     * 
+     * @return {boolean}
      */
     has(key: Key): boolean;
 
