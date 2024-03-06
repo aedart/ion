@@ -1,5 +1,5 @@
-import MetaEntry from "./MetaEntry";
 import type { Key } from "@aedart/contracts/support";
+import MetaEntry from "./MetaEntry";
 
 /**
  * Decorator context types for any decorator
