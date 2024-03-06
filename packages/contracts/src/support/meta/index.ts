@@ -31,4 +31,5 @@ export {
     Kind
 };
 
+export * from './exceptions/index';
 export type * from './types';
