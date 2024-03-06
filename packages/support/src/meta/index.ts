@@ -4,6 +4,7 @@ export {
 }
 
 export * from './getMetaRepository';
+export * from './hasMeta';
 export * from './getAllMeta';
 export * from './getMeta';
 export * from './meta';
