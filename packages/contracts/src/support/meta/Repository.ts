@@ -14,15 +14,12 @@ export default interface Repository
     readonly owner: object;
 
     /**
-     * Decorator context
-     * 
-     * @type {Context|undefined}
-     */
-    readonly context?: Context 
-    
-    /**
      * Set value for given key
      * 
+     * **Caution**: _Method is intended to be invoked inside a decorator!_
+     * 
+     * @param {object} target Decorator target, e.g. class, field, method...etc
+     * @param {Context} context
      * @param {Key | MetaCallback} key
      * @param {any} [value] Value to be stored. Ignored if `key` argument is a callback.
      * 
@@ -31,6 +28,8 @@ export default interface Repository
      * @throws {MetaException}
      */
     set(
+        target: object,
+        context: Context,
         key: Key | MetaCallback,
         value?: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): void | ((initialValue: unknown) => unknown) | undefined
