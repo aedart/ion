@@ -26,14 +26,14 @@ export default interface Repository
      * @param {Key | MetaCallback} key
      * @param {any} [value] Value to be stored. Ignored if `key` argument is a callback.
      * 
-     * @return {void}
+     * @return {void | ((initialValue: unknown) => unknown) | undefined}
      * 
      * @throws {MetaException}
      */
     set(
         key: Key | MetaCallback,
         value?: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    ): void;
+    ): void | ((initialValue: unknown) => unknown) | undefined
 
     /**
      * Get value for given key
