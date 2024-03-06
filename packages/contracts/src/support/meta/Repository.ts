@@ -24,8 +24,6 @@ export default interface Repository
      * @param {any} [value] Value to be stored. Ignored if `key` argument is a callback.
      * 
      * @return {void | ((initialValue: unknown) => unknown) | undefined}
-     * 
-     * @throws {MetaException}
      */
     set(
         target: object,
