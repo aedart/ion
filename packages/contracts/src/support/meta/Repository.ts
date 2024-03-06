@@ -1,5 +1,5 @@
 import { Key } from "@aedart/contracts/support";
-import {Context, MetaCallback, MetadataRecord} from "./types";
+import { Context, MetaCallback, MetadataRecord } from "./types";
 
 /**
  * Meta Repository
