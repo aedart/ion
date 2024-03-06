@@ -1,5 +1,6 @@
 import MetaEntry from "./MetaEntry";
 import MetaTargetContext from "./MetaTargetContext";
+import Repository from "./Repository";
 import Kind from "./Kind";
 
 /**
@@ -27,6 +28,7 @@ export const TARGET_METADATA: unique symbol = Symbol('target_metadata');
 export {
     type MetaEntry,
     type MetaTargetContext,
+    type Repository,
     
     Kind
 };
