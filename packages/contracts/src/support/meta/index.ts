@@ -1,6 +1,7 @@
 import MetaEntry from "./MetaEntry";
 import MetaTargetContext from "./MetaTargetContext";
 import Repository from "./Repository";
+import TargetRepository from "./TargetRepository";
 import Kind from "./Kind";
 
 /**
@@ -29,6 +30,7 @@ export {
     type MetaEntry,
     type MetaTargetContext,
     type Repository,
+    type TargetRepository,
     
     Kind
 };
