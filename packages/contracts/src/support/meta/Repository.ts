@@ -1,3 +1,4 @@
+import { DecoratorResult } from "@aedart/contracts";
 import { Key } from "@aedart/contracts/support";
 import { Context, MetaCallback, MetadataRecord } from "./types";
 
@@ -30,7 +31,7 @@ export default interface Repository
         context: Context,
         key: Key | MetaCallback,
         value?: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    ): void | ((initialValue: unknown) => unknown) | undefined
+    ): DecoratorResult;
 
     /**
      * Get value for given key
