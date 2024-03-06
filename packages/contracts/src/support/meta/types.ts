@@ -1,8 +1,3 @@
-import MethodContext from "./MethodContext";
-import GetterContext from "./GetterContext";
-import SetterContext from "./SetterContext";
-import FieldContext from "./FieldContext";
-import AccessorContext from "./AccessorContext";
 import MetaEntry from "./MetaEntry";
 import type { Key } from "@aedart/contracts/support";
 
@@ -10,19 +5,6 @@ import type { Key } from "@aedart/contracts/support";
  * Decorator context types for any decorator
  */
 export type Context = DecoratorContext;
-
-/**
- * @deprecated Replaced by {@link ClassMemberDecoratorContext}
- * 
- * Decorator context types for class element decorators
- */
-export type MemberContext =
-    | MethodContext
-    | GetterContext
-    | SetterContext
-    | FieldContext
-    | AccessorContext
-    ;
 
 /**
  * Callback that returns a meta entry object.
