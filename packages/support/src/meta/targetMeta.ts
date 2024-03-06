@@ -1,3 +1,7 @@
+import type {
+    ClassDecorator,
+    ClassMethodDecorator
+} from "@aedart/contracts";
 import type { Key } from "@aedart/contracts/support";
 import type {
     Context,
@@ -8,7 +12,8 @@ import type {
 import { FUNCTION_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import { METADATA, TARGET_METADATA, Kind } from "@aedart/contracts/support/meta";
 import { mergeKeys, empty } from "@aedart/support/misc";
-import { meta, getMeta } from './meta'
+import { meta } from "./meta";
+import { getMeta } from "./getMeta";
 
 /**
  * Registry that contains the target object (e.g. a class or a method),
@@ -59,21 +64,22 @@ const STATIC_IDENTIFIER: unique symbol = Symbol('static');
  *                                 and `value` are stored.
  * @param {unknown} [value] Value to store. Ignored if `key` argument is
  *                          a callback.
- * @returns {(target: object, context: Context) => (void | ((initialValue: unknown) => unknown) | undefined)}
+ * @returns {ClassDecorator | ClassMethodDecorator}
  * 
  * @throws {TypeError} When decorated element is not supported
  */
 export function targetMeta(
     key: Key | MetaCallback,
     value?: unknown
-) {
+): ClassDecorator | ClassMethodDecorator 
+{
     return meta((target: object, context: Context, owner: object) => {
 
         // Prevent unsupported kinds from being decorated...
         if (!['class', 'method'].includes(context.kind)) {
             throw new TypeError(`@targetMeta() does not support "${context.kind}" (only "class" and "method" are supported)`);
         }
-        
+
         // Make a "prefix" key, to be used in the final meta entry,
         // and a meta address entry.
         const prefixKey: Key = makePrefixKey(context);
@@ -81,7 +87,7 @@ export function targetMeta(
             new WeakRef(owner),
             prefixKey
         ];
-        
+
         // Save the address in the registry...
         saveAddress(target, address);
 
@@ -97,7 +103,7 @@ export function targetMeta(
                 saveAddress(proto[context.name], address);
             }
         }
-        
+
         // Finally, return the meta key-value pair that will be stored in the owner's metadata.
         return makeMetaEntry(
             target,
@@ -107,7 +113,7 @@ export function targetMeta(
             key,
             value
         );
-    });
+    }) as ClassDecorator | ClassMethodDecorator;
 }
 
 /**
@@ -155,12 +161,12 @@ export function inheritTargetMeta()
         // which will cause the @targetMeta() and @meta() decorators to do the rest.
         const prefixKey: Key = makePrefixKey(context);
         const targetMeta: object | undefined = getMeta<object, undefined>(Reflect.getPrototypeOf(owner), prefixKey);
-        
+
         // Abort in case that there is nothing to inherit...
         if (empty(targetMeta)) {
             throw new TypeError(`Unable to inherit target meta for ${context.name}: parent ${context.kind} does not have target meta.`);
         }
-        
+
         // Get the first key-value pair (meta entry), from the "target" metadata
         const key: Key = Reflect.ownKeys(targetMeta)[0];
         const value: unknown = (targetMeta as object)[key];
@@ -240,7 +246,7 @@ function findAddress(target: object): MetaAddress | undefined
         if (addressesRegistry.has(target.constructor)) {
             return addressesRegistry.get(target.constructor);    
         }
-        
+
         // Otherwise, change the target to the constructor.
         target = target.constructor;
     }
@@ -266,7 +272,7 @@ function findAddress(target: object): MetaAddress | undefined
     //         return findAddress(parent);
     //     }
     // }
-    
+
     return address;
 }
 
@@ -295,10 +301,10 @@ function makePrefixKey(context: Context): Key
     if (!Reflect.has(Kind, context.kind)) {
         throw new TypeError(`context.kind: "${context.kind}" is unsupported`);
     }
-    
+
     // Debug
     // console.log('@kind', ELEMENT_KIND_MAP[Kind[context.kind]]);
-    
+
     const output: PropertyKey[] = [
         TARGET_METADATA,
         ELEMENT_KIND_IDENTIFIERS[Kind[context.kind]]
@@ -312,7 +318,7 @@ function makePrefixKey(context: Context): Key
     // "anonymous" is for anonymous classes (they do not have a name)
     const name: string | symbol = context.name ?? 'anonymous';
     output.push(name);
-    
+
     return output as Key;
 }
 
@@ -340,7 +346,7 @@ function makeMetaEntry(
 {
     let resolvedKey: Key | MetaCallback = key;
     let resolvedValue: unknown = value;
-    
+
     // When key is a callback, invoke it and use its resulting key-value pair.
     if (typeof key == 'function') {
         const entry: MetaEntry = (key as MetaCallback)(target, context, owner);
@@ -348,7 +354,7 @@ function makeMetaEntry(
         resolvedKey = entry.key;
         resolvedValue = entry.value;
     }
-    
+
     return {
         key: mergeKeys(prefixKey, resolvedKey as Key),
         value: resolvedValue
