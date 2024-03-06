@@ -22,6 +22,15 @@ export type MetadataRecord = DecoratorMetadata;
 export type MetaOwnerReference = WeakRef<object>;
 
 /**
+ * Initializer callback
+ * 
+ * @see ClassDecoratorContext.addInitializer
+ */
+export type InitializerCallback = (
+    this: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+) => void;
+
+/**
  * A location (key or path) to a metadata entry, in a given owner object 
  */
 export type MetaAddress = [
