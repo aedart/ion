@@ -1,3 +1,5 @@
+import { Context } from './types';
+
 /**
  * Meta Decorator Target Context
  */
@@ -17,4 +19,9 @@ export default interface MetaTargetContext
      * The target class, field, method... that is being decorated
      */
     target: object,
+
+    /**
+     * Decorator context
+     */
+    context: Context,
 }
