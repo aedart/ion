@@ -24,7 +24,7 @@ export default interface Repository
      * @param {Key | MetaCallback} key
      * @param {any} [value] Value to be stored. Ignored if `key` argument is a callback.
      * 
-     * @return {void | ((initialValue: unknown) => unknown) | undefined}
+     * @return {DecoratorResult}
      */
     set(
         target: object,
