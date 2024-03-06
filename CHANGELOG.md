@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* `hasMeta()` util, in `@aedart/support/meta`. 
+* `MetaRepository` in `@aedart/support/meta`.
+* `ClassDecorator`, `ClassMethodDecorator`, `ClassGetterDecorator`, `ClassSetterDecorator`, `ClassFieldDecorator`, `ClassAutoAccessorDecorator`, and `Decorator` types, in `@aedart/contracts`.
+* `ClassDecoratorResult`, `ClassMethodDecoratorResult`, `ClassGetterDecoratorResult`, `ClassSetterDecoratorResult`, `ClassFieldDecoratorResult`, `ClassAutoAccessorDecoratorResult`, and `DecoratorResult` types, in `@aedart/contracts`.
+
+### Changed
+
+* Refactored / Redesigned `meta()`, `getMeta()`, and `getAllMeta()` to use new `MetaRepository` as its underlying core component for dealing with metadata.
+* Return type of `meta()` changed to `Decorator`.
+* `MetaTargetContext` expanded with a `context: Context` property. `@aedart/contracts/support/meta`.
+
 ### Fixed
 
 * Broken links in support/exceptions and in support/objects docs. 
