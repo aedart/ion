@@ -1,6 +1,8 @@
 import MetaRepository from "./MetaRepository";
+import TargetContext from "./TargetContext";
 export {
     MetaRepository,
+    TargetContext,
 }
 
 export * from './getMetaRepository';
@@ -11,3 +13,4 @@ export * from './meta';
 export * from './targetMeta';
 
 export * from './exceptions';
+export * from './target/index'
