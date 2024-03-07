@@ -11,6 +11,7 @@ import type {
 import { METADATA } from "@aedart/contracts/support/meta";
 import type { Key } from "@aedart/contracts/support";
 import { set, get, has, merge } from "@aedart/support/objects";
+import TargetContext from "./TargetContext";
 
 /**
  * Fallback registry that contains writable metadata (`context.metadata`).
@@ -362,19 +363,6 @@ export default class MetaRepository implements Repository
         context: Context
     ): MetaTargetContext
     {
-        // Resolve the target's "owner"
-        // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#class_context
-        const owner: object = (context.kind === 'class' || context.static)
-            ? thisArg
-            // When target is not static, then it's obtainable via prototype
-            : (Reflect.getPrototypeOf(thisArg) as object).constructor;
-        
-        return {
-            // owner: this.resolveTargetOwner(thisArg, context),
-            owner: owner,
-            thisArg: thisArg,
-            target: target,
-            context: context
-        } as MetaTargetContext;
+        return TargetContext.resolveOwner(target, thisArg, context);
     }
 }
