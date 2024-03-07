@@ -1,6 +1,8 @@
+import Entry from "./Entry";
 import MetaRepository from "./MetaRepository";
 import TargetContext from "./TargetContext";
 export {
+    Entry,
     MetaRepository,
     TargetContext,
 }
