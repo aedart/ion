@@ -60,9 +60,8 @@ export default interface TargetRepository
     /**
      * Inherit "target" meta from a base class.
      *
-     * **Note**: _Method is intended to be used as a static method decorator!_
-     *
-     * **Note**: _To be used in situations where you overwrite static methods and wish to inherit
+     * **Note**: _Method is intended to be used as a decorator for static class methods,
+     * in situations where you overwrite static methods and wish to inherit
      * "target" meta from the parent method._
      * 
      * @param {object} target
