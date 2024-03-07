@@ -10,13 +10,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * `hasMeta()` util, in `@aedart/support/meta`. 
-* `MetaRepository` in `@aedart/support/meta`.
+* `MetaRepository`, `TargetMetaRepository`, `TargetContext`, `Entry`, and `hasTargetMeta()` in `@aedart/support/meta`.
 * `ClassDecorator`, `ClassMethodDecorator`, `ClassGetterDecorator`, `ClassSetterDecorator`, `ClassFieldDecorator`, `ClassAutoAccessorDecorator`, and `Decorator` types, in `@aedart/contracts`.
 * `ClassDecoratorResult`, `ClassMethodDecoratorResult`, `ClassGetterDecoratorResult`, `ClassSetterDecoratorResult`, `ClassFieldDecoratorResult`, `ClassAutoAccessorDecoratorResult`, and `DecoratorResult` types, in `@aedart/contracts`.
 
 ### Changed
 
+**Breaking**
+
+* `targetMeta()` and `inheritTargetMeta()` now throw `MetaError` (_`TypeError` was previously thrown_), in `@aedart/support/meta`.
+
+**Non-breaking Changes**
+
 * Refactored / Redesigned `meta()`, `getMeta()`, and `getAllMeta()` to use new `MetaRepository` as its underlying core component for dealing with metadata.
+* Refactored / Redesigned `targetMeta()`, `getTargetMeta()`, and `inheritTargetMeta()` to use new `TargetMetaRepository` underneath.
 * Return type of `meta()` changed to `Decorator`.
 * `MetaTargetContext` expanded with a `context: Context` property. `@aedart/contracts/support/meta`.
 
