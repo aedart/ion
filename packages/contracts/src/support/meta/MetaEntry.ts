@@ -10,12 +10,12 @@ export default interface MetaEntry
      * 
      * @type {Key}
      */
-    key: Key,
+    key: Key;
 
     /**
      * Value to store
      * 
      * @type {unknown}
      */
-    value: unknown
+    value: unknown;
 }
