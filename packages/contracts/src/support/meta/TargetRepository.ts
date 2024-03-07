@@ -1,5 +1,5 @@
 import { Key } from "@aedart/contracts/support";
-import { Context, MetaCallback } from "@aedart/contracts/support/meta/types";
+import { Context, MetaCallback } from "./types";
 import { ClassDecoratorResult, ClassMethodDecoratorResult } from "@aedart/contracts";
 
 /**
