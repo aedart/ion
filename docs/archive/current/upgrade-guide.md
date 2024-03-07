@@ -7,6 +7,28 @@ sidebarDepth: 1
 
 [[TOC]]
 
+## From v0.7.x- to v0.10.x
+
+### Meta (types)
+
+The following deprecated types have been removed (_deprecated in version `v0.7.0`_):
+
+* `ClassContext`
+* `MethodContext`
+* `GetterContext`
+* `SetterContext`
+* `FieldContext`
+* `AccessorContext`
+* `MetadataContext`
+* `MemberContext`
+
+_More information available in the source code and `CHANGELOG.md`_
+
+### Meta (`targetMeta()` and `inheritTargetMeta()`)
+
+The util functions `targetMeta()` and `inheritTargetMeta()` now throw a `MetaError` instead of previous `TypeError`.
+If you rely on `TypeError` as the type of exception being thrown in a try-catch statement, when decorating class members, then you should change it to `MetaError`. 
+
 ## From v0.6.x to v0.7.x
 
 ### Node.js 20.11.0 Required
