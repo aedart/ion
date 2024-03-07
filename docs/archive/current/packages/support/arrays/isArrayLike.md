@@ -27,4 +27,4 @@ isArrayLike(new Number(123)); // false
 // ...etc
 ```
 
-See also [_`isSafeArrayLike()`_](./issafearraylike.md).
+See also [_`isSafeArrayLike()`_](./isSafeArrayLike.md).
