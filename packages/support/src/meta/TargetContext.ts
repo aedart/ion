@@ -56,6 +56,28 @@ export default class TargetContext implements MetaTargetContext
     }
 
     /**
+     * Returns a new Meta Target Context instance
+     * 
+     * @param {object} owner
+     * @param {any} thisArg
+     * @param {object} target
+     * @param {Context} context
+     * 
+     * @return {this|MetaTargetContext}
+     * 
+     * @static
+     */
+    public static make(
+        owner: object,
+        thisArg: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        target: object,
+        context: Context
+    ): MetaTargetContext
+    {
+        return new this(owner, thisArg, target, context);
+    }
+    
+    /**
      * Resolves target's owner and returns a new Meta Target Instance
      * 
      * @param {object} target
@@ -79,6 +101,6 @@ export default class TargetContext implements MetaTargetContext
             // When target is not static, then it's obtainable via prototype
             : (Reflect.getPrototypeOf(thisArg) as object).constructor;
         
-        return new this(owner, thisArg, target, context);
+        return this.make(owner, thisArg, target, context);
     }
 }
