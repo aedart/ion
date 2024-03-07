@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2024-03-07
+
 ### Added
 
 * `hasMeta()` util, in `@aedart/support/meta`. 
@@ -265,7 +267,8 @@ the version command (_configured in root `lerna.json`_).
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.9.0...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.10.0...HEAD
+[0.10.0]: https://github.com/aedart/ion/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/aedart/ion/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/aedart/ion/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/aedart/ion/compare/0.6.1...0.7.0
