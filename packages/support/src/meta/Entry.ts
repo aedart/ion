@@ -39,6 +39,10 @@ export default class Entry implements MetaEntry
      * @param {MetaTargetContext} targetContext
      * @param {Key | MetaCallback} key
      * @param {any} [value]
+     * 
+     * @return {this|MetaEntry}
+     * 
+     * @static
      */
     public static resolve(
         targetContext: MetaTargetContext,

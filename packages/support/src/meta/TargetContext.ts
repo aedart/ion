@@ -63,6 +63,8 @@ export default class TargetContext implements MetaTargetContext
      * @param {Context} context
      * 
      * @return {this|MetaTargetContext}
+     * 
+     * @static
      */
     public static resolveOwner(
         target: object,
