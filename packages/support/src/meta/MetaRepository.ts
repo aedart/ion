@@ -11,6 +11,7 @@ import type {
 import { METADATA } from "@aedart/contracts/support/meta";
 import type { Key } from "@aedart/contracts/support";
 import { set, get, has, merge } from "@aedart/support/objects";
+import Entry from "./Entry";
 import TargetContext from "./TargetContext";
 
 /**
@@ -333,14 +334,7 @@ export default class MetaRepository implements Repository
         value?: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): MetaEntry
     {
-        if (typeof key === 'function') {
-            return (key as MetaCallback)(targetContext.target, targetContext.context, targetContext.owner);
-        }
-
-        return {
-            key: (key as Key),
-            value: value
-        };
+        return Entry.resolve(targetContext, key, value);
     }
     
     /**
