@@ -56,4 +56,21 @@ export default interface TargetRepository
      * @return {boolean}
      */
     has(target: object, key: Key): boolean;
+
+    /**
+     * Inherit "target" meta from a base class.
+     *
+     * **Note**: _Method is intended to be used as a static method decorator!_
+     *
+     * **Note**: _To be used in situations where you overwrite static methods and wish to inherit
+     * "target" meta from the parent method._
+     * 
+     * @param {object} target
+     * @param {Context} context
+     *
+     * @return {ClassMethodDecoratorResult}
+     * 
+     * @throws {MetaException}
+     */
+    inherit(target: object, context: Context): ClassMethodDecoratorResult;
 }
