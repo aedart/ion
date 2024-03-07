@@ -38,6 +38,11 @@
             "import": "./dist/esm/concerns.js",
             "require": "./dist/cjs/concerns.cjs"
         },
+        "./container": {
+            "types": "./dist/types/container.d.ts",
+            "import": "./dist/esm/container.js",
+            "require": "./dist/cjs/container.cjs"
+        },
         "./exceptions": {
             "types": "./dist/types/exceptions.d.ts",
             "import": "./dist/esm/exceptions.js",
