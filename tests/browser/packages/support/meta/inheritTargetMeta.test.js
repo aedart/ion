@@ -1,7 +1,8 @@
 import {
     targetMeta,
     getTargetMeta,
-    inheritTargetMeta
+    inheritTargetMeta,
+    MetaError
 } from "@aedart/support/meta";
 
 describe('@aedart/support/meta', () => {
@@ -51,7 +52,7 @@ describe('@aedart/support/meta', () => {
 
             expect(callback)
                 .withContext('@inheritTargetMeta() should not be allowed on base class')
-                .toThrowError(TypeError);
+                .toThrowError(MetaError);
         });
         
         it('fails when @inheritTargetMeta() used on base method', () => {
@@ -71,7 +72,7 @@ describe('@aedart/support/meta', () => {
 
             expect(callback)
                 .withContext('@inheritTargetMeta() should not be allowed on base method')
-                .toThrowError(TypeError);
+                .toThrowError(MetaError);
         });
         
         it('inherits target static method meta, via @inheritTargetMeta()', () => {
@@ -124,7 +125,7 @@ describe('@aedart/support/meta', () => {
 
             expect(callback)
                 .withContext('@inheritTargetMeta() should fail when nothing to inherit')
-                .toThrowError(TypeError);
+                .toThrowError(MetaError);
         });
     });
 });

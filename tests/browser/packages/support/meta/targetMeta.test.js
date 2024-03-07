@@ -1,6 +1,8 @@
 import {
     targetMeta,
     getTargetMeta,
+    hasTargetMeta,
+    MetaError
 } from "@aedart/support/meta";
 
 describe('@aedart/support/meta', () => {
@@ -16,7 +18,11 @@ describe('@aedart/support/meta', () => {
             class A {}
 
             // ---------------------------------------------------------------------- //
-            
+
+            expect(hasTargetMeta(A, key))
+                .withContext('Target does not appear to have meta')
+                .toBeTrue();
+
             const result = getTargetMeta(A, key);
             expect(result)
                 .withContext('Incorrect target meta')
@@ -95,8 +101,13 @@ describe('@aedart/support/meta', () => {
             // ---------------------------------------------------------------------- //
             
             const instance = new A();
-            const result = getTargetMeta(instance.foo, key);
+            const target = instance.foo;
+
+            expect(hasTargetMeta(target, key))
+                .withContext('Target does not appear to have meta for method')
+                .toBeTrue();
             
+            const result = getTargetMeta(target, key);
             expect(result)
                 .withContext('Incorrect method target meta')
                 .toEqual(value);
@@ -303,7 +314,7 @@ describe('@aedart/support/meta', () => {
             
             expect(callback)
                 .withContext('Should not support @targetMeta on unsupported element')
-                .toThrowError(TypeError);
+                .toThrowError(MetaError);
         });
 
     });
