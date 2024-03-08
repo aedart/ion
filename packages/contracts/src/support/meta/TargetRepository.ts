@@ -58,6 +58,15 @@ export default interface TargetRepository
     has(target: object, key: Key): boolean;
 
     /**
+     * Determine there is any metadata associated with target
+     * 
+     * @param {object} target
+     * 
+     * @return {boolean}
+     */
+    hasAny(target: object): boolean;
+    
+    /**
      * Inherit "target" meta from a base class.
      *
      * **Note**: _Method is intended to be used as a decorator for static class methods,

@@ -140,6 +140,20 @@ export default class TargetMetaRepository implements TargetRepository
     }
 
     /**
+     * Determine there is any metadata associated with target
+     *
+     * @param {object} target
+     *
+     * @return {boolean}
+     */
+    public hasAny(target: object): boolean
+    {
+        const address: MetaAddress | undefined = this.find(target);
+        
+        return address !== undefined && address[0]?.deref() !== undefined;
+    }
+
+    /**
      * Inherit "target" meta from a base class.
      *
      * **Note**: _Method is intended to be used as a decorator for static class methods,

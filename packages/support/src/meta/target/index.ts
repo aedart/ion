@@ -5,6 +5,7 @@ export {
 }
 
 export * from './getTargetMetaRepository';
+export * from './hasAnyTargetMeta';
 export * from './getTargetMeta';
 export * from './hasTargetMeta';
 export * from './inheritTargetMeta';
