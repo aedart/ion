@@ -78,12 +78,10 @@ export default interface Container
      *
      * @throws {TypeError}
      */
-    instance<
-        T = object
-    >(identifier: Identifier, instance: T): T;
+    instance<T = object>(identifier: Identifier, instance: T): T;
     
     /**
-     * Resolves binding value that matches given identifier and returns it 
+     * Resolves binding value that matches identifier and returns it
      * 
      * @template T = any
      * 
@@ -129,7 +127,7 @@ export default interface Container
     alias(identifier: Identifier, alias: Alias): this;
 
     /**
-     * Resolves binding value that matches given identifier and returns it
+     * Resolves binding value that matches identifier and returns it
      * 
      * @template T = any
      * 
@@ -146,10 +144,10 @@ export default interface Container
     >(identifier: Identifier, args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */): T;
 
     /**
-     * Resolves binding value for identifier if one exists, or return default value
+     * Resolves values if a binding exists for identifier, or returns a default value
      * 
      * @template T = any
-     * @template D = any
+     * @template D = undefined
      * 
      * @param {Identifier} identifier
      * @param {any[]} [args] Eventual arguments to pass on to {@link FactoryCallback} or {@link Constructor}
@@ -161,7 +159,7 @@ export default interface Container
      */
     makeOrDefault<
         T = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
-        D = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        D = undefined
     >(identifier: Identifier, args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */, defaultValue?: D): T | D;
 
     /**
@@ -175,9 +173,7 @@ export default interface Container
      * 
      * @throws {ContainerException}
      */
-    build<
-        T = object
-    >(concrete: Constructor<T> | Binding<T>): T;
+    build<T = object>(concrete: Constructor<T> | Binding<T>): T;
     
     // TODO: ...
     call(method: any, args: any[]): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
