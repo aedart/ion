@@ -1,3 +1,5 @@
+import Container from "./Container";
+
 /**
  * Binding Identifier
  * 
@@ -12,3 +14,10 @@ export type Identifier = string | symbol | number | NonNullable<object>;
  * @see Identifier
  */
 export type Alias = Identifier;
+
+/**
+ * Callback that returns a resolved value
+ */
+export type FactoryCallback<
+    T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+> = (container: Container, ...args: any[]) => T; 
