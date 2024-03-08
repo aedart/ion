@@ -15,6 +15,10 @@ conditions of the included 3rd party software, in the directory where it has bee
     The Arrayable interface is an interface is an adaptation of Laravel's Arrayable interface.
 
     See https://github.com/laravel/framework/blob/master/src/Illuminate/Contracts/Support/Arrayable.php
+@aedart/contracts/container (Container)
+    The service container interface is heavily inspired by Laravel's Container
+
+    See https://github.com/laravel/framework/blob/master/src/Illuminate/Contracts/Container/Container.php
     
     License MIT, Copyright (c) Taylor Otwell. 
 
