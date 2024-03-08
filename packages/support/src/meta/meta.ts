@@ -1,4 +1,3 @@
-import type { Decorator } from "@aedart/contracts";
 import type { Key } from "@aedart/contracts/support";
 import type {
     Context,
@@ -32,8 +31,7 @@ import { getMetaRepository } from "./getMetaRepository";
 export function meta(
     key: Key | MetaCallback,
     value?: unknown
-): Decorator
-{
+) {
     return (target: object, context: Context) => {
         return getMetaRepository({}).set(target, context, key, value);
     }
