@@ -15,4 +15,5 @@ export const CONTAINER: unique symbol = Symbol('@aedart/contracts/container');
  */
 export const DEPENDENCIES: unique symbol = Symbol('dependencies');
 
+export * from './exceptions/index';
 export type * from './types';
