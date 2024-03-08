@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Root package Typescript dependency changed to `^5.4.2`.
 * `@typescript-eslint/eslint-plugin` upgraded to `^7.1.1`, in root package.
+* Decorator return types for `meta()`, `targetMeta()`, and `inheritTargetMeta()` (_continued to cause TS1270 and TS1238 errors_). [#8](https://github.com/aedart/ion/pull/8), [#9](https://github.com/aedart/ion/pull/9).
 
 ### Fixed
 

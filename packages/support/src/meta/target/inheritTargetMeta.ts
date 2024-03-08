@@ -1,4 +1,3 @@
-import type { ClassMethodDecorator } from "@aedart/contracts";
 import type { Context } from "@aedart/contracts/support/meta";
 import { getTargetMetaRepository } from "./getTargetMetaRepository";
 
@@ -35,7 +34,7 @@ import { getTargetMetaRepository } from "./getTargetMetaRepository";
  * @throws {MetaError} When decorated element's owner class has no parent, or when no "target" metadata available
  *                     on parent element.
  */
-export function inheritTargetMeta(): ClassMethodDecorator
+export function inheritTargetMeta()
 {
     return (target: object, context: Context) => {
         return getTargetMetaRepository().inherit(target, context);

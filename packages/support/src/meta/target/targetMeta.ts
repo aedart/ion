@@ -1,7 +1,3 @@
-import type {
-    ClassDecorator,
-    ClassMethodDecorator
-} from "@aedart/contracts";
 import type { Key } from "@aedart/contracts/support";
 import type {
     Context,
@@ -39,8 +35,7 @@ import { getTargetMetaRepository } from "./getTargetMetaRepository";
 export function targetMeta(
     key: Key | MetaCallback,
     value?: unknown
-): ClassDecorator | ClassMethodDecorator 
-{
+) {
     return (target: object, context: Context) => {
         return getTargetMetaRepository().set(target, context, key, value);
     }
