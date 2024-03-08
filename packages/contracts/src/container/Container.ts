@@ -1,0 +1,200 @@
+import { Constructor } from "@aedart/contracts";
+import {
+    Alias,
+    Identifier,
+    FactoryCallback
+} from "./types";
+import Binding from "./Binding";
+
+/**
+ * Service Container
+ * 
+ * Inspired by Psr's `ContainerInterface`, and Laravel's service `Container`.
+ * 
+ * @see https://www.php-fig.org/psr/psr-11/#31-psrcontainercontainerinterface
+ * @see https://github.com/laravel/framework/blob/master/src/Illuminate/Contracts/Container/Container.php
+ */
+export default interface Container
+{
+    /**
+     * Register a binding
+     *
+     * @param {Identifier} identifier
+     * @param {FactoryCallback | Constructor} [concrete]
+     * @param {boolean} [shared=false]
+     *
+     * @returns {this}
+     *
+     * @throws {TypeError}
+     */
+    bind(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared?: boolean): this;
+
+    /**
+     * Register a binding, if none already exists for given identifier
+     * 
+     * @param {Identifier} identifier
+     * @param {FactoryCallback | Constructor} [concrete]
+     * @param {boolean} [shared=false]
+     * 
+     * @returns {this}
+     *
+     * @throws {TypeError}
+     */
+    bindIf(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared?: boolean): this;
+
+    /**
+     * Register a shared binding
+     * 
+     * @param {Identifier} identifier
+     * @param {FactoryCallback | Constructor} [concrete]
+     * 
+     * @returns {this}
+     *
+     * @throws {TypeError}
+     */
+    singleton(identifier: Identifier, concrete?: FactoryCallback | Constructor): this;
+
+    /**
+     * Register a shared binding, if none already exists for given identifier
+     * 
+     * @param {Identifier} identifier
+     * @param {FactoryCallback | Constructor} [concrete]
+     * 
+     * @returns {this}
+     *
+     * @throws {TypeError}
+     */
+    singletonIf(identifier: Identifier, concrete?: FactoryCallback | Constructor): this;
+
+    /**
+     * Register existing object instance as a shared binding
+     * 
+     * @template T = object
+     * 
+     * @param {Identifier} identifier
+     * @param {T} instance
+     * 
+     * @returns {T}
+     *
+     * @throws {TypeError}
+     */
+    instance<
+        T = object
+    >(identifier: Identifier, instance: T): T;
+    
+    /**
+     * Resolves binding value that matches given identifier and returns it 
+     * 
+     * @template T = any
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @returns {T}
+     * 
+     * @throws {NotFoundException}
+     * @throws {ContainerException}
+     */
+    get<
+        T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    >(identifier: Identifier): T;
+
+    /**
+     * Determine if an entry is registered for given identifier.
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @returns {boolean}
+     */
+    has(identifier: Identifier): boolean;
+
+    /**
+     * Alias for {@link has}
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @returns {boolean}
+     */
+    bound(identifier: Identifier): boolean;
+
+    /**
+     * Alias identifier as a different identifier
+     * 
+     * @param {Identifier} identifier
+     * @param {Alias} alias
+     * 
+     * @returns {this}
+     * 
+     * @throws {TypeError}
+     */
+    alias(identifier: Identifier, alias: Alias): this;
+
+    /**
+     * Resolves binding value that matches given identifier and returns it
+     * 
+     * @template T = any
+     * 
+     * @param {Identifier} identifier
+     * @param {any[]} [args] Eventual arguments to pass on to {@link FactoryCallback} or {@link Constructor}
+     * 
+     * @returns {T}
+     *
+     * @throws {NotFoundException}
+     * @throws {ContainerException}
+     */
+    make<
+        T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    >(identifier: Identifier, args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */): T;
+
+    /**
+     * Resolves binding value for identifier if one exists, or return default value
+     * 
+     * @template T = any
+     * @template D = any
+     * 
+     * @param {Identifier} identifier
+     * @param {any[]} [args] Eventual arguments to pass on to {@link FactoryCallback} or {@link Constructor}
+     * @param {D} [defaultValue]
+     * 
+     * @returns {T}
+     *
+     * @throws {ContainerException}
+     */
+    makeOrDefault<
+        T = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        D = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    >(identifier: Identifier, args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */, defaultValue?: D): T | D;
+
+    /**
+     * Instantiate a new instance of given concrete
+     * 
+     * @template T = object
+     * 
+     * @param {Constructor<T> | Binding<T>} concrete
+     * 
+     * @returns {T}
+     * 
+     * @throws {ContainerException}
+     */
+    build<
+        T = object
+    >(concrete: Constructor<T> | Binding<T>): T;
+    
+    // TODO: ...
+    call(method: any, args: any[]): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    
+    /**
+     * Forget binding and resolved instance for given identifier  
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @returns {boolean}
+     */
+    forget(identifier: Identifier): boolean;
+    
+    /**
+     * Flush container of all bindings and resolved instances
+     * 
+     * @returns {void}
+     */
+    flush(): void;
+}
