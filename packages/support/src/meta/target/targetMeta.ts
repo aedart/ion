@@ -11,7 +11,7 @@ import { getTargetMetaRepository } from "./getTargetMetaRepository";
  * **Note**: _Method is intended to be used as a class or method decorator!_
  *
  * @example
- * ```ts
+ * ```js
  * class A {
  *      @targetMeta('my-key', 'my-value')
  *      foo() {}
