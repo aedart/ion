@@ -1,4 +1,2 @@
-/**
- * TODO: Replace this
- */
-export const TMP = 'TODO'
+
+export * from "./dependencies";
