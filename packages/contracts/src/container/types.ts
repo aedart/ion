@@ -23,4 +23,4 @@ export type Alias = Identifier;
  */
 export type FactoryCallback<
     Value = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-> = (container: Container, ...args: any[]) => Value; 
+> = (container: Container, ...args: any[]) => Value;
