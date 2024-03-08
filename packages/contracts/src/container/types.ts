@@ -16,8 +16,11 @@ export type Identifier = string | symbol | number | NonNullable<object>;
 export type Alias = Identifier;
 
 /**
- * Callback that returns a resolved value
+ * Factory Callback
+ * 
+ * The callback is responsible for resolving a value, when a binding
+ * is resolved in a service container.
  */
 export type FactoryCallback<
-    T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-> = (container: Container, ...args: any[]) => T; 
+    Value = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+> = (container: Container, ...args: any[]) => Value; 
