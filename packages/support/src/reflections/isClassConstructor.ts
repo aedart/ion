@@ -1,5 +1,5 @@
 /**
- * Determine if given value is a class constructor (es6)
+ * Determine if given value is a class constructor (es6 style)
  * 
  * @see https://github.com/caitp/TC39-Proposals/blob/trunk/tc39-reflect-isconstructor-iscallable.md
  * 
