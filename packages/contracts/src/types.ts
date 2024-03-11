@@ -18,9 +18,19 @@ export type Constructor<T = object> = new (...args: any[]) => T;
 export type AbstractConstructor<T = object> = abstract new (...args: any[]) => T;
 
 /**
+ * @deprecated Since version 0.11 - Use {@link ConstructorLike} instead
+ * 
  * Constructor or Abstract Constructor type
  */
 export type ConstructorOrAbstractConstructor<T = object> = Constructor<T> | AbstractConstructor<T>;
+
+/**
+ * Constructor Like
+ * 
+ * In this context, a "constructor like" type is either a class constructor,
+ * or an abstract class constructor.
+ */
+export type ConstructorLike<T = object> = Constructor<T> | AbstractConstructor<T>;
 
 /**
  * Class method name
