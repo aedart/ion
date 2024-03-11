@@ -1,5 +1,3 @@
-import Arrayable from "./Arrayable";
-
 /**
  * Support identifier
  *
@@ -7,8 +5,11 @@ import Arrayable from "./Arrayable";
  */
 export const SUPPORT: unique symbol = Symbol('@aedart/contracts/support');
 
+import Arrayable from "./Arrayable";
+import CallbackWrapper from "./CallbackWrapper";
 export {
-    type Arrayable
+    type Arrayable,
+    type CallbackWrapper
 }
 
 export type * from './types';
