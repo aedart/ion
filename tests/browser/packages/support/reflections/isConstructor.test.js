@@ -1,12 +1,10 @@
 import {
-    isCallable,
-    isClassConstructor,
     isConstructor
 } from "@aedart/support/reflections";
 
 describe('@aedart/support/reflections', () => {
 
-    describe('isConstructor', () => {
+    describe('isConstructor()', () => {
 
         it('can determine if is constructor', () => {
 
@@ -45,32 +43,5 @@ describe('@aedart/support/reflections', () => {
             });
         });
 
-    });
-    
-    describe('isCallable', () => {
-        
-        // TODO: Unsafe / Unstable...
-        
-        it('can determine if is callable', () => {
-
-            const data = [
-                { value: null, expected: false },
-                { value: {}, expected: false },
-                { value: [], expected: false },
-                { value: function() {}, expected: true },
-                { value: () => {}, expected: true },
-                { value: Array, expected: true },
-                { value: class {}, expected: false },
-            ];
-
-            data.forEach((entry, index) => {
-
-                let result = isCallable(entry.value);
-                expect(result)
-                    .withContext(`Value at index ${index} was expected to be ${entry.expected}`)
-                    .toBe(entry.expected);
-            });
-        });
-        
     });
 });
