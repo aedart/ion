@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `ClassMethodName` and `ClassMethodReference` type aliases in `@aedart/contracts`.
 * `isMethod()` util in `@aedart/support/reflections`.
 * `ConstructorLike` and `Callback` type aliases, in `@aedart/constracts`.
+* `CallbackWrapper` interface, in `@aedart/constracts/support`.
 * Add upgrade guide from v0.7.x- to v0.10.x.
 
 ### Changed
