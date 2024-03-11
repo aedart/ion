@@ -8,6 +8,11 @@ export * from './decorators';
 export type Primitive = null | undefined | boolean | number | bigint | string | symbol;
 
 /**
+ * Callback type
+ */
+export type Callback = (...args: any[]) => any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+
+/**
  * Constructor type
  */
 export type Constructor<T = object> = new (...args: any[]) => T;
