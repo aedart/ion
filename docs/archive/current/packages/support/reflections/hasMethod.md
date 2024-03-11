@@ -25,3 +25,5 @@ hasMethod(a, 'foo'); // true
 hasMethod(a, 'bar'); // true
 hasMethod(a, 'zar'); // false
 ```
+
+See also [`isMethod()`](./isMethod.md).

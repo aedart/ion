@@ -24,3 +24,5 @@ const a = {
 hasAllMethods(a, 'foo', 'bar'); // true
 hasAllMethods(a, 'foo', 'bar', 'zar'); // false
 ```
+
+See also [`hasMethod()`](./hasMethod.md).
