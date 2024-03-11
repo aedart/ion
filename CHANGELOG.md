@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * `DEPENDENCIES` symbol and `Identifier` type in `@aedart/contracts/container`.
-* `dependsOn()`, `dependencies()`, `hasDependencies()`, and `getDependencies()`, in `@aedart/support/container`. 
+* `dependsOn()`, `dependencies()`, `hasDependencies()`, and `getDependencies()`, in `@aedart/support/container`.
+* `ClassMethodName` and `ClassMethodReference` type aliases in `@aedart/contracts`.
 * Add upgrade guide from v0.7.x- to v0.10.x.
 
 ### Changed
