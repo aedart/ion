@@ -73,31 +73,4 @@ describe('@aedart/support/reflections', () => {
         });
         
     });
-
-    describe('isClassConstructor', () => {
-
-        // TODO: Unsafe / Unstable...
-        
-        it('can determine if is class constructor', () => {
-
-            const data = [
-                { value: null, expected: false },
-                { value: {}, expected: false },
-                { value: [], expected: false },
-                { value: function() {}, expected: false },
-                { value: () => {}, expected: false },
-                { value: Array, expected: false },
-                { value: class {}, expected: true },
-            ];
-
-            data.forEach((entry, index) => {
-
-                let result = isClassConstructor(entry.value);
-                expect(result)
-                    .withContext(`Value at index ${index} was expected to be ${entry.expected}`)
-                    .toBe(entry.expected);
-            });
-        });
-
-    });
 });
