@@ -1,4 +1,4 @@
-import { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import { ConstructorLike } from "@aedart/contracts";
 import { FUNCTION_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import {isset} from "@aedart/support/misc";
 
@@ -8,13 +8,13 @@ import {isset} from "@aedart/support/misc";
  * **Note**: _If target has a parent that matches
  * [FUNCTION_PROTOTYPE]{@link import('@aedart/contracts/support/reflections').FUNCTION_PROTOTYPE}, then `null` is returned!_
  * 
- * @param {ConstructorOrAbstractConstructor} target The target class
+ * @param {ConstructorLike} target The target class
  * 
- * @returns {ConstructorOrAbstractConstructor | null} Parent class or `null`, if target has no parent class.
+ * @returns {ConstructorLike | null} Parent class or `null`, if target has no parent class.
  * 
  * @throws {TypeError}
  */
-export function getParentOfClass(target: ConstructorOrAbstractConstructor): ConstructorOrAbstractConstructor | null
+export function getParentOfClass(target: ConstructorLike): ConstructorLike | null
 {
     if (!isset(target)) {
         throw new TypeError('getParentOfClass() expects a target class as argument, undefined given');
@@ -25,5 +25,5 @@ export function getParentOfClass(target: ConstructorOrAbstractConstructor): Cons
         return null;
     }
     
-    return parent as ConstructorOrAbstractConstructor;
+    return parent as ConstructorLike;
 }

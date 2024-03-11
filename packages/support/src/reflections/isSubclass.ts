@@ -1,4 +1,4 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { hasPrototypeProperty } from "./hasPrototypeProperty";
 
 /**
@@ -9,11 +9,11 @@ import { hasPrototypeProperty } from "./hasPrototypeProperty";
  * However, if given target or superclass does not have a prototype property, then `false` is returned._
  * 
  * @param {object} target
- * @param {ConstructorOrAbstractConstructor} superclass
+ * @param {ConstructorLike} superclass
  * 
  * @returns {boolean} `true` if target is a subclass of given superclass, `false` otherwise.  
  */
-export function isSubclass(target: object, superclass: ConstructorOrAbstractConstructor): boolean
+export function isSubclass(target: object, superclass: ConstructorLike): boolean
 {
     if (!hasPrototypeProperty(target) || !hasPrototypeProperty(superclass) || target === superclass) {
         return false;

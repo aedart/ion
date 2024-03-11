@@ -1,5 +1,5 @@
 import { InjectionException } from "@aedart/contracts/support/concerns";
-import { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import { ConstructorLike } from "@aedart/contracts";
 import UsesConcerns from "../UsesConcerns";
 
 /**
@@ -16,7 +16,7 @@ export default interface AlreadyRegisteredException extends InjectionException
      *
      * @readonly
      *
-     * @type {ConstructorOrAbstractConstructor|UsesConcerns}
+     * @type {ConstructorLike | UsesConcerns}
      */
-    readonly source: ConstructorOrAbstractConstructor | UsesConcerns;
+    readonly source: ConstructorLike | UsesConcerns;
 }

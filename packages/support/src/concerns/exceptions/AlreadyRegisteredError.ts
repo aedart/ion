@@ -3,7 +3,7 @@ import type {
     ConcernConstructor,
     UsesConcerns
 } from "@aedart/contracts/support/concerns";
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { configureCustomError } from "@aedart/support/exceptions";
 import { getNameOrDesc } from "@aedart/support/reflections";
 import InjectionError from "./InjectionError";
@@ -22,14 +22,14 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
      * @readonly
      * @private
      *
-     * @type {ConstructorOrAbstractConstructor|UsesConcerns}
+     * @type {ConstructorLike|UsesConcerns}
      */
-    readonly #source: ConstructorOrAbstractConstructor | UsesConcerns;
+    readonly #source: ConstructorLike | UsesConcerns;
 
     constructor(
-        target: ConstructorOrAbstractConstructor | UsesConcerns,
+        target: ConstructorLike | UsesConcerns,
         concern: ConcernConstructor,
-        source: ConstructorOrAbstractConstructor | UsesConcerns,
+        source: ConstructorLike | UsesConcerns,
         message?: string,
         options?: ErrorOptions
     ) {
@@ -53,9 +53,9 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
      *
      * @readonly
      *
-     * @returns {ConstructorOrAbstractConstructor | UsesConcerns}
+     * @returns {ConstructorLike | UsesConcerns}
      */
-    get source(): ConstructorOrAbstractConstructor | UsesConcerns
+    get source(): ConstructorLike | UsesConcerns
     {
         return this.#source;
     }

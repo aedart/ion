@@ -1,4 +1,4 @@
-import type {ConstructorOrAbstractConstructor} from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { descTag } from "@aedart/support/misc";
 import { getConstructorName } from "./getConstructorName";
 
@@ -13,11 +13,11 @@ import { getConstructorName } from "./getConstructorName";
  * @see getConstructorName
  * @see descTag
  * 
- * @param {ConstructorOrAbstractConstructor} target
+ * @param {ConstructorLike} target
  * 
  * @return {string}
  */
-export function getNameOrDesc(target: ConstructorOrAbstractConstructor): string
+export function getNameOrDesc(target: ConstructorLike): string
 {
     return getConstructorName(target, descTag(target)) as string;
 }

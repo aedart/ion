@@ -1,5 +1,5 @@
 import type { ClassBlueprint } from "@aedart/contracts/support/reflections";
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { includesAll } from "@aedart/support/arrays";
 import { hasPrototypeProperty } from "./hasPrototypeProperty";
 import { classOwnKeys } from "./classOwnKeys";
@@ -48,7 +48,7 @@ export function classLooksLike(target: object, blueprint: ClassBlueprint): boole
         // We can return here, because static members have been checked and code aborted if a member
         // was missing...
         return includesAll(
-            classOwnKeys(target as ConstructorOrAbstractConstructor, true),
+            classOwnKeys(target as ConstructorLike, true),
             (blueprint.members as PropertyKey[])
         );
     }

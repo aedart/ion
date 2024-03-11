@@ -1,4 +1,4 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { getNameOrDesc } from "@aedart/support/reflections";
 import { isConcernsOwner } from "./isConcernsOwner";
 
@@ -14,7 +14,7 @@ import { isConcernsOwner } from "./isConcernsOwner";
 export function assertIsConcernsOwner(instance: object): void
 {
     if (!isConcernsOwner(instance)) {
-        const msg: string = `${getNameOrDesc(instance as ConstructorOrAbstractConstructor)} is not a concerns owner`;
+        const msg: string = `${getNameOrDesc(instance as ConstructorLike)} is not a concerns owner`;
         throw new TypeError(msg, { cause: { instance: instance } });
     }
 }

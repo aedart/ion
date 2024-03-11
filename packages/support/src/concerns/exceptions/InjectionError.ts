@@ -1,5 +1,5 @@
 import type { ConcernConstructor, InjectionException, UsesConcerns } from "@aedart/contracts/support/concerns";
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { configureCustomError } from "@aedart/support/exceptions";
 import ConcernError from "./ConcernError";
 
@@ -15,20 +15,20 @@ export default class InjectionError extends ConcernError implements InjectionExc
      *
      * @readonly
      *
-     * @type {ConstructorOrAbstractConstructor|UsesConcerns}
+     * @type {ConstructorLike|UsesConcerns}
      */
-    readonly #target: ConstructorOrAbstractConstructor | UsesConcerns;
+    readonly #target: ConstructorLike | UsesConcerns;
 
     /**
      * Create a new Injection Error instance
      * 
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns} target
+     * @param {ConstructorLike | UsesConcerns} target
      * @param {ConcernConstructor | null} concern
      * @param {string} message
      * @param {ErrorOptions} [options]
      */
     constructor(
-        target: ConstructorOrAbstractConstructor | UsesConcerns,
+        target: ConstructorLike | UsesConcerns,
         concern: ConcernConstructor | null,
         message: string,
         options?: ErrorOptions
@@ -48,9 +48,9 @@ export default class InjectionError extends ConcernError implements InjectionExc
      * 
      * @readonly
      * 
-     * @returns {ConstructorOrAbstractConstructor | UsesConcerns}
+     * @returns {ConstructorLike | UsesConcerns}
      */
-    get target(): ConstructorOrAbstractConstructor | UsesConcerns
+    get target(): ConstructorLike | UsesConcerns
     {
         return this.#target;
     }

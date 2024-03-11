@@ -1,4 +1,4 @@
-import type {ConstructorOrAbstractConstructor} from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import Builder from "./Builder";
 
 /**
@@ -23,11 +23,11 @@ import Builder from "./Builder";
  * 
  * @template T = object
  * 
- * @param {ConstructorOrAbstractConstructor<T>} [superclass=class {}]
+ * @param {ConstructorLike<T>} [superclass=class {}]
  * 
  * @return {Builder<T>} New Mixin Builder instance
  */
-export function mix<T = object>(superclass:ConstructorOrAbstractConstructor<T> = class {}): Builder<T>
+export function mix<T = object>(superclass:ConstructorLike<T> = class {} as ConstructorLike<T>): Builder<T>
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js

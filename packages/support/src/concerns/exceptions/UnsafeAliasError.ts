@@ -2,7 +2,7 @@ import type {
     ConcernConstructor,
     UsesConcerns, UnsafeAliasException
 } from "@aedart/contracts/support/concerns";
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { configureCustomError } from "@aedart/support/exceptions";
 import InjectionError from "./InjectionError";
 import {getNameOrDesc} from "@aedart/support/reflections";
@@ -33,7 +33,7 @@ export default class UnsafeAliasError extends InjectionError implements UnsafeAl
     /**
      * Create a new Unsafe Alias Error instance
      *
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns} target
+     * @param {ConstructorLike | UsesConcerns} target
      * @param {ConcernConstructor} concern
      * @param {PropertyKey} alias
      * @param {PropertyKey} key
@@ -41,7 +41,7 @@ export default class UnsafeAliasError extends InjectionError implements UnsafeAl
      * @param {ErrorOptions} [options]
      */
     constructor(
-        target: ConstructorOrAbstractConstructor | UsesConcerns,
+        target: ConstructorLike | UsesConcerns,
         concern: ConcernConstructor,
         alias: PropertyKey,
         key: PropertyKey,

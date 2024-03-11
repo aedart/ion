@@ -1,4 +1,4 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import type { ClassBlueprint } from "@aedart/contracts/support/reflections";
 import { isSubclass } from "./isSubclass";
 import { classLooksLike } from "./classLooksLike";
@@ -12,14 +12,14 @@ import { classLooksLike } from "./classLooksLike";
  * @see classLooksLike
  * 
  * @param {object} target
- * @param {ConstructorOrAbstractConstructor} superclass
+ * @param {ConstructorLike} superclass
  * @param {ClassBlueprint} blueprint
  * 
  * @throws {TypeError}
  */
 export function isSubclassOrLooksLike(
     target: object,
-    superclass: ConstructorOrAbstractConstructor,
+    superclass: ConstructorLike,
     blueprint: ClassBlueprint
 ): boolean
 {

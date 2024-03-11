@@ -1,4 +1,4 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { CONCERN_CLASSES, ALIASES, Alias } from "./index";
 import ConcernConstructor from "./ConcernConstructor";
 import Owner from "./Owner";
@@ -19,11 +19,11 @@ export default interface UsesConcerns<T = object>
      * 
      * @param {...any} [args]
      *
-     * @returns {ConstructorOrAbstractConstructor<T> & Owner}
+     * @returns {ConstructorLike<T> & Owner}
      */
     new(
         ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    ): ConstructorOrAbstractConstructor<T & Owner>;
+    ): ConstructorLike<T & Owner>;
     
     /**
      * A list of the concern classes to be used by this target class.

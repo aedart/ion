@@ -1,11 +1,11 @@
-import type {ConstructorOrAbstractConstructor} from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { assertHasPrototypeProperty } from "@aedart/support/reflections/assertHasPrototypeProperty";
 import { getAllParentsOfClass } from "@aedart/support/reflections/getAllParentsOfClass";
 
 /**
  * Returns property keys that are defined target's prototype
  * 
- * @param {ConstructorOrAbstractConstructor} target
+ * @param {ConstructorLike} target
  * @param {boolean} [recursive=false] If `true`, then target's parent prototypes are traversed and all
  *                                    property keys are returned.
  * 
@@ -13,7 +13,7 @@ import { getAllParentsOfClass } from "@aedart/support/reflections/getAllParentsO
  *
  * @throws {TypeError} If target object does not have "prototype" property
  */
-export function classOwnKeys(target: ConstructorOrAbstractConstructor, recursive: boolean = false): PropertyKey[]
+export function classOwnKeys(target: ConstructorLike, recursive: boolean = false): PropertyKey[]
 {
     assertHasPrototypeProperty(target);
     

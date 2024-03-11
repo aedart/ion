@@ -1,4 +1,4 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import type { AliasConflictException, ConcernConstructor, UsesConcerns, Alias } from "@aedart/contracts/support/concerns";
 import InjectionError from "./InjectionError";
 import { getNameOrDesc } from "@aedart/support/reflections";
@@ -38,26 +38,26 @@ export default class AliasConflictError extends InjectionError implements AliasC
      * @readonly
      * @private
      *
-     * @type {ConstructorOrAbstractConstructor | UsesConcerns}
+     * @type {ConstructorLike | UsesConcerns}
      */
-    readonly #source: ConstructorOrAbstractConstructor | UsesConcerns;
+    readonly #source: ConstructorLike | UsesConcerns;
 
     /**
      * Create a new Alias Conflict Error instance
      * 
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns} target
+     * @param {ConstructorLike | UsesConcerns} target
      * @param {ConcernConstructor} concern
      * @param {Alias} alias
      * @param {PropertyKey} key
-     * @param {ConstructorOrAbstractConstructor | UsesConcerns} source
+     * @param {ConstructorLike | UsesConcerns} source
      * @param {ErrorOptions} [options]
      */
     constructor(
-        target: ConstructorOrAbstractConstructor | UsesConcerns,
+        target: ConstructorLike | UsesConcerns,
         concern: ConcernConstructor,
         alias: Alias,
         key: PropertyKey,
-        source: ConstructorOrAbstractConstructor | UsesConcerns,
+        source: ConstructorLike | UsesConcerns,
         options?: ErrorOptions
     ) {
         const reason: string = (target === source)
@@ -106,9 +106,9 @@ export default class AliasConflictError extends InjectionError implements AliasC
      *
      * @readonly
      *
-     * @type {ConstructorOrAbstractConstructor | UsesConcerns}
+     * @type {ConstructorLike | UsesConcerns}
      */
-    get source(): ConstructorOrAbstractConstructor | UsesConcerns
+    get source(): ConstructorLike | UsesConcerns
     {
         return this.#source;
     }
