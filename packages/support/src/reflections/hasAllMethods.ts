@@ -1,4 +1,5 @@
 import { isset } from "@aedart/support/misc";
+import { isMethod } from "./isMethod";
 
 /**
  * Determine if given target object contains all given methods
@@ -15,7 +16,7 @@ export function hasAllMethods(target: object, ...methods: PropertyKey[]): boolea
     }
     
     for (const method of methods) {
-        if (!Reflect.has(target, method) || typeof (target as Record<PropertyKey, unknown>)[method] != 'function') {
+        if (!isMethod(target, method)) {
             return false;
         }
     }
