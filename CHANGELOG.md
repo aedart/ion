@@ -13,13 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `dependsOn()`, `dependencies()`, `hasDependencies()`, and `getDependencies()`, in `@aedart/support/container`.
 * `ClassMethodName` and `ClassMethodReference` type aliases in `@aedart/contracts`.
 * `isMethod()` util in `@aedart/support/reflections`.
+* `ConstructorLike` type alias, in `@aedart/constracts`.
 * Add upgrade guide from v0.7.x- to v0.10.x.
 
 ### Changed
 
 **Breaking**
 
-* Added `hasAny()` method in `TargetRepository` interface, in `@aedart/contracts/meta` 
+* Added `hasAny()` method in `TargetRepository` interface, in `@aedart/contracts/meta`.
 
 **Non-breaking Changes**
 
@@ -27,11 +28,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `@typescript-eslint/eslint-plugin` upgraded to `^7.1.1`, in root package.
 * Decorator return types for `meta()`, `targetMeta()`, and `inheritTargetMeta()` (_continued to cause TS1270 and TS1238 errors_). [#8](https://github.com/aedart/ion/pull/8), [#9](https://github.com/aedart/ion/pull/9).
 * Refactored `hasAllMethods()` to use new `isMethod()` internally, in `@aedart/support/reflections`.
+* Refactored all components that used deprecated `ConstructorOrAbstractConstructor` to use new `ConstructorLike` type alias. 
 
 ### Fixed
 
 * Decorator types aliases (_TS1270 and TS1238 issues when applying the various decorator and decorator result types_). [#8](https://github.com/aedart/ion/pull/8).
 * Broken link in docs for `isArrayLike`.
+
+### Deprecated
+
+* `ConstructorOrAbstractConstructor` type alias. It has been replaced with the new `ConstructorLike` type., in `@aedart/constracts`.
 
 ## [0.10.0] - 2024-03-07
 
