@@ -1,4 +1,7 @@
-import { Constructor } from "@aedart/contracts";
+import {
+    Constructor,
+    ClassMethodReference
+} from "@aedart/contracts";
 import {
     Alias,
     Identifier,
@@ -176,7 +179,7 @@ export default interface Container
     build<T = object>(concrete: Constructor<T> | Binding<T>): T;
     
     // TODO: ...
-    call(method: any, args: any[]): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    call(method: ClassMethodReference, args: any[]): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
     
     /**
      * Forget binding and resolved instance for given identifier  
