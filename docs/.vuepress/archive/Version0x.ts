@@ -141,6 +141,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/reflections/hasAllMethods',
                             'packages/support/reflections/hasMethod',
                             'packages/support/reflections/hasPrototypeProperty',
+                            'packages/support/reflections/isClassConstructor',
                             'packages/support/reflections/isClassMethodReference',
                             'packages/support/reflections/isConstructor',
                             'packages/support/reflections/isKeySafe',
