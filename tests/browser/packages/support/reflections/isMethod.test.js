@@ -24,9 +24,11 @@ describe('@aedart/support/reflections', () => {
             const data = [
                 { target: undefined, property: undefined, expected: false, name: 'Undefined target' },
                 { target: null, property: undefined, expected: false, name: 'null target' },
-                
+
                 { target: instance, property: undefined, expected: false, name: 'undefined property' },
                 { target: instance, property: null, expected: false, name: 'null property' },
+
+                { target: [ 'a', 'b', 'c' ], property: 'c', expected: false, name: 'array target' },
                 
                 { target: instance, property: 'name', expected: false, name: 'field' },
                 { target: instance, property: 'age', expected: false, name: 'getter' },
