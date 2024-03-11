@@ -23,3 +23,5 @@ isConstructor(class {}); // true
 **Acknowledgement**
 
 The source code of the above shown methods is heavily inspired by Denis Pushkarev's Core-js implementation of the [Function.isCallable / Function.isConstructor](https://github.com/zloirock/core-js#function-iscallable-isconstructor-) proposal (_License MIT_).
+
+See also [`isClassConstructor()`](./isClassConstructor.md).
