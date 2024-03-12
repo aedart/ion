@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Breaking**
 
 * Added `hasAny()` method in `TargetRepository` interface, in `@aedart/contracts/meta`.
+* Default generic for `defaultValue` changed to `undefined`, for `get()` methods in meta `Repository` and `TargetRepository`.
 
 **Non-breaking Changes**
 
