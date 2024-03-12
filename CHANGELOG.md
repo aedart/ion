@@ -14,9 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `ClassMethodName` and `ClassMethodReference` type aliases in `@aedart/contracts`.
 * `isMethod()` util in `@aedart/support/reflections`.
 * `ConstructorLike` and `Callback` type aliases, in `@aedart/constracts`.
-* `CallbackWrapper` interface, in `@aedart/constracts/support`.
 * `CallbackWrapper` util class, in `@aedart/support`.
 * `isCallbackWrapper` util, in `@aedart/support`.
+* `ArbitraryData` concern, in `@aedart/support`.
 * Add upgrade guide from v0.7.x- to v0.10.x.
 
 ### Changed
@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Root package Typescript dependency changed to `^5.4.2`.
 * `@typescript-eslint/eslint-plugin` upgraded to `^7.1.1`, in root package.
-* Decorator return types for `meta()`, `targetMeta()`, and `inheritTargetMeta()` (_continued to cause TS1270 and TS1238 errors_). [#8](https://github.com/aedart/ion/pull/8), [#9](https://github.com/aedart/ion/pull/9).
+* Removed decorator return types for `use()`, `meta()`, `targetMeta()`, and `inheritTargetMeta()` (_continued to cause TS1270 and TS1238 errors_). [#8](https://github.com/aedart/ion/pull/8), [#9](https://github.com/aedart/ion/pull/9).
 * Refactored `hasAllMethods()` to use new `isMethod()` internally, in `@aedart/support/reflections`.
 * Refactored all components that used deprecated `ConstructorOrAbstractConstructor` to use new `ConstructorLike` type alias. 
 * Marked `isClassConstructor()` and `isCallable()` as stable, in `@aedart/support/reflections`.
@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Decorator types aliases (_TS1270 and TS1238 issues when applying the various decorator and decorator result types_). [#8](https://github.com/aedart/ion/pull/8).
 * Broken link in docs for `isArrayLike`.
+* Missing `tslib` as peer dependency for `@aedart/support` package.
 
 ### Deprecated
 
