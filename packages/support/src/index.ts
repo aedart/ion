@@ -9,3 +9,5 @@ import CallbackWrapper from "./CallbackWrapper";
 export {
     CallbackWrapper
 }
+
+export * from './isCallbackWrapper';
