@@ -14,7 +14,7 @@ import Binding from "./Binding";
 /**
  * Service Container
  * 
- * Inspired by Psr's `ContainerInterface`, and Laravel's service `Container`.
+ * Adaptation of Psr's `ContainerInterface`, and Laravel's service `Container`
  * 
  * @see https://www.php-fig.org/psr/psr-11/#31-psrcontainercontainerinterface
  * @see https://github.com/laravel/framework/blob/master/src/Illuminate/Contracts/Container/Container.php
@@ -179,8 +179,17 @@ export default interface Container
      * @throws {ContainerException}
      */
     build<T = object>(concrete: Constructor<T> | Binding<T>): T;
-    
-    // TODO: ...
+
+    /**
+     * Call given method and inject dependencies if needed
+     * 
+     * @param {Callback | CallbackWrapper | ClassMethodReference} method
+     * @param {any[]} args
+     * 
+     * @return {any}
+     *
+     * @throws {ContainerException}
+     */
     call(method: Callback | CallbackWrapper | ClassMethodReference, args: any[]): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
     
     /**
