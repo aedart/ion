@@ -51,7 +51,7 @@ export default class CallbackWrapper implements CallbackWrapperInterface
         ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ) {
         if (typeof callback != 'function') {
-            throw new TypeError('Callback argument must be a valid callable function');
+            throw new TypeError('Argument must be a valid callable function');
         }
         
         this.#callback = callback;
