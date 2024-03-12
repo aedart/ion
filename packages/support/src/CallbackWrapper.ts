@@ -1,13 +1,88 @@
 import type { Callback } from "@aedart/contracts";
 import type { CallbackWrapper as CallbackWrapperInterface } from "@aedart/contracts/support";
+import { use } from "@aedart/support/concerns";
+import ArbitraryData from "./ArbitraryData";
 
 /**
  * Callback Wrapper
  * 
  * @see [CallbackWrapper]{@link import('@aedart/contracts/support').CallbackWrapper}
+ * 
+ * @mixes ArbitraryData
  */
+@use(ArbitraryData)
 export default class CallbackWrapper implements CallbackWrapperInterface
 {
+    /**
+     * Alias for {@link ArbitraryData#set}
+     *
+     * @function set
+     * @param {Key} key
+     * @param {any} value
+     * @return {this}
+     *
+     * @instance
+     * @memberof CallbackWrapper
+     */
+
+    /**
+     * Alias for {@link ArbitraryData#get}
+     *
+     * @function get
+     *
+     * @template T
+     * @template D=undefined
+     *
+     * @param {Key} key
+     * @param {D} [defaultValue]
+     * @return {this}
+     *
+     * @instance
+     * @memberof CallbackWrapper
+     */
+
+    /**
+     * Alias for {@link ArbitraryData#has}
+     *
+     * @function has
+     * @param {Key} key
+     * @return {boolean}
+     *
+     * @instance
+     * @memberof CallbackWrapper
+     */
+
+    /**
+     * Alias for {@link ArbitraryData#forget}
+     *
+     * @function forget
+     * @param {Key} key
+     * @return {boolean}
+     *
+     * @instance
+     * @memberof CallbackWrapper
+     */
+
+    /**
+     * Alias for {@link ArbitraryData#all}
+     *
+     * @function all
+     * @return {Record<PropertyKey, any>}
+     *
+     * @instance
+     * @memberof CallbackWrapper
+     */
+
+    /**
+     * Alias for {@link ArbitraryData#flush}
+     *
+     * @function flush
+     * @return {void}
+     *
+     * @instance
+     * @memberof CallbackWrapper
+     */
+    
     /**
      * The callback
      *
