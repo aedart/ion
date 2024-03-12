@@ -75,6 +75,26 @@ export default class CallbackWrapper implements CallbackWrapperInterface
     {
         return new this(callback, ...args);
     }
+
+    /**
+     * Create a new Callback Wrapper instance, using given binding
+     * 
+     * @param {object} thisArg Binding
+     * @param {Callback} callback
+     * @param {...any} [args]
+     *
+     * @return {this|CallbackWrapper}
+     *
+     * @throws {TypeError}
+     */
+    public static makeFor(
+        thisArg: object,
+        callback: Callback,
+        ...args: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): CallbackWrapperInterface
+    {
+        return this.make(callback, ...args).bind(thisArg);
+    }
     
     /**
      * The callback
