@@ -8,6 +8,7 @@ import { set, get, has, forget, merge } from "@aedart/support/objects";
  * @see HasArbitraryData
  * 
  * @mixin
+ * @extends AbstractConcern
  */
 export default class ArbitraryData extends AbstractConcern implements HasArbitraryData
 {
