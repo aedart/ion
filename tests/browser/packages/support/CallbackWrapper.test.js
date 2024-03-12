@@ -157,5 +157,29 @@ describe('@aedart/support', () => {
                 .withContext('Invalid callback result')
                 .toEqual(`Hi ${name}`);
         });
+
+        it('fails invoking callback if unable to apply binding', () => {
+
+            // NOTE: Unable to "bind" arrow functions!
+            const callback = (name) => {
+                return this.sayHi(name);
+            };
+
+            class A {
+                sayHi(name) {
+                    return `Hi ${name}`;
+                }
+            }
+
+            // -------------------------------------------------------------------- //
+
+            const wrapper = CallbackWrapper.makeFor(new A(), callback, 'Bart');
+            const invoke = () => {
+                wrapper.call()
+            }
+
+            expect(invoke)
+                .toThrowError(TypeError);
+        });
     }); 
 });
