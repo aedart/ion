@@ -24,3 +24,14 @@ export type Alias = Identifier;
 export type FactoryCallback<
     Value = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 > = (container: Container, ...args: any[]) => Value;
+
+/**
+ * Extend Callback
+ * 
+ * Callback can be used to "extend", decorate or modify a resolved value
+ * from the service container.
+ */
+export type ExtendCallback<
+    Value = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ExtendedValue extends Value = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+> = (resolved: Value, container: Container) => ExtendedValue;
