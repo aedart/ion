@@ -33,7 +33,7 @@ import ConcernsInjector from "./ConcernsInjector";
  * 
  * @throws {InjectionException}
  */
-export function use(...concerns: (ConcernConstructor|Configuration|ShorthandConfiguration)[])
+export function use(...concerns: (ConcernConstructor|Configuration|ShorthandConfiguration)[]): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
     return (target: object) => {
         return (new ConcernsInjector<typeof target>(target)).inject(...concerns);
