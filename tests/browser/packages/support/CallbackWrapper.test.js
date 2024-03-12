@@ -1,4 +1,5 @@
-import { CallbackWrapper } from "@aedart/support";
+import { CallbackWrapper, ArbitraryData } from "@aedart/support";
+import { usesConcerns } from "@aedart/support/concerns";
 
 describe('@aedart/support', () => {
     describe('CallbackWrapper', () => {
@@ -180,6 +181,35 @@ describe('@aedart/support', () => {
 
             expect(invoke)
                 .toThrowError(TypeError);
+        });
+
+        it('uses arbitrary data concern', () => {
+
+            const wrapper = CallbackWrapper.make(() => true);
+            
+            // -------------------------------------------------------------------- //
+            
+            expect(usesConcerns(wrapper, ArbitraryData))
+                .withContext('Wrapper does not use Arbitrary Data concern')
+                .toBeTrue();
+            
+            wrapper
+                .set('a', 'foo')
+                .set('b', 'bar');
+            
+            expect(wrapper.has('a'))
+                .withContext('a key does not exist')
+                .toBeTrue();
+            expect(wrapper.get('a'))
+                .withContext('a incorrect value')
+                .toBe('foo');
+            
+            expect(wrapper.has('b'))
+                .withContext('b key does not exist')
+                .toBeTrue();
+            expect(wrapper.get('b'))
+                .withContext('b incorrect value')
+                .toBe('bar');
         });
     }); 
 });
