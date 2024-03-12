@@ -19,7 +19,7 @@ export default class ArbitraryData extends AbstractConcern implements HasArbitra
      * 
      * @private
      */
-    #data: Record<PropertyKey, any> = {};
+    #data: Record<PropertyKey, any> = {}; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
     /**
      * Set value for key

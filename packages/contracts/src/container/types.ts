@@ -41,7 +41,11 @@ export type ExtendCallback<
  * 
  * Callback to be invoked before a binding is resolved.
  */
-export type BeforeResolvedCallback = (identifier: Identifier, args: any[], container: Container) => void;
+export type BeforeResolvedCallback = (
+    identifier: Identifier,
+    args: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    container: Container
+) => void;
 
 /**
  * After Resolved Callback
@@ -50,4 +54,8 @@ export type BeforeResolvedCallback = (identifier: Identifier, args: any[], conta
  */
 export type AfterResolvedCallback<
     Value = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
-> = (identifier: Identifier, resolved: Value, container: Container) => void;
+> = (
+    identifier: Identifier,
+    resolved: Value,
+    container: Container
+) => void;
