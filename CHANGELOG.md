@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `ConstructorLike` and `Callback` type aliases, in `@aedart/constracts`.
 * `CallbackWrapper` interface, in `@aedart/constracts/support`.
 * `CallbackWrapper` util class, in `@aedart/support`.
+* `isCallbackWrapper` util, in `@aedart/support`.
 * Add upgrade guide from v0.7.x- to v0.10.x.
 
 ### Changed
