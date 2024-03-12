@@ -1,4 +1,4 @@
-import {HasArbitraryData, Key} from "@aedart/contracts/support";
+import { HasArbitraryData, Key } from "@aedart/contracts/support";
 import { AbstractConcern } from "@aedart/support/concerns";
 import { set, get, has, forget, merge } from "@aedart/support/objects";
 
