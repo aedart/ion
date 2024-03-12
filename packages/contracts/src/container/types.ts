@@ -35,3 +35,19 @@ export type ExtendCallback<
     Value = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ExtendedValue extends Value = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 > = (resolved: Value, container: Container) => ExtendedValue;
+
+/**
+ * Before Resolved Callback
+ * 
+ * Callback to be invoked before a binding is resolved.
+ */
+export type BeforeResolvedCallback = (identifier: Identifier, args: any[], container: Container) => void;
+
+/**
+ * After Resolved Callback
+ * 
+ * Callback to be invoked after a binding has been resolved.
+ */
+export type AfterResolvedCallback<
+    Value = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+> = (identifier: Identifier, resolved: Value, container: Container) => void;

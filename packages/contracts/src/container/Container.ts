@@ -9,13 +9,15 @@ import {
     Identifier,
     FactoryCallback,
     ExtendCallback,
+    BeforeResolvedCallback,
+    AfterResolvedCallback,
 } from "./types";
 import Binding from "./Binding";
 
 /**
  * Service Container
  * 
- * Adaptation of Psr's `ContainerInterface`, and Laravel's service `Container`
+ * Adaptation of Psr's `ContainerInterface`, and Laravel's service `Container`.
  * 
  * @see https://www.php-fig.org/psr/psr-11/#31-psrcontainercontainerinterface
  * @see https://github.com/laravel/framework/blob/master/src/Illuminate/Contracts/Container/Container.php
@@ -221,4 +223,33 @@ export default interface Container
      * @returns {void}
      */
     flush(): void;
+
+    /**
+     * Determine if identifier has been resolved
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @return {boolean}
+     */
+    isResolved(identifier: Identifier): boolean;
+
+    /**
+     * Register a callback to be invoked before a binding is resolved
+     * 
+     * @param {Identifier} identifier
+     * @param {BeforeResolvedCallback} callback
+     * 
+     * @return {this}
+     */
+    before(identifier: Identifier, callback: BeforeResolvedCallback): this;
+
+    /**
+     * Register a callback to be invoked after a binding has been resolved
+     * 
+     * @param {Identifier} identifier
+     * @param {AfterResolvedCallback} callback
+     * 
+     * @return {this}
+     */
+    after(identifier: Identifier, callback: AfterResolvedCallback): this;
 }
