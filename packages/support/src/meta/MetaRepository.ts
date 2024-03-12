@@ -140,17 +140,14 @@ export default class MetaRepository implements Repository
      * Get value for given key
      *
      * @template T Return value type
-     * @template D=any Type of default value
+     * @template D=undefined Type of default value
      *
      * @param {Key} key
      * @param {D} [defaultValue]
      *
-     * @return {T | D | undefined}
+     * @return {T | D}
      */
-    public get<
-        T,
-        D = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    >(key: Key, defaultValue?: D): T | D | undefined
+    public get<T, D = undefined>(key: Key, defaultValue?: D): T | D
     {
         return get(this.all(), key, defaultValue);
     }
