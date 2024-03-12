@@ -7,7 +7,8 @@ import { CallbackWrapper } from "@aedart/contracts/support";
 import {
     Alias,
     Identifier,
-    FactoryCallback
+    FactoryCallback,
+    ExtendCallback,
 } from "./types";
 import Binding from "./Binding";
 
@@ -191,6 +192,19 @@ export default interface Container
      * @throws {ContainerException}
      */
     call(method: Callback | CallbackWrapper | ClassMethodReference, args: any[]): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+
+    /**
+     * Extend the registered binding
+     * 
+     * @param {Identifier} identifier
+     * @param {ExtendCallback} callback
+     * 
+     * @return {this}
+     *
+     * @throws {TypeError}
+     * @throws {ContainerException}
+     */
+    extend(identifier: Identifier, callback: ExtendCallback): this;
     
     /**
      * Forget binding and resolved instance for given identifier  
