@@ -58,6 +58,13 @@ export default interface CallbackWrapper
      * @throws {TypeError}
      */
     bind(thisArg: object): this;
+
+    /**
+     * Determine if a binding has been set
+     * 
+     * @return {boolean}
+     */
+    hasBinding(): boolean;
     
     /**
      * Invoke the callback
