@@ -9,6 +9,9 @@ import type {
 } from "@aedart/contracts/container";
 import type { Callback, ClassMethodReference, Constructor } from "@aedart/contracts";
 import type { CallbackWrapper } from "@aedart/contracts/support";
+import { isConstructor } from "@aedart/support/reflections";
+import ContainerError from "./exceptions/ContainerError";
+import NotFoundError from "./exceptions/NotFoundError";
 import BindingEntry from "./BindingEntry";
 
 /**
@@ -57,6 +60,41 @@ export default class Container implements ServiceContainerContract
      * @protected
      */
     protected instances: Map<Identifier, object> = new Map();
+    
+    /**
+     * Extend callbacks
+     * 
+     * @type {Map<Identifier, ExtendCallback[]>}
+     * 
+     * @protected
+     */
+    protected extenders: Map<Identifier, ExtendCallback[]> = new Map();
+
+    /**
+     * Resolved (built) identifiers
+     *
+     * @type {Set<Identifier>}
+     *
+     * @protected
+     */
+    protected resolved: Set<Identifier> = new Set();
+    
+    /**
+     * "Before" resolved callbacks
+     * 
+     * @type {Map<Identifier, BeforeResolvedCallback[]>}
+     * 
+     * @protected
+     */
+    protected beforeResolvedCallbacks: Map<Identifier, BeforeResolvedCallback[]> = new Map();
+
+    /**
+     * "After" resolved callbacks
+     * 
+     * @type {Map<Identifier, AfterResolvedCallback[]>}
+     * @protected
+     */
+    protected afterResolvedCallbacks: Map<Identifier, AfterResolvedCallback[]> = new Map();
     
     /**
      * Returns the singleton instance of the service container
@@ -197,8 +235,7 @@ export default class Container implements ServiceContainerContract
         T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     >(identifier: Identifier): T
     {
-        // TODO: Implement this...
-        return null as T;
+        return this.make<T>(identifier);
     }
 
     /**
@@ -259,6 +296,33 @@ export default class Container implements ServiceContainerContract
     {
         return this.aliases.has(identifier);
     }
+
+    /**
+     * Determine if identifier is registered as a "shared" binding
+     *
+     * @param {Identifier} identifier
+     *
+     * @returns {boolean}
+     */
+    public isShared(identifier: Identifier): boolean
+    {
+        return this.instances.has(identifier)
+            || (this.bindings.has(identifier) && (this.bindings.get(identifier) as Binding).shared)
+    }
+
+    /**
+     * Returns the alias for given identifier, if available
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @returns {Identifier}
+     */
+    public getAlias(identifier: Identifier): Identifier
+    {
+        return this.aliases.has(identifier)
+            ? this.getAlias(this.aliases.get(identifier) as Identifier)
+            : identifier;
+    }
     
     /**
      * Resolves binding value that matches identifier and returns it
@@ -275,10 +339,9 @@ export default class Container implements ServiceContainerContract
      */
     public make<
         T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    >(identifier: Identifier, args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */): T
+    >(identifier: Identifier, args: any[] = [] /* eslint-disable-line @typescript-eslint/no-explicit-any */): T
     {
-        // TODO: Implement this...
-        return null as T;
+        return this.resolve<T>(identifier, args);
     }
 
     /**
@@ -300,8 +363,15 @@ export default class Container implements ServiceContainerContract
         D = undefined
     >(identifier: Identifier, args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */, defaultValue?: D): T | D
     {
-        // TODO: Implement this...
-        return null as D;
+        if (!this.has(identifier) && !this.isBuildable(identifier)) {
+            if (typeof defaultValue === 'function') {
+                return defaultValue(args, this);
+            }
+
+            return defaultValue as D;
+        }
+        
+        return this.make<T>(identifier, args);
     }
 
     /**
@@ -310,12 +380,16 @@ export default class Container implements ServiceContainerContract
      * @template T = object
      *
      * @param {Constructor<T> | Binding<T>} concrete
+     * @param {any[]} [args] Eventual arguments to pass on the concrete instance's constructor.
      *
      * @returns {T}
      *
      * @throws {ContainerException}
      */
-    public build<T = object>(concrete: Constructor<T> | Binding<T>): T
+    public build<T = object>(
+        concrete: Constructor<T> | Binding<T>,
+        args: any[] = [] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): T
     {
         // TODO: Implement this...
         return null as T;
@@ -350,7 +424,25 @@ export default class Container implements ServiceContainerContract
      */
     public extend(identifier: Identifier, callback: ExtendCallback): this
     {
-        // TODO: Implement this...
+        identifier = this.getAlias(identifier);
+        
+        // If identifier matches a "shared" instance, then extend that instance right
+        // away and rebound it.
+        if (this.instances.has(identifier)) {
+            const instance = this.instances.get(identifier) as object;
+            
+            this.instances.set(identifier, callback(instance, this));
+        } else {
+            // Otherwise, add extend callback to the existing for the identifier.
+            if (!this.extenders.has(identifier)) {
+                this.extenders.set(identifier, []);
+            }
+            
+            const existing: ExtendCallback[] = this.extenders.get(identifier) as ExtendCallback[];
+            existing.push(callback);
+            this.extenders.set(identifier, existing);
+        }
+        
         return this;
     }
 
@@ -363,8 +455,13 @@ export default class Container implements ServiceContainerContract
      */
     public forget(identifier: Identifier): boolean
     {
-        // TODO: Implement this...
-        return false;
+        const alias: Identifier = this.getAlias(identifier);
+        
+        const removedBinding: boolean = this.bindings.delete(alias);
+        const removedInstance: boolean = this.instances.delete(alias);
+        const removedAlias: boolean = this.aliases.delete(identifier);
+        
+        return removedBinding || removedInstance || removedAlias;
     }
 
     /**
@@ -374,8 +471,10 @@ export default class Container implements ServiceContainerContract
      */
     public flush(): void
     {
-        // TODO: Implement this...
-        return;
+        this.bindings.clear();
+        this.instances.clear();
+        this.aliases.clear();
+        this.resolved.clear();
     }
 
     /**
@@ -387,8 +486,10 @@ export default class Container implements ServiceContainerContract
      */
     public isResolved(identifier: Identifier): boolean
     {
-        // TODO: Implement this...
-        return false;
+        identifier = this.getAlias(identifier);
+        
+        return this.resolved.has(identifier)
+            || this.instances.has(identifier);
     }
 
     /**
@@ -401,7 +502,16 @@ export default class Container implements ServiceContainerContract
      */
     public before(identifier: Identifier, callback: BeforeResolvedCallback): this
     {
-        // TODO: Implement this...
+        identifier = this.getAlias(identifier);
+        
+        if (!this.beforeResolvedCallbacks.has(identifier)) {
+            this.beforeResolvedCallbacks.set(identifier, []);
+        }
+        
+        const existing: BeforeResolvedCallback[] = this.beforeResolvedCallbacks.get(identifier) as BeforeResolvedCallback[];
+        existing.push(callback);
+        this.beforeResolvedCallbacks.set(identifier, existing);
+        
         return this;
     }
 
@@ -415,7 +525,16 @@ export default class Container implements ServiceContainerContract
      */
     public after(identifier: Identifier, callback: AfterResolvedCallback): this
     {
-        // TODO: Implement this...
+        identifier = this.getAlias(identifier);
+
+        if (!this.afterResolvedCallbacks.has(identifier)) {
+            this.afterResolvedCallbacks.set(identifier, []);
+        }
+
+        const existing: AfterResolvedCallback[] = this.afterResolvedCallbacks.get(identifier) as AfterResolvedCallback[];
+        existing.push(callback);
+        this.afterResolvedCallbacks.set(identifier, existing);
+
         return this;
     }
 
@@ -435,5 +554,150 @@ export default class Container implements ServiceContainerContract
     protected makeBindingEntry(identifier: Identifier, value: FactoryCallback | Constructor, shared: boolean = false): Binding
     {
         return new BindingEntry(identifier, value, shared);
+    }
+
+    /**
+     * Resolves binding value that matches identifier
+     *
+     * @template T = any
+     *
+     * @param {Identifier} identifier
+     * @param {any[]} args Eventual arguments to pass on to {@link FactoryCallback} or {@link Constructor}
+     * @param {boolean} [fireEvents=true] If `true`, then "before" and "after" resolved callbacks will be invoked.
+     *
+     * @returns {T}
+     *
+     * @throws {NotFoundException}
+     * @throws {ContainerException}
+     *
+     * @protected
+     */
+    protected resolve<
+        T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    >(
+        identifier: Identifier,
+        args: any[] = [], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        fireEvents: boolean = true
+    ): T
+    {
+        identifier = this.getAlias(identifier);
+        
+        // Fire "before" resolve callbacks
+        if (fireEvents) {
+            this.fireBeforeResolvedCallbacks(identifier, args);
+        }
+
+        // Returns "shared" instance, if requested identifier matches one.
+        if (this.instances.has(identifier)) {
+            return this.instances.get(identifier) as T;
+        }
+        
+        // Find registered binding for identifier. Or, fail if no binding exists and given
+        // identifier is not buildable.
+        const binding: Binding | undefined = this.bindings.get(identifier);
+        
+        if (binding === undefined && this.isBuildable(identifier)) {
+            return this.build<T>(identifier as Constructor<T>, args);
+        } else if (binding === undefined) {
+            throw new NotFoundError(`No binding found for ${identifier.toString()}`, { cause: { identifier: identifier, args: args } });
+        }
+        
+        // Build instance or value that was registered for the given identifier.
+        let resolved: T = this.build<T>(binding, args);
+        
+        // Invoke all extend callbacks for identifier, if any have been registered.
+        const extendCallbacks: ExtendCallback[] = this.getExtenders(identifier);
+        for (const extendCallback of extendCallbacks) {
+            resolved = extendCallback(resolved, this) as T;
+        }
+        
+        // If requested binding is registered as "shared", save the resolved as an instance.
+        if (this.isShared(identifier)) {
+            this.instances.set(identifier, resolved as object);
+        }
+
+        // Fire "after" resolved callbacks
+        if (fireEvents) {
+            this.fireAfterResolvedCallbacks(identifier, resolved);
+        }
+        
+        // Mark identifier as resolved
+        this.resolved.add(identifier);
+        
+        // Finally, return the resolved instance or value
+        return resolved;
+    }
+
+    /**
+     * Invokes the "before" resolved callbacks for given identifier
+     * 
+     * @param {Identifier} identifier
+     * @param {any[]} [args]
+     *
+     * @return {void}
+     * 
+     * @protected
+     */
+    protected fireBeforeResolvedCallbacks(
+        identifier: Identifier,
+        args: any[] = [], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): void
+    {
+        const callbacks: BeforeResolvedCallback[] = this.beforeResolvedCallbacks.get(identifier) ?? [];
+        
+        for (const callback of callbacks) {
+            callback(identifier, args, this);
+        }
+    }
+
+    /**
+     * Invokes the "after" resolved callbacks for given identifier
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @param {any} resolved
+     * 
+     * @return {void}
+     * 
+     * @protected
+     */
+    protected fireAfterResolvedCallbacks(
+        identifier: Identifier,
+        resolved: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): void
+    {
+        const callbacks: AfterResolvedCallback[] = this.afterResolvedCallbacks.get(identifier) ?? [];
+
+        for (const callback of callbacks) {
+            callback(identifier, resolved, this);
+        }
+    }
+    
+    /**
+     * Returns list of extend callbacks for given identifier
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @returns {ExtendCallback[]}
+     * 
+     * @protected
+     */
+    protected getExtenders(identifier: Identifier): ExtendCallback[]
+    {
+        return this.extenders.get(this.getAlias(identifier)) ?? [];
+    }
+    
+    /**
+     * Determine if given target is buildable
+     * 
+     * @param {unknown} target
+     * 
+     * @returns {boolean}
+     * 
+     * @protected
+     */
+    protected isBuildable(target: unknown): boolean
+    {
+        return isConstructor(target);
     }
 }
