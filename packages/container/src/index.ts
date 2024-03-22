@@ -1,8 +1,4 @@
-/**
- * @deprecated - To be removed - adds no value!
- * 
- * Service Container identifier
- *
- * @type {Symbol}
- */
-export const SERVICE_CONTAINER: unique symbol = Symbol('@aedart/container');
+import BindingEntry from "./BindingEntry";
+export {
+    BindingEntry
+}
