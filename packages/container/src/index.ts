@@ -4,3 +4,5 @@ export {
     BindingEntry,
     Container
 }
+
+export * from './exceptions';
