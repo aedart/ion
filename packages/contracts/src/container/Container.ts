@@ -142,6 +142,15 @@ export default interface Container
      * @return {boolean}
      */
     isAlias(identifier: Identifier): boolean;
+
+    /**
+     * Determine if identifier is registered as a "shared" binding
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @returns {boolean}
+     */
+    isShared(identifier: Identifier): boolean;
     
     /**
      * Resolves binding value that matches identifier and returns it
