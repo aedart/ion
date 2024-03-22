@@ -1,3 +1,4 @@
+import { Callback, ConstructorLike } from "@aedart/contracts";
 import Container from "./Container";
 
 /**
@@ -6,7 +7,7 @@ import Container from "./Container";
  * A unique identifier used for associating "concrete" items or values in
  * a service container.
  */
-export type Identifier = string | symbol | number | NonNullable<object>;
+export type Identifier = string | symbol | number | NonNullable<object> | ConstructorLike | Callback;
 
 /**
  * Binding Alias
