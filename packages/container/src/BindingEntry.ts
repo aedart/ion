@@ -146,6 +146,10 @@ export default class BindingEntry<T = any> implements Binding<T>
     protected resolveIsConstructorOrFactoryCallback(): void
     {
         this.#isConstructor = isConstructor(this.#value);
-        this.#isFactoryCallback = !this.#isConstructor; 
+        this.#isFactoryCallback = !this.#isConstructor;
+        
+        if (this.#isConstructor === false && this.#isFactoryCallback === false) {
+            throw new TypeError('Binding value must either be a valid constructor or factory callback', { cause: { identifier: this.#identifier, value: this.#value } });
+        }
     }
 }
