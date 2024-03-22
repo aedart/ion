@@ -9,6 +9,7 @@
     "./src/**/*"
   ],
   "references": [
-      { "path": "../contracts", "prepend": false }
+      { "path": "../contracts", "prepend": false },
+      { "path": "../support", "prepend": false },
   ]
 }
