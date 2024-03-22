@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * `DEPENDENCIES` symbol and `Identifier` type in `@aedart/contracts/container`.
 * `dependsOn()`, `dependencies()`, `hasDependencies()`, and `getDependencies()`, in `@aedart/support/container`.
+* `isBindingIdentifier`, in `@aedart/support/container`.
 * `ClassMethodName` and `ClassMethodReference` type aliases in `@aedart/contracts`.
 * `isMethod()` util in `@aedart/support/reflections`.
 * `ConstructorLike` and `Callback` type aliases, in `@aedart/constracts`.
