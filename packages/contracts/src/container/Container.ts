@@ -194,12 +194,16 @@ export default interface Container
      * @template T = object
      * 
      * @param {Constructor<T> | Binding<T>} concrete
+     * @param {any[]} [args] Eventual arguments to pass on the concrete instance's constructor.
      * 
      * @returns {T}
      * 
      * @throws {ContainerException}
      */
-    build<T = object>(concrete: Constructor<T> | Binding<T>): T;
+    build<T = object>(
+        concrete: Constructor<T> | Binding<T>,
+        args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): T;
 
     /**
      * Call given method and inject dependencies if needed
