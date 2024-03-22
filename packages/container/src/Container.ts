@@ -9,6 +9,7 @@ import type {
 } from "@aedart/contracts/container";
 import type { Callback, ClassMethodReference, Constructor } from "@aedart/contracts";
 import type { CallbackWrapper } from "@aedart/contracts/support";
+import BindingEntry from "./BindingEntry";
 
 /**
  * Service Container
@@ -30,6 +31,33 @@ export default class Container implements ServiceContainerContract
      */
     static #instance: ServiceContainerContract | null = null;
 
+    /**
+     * Registered bindings
+     * 
+     * @type {Map<Identifier, Binding>}
+     * 
+     * @protected
+     */
+    protected bindings: Map<Identifier, Binding> = new Map();
+
+    /**
+     * Registered aliases
+     * 
+     * @type {Map<Alias, Identifier>}
+     * 
+     * @protected
+     */
+    protected aliases: Map<Alias, Identifier> = new Map();
+
+    /**
+     * Registered "shared" instances (singletons)
+     * 
+     * @type {Map<Identifier, object>}
+     * 
+     * @protected
+     */
+    protected instances: Map<Identifier, object> = new Map();
+    
     /**
      * Returns the singleton instance of the service container
      * 
@@ -67,9 +95,14 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {TypeError}
      */
-    bind(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared?: boolean): this
+    bind(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared: boolean = false): this
     {
-        // TODO: Implement this...
+        concrete = concrete ?? identifier as Constructor;
+        
+        this.bindings.set(identifier, this.makeBindingEntry(identifier, concrete, shared));
+
+        // TODO: isResolved() vs. rebound() ???
+        
         return this;
     }
 
@@ -84,9 +117,12 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {TypeError}
      */
-    bindIf(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared?: boolean): this
+    bindIf(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared: boolean = false): this
     {
-        // TODO: Implement this...
+        if (!this.bound(identifier)) {
+            this.bind(identifier, concrete, shared);
+        }
+        
         return this;
     }
 
@@ -102,8 +138,7 @@ export default class Container implements ServiceContainerContract
      */
     singleton(identifier: Identifier, concrete?: FactoryCallback | Constructor): this
     {
-        // TODO: Implement this...
-        return this;
+        return this.bind(identifier, concrete, true);
     }
 
     /**
@@ -118,7 +153,10 @@ export default class Container implements ServiceContainerContract
      */
     singletonIf(identifier: Identifier, concrete?: FactoryCallback | Constructor): this
     {
-        // TODO: Implement this...
+        if (!this.bound(identifier)) {
+            this.singleton(identifier, concrete);
+        }
+
         return this;
     }
 
@@ -136,8 +174,11 @@ export default class Container implements ServiceContainerContract
      */
     instance<T = object>(identifier: Identifier, instance: T): T
     {
-        // TODO: Implement this...
-        return null as T;
+        this.instances.set(identifier, instance as object);
+        
+        // TODO: rebound() ???
+        
+        return instance;
     }
 
     /**
@@ -169,8 +210,9 @@ export default class Container implements ServiceContainerContract
      */
     has(identifier: Identifier): boolean
     {
-        // TODO: Implement this...
-        return false;
+        return this.bindings.has(identifier)
+            || this.instances.has(identifier)
+            || this.isAlias(identifier);
     }
 
     /**
@@ -182,8 +224,7 @@ export default class Container implements ServiceContainerContract
      */
     bound(identifier: Identifier): boolean
     {
-        // TODO: Implement this...
-        return false;
+        return this.has(identifier);
     }
 
     /**
@@ -198,10 +239,27 @@ export default class Container implements ServiceContainerContract
      */
     alias(identifier: Identifier, alias: Alias): this
     {
-        // TODO: Implement this...
+        if (alias === identifier) {
+            throw new TypeError(`${identifier.toString()} is aliased to itself`, { cause: { identifier: identifier, alias: alias } });
+        }
+        
+        this.aliases.set(alias, identifier);
+        
         return this;
     }
 
+    /**
+     * Determine if identifier is an alias
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @return {boolean}
+     */
+    isAlias(identifier: Identifier): boolean
+    {
+        return this.aliases.has(identifier);
+    }
+    
     /**
      * Resolves binding value that matches identifier and returns it
      *
@@ -359,5 +417,23 @@ export default class Container implements ServiceContainerContract
     {
         // TODO: Implement this...
         return this;
+    }
+
+    /**
+     * Returns a new Binding Entry for given identifier and binding value
+     * 
+     * @param {Identifier} identifier
+     * @param {FactoryCallback | Constructor} value
+     * @param {boolean} [shared]
+     * 
+     * @return {Binding}
+     *
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
+    protected makeBindingEntry(identifier: Identifier, value: FactoryCallback | Constructor, shared: boolean = false): Binding
+    {
+        return new BindingEntry(identifier, value, shared);
     }
 }
