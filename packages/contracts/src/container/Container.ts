@@ -135,6 +135,15 @@ export default interface Container
     alias(identifier: Identifier, alias: Alias): this;
 
     /**
+     * Determine if identifier is an alias
+     *
+     * @param {Identifier} identifier
+     *
+     * @return {boolean}
+     */
+    isAlias(identifier: Identifier): boolean;
+    
+    /**
      * Resolves binding value that matches identifier and returns it
      * 
      * @template T = any
