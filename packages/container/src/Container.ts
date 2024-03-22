@@ -63,7 +63,7 @@ export default class Container implements ServiceContainerContract
      * 
      * @return {ServiceContainerContract|this}
      */
-    static getInstance(): ServiceContainerContract
+    public static getInstance(): ServiceContainerContract
     {
         if (this.#instance === null) {
             this.setInstance(new this());
@@ -79,7 +79,7 @@ export default class Container implements ServiceContainerContract
      * 
      * @return {ServiceContainerContract | null}
      */
-    static setInstance(container: ServiceContainerContract | null = null): ServiceContainerContract | null
+    public static setInstance(container: ServiceContainerContract | null = null): ServiceContainerContract | null
     {
         return this.#instance = container;
     }
@@ -95,7 +95,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {TypeError}
      */
-    bind(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared: boolean = false): this
+    public bind(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared: boolean = false): this
     {
         concrete = concrete ?? identifier as Constructor;
         
@@ -117,7 +117,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {TypeError}
      */
-    bindIf(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared: boolean = false): this
+    public bindIf(identifier: Identifier, concrete?: FactoryCallback | Constructor, shared: boolean = false): this
     {
         if (!this.bound(identifier)) {
             this.bind(identifier, concrete, shared);
@@ -136,7 +136,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {TypeError}
      */
-    singleton(identifier: Identifier, concrete?: FactoryCallback | Constructor): this
+    public singleton(identifier: Identifier, concrete?: FactoryCallback | Constructor): this
     {
         return this.bind(identifier, concrete, true);
     }
@@ -151,7 +151,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {TypeError}
      */
-    singletonIf(identifier: Identifier, concrete?: FactoryCallback | Constructor): this
+    public singletonIf(identifier: Identifier, concrete?: FactoryCallback | Constructor): this
     {
         if (!this.bound(identifier)) {
             this.singleton(identifier, concrete);
@@ -172,7 +172,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {TypeError}
      */
-    instance<T = object>(identifier: Identifier, instance: T): T
+    public instance<T = object>(identifier: Identifier, instance: T): T
     {
         this.instances.set(identifier, instance as object);
         
@@ -193,7 +193,7 @@ export default class Container implements ServiceContainerContract
      * @throws {NotFoundException}
      * @throws {ContainerException}
      */
-    get<
+    public get<
         T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     >(identifier: Identifier): T
     {
@@ -208,7 +208,7 @@ export default class Container implements ServiceContainerContract
      *
      * @returns {boolean}
      */
-    has(identifier: Identifier): boolean
+    public has(identifier: Identifier): boolean
     {
         return this.bindings.has(identifier)
             || this.instances.has(identifier)
@@ -222,7 +222,7 @@ export default class Container implements ServiceContainerContract
      *
      * @returns {boolean}
      */
-    bound(identifier: Identifier): boolean
+    public bound(identifier: Identifier): boolean
     {
         return this.has(identifier);
     }
@@ -237,7 +237,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {TypeError}
      */
-    alias(identifier: Identifier, alias: Alias): this
+    public alias(identifier: Identifier, alias: Alias): this
     {
         if (alias === identifier) {
             throw new TypeError(`${identifier.toString()} is aliased to itself`, { cause: { identifier: identifier, alias: alias } });
@@ -255,7 +255,7 @@ export default class Container implements ServiceContainerContract
      * 
      * @return {boolean}
      */
-    isAlias(identifier: Identifier): boolean
+    public isAlias(identifier: Identifier): boolean
     {
         return this.aliases.has(identifier);
     }
@@ -273,7 +273,7 @@ export default class Container implements ServiceContainerContract
      * @throws {NotFoundException}
      * @throws {ContainerException}
      */
-    make<
+    public make<
         T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     >(identifier: Identifier, args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */): T
     {
@@ -295,7 +295,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {ContainerException}
      */
-    makeOrDefault<
+    public makeOrDefault<
         T = any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
         D = undefined
     >(identifier: Identifier, args?: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */, defaultValue?: D): T | D
@@ -315,7 +315,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {ContainerException}
      */
-    build<T = object>(concrete: Constructor<T> | Binding<T>): T
+    public build<T = object>(concrete: Constructor<T> | Binding<T>): T
     {
         // TODO: Implement this...
         return null as T;
@@ -331,7 +331,7 @@ export default class Container implements ServiceContainerContract
      *
      * @throws {ContainerException}
      */
-    call(method: Callback | CallbackWrapper | ClassMethodReference, args: any[]): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    public call(method: Callback | CallbackWrapper | ClassMethodReference, args: any[]): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         // TODO: Implement this...
         return null;
@@ -348,7 +348,7 @@ export default class Container implements ServiceContainerContract
      * @throws {TypeError}
      * @throws {ContainerException}
      */
-    extend(identifier: Identifier, callback: ExtendCallback): this
+    public extend(identifier: Identifier, callback: ExtendCallback): this
     {
         // TODO: Implement this...
         return this;
@@ -361,7 +361,7 @@ export default class Container implements ServiceContainerContract
      *
      * @returns {boolean}
      */
-    forget(identifier: Identifier): boolean
+    public forget(identifier: Identifier): boolean
     {
         // TODO: Implement this...
         return false;
@@ -372,7 +372,7 @@ export default class Container implements ServiceContainerContract
      *
      * @returns {void}
      */
-    flush(): void
+    public flush(): void
     {
         // TODO: Implement this...
         return;
@@ -385,7 +385,7 @@ export default class Container implements ServiceContainerContract
      *
      * @return {boolean}
      */
-    isResolved(identifier: Identifier): boolean
+    public isResolved(identifier: Identifier): boolean
     {
         // TODO: Implement this...
         return false;
@@ -399,7 +399,7 @@ export default class Container implements ServiceContainerContract
      *
      * @return {this}
      */
-    before(identifier: Identifier, callback: BeforeResolvedCallback): this
+    public before(identifier: Identifier, callback: BeforeResolvedCallback): this
     {
         // TODO: Implement this...
         return this;
@@ -413,7 +413,7 @@ export default class Container implements ServiceContainerContract
      *
      * @return {this}
      */
-    after(identifier: Identifier, callback: AfterResolvedCallback): this
+    public after(identifier: Identifier, callback: AfterResolvedCallback): this
     {
         // TODO: Implement this...
         return this;
