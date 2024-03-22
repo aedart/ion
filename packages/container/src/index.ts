@@ -1,4 +1,6 @@
 /**
+ * @deprecated - To be removed - adds no value!
+ * 
  * Service Container identifier
  *
  * @type {Symbol}
