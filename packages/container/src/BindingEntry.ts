@@ -5,6 +5,7 @@ import type {
 } from "@aedart/contracts/container";
 import type { Constructor } from "@aedart/contracts";
 import { isConstructor } from "@aedart/support/reflections";
+import { isBindingIdentifier } from "@aedart/support/container";
 
 /**
  * Binding Entry
@@ -67,9 +68,15 @@ export default class BindingEntry<T = any> implements Binding<T>
      * @param {Identifier} identifier
      * @param {FactoryCallback<T> | Constructor<T>} value
      * @param {boolean} [shared=false]
+     * 
+     * @throws {TypeError}
      */
     constructor(identifier: Identifier, value: FactoryCallback<T> | Constructor<T>, shared: boolean = false)
     {
+        if (!isBindingIdentifier(identifier)) {
+            throw new TypeError(`Invalid binding identifier: ${typeof identifier} is not supported`, { cause: { identifier: identifier, value: value } });
+        }
+        
         this.#identifier = identifier;
         this.#value = value;
         this.#shared = shared;
