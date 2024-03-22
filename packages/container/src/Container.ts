@@ -20,6 +20,43 @@ import type { CallbackWrapper } from "@aedart/contracts/support";
 export default class Container implements ServiceContainerContract
 {
     /**
+     * Singleton instance of the service container
+     *
+     * @type {ServiceContainerContract|null}
+     * 
+     * @private
+     * 
+     * @static
+     */
+    static #instance: ServiceContainerContract | null = null;
+
+    /**
+     * Returns the singleton instance of the service container
+     * 
+     * @return {ServiceContainerContract|this}
+     */
+    static getInstance(): ServiceContainerContract
+    {
+        if (this.#instance === null) {
+            this.setInstance(new this());
+        }
+        
+        return this.#instance as ServiceContainerContract;
+    }
+
+    /**
+     * Set the singleton instance of the service container
+     * 
+     * @param {ServiceContainerContract | null} [container]
+     * 
+     * @return {ServiceContainerContract | null}
+     */
+    static setInstance(container: ServiceContainerContract | null = null): ServiceContainerContract | null
+    {
+        return this.#instance = container;
+    }
+    
+    /**
      * Register a binding
      *
      * @param {Identifier} identifier
