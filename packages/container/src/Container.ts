@@ -7,12 +7,20 @@ import type {
     Identifier,
     Binding
 } from "@aedart/contracts/container";
-import type { Callback, ClassMethodReference, Constructor } from "@aedart/contracts";
+import type {
+    Callback,
+    ClassMethodReference,
+    Constructor,
+    ConstructorLike
+} from "@aedart/contracts";
 import type { CallbackWrapper } from "@aedart/contracts/support";
-import { isConstructor } from "@aedart/support/reflections";
+import { hasDependencies, getDependencies } from "@aedart/support/container";
+import { getErrorMessage } from "@aedart/support/exceptions";
+import { isConstructor, getNameOrDesc } from "@aedart/support/reflections";
 import ContainerError from "./exceptions/ContainerError";
 import NotFoundError from "./exceptions/NotFoundError";
 import BindingEntry from "./BindingEntry";
+import { isBinding } from "./isBinding";
 
 /**
  * Service Container
@@ -95,6 +103,15 @@ export default class Container implements ServiceContainerContract
      * @protected
      */
     protected afterResolvedCallbacks: Map<Identifier, AfterResolvedCallback[]> = new Map();
+
+    /**
+     * Resolve stack
+     * 
+     * @type {Set<Constructor>}
+     * 
+     * @protected
+     */
+    protected resolveStack: Set<Constructor> = new Set();
     
     /**
      * Returns the singleton instance of the service container
@@ -391,8 +408,31 @@ export default class Container implements ServiceContainerContract
         args: any[] = [] /* eslint-disable-line @typescript-eslint/no-explicit-any */
     ): T
     {
-        // TODO: Implement this...
-        return null as T;
+        const isBinding: boolean = this.isBinding(concrete);
+        let identifier: Identifier = 'unknown'; 
+        
+        // Resolve factory callback, when binding is given of such type.
+        if (isBinding && (concrete as Binding).isFactoryCallback()) {
+            return this.resolveFactoryCallback((concrete as Binding).value as FactoryCallback, args, (concrete as Binding).identifier);
+        }
+        
+        // Extract constructor, if concrete is a binding so that it can be resolved.
+        if (isBinding) {
+            identifier = (concrete as Binding).identifier;
+            concrete = (concrete as Binding).value as Constructor<T>;
+        }
+        
+        // Abort if concrete is not buildable
+        if (!this.isBuildable(concrete)) {
+            throw new ContainerError(`Unable to build concrete instance`, { cause: { concrete: concrete, args: args } });
+        }
+
+        // Resolve the constructor and eventual dependencies, when no arguments are given.
+        return this.resolveConstructor(
+            concrete as Constructor<T>,
+            args,
+            identifier
+        );
     }
 
     /**
@@ -475,6 +515,7 @@ export default class Container implements ServiceContainerContract
         this.instances.clear();
         this.aliases.clear();
         this.resolved.clear();
+        this.resolveStack.clear();
     }
 
     /**
@@ -629,6 +670,104 @@ export default class Container implements ServiceContainerContract
     }
 
     /**
+     * Resolves given factory callback
+     *
+     * @template T = object
+     *
+     * @param {FactoryCallback<T>} callback
+     * @param {any[]} [args]
+     * @param {Identifier} [identifier]
+     *
+     * @returns {T}
+     *
+     * @throws {ContainerException}
+     * 
+     * @protected
+     */
+    protected resolveFactoryCallback<T = object>(
+        callback: FactoryCallback<T>,
+        args: any[] = [], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        identifier: Identifier = 'unknown'
+    ): T
+    {
+        try {
+            return callback(this, ...args) as T;
+        } catch (e) {
+            const reason: string = getErrorMessage(e);
+            const options = {
+                cause: {
+                    callback: callback,
+                    args: args,
+                    identifier: identifier,
+                    previous: e
+                }
+            }
+
+            throw new ContainerError(`Unable to resolve factory callback for binding "${identifier.toString()}": ${reason}`, options);
+        }
+    }
+
+    /**
+     * Resolves given constructor and eventual dependencies
+     * 
+     * @template T = object
+     * 
+     * @param {Constructor<T>} target
+     * @param {any[]} [args] Defaults to target class' dependencies (if available), when no arguments are
+     *                       given.
+     * @param {Identifier} [identifier]
+     * 
+     * @returns {T}
+     *
+     * @throws {ContainerException}
+     * 
+     * @protected
+     */
+    protected resolveConstructor<T = object>(
+        target: Constructor<T>,
+        args: any[] = [], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        identifier: Identifier = 'unknown'
+    ): T
+    {
+        try {
+            // Prevent circular dependency...
+            if (this.resolveStack.has(target as Constructor)) {
+                throw new ContainerError(`Circular Dependency for target "${getNameOrDesc(target as ConstructorLike)}"`);
+            }
+
+            this.resolveStack.add(target as Constructor);
+            
+            // When no arguments are given (overwrites), attempt to obtain defined dependencies
+            // for the target class.
+            if (args.length == 0 && this.hasDependencies(target)) {
+                // TODO: Obtain dependencies...
+            }
+
+            // Create the instance with arguments.
+            const resolved: T = new target(...args) as T;
+
+            this.resolveStack.delete(target as Constructor);
+
+            return resolved;
+        } catch (e) {
+            const reason: string = getErrorMessage(e);
+            const options = {
+                cause: {
+                    target: target,
+                    args: args,
+                    identifier: identifier,
+                    resolveStack: Array.from(this.resolveStack),
+                    previous: e
+                }
+            }
+
+            this.resolveStack.delete(target as Constructor);
+            
+            throw new ContainerError(`Unable to resolve "${getNameOrDesc(target as ConstructorLike)}" for binding "${identifier.toString()}": ${reason}`, options);
+        }
+    }
+    
+    /**
      * Invokes the "before" resolved callbacks for given identifier
      * 
      * @param {Identifier} identifier
@@ -699,5 +838,47 @@ export default class Container implements ServiceContainerContract
     protected isBuildable(target: unknown): boolean
     {
         return isConstructor(target);
+    }
+
+    /**
+     * Determine if object is a binding entry
+     * 
+     * @param {object} target
+     * 
+     * @returns {boolean}
+     * 
+     * @protected
+     */
+    protected isBinding(target: object): boolean
+    {
+        return isBinding(target);
+    }
+
+    /**
+     * Determine if target has dependencies defined
+     * 
+     * @param {object} target
+     * 
+     * @returns {boolean}
+     * 
+     * @protected
+     */
+    protected hasDependencies(target: object): boolean
+    {
+        return hasDependencies(target);
+    }
+
+    /**
+     * Returns the defined dependencies for given target
+     * 
+     * @param {object} target
+     * 
+     * @returns {Identifier[]}
+     * 
+     * @protected
+     */
+    protected getDependencies(target: object): Identifier[]
+    {
+        return getDependencies(target);
     }
 }
