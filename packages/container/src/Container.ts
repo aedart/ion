@@ -1,14 +1,17 @@
 import type {
     AfterResolvedCallback,
-    Alias, BeforeResolvedCallback,
+    Alias,
+    BeforeResolvedCallback,
     Container as ServiceContainerContract,
     ExtendCallback,
     FactoryCallback,
     Identifier,
-    Binding
+    Binding,
+    DEPENDENCIES
 } from "@aedart/contracts/container";
 import type {
     Callback,
+    ClassMethodName,
     ClassMethodReference,
     Constructor,
     ConstructorLike
@@ -16,7 +19,13 @@ import type {
 import type { CallbackWrapper } from "@aedart/contracts/support";
 import { hasDependencies, getDependencies } from "@aedart/support/container";
 import { getErrorMessage } from "@aedart/support/exceptions";
-import { isConstructor, getNameOrDesc } from "@aedart/support/reflections";
+import {
+    isConstructor,
+    isClassMethodReference,
+    getNameOrDesc,
+    hasAllMethods,
+} from "@aedart/support/reflections";
+import { isCallbackWrapper } from "@aedart/support";
 import ContainerError from "./exceptions/ContainerError";
 import NotFoundError from "./exceptions/NotFoundError";
 import BindingEntry from "./BindingEntry";
@@ -439,16 +448,28 @@ export default class Container implements ServiceContainerContract
      * Call given method and inject dependencies if needed
      *
      * @param {Callback | CallbackWrapper | ClassMethodReference} method
-     * @param {any[]} args
+     * @param {any[]} [args]
      *
      * @return {any}
      *
      * @throws {ContainerException}
      */
-    public call(method: Callback | CallbackWrapper | ClassMethodReference, args: any[]): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    public call(method: Callback | CallbackWrapper | ClassMethodReference, args: any[] = []): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
-        // TODO: Implement this...
-        return null;
+        if (isClassMethodReference(method)) {
+            return this.invokeClassMethod(method as ClassMethodReference, args); 
+        }
+        
+        if (isCallbackWrapper(method)) {
+            return this.invokeCallbackWrapper(method as CallbackWrapper, args);
+        }
+        
+        const type: string = typeof method;
+        if (type == 'function') {
+            return this.invokeCallback(method as Callback, args);
+        }
+        
+        throw new ContainerError(`Unable to call method: ${type} is not supported`, { cause: { method: method, args: args } });
     }
 
     /**
@@ -748,6 +769,100 @@ export default class Container implements ServiceContainerContract
             
             throw new ContainerError(`Unable to resolve "${getNameOrDesc(target as ConstructorLike)}" for binding "${identifier.toString()}": ${reason}`, options);
         }
+    }
+
+    /**
+     * Invokes method in class and returns the methods output
+     * 
+     * @param {ClassMethodReference} reference
+     * @param {any[]} [args]
+     * 
+     * @returns {any}
+     *
+     * @throws {ContainerError}
+     * 
+     * @protected
+     */
+    protected invokeClassMethod(reference: ClassMethodReference, args: any[] = []): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        // Build object, when target is a constructor
+        let target = reference[0];
+        if (typeof target != 'object') {
+            target = this.make(target);
+        }
+        
+        const name: ClassMethodName<typeof target> = reference[1];
+        const method: Callback = target[name];
+        
+        return this.invokeCallback(method.bind(target), args);
+    }
+
+    /**
+     * Invokes the wrapped callback and returns its output
+     * 
+     * @param {CallbackWrapper} wrapper
+     * @param {any[]} [args]
+     * 
+     * @returns {any}
+     *
+     * @throws {ContainerError}
+     * 
+     * @protected
+     */
+    protected invokeCallbackWrapper(wrapper: CallbackWrapper, args: any[] = []): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        // A callback wrapper might already have arguments defined. However,
+        // if there are any arguments provided here, then the wrapper's arguments must
+        // be overwritten.
+        if (args.length != 0) {
+            wrapper.arguments = args;
+        }
+        
+        // But, if no arguments are given, and if the wrapper does not have any arguments,
+        // then we check if "dependencies" has been defined. If so, they which must be resolved
+        // and set as arguments for the wrapper's callback.
+        if (args.length == 0
+            && !wrapper.hasArguments()
+            && hasAllMethods(wrapper,  'has', 'get')
+            /* @ts-ignore */
+            && wrapper['has'](DEPENDENCIES)
+        ) {
+            /* @ts-ignore */
+            const dependencies: Identifier[] = wrapper['get']() ?? [];
+            const resolved: any[] = []; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+            for(const identifier of dependencies) {
+                resolved.push(this.resolveDependency(identifier, wrapper));
+            }
+
+            wrapper.arguments = resolved;
+        }
+        
+        // Finally, call the wrapper's callback.
+        return wrapper.call();
+    }
+
+    /**
+     * Invokes the given callback and returns its output
+     * 
+     * @param {Callback} callback
+     * @param {any[]} [args]
+     * 
+     * @returns {any}
+     * 
+     * @throws {ContainerError}
+     * 
+     * @protected
+     */
+    protected invokeCallback(callback: Callback, args: any[] = []): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        // When no arguments are provided, attempt to obtain and resolve dependencies
+        // for the callback. This will work if the callback is a class method with
+        // defined dependencies. Otherwise, this will not do anything...
+        if (args.length == 0 && this.hasDependencies(callback as object)) {
+            args = this.resolveDependencies(callback as object);
+        }
+        
+        return callback(...args);
     }
     
     /**
