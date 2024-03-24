@@ -209,13 +209,13 @@ export default interface Container
      * Call given method and inject dependencies if needed
      * 
      * @param {Callback | CallbackWrapper | ClassMethodReference} method
-     * @param {any[]} args
+     * @param {any[]} [args]
      * 
      * @return {any}
      *
      * @throws {ContainerException}
      */
-    call(method: Callback | CallbackWrapper | ClassMethodReference, args: any[]): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    call(method: Callback | CallbackWrapper | ClassMethodReference, args?: any[]): any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
     /**
      * Extend the registered binding
