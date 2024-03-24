@@ -824,10 +824,10 @@ export default class Container implements ServiceContainerContract
         if (args.length == 0
             && !wrapper.hasArguments()
             && hasAllMethods(wrapper,  'has', 'get')
-            /* @ts-ignore */
+            /* @ts-expect-error TS7053 - has method is in wrapper at this point */
             && wrapper['has'](DEPENDENCIES)
         ) {
-            /* @ts-ignore */
+            /* @ts-expect-error TS7053 - get method is in wrapper at this point */ 
             const dependencies: Identifier[] = wrapper['get']() ?? [];
             const resolved: any[] = []; /* eslint-disable-line @typescript-eslint/no-explicit-any */
             for(const identifier of dependencies) {
