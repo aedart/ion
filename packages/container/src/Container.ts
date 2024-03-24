@@ -409,7 +409,7 @@ export default class Container implements ServiceContainerContract
     ): T
     {
         const isBinding: boolean = this.isBinding(concrete);
-        let identifier: Identifier = 'unknown'; 
+        let identifier: Identifier = concrete; 
         
         // Resolve factory callback, when binding is given of such type.
         if (isBinding && (concrete as Binding).isFactoryCallback()) {
@@ -687,12 +687,14 @@ export default class Container implements ServiceContainerContract
     protected resolveFactoryCallback<T = object>(
         callback: FactoryCallback<T>,
         args: any[] = [], /* eslint-disable-line @typescript-eslint/no-explicit-any */
-        identifier: Identifier = 'unknown'
+        identifier?: Identifier
     ): T
     {
         try {
             return callback(this, ...args) as T;
         } catch (e) {
+            identifier = identifier ?? callback;
+            
             const reason: string = getErrorMessage(e);
             const options = {
                 cause: {
@@ -726,21 +728,18 @@ export default class Container implements ServiceContainerContract
     protected resolveConstructor<T = object>(
         target: Constructor<T>,
         args: any[] = [], /* eslint-disable-line @typescript-eslint/no-explicit-any */
-        identifier: Identifier = 'unknown'
+        identifier?: Identifier
     ): T
     {
         try {
-            // Prevent circular dependency...
-            if (this.resolveStack.has(target as Constructor)) {
-                throw new ContainerError(`Circular Dependency for target "${getNameOrDesc(target as ConstructorLike)}"`);
-            }
+            this.preventCircularDependency(target as Constructor);
 
             this.resolveStack.add(target as Constructor);
             
-            // When no arguments are given (overwrites), attempt to obtain defined dependencies
-            // for the target class.
+            // When no arguments are given (overwrites), attempt to obtain defined
+            // dependencies for the target class and resolve them from the container.
             if (args.length == 0 && this.hasDependencies(target)) {
-                // TODO: Obtain dependencies...
+                args = this.resolveDependencies(target);
             }
 
             // Create the instance with arguments.
@@ -750,6 +749,8 @@ export default class Container implements ServiceContainerContract
 
             return resolved;
         } catch (e) {
+            identifier = identifier ?? target;
+            
             const reason: string = getErrorMessage(e);
             const options = {
                 cause: {
@@ -764,6 +765,57 @@ export default class Container implements ServiceContainerContract
             this.resolveStack.delete(target as Constructor);
             
             throw new ContainerError(`Unable to resolve "${getNameOrDesc(target as ConstructorLike)}" for binding "${identifier.toString()}": ${reason}`, options);
+        }
+    }
+    
+    /**
+     * Obtains and resolves dependencies for given target
+     * 
+     * @param {object} target
+     * @returns {any[]} Resolved dependencies or empty, if none available
+     *
+     * @throws {ContainerError}
+     * 
+     * @protected
+     */
+    protected resolveDependencies(target: object): any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        const resolved: any[] = []; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        
+        const dependencies: Identifier[] = this.getDependencies(target);
+        for (const identifier of dependencies) {
+            resolved.push(this.resolveDependency(identifier, target));
+        }
+        
+        return resolved;
+    }
+
+    /**
+     * Resolves dependency that matches given identifier, for given target
+     * 
+     * @param {Identifier} identifier
+     * @param {object} target
+     * 
+     * @returns {any}
+     * 
+     * @throws {ContainerError}
+     * 
+     * @protected
+     */
+    protected resolveDependency(identifier: Identifier, target: object): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        try {
+            return this.make(identifier);
+        } catch (e) {
+            const reason: string = getErrorMessage(e);
+            const options = {
+                cause: {
+                    identifier: identifier,
+                    target: target
+                }
+            }
+            
+            throw new ContainerError(`Unable to resolve "${identifier.toString()}" for target "${getNameOrDesc(target as ConstructorLike)}": ${reason}`, options);
         }
     }
     
@@ -880,5 +932,36 @@ export default class Container implements ServiceContainerContract
     protected getDependencies(target: object): Identifier[]
     {
         return getDependencies(target);
+    }
+
+    /**
+     * Aborts current make, build or call process, if given target is already in
+     * the process of being resolved.
+     * 
+     * @param {Constructor} target
+     * 
+     * @throws {ContainerError}
+     * 
+     * @protected
+     */
+    protected preventCircularDependency(target: Constructor): void
+    {
+        // Skip if target is not in the current "resolve" stack. 
+        if (!this.resolveStack.has(target)) {
+            return;
+        }
+
+        // However, if the target is in the current "resolve" stack, it means that the
+        // target has a circular dependency to itself. To avoid an infinite loop, the
+        // make, build or call process must be aborted.
+
+        // Prepare a string "resolve" stack to make it somewhat easier for developers
+        // to understand how we got here...
+        const stack: string[] = Array.from(this.resolveStack).map((ctor: Constructor) => {
+            return getNameOrDesc(ctor);
+        })
+        const trace: string = stack.join(' -> ');
+
+        throw new ContainerError(`Circular Dependency for target "${getNameOrDesc(target as ConstructorLike)}": ${trace}`);
     }
 }
