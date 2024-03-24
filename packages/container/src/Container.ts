@@ -580,24 +580,6 @@ export default class Container implements ServiceContainerContract
     }
 
     /**
-     * Returns a new Binding Entry for given identifier and binding value
-     * 
-     * @param {Identifier} identifier
-     * @param {FactoryCallback | Constructor} value
-     * @param {boolean} [shared]
-     * 
-     * @return {Binding}
-     *
-     * @throws {TypeError}
-     * 
-     * @protected
-     */
-    protected makeBindingEntry(identifier: Identifier, value: FactoryCallback | Constructor, shared: boolean = false): Binding
-    {
-        return new BindingEntry(identifier, value, shared);
-    }
-
-    /**
      * Resolves binding value that matches identifier
      *
      * @template T = any
@@ -890,6 +872,28 @@ export default class Container implements ServiceContainerContract
     protected isBuildable(target: unknown): boolean
     {
         return isConstructor(target);
+    }
+
+    /**
+     * Returns a new Binding Entry for given identifier and binding value
+     *
+     * @param {Identifier} identifier
+     * @param {FactoryCallback | Constructor} value
+     * @param {boolean} [shared]
+     *
+     * @return {Binding}
+     *
+     * @throws {TypeError}
+     *
+     * @protected
+     */
+    protected makeBindingEntry(
+        identifier: Identifier,
+        value: FactoryCallback | Constructor,
+        shared: boolean = false
+    ): Binding
+    {
+        return new BindingEntry(identifier, value, shared);
     }
 
     /**
