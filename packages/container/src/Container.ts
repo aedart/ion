@@ -7,7 +7,6 @@ import type {
     FactoryCallback,
     Identifier,
     Binding,
-    DEPENDENCIES
 } from "@aedart/contracts/container";
 import type {
     Callback,
@@ -17,6 +16,7 @@ import type {
     ConstructorLike
 } from "@aedart/contracts";
 import type { CallbackWrapper } from "@aedart/contracts/support";
+import { DEPENDENCIES } from "@aedart/contracts/container";
 import { hasDependencies, getDependencies } from "@aedart/support/container";
 import { getErrorMessage } from "@aedart/support/exceptions";
 import {
