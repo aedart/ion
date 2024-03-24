@@ -18,6 +18,7 @@ export default createConfig({
         '@aedart/support/concerns',
         '@aedart/support/exceptions',
         '@aedart/support/meta',
+        '@aedart/support/misc',
         '@aedart/support/mixins',
         '@aedart/support/reflections',
     ]
