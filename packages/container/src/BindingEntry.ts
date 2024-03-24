@@ -10,7 +10,9 @@ import { isBindingIdentifier } from "@aedart/support/container";
 /**
  * Binding Entry
  */
-export default class BindingEntry<T = any> implements Binding<T>
+export default class BindingEntry<
+    T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+> implements Binding<T>
 {
     /**
      * This binding's identifier
