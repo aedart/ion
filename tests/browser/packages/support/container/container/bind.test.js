@@ -9,6 +9,10 @@ describe('@aedart/support/container', () => {
             container.bind('alpha', () => 'beta');
             
             // -------------------------------------------------------------------- //
+
+            expect(container.bound('alpha'))
+                .withContext('Binding not registered in container')
+                .toBeTrue();
             
             const result = container.make('alpha');
             expect(result)
