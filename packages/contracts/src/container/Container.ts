@@ -9,6 +9,7 @@ import {
     Identifier,
     FactoryCallback,
     ExtendCallback,
+    ReboundCallback,
     BeforeResolvedCallback,
     AfterResolvedCallback,
 } from "./types";
@@ -229,6 +230,18 @@ export default interface Container
      * @throws {ContainerException}
      */
     extend(identifier: Identifier, callback: ExtendCallback): this;
+
+    /**
+     * Register a callback to be invoked whenever identifier is "rebound"
+     * 
+     * @param {Identifier} identifier
+     * @param {ReboundCallback} callback
+     * 
+     * @return {any | void}
+     *
+     * @throws {ContainerException}
+     */
+    rebinding(identifier: Identifier, callback: ReboundCallback): any | void;  /* eslint-disable-line @typescript-eslint/no-explicit-any */
     
     /**
      * Forget binding and resolved instance for given identifier  

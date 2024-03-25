@@ -1,4 +1,4 @@
-import type {
+import {
     AfterResolvedCallback,
     Alias,
     BeforeResolvedCallback,
@@ -7,6 +7,7 @@ import type {
     FactoryCallback,
     Identifier,
     Binding,
+    ReboundCallback,
 } from "@aedart/contracts/container";
 import type {
     Callback,
@@ -109,10 +110,20 @@ export default class Container implements ServiceContainerContract
      * "After" resolved callbacks
      * 
      * @type {Map<Identifier, AfterResolvedCallback[]>}
+     * 
      * @protected
      */
     protected afterResolvedCallbacks: Map<Identifier, AfterResolvedCallback[]> = new Map();
 
+    /**
+     * Rebound callbacks
+     * 
+     * @type {Map<Identifier, ReboundCallback[]>}
+     * 
+     * @protected
+     */
+    protected reboundCallbacks: Map<Identifier, ReboundCallback[]> = new Map();
+    
     /**
      * Resolve stack
      * 
@@ -165,7 +176,11 @@ export default class Container implements ServiceContainerContract
         
         this.bindings.set(identifier, this.makeBindingEntry(identifier, concrete, shared));
 
-        // TODO: isResolved() vs. rebound() ???
+        // Invoke rebound callbacks, if the identifier has already been resolved, such that
+        // dependent objects can be updated...
+        if (this.isResolved(identifier)) {
+            this.rebound(identifier);
+        }
         
         return this;
     }
@@ -238,9 +253,14 @@ export default class Container implements ServiceContainerContract
      */
     public instance<T = object>(identifier: Identifier, instance: T): T
     {
+        const isBound: boolean = this.has(identifier);
+        
         this.instances.set(identifier, instance as object);
         
-        // TODO: rebound() ???
+        // If the identifier was already bound before, invoke the rebound callbacks.
+        if (isBound) {
+            this.rebound(identifier);
+        }
         
         return instance;
     }
@@ -493,6 +513,8 @@ export default class Container implements ServiceContainerContract
             const instance = this.instances.get(identifier) as object;
             
             this.instances.set(identifier, callback(instance, this));
+            
+            this.rebound(identifier);
         } else {
             // Otherwise, add extend callback to the existing for the identifier.
             if (!this.extenders.has(identifier)) {
@@ -502,11 +524,42 @@ export default class Container implements ServiceContainerContract
             const existing: ExtendCallback[] = this.extenders.get(identifier) as ExtendCallback[];
             existing.push(callback);
             this.extenders.set(identifier, existing);
+            
+            if (this.isResolved(identifier)) {
+                this.rebound(identifier);
+            }
         }
         
         return this;
     }
 
+    /**
+     * Register a callback to be invoked whenever identifier is "rebound"
+     *
+     * @param {Identifier} identifier
+     * @param {ReboundCallback} callback
+     *
+     * @return {any | void}
+     *
+     * @throws {ContainerException}
+     */
+    public rebinding(identifier: Identifier, callback: ReboundCallback): any | void  /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        identifier = this.getAlias(identifier);
+        
+        if (!this.reboundCallbacks.has(identifier)) {
+            this.reboundCallbacks.set(identifier, []);
+        }
+
+        const existing: ReboundCallback[] = this.reboundCallbacks.get(identifier) as ReboundCallback[];
+        existing.push(callback);
+        this.reboundCallbacks.set(identifier, existing);
+        
+        if (this.has(identifier)) {
+            return this.make(identifier);
+        }
+    }
+    
     /**
      * Forget binding and resolved instance for given identifier
      *
@@ -914,6 +967,41 @@ export default class Container implements ServiceContainerContract
             
             throw new ContainerError(`Unable to resolve "${identifier.toString()}" for target "${getNameOrDesc(target as ConstructorLike)}": ${reason}`, options);
         }
+    }
+
+    /**
+     * Invokes "rebound" callbacks for given identifier
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @return {void}
+     *
+     * @throws {ContainerError}
+     * 
+     * @protected
+     */
+    protected rebound(identifier: Identifier): void
+    {
+        const instance = this.make(identifier);
+        
+        const callbacks: ReboundCallback[] = this.getReboundCallbacks(identifier);
+        for (const callback of callbacks) {
+            callback(this, instance);
+        }
+    }
+
+    /**
+     * Get "rebound" callbacks for given identifier
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @return {ReboundCallback[]}
+     * 
+     * @protected
+     */
+    protected getReboundCallbacks(identifier: Identifier): ReboundCallback[]
+    {
+        return this.reboundCallbacks.get(identifier) ?? [];
     }
     
     /**
