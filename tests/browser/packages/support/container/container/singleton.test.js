@@ -12,6 +12,10 @@ describe('@aedart/support/container', () => {
 
             // -------------------------------------------------------------------- //
 
+            expect(container.isShared('a'))
+                .withContext('Binding is not marked as "shared"')
+                .toBeTrue();
+            
             const first = container.make('a');
             const second = container.make('a');
             
