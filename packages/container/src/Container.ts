@@ -357,17 +357,17 @@ export default class Container implements ServiceContainerContract
     }
 
     /**
-     * Returns the alias for given identifier, if available
+     * Returns the identifier for given alias, if available
      * 
-     * @param {Identifier} identifier
+     * @param {Identifier} alias
      * 
      * @returns {Identifier}
      */
-    public getAlias(identifier: Identifier): Identifier
+    public getAlias(alias: Identifier): Identifier
     {
-        return this.aliases.has(identifier)
-            ? this.getAlias(this.aliases.get(identifier) as Identifier)
-            : identifier;
+        return this.aliases.has(alias)
+            ? this.getAlias(this.aliases.get(alias) as Identifier)
+            : alias;
     }
     
     /**
