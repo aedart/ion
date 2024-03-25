@@ -569,13 +569,25 @@ export default class Container implements ServiceContainerContract
      */
     public forget(identifier: Identifier): boolean
     {
-        const alias: Identifier = this.getAlias(identifier);
-        
-        const removedBinding: boolean = this.bindings.delete(alias);
-        const removedInstance: boolean = this.instances.delete(alias);
         const removedAlias: boolean = this.aliases.delete(identifier);
+
+        identifier = this.getAlias(identifier);
+        const removedBinding: boolean = this.bindings.delete(identifier);
+        const removedInstance: boolean = this.instances.delete(identifier);
         
         return removedBinding || removedInstance || removedAlias;
+    }
+
+    /**
+     * Forget resolved instance for given identifier
+     *
+     * @param {Identifier} identifier
+     *
+     * @return {boolean}
+     */
+    public forgetInstance(identifier: Identifier): boolean
+    {
+        return this.instances.delete(this.getAlias(identifier));
     }
 
     /**

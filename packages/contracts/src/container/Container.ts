@@ -251,6 +251,15 @@ export default interface Container
      * @returns {boolean}
      */
     forget(identifier: Identifier): boolean;
+
+    /**
+     * Forget resolved instance for given identifier
+     * 
+     * @param {Identifier} identifier
+     * 
+     * @return {boolean}
+     */
+    forgetInstance(identifier: Identifier): boolean;
     
     /**
      * Flush container of all bindings and resolved instances
