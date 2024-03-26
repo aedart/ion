@@ -1,5 +1,6 @@
 import type { NotFoundException } from "@aedart/contracts/container";
 import ContainerError from "./ContainerError";
+import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
  * Not Found Error
@@ -17,5 +18,7 @@ export default class NotFoundError extends ContainerError implements NotFoundExc
     constructor(message?: string, options?: ErrorOptions)
     {
         super(message, options);
+        
+        configureCustomError(this);
     }
 }
