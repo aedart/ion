@@ -27,6 +27,7 @@ import {
     hasAllMethods,
 } from "@aedart/support/reflections";
 import { isCallbackWrapper } from "@aedart/support";
+import CircularDependencyError from "./exceptions/CircularDependencyError";
 import ContainerError from "./exceptions/ContainerError";
 import NotFoundError from "./exceptions/NotFoundError";
 import BindingEntry from "./BindingEntry";
@@ -820,6 +821,21 @@ export default class Container implements ServiceContainerContract
         } catch (e) {
             identifier = identifier ?? target;
             
+            if (e instanceof CircularDependencyError) {
+                if (e.cause === undefined) {
+                    e.cause = Object.create(null);
+                }
+
+                (e.cause as any).target = target; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+                (e.cause as any).args = args; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+                (e.cause as any).identifier = identifier; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+                (e.cause as any).resolveStack = Array.from(this.resolveStack); /* eslint-disable-line @typescript-eslint/no-explicit-any */
+
+                this.resolveStack.delete(target as Constructor);
+
+                throw e;
+            }
+            
             const reason: string = getErrorMessage(e);
             const options = {
                 cause: {
@@ -970,6 +986,10 @@ export default class Container implements ServiceContainerContract
         try {
             return this.make(identifier);
         } catch (e) {
+            if (e instanceof CircularDependencyError) {
+                throw e;
+            }
+
             const reason: string = getErrorMessage(e);
             const options = {
                 cause: {
@@ -1160,7 +1180,7 @@ export default class Container implements ServiceContainerContract
      * 
      * @param {Constructor} target
      * 
-     * @throws {ContainerError}
+     * @throws {CircularDependencyError}
      * 
      * @protected
      */
@@ -1179,9 +1199,11 @@ export default class Container implements ServiceContainerContract
         // to understand how we got here...
         const stack: string[] = Array.from(this.resolveStack).map((ctor: Constructor) => {
             return getNameOrDesc(ctor);
-        })
+        });
+        stack.push(getNameOrDesc(target));
+
         const trace: string = stack.join(' -> ');
 
-        throw new ContainerError(`Circular Dependency for target "${getNameOrDesc(target as ConstructorLike)}": ${trace}`);
+        throw new CircularDependencyError(`Circular Dependency for target "${getNameOrDesc(target as ConstructorLike)}". Resolve stack: ${trace}`);
     }
 }
