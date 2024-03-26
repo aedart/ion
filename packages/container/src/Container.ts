@@ -453,7 +453,8 @@ export default class Container implements ServiceContainerContract
         
         // Abort if concrete is not buildable
         if (!this.isBuildable(concrete)) {
-            throw new ContainerError(`Unable to build concrete instance`, { cause: { concrete: concrete, args: args } });
+            const nameOrDesc: string = getNameOrDesc(concrete as ConstructorLike);
+            throw new ContainerError(`Unable to build concrete: ${nameOrDesc} is not a constructor or a Binding Entry`, { cause: { concrete: concrete, args: args } });
         }
 
         // Resolve the constructor and eventual dependencies, when no arguments are given.
