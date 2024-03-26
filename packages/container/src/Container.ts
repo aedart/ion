@@ -411,7 +411,7 @@ export default class Container implements ServiceContainerContract
     {
         if (!this.has(identifier) && !this.isBuildable(identifier)) {
             if (typeof defaultValue === 'function') {
-                return defaultValue(args, this);
+                return defaultValue(this, args);
             }
 
             return defaultValue as D;
