@@ -68,4 +68,68 @@ describe('@aedart/support/container', () => {
                 .toThrowError(NotFoundError);
         });
     });
+
+    describe('makeOrDefault', () => {
+
+        it('resolves when binding exists', () => {
+            const container = new Container();
+
+            container.bind('a', () => 'b');
+
+            // -------------------------------------------------------------------- //
+            
+            const result = container.makeOrDefault('a');
+            
+            expect(result)
+                .toBe('b');
+        });
+
+        it('resolves buildable identifier, when binding does not exist', () => {
+            const container = new Container();
+
+            class Bar {}
+            
+            // -------------------------------------------------------------------- //
+            
+            const result = container.makeOrDefault(Bar);
+            
+            expect(result)
+                .toBeInstanceOf(Bar);
+        });
+
+        it('returns default value, when binding does not exist', () => {
+            const container = new Container();
+
+            // -------------------------------------------------------------------- //
+
+            const result = container.makeOrDefault('api', [], 'default');
+
+            expect(result)
+                .toBe('default');
+        });
+
+        it('invokes callback when given as default value', () => {
+            const container = new Container();
+
+            class Service {
+                name;
+                
+                constructor(name) {
+                    this.name = name;
+                }
+            }
+            
+            // -------------------------------------------------------------------- //
+
+            const name = 'My Service';
+            const result = container.makeOrDefault('api', [ name ], (c, args) => {
+                return new Service(...args)
+            });
+
+            expect(result)
+                .toBeInstanceOf(Service);
+            expect(result.name)
+                .toBe(name);
+        });
+    });
 });
