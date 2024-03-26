@@ -987,6 +987,13 @@ export default class Container implements ServiceContainerContract
             return this.make(identifier);
         } catch (e) {
             if (e instanceof CircularDependencyError) {
+                if (e.cause === undefined) {
+                    e.cause = Object.create(null);
+                }
+
+                (e.cause as any).target = target; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+                (e.cause as any).identifier = identifier; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+                
                 throw e;
             }
 
