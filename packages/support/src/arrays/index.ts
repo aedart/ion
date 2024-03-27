@@ -6,5 +6,5 @@ export * from './isSafeArrayLike';
 export * from './isTypedArray';
 export * from './merge';
 
-export * from './merge';
+export * from './merge/index';
 export * from './exceptions';

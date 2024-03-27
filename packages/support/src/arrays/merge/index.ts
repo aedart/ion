@@ -1,7 +1,7 @@
-import ArrayMerger from './ArrayMerger';
+import Merger from './Merger';
 import DefaultArrayMergeOptions from './DefaultArrayMergeOptions';
 export {
-    ArrayMerger,
+    Merger,
     DefaultArrayMergeOptions
 }
 

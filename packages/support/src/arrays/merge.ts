@@ -1,12 +1,12 @@
-import type { ArrayMerger as ArrayMergerContract } from "@aedart/contracts/support/arrays";
-import ArrayMerger from "./merge/ArrayMerger";
+import type { ArrayMerger } from "@aedart/contracts/support/arrays";
+import Merger from "./merge/Merger";
 
 /**
  * Returns new Array Merger instance
  * 
  * @return {ArrayMerger}
  */
-export function merge(): ArrayMergerContract;
+export function merge(): ArrayMerger;
 
 /**
  * Returns a merger of given source arrays
@@ -161,10 +161,10 @@ export function merge(
     ...sources: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
 )
 {
-    const merger = new ArrayMerger();
+    const merger = new Merger();
     
     if (sources.length == 0) {
-        return merger as ArrayMergerContract;
+        return merger as ArrayMerger;
     }
     
     return merger.of(...sources);

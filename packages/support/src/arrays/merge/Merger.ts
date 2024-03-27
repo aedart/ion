@@ -1,5 +1,5 @@
 import type {
-    ArrayMerger as ArrayMergerContract,
+    ArrayMerger,
     ArrayMergeOptions,
     ArrayMergeCallback
 } from "@aedart/contracts/support/arrays";
@@ -10,7 +10,7 @@ import {ArrayMergeError} from "@aedart/support/arrays";
 /**
  * Array Merger
  */
-export default class ArrayMerger implements ArrayMergerContract
+export default class Merger implements ArrayMerger
 {
     /**
      * Merge options to be applied
