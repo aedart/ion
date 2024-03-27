@@ -9,3 +9,5 @@ import ConcatSpreadable from "./ConcatSpreadable";
 export {
     type ConcatSpreadable
 }
+
+export * from './merge'
