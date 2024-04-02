@@ -104,7 +104,7 @@ const result = merge()
 
 #### Arguments
 
-* `element: any` The current element being processed in the array.
-* `index: number` The index of the current element being processed in the array.
-* `array: any[]` The concatenated array this callback was called upon.
-* `options: Readonly<ArrayMergeOptions>` The merge options to be applied.
+* `element: any` - The current element being processed in the array.
+* `index: number` - The index of the current element being processed in the array.
+* `array: any[]` - The concatenated array this callback was called upon.
+* `options: Readonly<ArrayMergeOptions>` - The merge options to be applied.
