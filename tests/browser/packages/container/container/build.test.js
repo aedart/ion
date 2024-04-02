@@ -1,7 +1,7 @@
 import {Container, BindingEntry, ContainerError, CircularDependencyError } from "@aedart/container";
 import { dependencies } from "@aedart/support/container";
 
-fdescribe('@aedart/support/container', () => {
+describe('@aedart/support/container', () => {
     describe('build', () => {
 
         it('fails when concrete is not buildable', () => {
