@@ -245,10 +245,13 @@ export default class MetaRepository implements Repository
             get: () => {
                 // To ensure that metadata cannot be changed outside the scope and context of a
                 // meta decorator, a deep clone of the record is returned here.
-                return merge(
-                   Object.create(null),
-                registry.get(owner) || Object.create(null)
-                );
+                return merge()
+                    .using({
+                        arrayMergeOptions: {
+                            transferFunctions: true
+                        }
+                    })
+                    .of(Object.create(null), registry.get(owner) || Object.create(null))
             },
 
             // Ensure that the property cannot be deleted
