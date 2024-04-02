@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Decorator types aliases (_TS1270 and TS1238 issues when applying the various decorator and decorator result types_). [#8](https://github.com/aedart/ion/pull/8).
 * Broken link in docs for `isArrayLike`.
 * Missing `tslib` as peer dependency for `@aedart/support` package.
+* Unable to merge arrays containing functions, in `MetaRepository`. 
 
 ### Deprecated
 
