@@ -1033,11 +1033,11 @@ export default class Container implements ServiceContainerContract
      */
     protected rebound(identifier: Identifier): void
     {
-        const instance = this.make(identifier);
+        const resolved = this.make(identifier);
         
         const callbacks: ReboundCallback[] = this.getReboundCallbacks(identifier);
         for (const callback of callbacks) {
-            callback(this, instance);
+            callback(resolved, this);
         }
     }
 

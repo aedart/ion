@@ -43,8 +43,8 @@ export type ExtendCallback<
  * Callback to be invoked when a binding is "rebound".
  */
 export type ReboundCallback<
-    Instance = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-> = (container: Container, instance: Instance) => void;
+    Value = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+> = (resolved: Value, container: Container) => void;
 
 /**
  * Before Resolved Callback
