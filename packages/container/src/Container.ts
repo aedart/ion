@@ -26,7 +26,10 @@ import {
     getNameOrDesc,
     hasAllMethods,
 } from "@aedart/support/reflections";
-import { isCallbackWrapper } from "@aedart/support";
+import {
+    isCallbackWrapper,
+    CallbackWrapper as Wrapper
+} from "@aedart/support";
 import CircularDependencyError from "./exceptions/CircularDependencyError";
 import ContainerError from "./exceptions/ContainerError";
 import NotFoundError from "./exceptions/NotFoundError";
@@ -875,8 +878,17 @@ export default class Container implements ServiceContainerContract
         
         const name: ClassMethodName<typeof target> = reference[1];
         const method: Callback = target[name];
+
+        // Resolve evt. dependencies if no arguments are given...
+        if (args.length == 0 && this.hasDependencies(method as object)) {
+            args = this.resolveDependencies(method as object);
+        }
         
-        return this.invokeCallback(method.bind(target), args);
+        // Wrap the class method into a callback-wrapper, such that the "ThisArg" can be
+        // applied correctly.
+        return this.invokeCallbackWrapper(
+            Wrapper.makeFor(target, method, args)
+        );
     }
 
     /**
@@ -938,8 +950,7 @@ export default class Container implements ServiceContainerContract
     protected invokeCallback(callback: Callback, args: any[] = []): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         // When no arguments are provided, attempt to obtain and resolve dependencies
-        // for the callback. This will work if the callback is a class method with
-        // defined dependencies. Otherwise, this will not do anything...
+        // for the callback (if any dependencies are defined for the callback).
         if (args.length == 0 && this.hasDependencies(callback as object)) {
             args = this.resolveDependencies(callback as object);
         }
