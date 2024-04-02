@@ -297,6 +297,10 @@ merge()
 
 Behind the scene, the [array merge](../arrays/merge.md) utility is used for merging arrays.
 
+### `arrayMergeOptions` <Badge type="tip" text="Available since v0.11" vertical="middle" />
+
+_See [Array Merge Options](../arrays/merge.md#merge-options)._
+
 ### `callback`
 
 In situations when you need more advanced merge logic, you may specify a custom callback.
