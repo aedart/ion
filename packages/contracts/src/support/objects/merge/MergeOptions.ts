@@ -2,6 +2,7 @@ import type {
     MergeCallback,
     SkipKeyCallback
 } from "./types";
+import type { ArrayMergeOptions } from "@aedart/contracts/support/arrays";
 
 /**
  * Merge Options
@@ -128,6 +129,13 @@ export default interface MergeOptions
      */
     mergeArrays?: boolean;
 
+    /**
+     * Merge Options for arrays
+     * 
+     * @type {ArrayMergeOptions}
+     */
+    arrayMergeOptions?: ArrayMergeOptions;
+    
     /**
      * The merge callback that must be applied
      * 

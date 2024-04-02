@@ -3,6 +3,7 @@ import type {
     MergeOptions,
     SkipKeyCallback
 } from "@aedart/contracts/support/objects";
+import type { ArrayMergeOptions } from "@aedart/contracts/support/arrays";
 import { DEFAULT_MAX_MERGE_DEPTH } from "@aedart/contracts/support/objects";
 import { MergeError } from "../exceptions";
 import { defaultMergeCallback } from "./defaultMergeCallback";
@@ -136,6 +137,13 @@ export default class DefaultMergeOptions implements MergeOptions
      */
     mergeArrays: boolean = false;
 
+    /**
+     * Merge Options for arrays
+     *
+     * @type {ArrayMergeOptions}
+     */
+    arrayMergeOptions: ArrayMergeOptions = {};
+    
     /**
      * The merge callback that must be applied
      *

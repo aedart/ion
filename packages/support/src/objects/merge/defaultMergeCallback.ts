@@ -81,11 +81,15 @@ export const defaultMergeCallback: MergeCallback = function(target: MergeSourceI
                 ) {
                     // If either existing or new value is of the type array, merge values into
                     // a new array.
-                    return mergeArrays(existingValue, value);
+                    return mergeArrays()
+                        .using(options.arrayMergeOptions)
+                        .of(existingValue, value);
                 } else if (isArray) {
                     // When not requested merged, just overwrite existing value with a new array,
                     // if new value is an array.
-                    return mergeArrays(value);
+                    return mergeArrays()
+                        .using(options.arrayMergeOptions)
+                        .of(value);
                 }
 
                 // For concat spreadable objects or array-like objects, the "basic object" merge logic
