@@ -910,7 +910,7 @@ export default class Container implements ServiceContainerContract
             && wrapper['has'](DEPENDENCIES)
         ) {
             /* @ts-expect-error TS7053 - get method is in wrapper at this point */ 
-            const dependencies: Identifier[] = wrapper['get']() ?? [];
+            const dependencies: Identifier[] = wrapper['get'](DEPENDENCIES) ?? [];
             const resolved: any[] = []; /* eslint-disable-line @typescript-eslint/no-explicit-any */
             for(const identifier of dependencies) {
                 resolved.push(this.resolveDependency(identifier, wrapper));
