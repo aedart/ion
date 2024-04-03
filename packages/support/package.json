@@ -48,6 +48,11 @@
             "import": "./dist/esm/exceptions.js",
             "require": "./dist/cjs/exceptions.cjs"
         },
+        "./facades": {
+            "types": "./dist/types/facades.d.ts",
+            "import": "./dist/esm/facades.js",
+            "require": "./dist/cjs/facades.cjs"
+        },
         "./meta": {
             "types": "./dist/types/meta.d.ts",
             "import": "./dist/esm/meta.js",
