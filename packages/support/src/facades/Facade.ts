@@ -34,7 +34,7 @@ export default abstract class Facade
      */
     static #resolved: Map<
         Identifier,
-        any
+        any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     > = new Map();
 
     /**
@@ -167,7 +167,9 @@ export default abstract class Facade
      * 
      * @static
      */
-    public static swap(instance: any): void
+    public static swap(
+        instance: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): void
     {
         const identifier = this.getIdentifier();
         
