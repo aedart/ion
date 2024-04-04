@@ -17,9 +17,11 @@ export const DEPENDENCIES: unique symbol = Symbol('dependencies');
 
 import Binding from "./Binding";
 import Container from "./Container";
+import ContextualBindingBuilder from "./ContextualBindingBuilder";
 export {
     type Binding,
-    type Container
+    type Container,
+    type ContextualBindingBuilder,
 }
 
 export * from './exceptions/index';
