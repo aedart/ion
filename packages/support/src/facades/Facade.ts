@@ -58,7 +58,7 @@ export default abstract class Facade
     }
     
     /**
-     * Returns identifier to be used for resolving facade's instance
+     * Returns identifier to be used for resolving facade's underlying object instance
      * 
      * @return {Identifier}
      * 
@@ -72,8 +72,10 @@ export default abstract class Facade
     }
 
     /**
-     * Obtain the facade's underlying resolved object instance, or object "spy"
+     * Obtain the underlying object instance, or a "spy" (for testing)
      *
+     * @see spy
+     * 
      * @return {any}
      *
      * @throws {NotFoundException}
