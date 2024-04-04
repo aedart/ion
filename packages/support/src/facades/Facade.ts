@@ -19,20 +19,20 @@ export default abstract class Facade
      *
      * @type {Container|undefined}
      *
-     * @private
+     * @protected
      * @static
      */
-    static #container: Container | undefined = undefined;
+    protected static container: Container | undefined = undefined;
 
     /**
      * Resolved instances
      * 
      * @type {Map<Identifier, any>}
      * 
-     * @private
+     * @protected
      * @static
      */
-    static #resolved: Map<
+    protected static resolved: Map<
         Identifier,
         any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     > = new Map();
@@ -42,10 +42,10 @@ export default abstract class Facade
      * 
      * @type {Set<Identifier>}
      * 
-     * @private
+     * @protected
      * @static
      */
-    static #spies: Set<Identifier> = new Set();
+    protected static spies: Set<Identifier> = new Set();
     
     /**
      * Facade Constructor
@@ -112,7 +112,7 @@ export default abstract class Facade
 
         this.swap(spy);
         
-        this.#spies.add(identifier);
+        this.spies.add(identifier);
         
         return spy;
     }
@@ -126,7 +126,7 @@ export default abstract class Facade
      */
     public static isSpy(): boolean
     {
-        return this.#spies.has(this.getIdentifier());
+        return this.spies.has(this.getIdentifier());
     }
 
     /**
@@ -144,7 +144,7 @@ export default abstract class Facade
         const identifier = this.getIdentifier();
         
         return this.forgetResolved(identifier)
-            && this.#spies.delete(identifier);
+            && this.spies.delete(identifier);
     }
 
     /**
@@ -156,11 +156,11 @@ export default abstract class Facade
      */
     public static forgetAllSpies(): void
     {
-        for (const identifier of this.#spies) {
+        for (const identifier of this.spies) {
             this.forgetResolved(identifier);
         }
 
-        this.#spies.clear();
+        this.spies.clear();
     }
     
     /**
@@ -178,7 +178,7 @@ export default abstract class Facade
     {
         const identifier = this.getIdentifier();
         
-        this.#resolved.set(identifier, instance);
+        this.resolved.set(identifier, instance);
         
         if (this.hasContainer()) {
             (this.getContainer() as Container).instance(identifier, instance);
@@ -196,7 +196,7 @@ export default abstract class Facade
      */
     public static setContainer(container: Container | undefined): typeof Facade
     {
-        this.#container = container;
+        this.container = container;
 
         return this;
     }
@@ -210,7 +210,7 @@ export default abstract class Facade
      */
     public static getContainer(): Container | undefined
     {
-        return this.#container;
+        return this.container;
     }
 
     /**
@@ -222,7 +222,7 @@ export default abstract class Facade
      */
     public static hasContainer(): boolean
     {
-        return isset(this.#container);
+        return isset(this.container);
     }
 
     /**
@@ -234,7 +234,7 @@ export default abstract class Facade
      */
     public static forgetContainer(): typeof Facade
     {
-        this.#container = undefined;
+        this.container = undefined;
 
         return this;
     }
@@ -250,7 +250,7 @@ export default abstract class Facade
      */
     public static hasResolved(identifier: Identifier): boolean
     {
-        return this.#resolved.has(identifier);
+        return this.resolved.has(identifier);
     }
     
     /**
@@ -264,7 +264,7 @@ export default abstract class Facade
      */
     public static forgetResolved(identifier: Identifier): boolean
     {
-        return this.#resolved.delete(identifier);
+        return this.resolved.delete(identifier);
     }
 
     /**
@@ -276,7 +276,7 @@ export default abstract class Facade
      */
     public static forgetAllResolved(): void
     {
-        this.#resolved.clear();
+        this.resolved.clear();
     }
 
     /**
@@ -344,11 +344,11 @@ export default abstract class Facade
         }
         
         if (this.hasResolved(identifier)) {
-            return this.#resolved.get(identifier) as T;
+            return this.resolved.get(identifier) as T;
         }
 
         const resolved = (this.getContainer() as Container).make<T>(identifier);
-        this.#resolved.set(identifier, resolved);
+        this.resolved.set(identifier, resolved);
 
         return resolved;
     }
