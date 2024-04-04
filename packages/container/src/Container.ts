@@ -3,6 +3,7 @@ import {
     Alias,
     BeforeResolvedCallback,
     Container as ServiceContainerContract,
+    ContextualBindingBuilder,
     ExtendCallback,
     FactoryCallback,
     Identifier,
@@ -33,6 +34,7 @@ import {
 import CircularDependencyError from "./exceptions/CircularDependencyError";
 import ContainerError from "./exceptions/ContainerError";
 import NotFoundError from "./exceptions/NotFoundError";
+import Builder from "./Builder";
 import BindingEntry from "./BindingEntry";
 import { isBinding } from "./isBinding";
 
@@ -100,6 +102,18 @@ export default class Container implements ServiceContainerContract
      * @protected
      */
     protected resolved: Set<Identifier> = new Set();
+
+    /**
+     * Contextual Bindings
+     * 
+     * @type {Map<Constructor, Map<Identifier, Binding>>}
+     * 
+     * @protected
+     */
+    protected contextualBindings: Map<
+        Constructor,
+        Map<Identifier, Binding>
+    > = new Map();
     
     /**
      * "Before" resolved callbacks
@@ -269,6 +283,75 @@ export default class Container implements ServiceContainerContract
         return instance;
     }
 
+    /**
+     * Add a contextual binding in this container
+     *
+     * @param {Constructor} concrete
+     * @param {Identifier} identifier
+     * @param {FactoryCallback | Constructor} implementation
+     *
+     * @return {this}
+     *
+     * @throws {TypeError}
+     */
+    
+    public addContextualBinding(
+        concrete: Constructor,
+        identifier: Identifier,
+        implementation: FactoryCallback | Constructor
+    ): this
+    {
+        if (!this.contextualBindings.has(concrete)) {
+            this.contextualBindings.set(concrete, new Map<Identifier, Binding>());
+        }
+        
+        const entry = this.contextualBindings.get(concrete) as Map<Identifier, Binding>;
+        entry.set(this.getAlias(identifier), this.makeBindingEntry(identifier, implementation));
+        
+        return this;
+    }
+    
+    /**
+     * Define a contextual binding
+     *
+     * @param {Constructor | Constructor[]} concrete
+     *
+     * @return {ContextualBindingBuilder}
+     *
+     * @throws {TypeError}
+     */
+    public when(concrete: Constructor | Constructor[]): ContextualBindingBuilder
+    {
+        return new Builder(this, concrete);
+    }
+
+    /**
+     * Determine if a contextual binding is registered for target
+     *
+     * @param {Constructor} target
+     * @param {Identifier} identifier
+     *
+     * @return {boolean}
+     */
+    public hasContextualBinding(target: Constructor, identifier: Identifier): boolean
+    {
+        return this.contextualBindings.has(target)
+            && (this.contextualBindings.get(target) as Map<Identifier, Binding>).has(identifier);
+    }
+
+    /**
+     * Returns contextual binding implementation for given target and identifier
+     * 
+     * @param {Constructor} target
+     * @param {Identifier} identifier
+     * 
+     * @return {Binding | undefined}
+     */
+    public getContextualBinding(target: Constructor, identifier: Identifier): Binding | undefined
+    {
+        return this.contextualBindings.get(target)?.get(identifier);
+    }
+    
     /**
      * Resolves binding value that matches identifier and returns it
      *
@@ -993,6 +1076,15 @@ export default class Container implements ServiceContainerContract
     protected resolveDependency(identifier: Identifier, target: object): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         try {
+            // In case that the target is a constructor that has a contextual binding defined
+            // for given identifier, then it must be resolved.
+            if (this.hasContextualBinding(target as Constructor, identifier)) {
+                const binding = this.getContextualBinding(target as Constructor, identifier);
+                
+                return this.build(binding as Binding);
+            }
+            
+            // Otherwise, just resolve the given binding identifier...
             return this.make(identifier);
         } catch (e) {
             if (e instanceof CircularDependencyError) {

@@ -14,6 +14,7 @@ import {
     AfterResolvedCallback,
 } from "./types";
 import Binding from "./Binding";
+import ContextualBindingBuilder from "./ContextualBindingBuilder";
 
 /**
  * Service Container
@@ -88,6 +89,34 @@ export default interface Container
      * @throws {TypeError}
      */
     instance<T = object>(identifier: Identifier, instance: T): T;
+
+    /**
+     * Add a contextual binding in this container
+     * 
+     * @param {Constructor} concrete
+     * @param {Identifier} identifier
+     * @param {FactoryCallback | Constructor} implementation
+     * 
+     * @return {this}
+     *
+     * @throws {TypeError}
+     */
+    addContextualBinding(
+        concrete: Constructor,
+        identifier: Identifier,
+        implementation: FactoryCallback | Constructor
+    ): this;
+    
+    /**
+     * Define a contextual binding
+     * 
+     * @param {Constructor | Constructor[]} concrete
+     * 
+     * @return {ContextualBindingBuilder}
+     *
+     * @throws {TypeError}
+     */
+    when(concrete: Constructor | Constructor[]): ContextualBindingBuilder;
     
     /**
      * Resolves binding value that matches identifier and returns it
