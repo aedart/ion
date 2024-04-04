@@ -14,9 +14,9 @@ export default class Repository implements DescriptorsRepository
      *
      * @type {WeakMap<ConstructorLike | UsesConcerns | ConcernConstructor, Record<PropertyKey, PropertyDescriptor>>}
      *
-     * @private
+     * @protected
      */
-    #store: WeakMap<
+    protected _store: WeakMap<
         ConstructorLike | UsesConcerns | ConcernConstructor,
         Record<PropertyKey, PropertyDescriptor>
     >;
@@ -25,7 +25,7 @@ export default class Repository implements DescriptorsRepository
      * Create new Descriptors instance
      */
     constructor() {
-        this.#store = new WeakMap();
+        this._store = new WeakMap();
     }
 
     /**
@@ -43,13 +43,13 @@ export default class Repository implements DescriptorsRepository
         cache: boolean = false
     ): Record<PropertyKey, PropertyDescriptor>
     {
-        if (!force && this.#store.has(target)) {
-            return this.#store.get(target) as Record<PropertyKey, PropertyDescriptor>;
+        if (!force && this._store.has(target)) {
+            return this._store.get(target) as Record<PropertyKey, PropertyDescriptor>;
         }
 
         const descriptors = getClassPropertyDescriptors(target, true);
         if (cache) {
-            this.#store.set(target, descriptors);
+            this._store.set(target, descriptors);
         }
 
         return descriptors;
@@ -101,7 +101,7 @@ export default class Repository implements DescriptorsRepository
      */
     public forget(target: ConstructorLike | UsesConcerns | ConcernConstructor): boolean
     {
-        return this.#store.delete(target);
+        return this._store.delete(target);
     }
     
     /**
@@ -111,7 +111,7 @@ export default class Repository implements DescriptorsRepository
      */
     public clear(): this
     {
-        this.#store = new WeakMap();
+        this._store = new WeakMap();
         
         return this;
     }

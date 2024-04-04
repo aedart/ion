@@ -20,8 +20,10 @@ export default class BindingEntry<
      * @type {Identifier}
      *
      * @readonly
+     * 
+     * @protected
      */
-    readonly #identifier: Identifier;
+    protected readonly _identifier: Identifier;
 
     /**
      * The bound value to be resolved by a service container
@@ -31,8 +33,10 @@ export default class BindingEntry<
      * @type {FactoryCallback<T> | Constructor<T>}
      *
      * @readonly
+     * 
+     * @protected
      */
-    readonly #value: FactoryCallback<T> | Constructor<T>;
+    protected readonly _value: FactoryCallback<T> | Constructor<T>;
 
     /**
      * Shared state of resolved value
@@ -41,26 +45,28 @@ export default class BindingEntry<
      *                 value as a singleton.
      *
      * @readonly
+     * 
+     * @protected
      */
-    readonly #shared: boolean;
+    protected readonly _shared: boolean;
 
     /**
      * State, whether value is a factory callback or not
      * 
      * @type {boolean|null}
      * 
-     * @private
+     * @protected
      */
-    #isFactoryCallback: boolean|null = null;
+    protected _isFactoryCallback: boolean|null = null;
 
     /**
      * State, whether value is a constructor or not
      * 
      * @type {boolean|null}
      * 
-     * @private
+     * @protected
      */
-    #isConstructor: boolean|null = null;
+    _isConstructor: boolean|null = null;
     
     /**
      * Create new Binding Entry instance
@@ -79,9 +85,9 @@ export default class BindingEntry<
             throw new TypeError(`Invalid binding identifier: ${typeof identifier} is not supported`, { cause: { identifier: identifier, value: value } });
         }
         
-        this.#identifier = identifier;
-        this.#value = value;
-        this.#shared = shared;
+        this._identifier = identifier;
+        this._value = value;
+        this._shared = shared;
 
         this.resolveIsConstructorOrFactoryCallback();
     }
@@ -95,7 +101,7 @@ export default class BindingEntry<
      */
     get identifier(): Identifier
     {
-        return this.#identifier;
+        return this._identifier;
     }
 
     /**
@@ -109,7 +115,7 @@ export default class BindingEntry<
      */
     get value(): FactoryCallback<T> | Constructor<T>
     {
-        return this.#value;
+        return this._value;
     }
 
     /**
@@ -122,7 +128,7 @@ export default class BindingEntry<
      */
     get shared(): boolean
     {
-        return this.#shared;
+        return this._shared;
     }
     
     /**
@@ -132,7 +138,7 @@ export default class BindingEntry<
      */
     isFactoryCallback(): boolean
     {
-        return this.#isFactoryCallback as boolean;
+        return this._isFactoryCallback as boolean;
     }
 
     /**
@@ -142,7 +148,7 @@ export default class BindingEntry<
      */
     isConstructor(): boolean
     {
-        return this.#isConstructor as boolean;
+        return this._isConstructor as boolean;
     }
 
     /**
@@ -154,11 +160,11 @@ export default class BindingEntry<
      */
     protected resolveIsConstructorOrFactoryCallback(): void
     {
-        this.#isConstructor = isConstructor(this.#value);
-        this.#isFactoryCallback = !this.#isConstructor;
+        this._isConstructor = isConstructor(this._value);
+        this._isFactoryCallback = !this._isConstructor;
         
-        if (this.#isConstructor === false && this.#isFactoryCallback === false) {
-            throw new TypeError('Binding value must either be a valid constructor or factory callback', { cause: { identifier: this.#identifier, value: this.#value } });
+        if (!this._isConstructor && !this._isFactoryCallback) {
+            throw new TypeError('Binding value must either be a valid constructor or factory callback', { cause: { identifier: this._identifier, value: this._value } });
         }
     }
 }

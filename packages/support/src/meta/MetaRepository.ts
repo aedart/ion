@@ -39,9 +39,10 @@ export default class MetaRepository implements Repository
      *
      * @type {object}
      * 
-     * @private
+     * @protected
+     * @readonly
      */
-    readonly #owner: object;
+    protected readonly _owner: object;
 
     /**
      * Create a new Meta Repository instance
@@ -49,7 +50,7 @@ export default class MetaRepository implements Repository
      * @param {object} owner
      */
     constructor(owner: object) {
-        this.#owner = owner;
+        this._owner = owner;
     }
 
     /**
@@ -71,7 +72,7 @@ export default class MetaRepository implements Repository
      */
     public get owner(): object
     {
-        return this.#owner;
+        return this._owner;
     }
 
     /**

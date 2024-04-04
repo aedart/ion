@@ -20,12 +20,12 @@ export default abstract class AbstractConcern implements Concern
      * The owner class instance this concern is injected into,
      * or `this` concern instance.
      * 
-     * @readonly
-     * @private
-     * 
      * @type {object}
+     *
+     * @readonly
+     * @protected
      */
-    readonly #concernOwner: object;
+    protected readonly _concernOwner: object;
 
     /**
      * Creates a new concern instance
@@ -42,7 +42,7 @@ export default abstract class AbstractConcern implements Concern
             throw new AbstractClassError(AbstractConcern);
         }
         
-        this.#concernOwner = owner || this;
+        this._concernOwner = owner || this;
     }
 
     /**
@@ -55,7 +55,7 @@ export default abstract class AbstractConcern implements Concern
      */
     public get concernOwner(): object
     {
-        return this.#concernOwner;
+        return this._concernOwner;
     }
 
     /**

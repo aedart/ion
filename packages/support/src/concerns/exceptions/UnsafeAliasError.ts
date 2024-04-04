@@ -15,20 +15,22 @@ export default class UnsafeAliasError extends InjectionError implements UnsafeAl
     /**
      * The alias that points to an "unsafe" property or method
      *
-     * @readonly
-     *
      * @type {PropertyKey}
+     * 
+     * @protected
+     * @readonly
      */
-    readonly #alias: PropertyKey;
+    protected readonly _alias: PropertyKey;
 
     /**
      * The "unsafe" property or method that an alias points to
      *
-     * @readonly
-     *
      * @type {PropertyKey}
+     * 
+     * @protected
+     * @readonly
      */
-    readonly #key: PropertyKey;
+    protected readonly _key: PropertyKey;
     
     /**
      * Create a new Unsafe Alias Error instance
@@ -53,8 +55,8 @@ export default class UnsafeAliasError extends InjectionError implements UnsafeAl
 
         configureCustomError(this);
 
-        this.#alias = alias;
-        this.#key = key;
+        this._alias = alias;
+        this._key = key;
 
         // Force set the key and alias in the cause
         (this.cause as Record<PropertyKey, unknown>).alias = alias;
@@ -70,7 +72,7 @@ export default class UnsafeAliasError extends InjectionError implements UnsafeAl
      */
     get alias(): PropertyKey
     {
-        return this.#alias;
+        return this._alias;
     }
 
     /**
@@ -82,6 +84,6 @@ export default class UnsafeAliasError extends InjectionError implements UnsafeAl
      */
     get key(): PropertyKey
     {
-        return this.#key;
+        return this._key;
     }
 }

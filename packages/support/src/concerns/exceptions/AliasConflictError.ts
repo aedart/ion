@@ -15,32 +15,32 @@ export default class AliasConflictError extends InjectionError implements AliasC
      * The requested alias that conflicts with another alias
      * of the same name.
      *
-     * @readonly
-     * @private
-     *
      * @type {Alias}
+     *
+     * @readonly
+     * @protected
      */
-    readonly #alias: Alias;
+    protected readonly _alias: Alias;
 
     /**
      * the property key that the conflicting alias points to
      *
-     * @readonly
-     * @private
-     *
      * @type {PropertyKey}
+     *
+     * @readonly
+     * @protected
      */
-    readonly #key: PropertyKey;
+    readonly _key: PropertyKey;
     
     /**
      * The source class (e.g. parent class) that defines that originally defined the alias
      *
-     * @readonly
-     * @private
-     *
      * @type {ConstructorLike | UsesConcerns}
+     *
+     * @readonly
+     * @protected
      */
-    readonly #source: ConstructorLike | UsesConcerns;
+    protected readonly _source: ConstructorLike | UsesConcerns;
 
     /**
      * Create a new Alias Conflict Error instance
@@ -67,9 +67,9 @@ export default class AliasConflictError extends InjectionError implements AliasC
 
         configureCustomError(this);
 
-        this.#alias = alias;
-        this.#key = key;
-        this.#source = source;
+        this._alias = alias;
+        this._key = key;
+        this._source = source;
 
         // Force set the properties in the cause
         (this.cause as Record<PropertyKey, unknown>).alias = alias;
@@ -86,7 +86,7 @@ export default class AliasConflictError extends InjectionError implements AliasC
      */
     get alias(): Alias
     {
-        return this.#alias;
+        return this._alias;
     }
 
     /**
@@ -98,7 +98,7 @@ export default class AliasConflictError extends InjectionError implements AliasC
      */
     get key(): PropertyKey
     {
-        return this.#key;
+        return this._key;
     }
     
     /**
@@ -110,6 +110,6 @@ export default class AliasConflictError extends InjectionError implements AliasC
      */
     get source(): ConstructorLike | UsesConcerns
     {
-        return this.#source;
+        return this._source;
     }
 }

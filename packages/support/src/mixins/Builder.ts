@@ -18,10 +18,13 @@ export default class Builder<T = object>
     /**
      * The target superclass
      * 
+     * @template T = object
+     * 
      * @type {ConstructorLike<T>}
-     * @private
+     * 
+     * @protected
      */
-    readonly #superclass: ConstructorLike<T>;
+    protected readonly _superclass: ConstructorLike<T>;
 
     /**
      * Create a new Mixin Builder instance
@@ -29,7 +32,7 @@ export default class Builder<T = object>
      * @param {ConstructorLike<T>} [superclass=class {}]
      */
     constructor(superclass:ConstructorLike<T> = class {} as ConstructorLike<T>) {
-        this.#superclass = superclass;
+        this._superclass = superclass;
     }
 
     /**
@@ -52,7 +55,7 @@ export default class Builder<T = object>
 
             // Apply the mixin...
             return mixin(superclass);
-        }, this.#superclass as ConstructorLike) as ConstructorLike<T>;
+        }, this._superclass as ConstructorLike) as ConstructorLike<T>;
     }
 
     /**
@@ -69,6 +72,6 @@ export default class Builder<T = object>
         ...mixins: MixinFunction[] /* eslint-disable-line @typescript-eslint/no-unused-vars */
     ): ConstructorLike<T>
     {
-        return this.#superclass;
+        return this._superclass;
     }
 }

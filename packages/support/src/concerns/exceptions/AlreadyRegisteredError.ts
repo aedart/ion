@@ -19,13 +19,22 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
      * The source, e.g. a parent class, in which a concern class
      * was already registered.
      *
-     * @readonly
-     * @private
-     *
      * @type {ConstructorLike|UsesConcerns}
+     *
+     * @readonly
+     * @protected
      */
-    readonly #source: ConstructorLike | UsesConcerns;
+    protected readonly _source: ConstructorLike | UsesConcerns;
 
+    /**
+     * Create a new "already registered" error instance
+     * 
+     * @param {ConstructorLike | UsesConcerns} target
+     * @param {ConcernConstructor} concern
+     * @param {ConstructorLike | UsesConcerns} source
+     * @param {string} [message]
+     * @param {ErrorOptions} [options]
+     */
     constructor(
         target: ConstructorLike | UsesConcerns,
         concern: ConcernConstructor,
@@ -41,7 +50,7 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
 
         configureCustomError(this);
         
-        this.#source = source;
+        this._source = source;
         
         // Force set the source in the cause
         (this.cause as Record<PropertyKey, unknown>).source = source;
@@ -57,6 +66,6 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
      */
     get source(): ConstructorLike | UsesConcerns
     {
-        return this.#source;
+        return this._source;
     }
 }

@@ -88,10 +88,10 @@ export default class CallbackWrapper implements CallbackWrapperInterface
      *
      * @type {Callback}
      *
-     * @private
+     * @protected
      * @readonly
      */
-    readonly #callback: Callback;
+    protected readonly _callback: Callback;
 
     /**
      * "This" value that callback is bound to
@@ -99,9 +99,9 @@ export default class CallbackWrapper implements CallbackWrapperInterface
      * @type {object | undefined}
      *
      * @readonly
-     * @private
+     * @protected
      */
-    #binding: object | undefined = undefined;
+    protected _binding: object | undefined = undefined;
 
     /**
      * Arguments to be passed on to the callback
@@ -109,9 +109,9 @@ export default class CallbackWrapper implements CallbackWrapperInterface
      *
      * @type {any[]}
      * 
-     * @private
+     * @protected
      */
-    #arguments: any[] = []; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    protected _arguments: any[] = []; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
     /**
      * Create a new Callback Wrapper instance
@@ -129,7 +129,7 @@ export default class CallbackWrapper implements CallbackWrapperInterface
             throw new TypeError('Argument must be a valid callable function');
         }
         
-        this.#callback = callback;
+        this._callback = callback;
         this.with(...args);
     }
 
@@ -180,7 +180,7 @@ export default class CallbackWrapper implements CallbackWrapperInterface
      */
     public get callback(): Callback
     {
-        return this.#callback;
+        return this._callback;
     }
 
     /**
@@ -192,7 +192,7 @@ export default class CallbackWrapper implements CallbackWrapperInterface
      */
     public get binding(): object | undefined
     {
-        return this.#binding;
+        return this._binding;
     }
 
     /**
@@ -203,7 +203,7 @@ export default class CallbackWrapper implements CallbackWrapperInterface
      */
     public set arguments(args: any[]) /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
-        this.#arguments = args;
+        this._arguments = args;
     }
 
     /**
@@ -214,7 +214,7 @@ export default class CallbackWrapper implements CallbackWrapperInterface
      */
     public get arguments(): any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
-        return this.#arguments;
+        return this._arguments;
     }
     
     /**
@@ -253,7 +253,7 @@ export default class CallbackWrapper implements CallbackWrapperInterface
      */
     public bind(thisArg: object): this
     {
-        this.#binding = thisArg;
+        this._binding = thisArg;
 
         return this;
     }

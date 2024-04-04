@@ -17,9 +17,9 @@ export default class ArbitraryData extends AbstractConcern implements HasArbitra
      * 
      * @type {Record<PropertyKey, any>}
      * 
-     * @private
+     * @protected
      */
-    #data: Record<PropertyKey, any> = {}; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    protected _data: Record<PropertyKey, any> = {}; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
     /**
      * Set value for key
@@ -31,7 +31,7 @@ export default class ArbitraryData extends AbstractConcern implements HasArbitra
      */
     set(key: Key, value: any): this /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
-        set(this.#data, key, value);
+        set(this._data, key, value);
         
         return this.concernOwner as this;
     }
@@ -49,7 +49,7 @@ export default class ArbitraryData extends AbstractConcern implements HasArbitra
      */
     get<T, D = undefined>(key: Key, defaultValue?: D): T | D
     {
-        return get(this.#data, key, defaultValue);
+        return get(this._data, key, defaultValue);
     }
 
     /**
@@ -61,7 +61,7 @@ export default class ArbitraryData extends AbstractConcern implements HasArbitra
      */
     has(key: Key): boolean
     {
-        return has(this.#data, key);
+        return has(this._data, key);
     }
 
     /**
@@ -73,7 +73,7 @@ export default class ArbitraryData extends AbstractConcern implements HasArbitra
      */
     forget(key: Key): boolean
     {
-        return forget(this.#data, key);
+        return forget(this._data, key);
     }
 
     /**
@@ -84,7 +84,7 @@ export default class ArbitraryData extends AbstractConcern implements HasArbitra
     all(): Record<PropertyKey, any> /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         // Returns a copy of the arbitrary data record
-        return merge(this.#data);
+        return merge(this._data);
     }
 
     /**
@@ -94,6 +94,6 @@ export default class ArbitraryData extends AbstractConcern implements HasArbitra
      */
     flush(): void
     {
-        this.#data = {};
+        this._data = {};
     }
 }

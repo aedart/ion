@@ -58,9 +58,9 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * @template T = object
      * @type {T}
      * 
-     * @private
+     * @protected
      */
-    readonly #target: T;
+    protected readonly _target: T;
 
     /**
      * Concern Configuration Factory
@@ -106,7 +106,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         repository?: DescriptorsRepository
     )
     {
-        this.#target = target;
+        this._target = target;
         this.configFactory = configFactory || new ConfigurationFactory();
         this.descriptorFactory = descriptorFactory || new DescriptorFactory();
         this.repository = repository || new Repository();
@@ -121,7 +121,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      */
     public get target(): T
     {
-       return this.#target; 
+       return this._target; 
     }
 
     /**

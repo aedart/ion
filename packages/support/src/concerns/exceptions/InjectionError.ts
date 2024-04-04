@@ -13,11 +13,12 @@ export default class InjectionError extends ConcernError implements InjectionExc
     /**
      * The target class
      *
-     * @readonly
-     *
      * @type {ConstructorLike|UsesConcerns}
+     * 
+     * @protected
+     * @readonly
      */
-    readonly #target: ConstructorLike | UsesConcerns;
+    protected readonly _target: ConstructorLike | UsesConcerns;
 
     /**
      * Create a new Injection Error instance
@@ -37,7 +38,7 @@ export default class InjectionError extends ConcernError implements InjectionExc
 
         configureCustomError(this);
 
-        this.#target = target;
+        this._target = target;
 
         // Force set the target in the cause
         (this.cause as Record<PropertyKey, unknown>).target = target;
@@ -52,6 +53,6 @@ export default class InjectionError extends ConcernError implements InjectionExc
      */
     get target(): ConstructorLike | UsesConcerns
     {
-        return this.#target;
+        return this._target;
     }
 }

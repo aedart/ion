@@ -17,9 +17,9 @@ export default class Merger implements ArrayMerger
      * 
      * @type {Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>}
      * 
-     * @private
+     * @protected
      */
-    #options: Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>;
+    protected _options: Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>;
 
     /**
      * Create new Array Merger instance
@@ -28,7 +28,7 @@ export default class Merger implements ArrayMerger
      */
     public constructor(options?: ArrayMergeCallback | ArrayMergeOptions) {
         // @ts-expect-error Need to init options, however they are resolved via "using".
-        this.#options = null;
+        this._options = null;
         
         this.using(options);
     }
@@ -44,7 +44,7 @@ export default class Merger implements ArrayMerger
      */
     using(options?: ArrayMergeCallback | ArrayMergeOptions): this
     {
-        this.#options = this.resolveOptions(options);
+        this._options = this.resolveOptions(options);
         
         return this;
     }
@@ -56,7 +56,7 @@ export default class Merger implements ArrayMerger
      */
     public get options(): Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>
     {
-        return this.#options;
+        return this._options;
     }
     
     /**
