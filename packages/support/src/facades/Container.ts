@@ -4,8 +4,6 @@ import Facade from "./Facade";
 
 /**
  * Container Facade
- * 
- * @extends Facade
  */
 export default class Container extends Facade
 {
@@ -14,6 +12,11 @@ export default class Container extends Facade
         return CONTAINER;
     }
 
+    /**
+     * @inheritDoc
+     * 
+     * @return {import('@aedart/contracts/container').Container}
+     */
     public static obtain()
     {
         return this.resolveIdentifier<ServiceContainer>();
