@@ -1,5 +1,5 @@
 import type { Container, Identifier } from "@aedart/contracts/container";
-import type { Callback } from "@aedart/contracts";
+import type { SpyFactoryCallback } from "@aedart/contracts/support/facades";
 import { isset } from "@aedart/support/misc";
 import { AbstractClassError, LogicalError } from "@aedart/support/exceptions";
 
@@ -97,18 +97,22 @@ export default abstract class Facade
     /**
      * Register a "spy" (e.g. object mock) for this facade's identifier
      * 
-     * @param {Callback} callback Callback to be used for creating some kind of object spy
+     * @template T = any
+     * 
+     * @param {SpyFactoryCallback} callback Callback to be used for creating some kind of object spy
      *                   or mock, with appropriate configuration and expectations for testing
      *                   purposes.
      *                   
-     * @return {ReturnType<typeof callback>}
+     * @return {T} Object instance (spy / object mock) to be registered in service container.
      * 
      * @static
      */
-    public static spy(callback: Callback): ReturnType<typeof callback>
+    public static spy<
+        T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    >(callback: SpyFactoryCallback<T>): T
     {
         const identifier = this.getIdentifier();
-        const spy = callback(identifier);
+        const spy = callback(this.getContainer() as Container, identifier);
 
         this.swap(spy);
         
