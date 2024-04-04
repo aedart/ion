@@ -5,7 +5,6 @@ import type {
     Identifier
 } from "@aedart/contracts/container";
 import type { Constructor } from "@aedart/contracts";
-import { castArray } from 'lodash-es';
 
 /**
  * Contextual Binding Builder
@@ -28,11 +27,11 @@ export default class Builder implements ContextualBindingBuilder
     /**
      * The concrete constructor(s)
      * 
-     * @type {Constructor | Constructor[]}
+     * @type {Constructor[]}
      * 
      * @protected
      */
-    protected concrete: Constructor | Constructor[];
+    protected concrete: Constructor[];
 
     /**
      * The target identifier in this context.
@@ -47,9 +46,9 @@ export default class Builder implements ContextualBindingBuilder
      * Create a new Contextual Binding Builder instance
      * 
      * @param {Container} container
-     * @param {Constructor | Constructor[]} concrete
+     * @param {...Constructor[]} concrete
      */
-    constructor(container: Container, concrete: Constructor | Constructor[]) {
+    constructor(container: Container, ...concrete: Constructor[]) {
         this.container = container;
         this.concrete = concrete;
     }
@@ -77,10 +76,8 @@ export default class Builder implements ContextualBindingBuilder
      */
     public give(implementation: FactoryCallback | Constructor): void
     {
-        const constructors: Constructor[] = castArray(this.concrete);
-        
-        for(const concrete of constructors) {
-            this.container.addContextualBinding(concrete, this.identifier as Identifier, implementation);
+        for(const ctor of this.concrete) {
+            this.container.addContextualBinding(ctor, this.identifier as Identifier, implementation);
         }
     }
 }

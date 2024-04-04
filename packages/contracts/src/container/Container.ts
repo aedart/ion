@@ -110,13 +110,13 @@ export default interface Container
     /**
      * Define a contextual binding
      * 
-     * @param {Constructor | Constructor[]} concrete
+     * @param {...Constructor[]} concrete
      * 
      * @return {ContextualBindingBuilder}
      *
      * @throws {TypeError}
      */
-    when(concrete: Constructor | Constructor[]): ContextualBindingBuilder;
+    when(...concrete: Constructor[]): ContextualBindingBuilder;
     
     /**
      * Resolves binding value that matches identifier and returns it

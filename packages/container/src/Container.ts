@@ -314,15 +314,15 @@ export default class Container implements ServiceContainerContract
     /**
      * Define a contextual binding
      *
-     * @param {Constructor | Constructor[]} concrete
+     * @param {...Constructor[]} concrete
      *
      * @return {ContextualBindingBuilder}
      *
      * @throws {TypeError}
      */
-    public when(concrete: Constructor | Constructor[]): ContextualBindingBuilder
+    public when(...concrete: Constructor[]): ContextualBindingBuilder
     {
-        return new Builder(this, concrete);
+        return new Builder(this, ...concrete);
     }
 
     /**
