@@ -54,7 +54,7 @@ export default abstract class Facade
      */
     protected constructor() {
         /* @ts-expect-error TS2345 Facade constructor is abstract */
-        throw new AbstractClassError(this);
+        throw new AbstractClassError(this.constructor);
     }
     
     /**
