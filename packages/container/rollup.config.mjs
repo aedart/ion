@@ -22,5 +22,7 @@ export default createConfig({
         '@aedart/support/misc',
         '@aedart/support/mixins',
         '@aedart/support/reflections',
+        
+        'lodash-es'
     ]
 });
