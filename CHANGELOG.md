@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isCallbackWrapper` util, in `@aedart/support`.
 * `ArbitraryData` concern, in `@aedart/support`.
 * `arrayMergeOptions` in object `merge()`. 
-* Add upgrade guide from v0.7.x- to v0.10.x.
+* Add upgrade guide for "v0.7.x- to v0.10.x".
 
 ### Changed
 
