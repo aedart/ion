@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Service Container package (`@aedart/container`).
+* `Facade` abstraction, in `@aedart/support/facades`.
 * `DEPENDENCIES` symbol and `Identifier` type in `@aedart/contracts/container`.
 * `dependsOn()`, `dependencies()`, `hasDependencies()`, and `getDependencies()`, in `@aedart/support/container`.
 * `isBindingIdentifier`, in `@aedart/support/container`.
