@@ -26,6 +26,7 @@ module.exports = {
             '@aedart/contracts/support/arrays': path.resolve(__dirname, './packages/contracts/support/arrays'),
             '@aedart/contracts/support/concerns': path.resolve(__dirname, './packages/contracts/support/concerns'),
             '@aedart/contracts/support/exceptions': path.resolve(__dirname, './packages/contracts/support/exceptions'),
+            '@aedart/contracts/support/facades': path.resolve(__dirname, './packages/contracts/support/facades'),
             '@aedart/contracts/support/meta': path.resolve(__dirname, './packages/contracts/support/meta'),
             '@aedart/contracts/support/mixins': path.resolve(__dirname, './packages/contracts/support/mixins'),
             '@aedart/contracts/support/objects': path.resolve(__dirname, './packages/contracts/support/objects'),
