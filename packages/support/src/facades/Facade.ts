@@ -280,11 +280,11 @@ export default abstract class Facade
     }
 
     /**
-     * Destroy all resolved facade instances and forget the service container
+     * Clears all resolved instances, service container and evt. spies.
      * 
      * @return {void}
      */
-    public static destroyFacades(): void
+    public static destroy(): void
     {
         this.forgetAllSpies();
         this.forgetAllResolved();
