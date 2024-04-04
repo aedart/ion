@@ -16,6 +16,6 @@ export default class Container extends Facade
 
     public static obtain()
     {
-        return this.resolve<ServiceContainer>(this.getIdentifier());
+        return this.resolveIdentifier<ServiceContainer>();
     }
 }

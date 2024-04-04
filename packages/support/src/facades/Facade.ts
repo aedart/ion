@@ -88,6 +88,9 @@ export default abstract class Facade
      */
     public static obtain()
     {
+        // Use this method to resolve the binding from the service container.
+        // E.g. return this.resolveIdentifier<YOUR_COMPONENT_TYPE>();
+        
         throw new LogicalError('Facade does not implement the get() method');
     }
 
@@ -191,7 +194,7 @@ export default abstract class Facade
      *
      * @static
      */
-    public static setContainer(container: Container | undefined): Facade
+    public static setContainer(container: Container | undefined): typeof Facade
     {
         this.#container = container;
 
@@ -229,7 +232,7 @@ export default abstract class Facade
      *
      * @static
      */
-    public static forgetContainer(): Facade
+    public static forgetContainer(): typeof Facade
     {
         this.#container = undefined;
 
@@ -289,7 +292,34 @@ export default abstract class Facade
     }
 
     /**
-     * Get the facade's underlying object instance or object spy
+     * Resolves the facade's underlying object instance from the service container.
+     * 
+     * @see resolve
+     * 
+     * @template T = any
+     * 
+     * @return {T}
+     *
+     * @throws {NotFoundException}
+     * @throws {ContainerException}
+     * @throws {LogicalError}
+     * 
+     * @protected
+     * @static
+     */
+    protected static resolveIdentifier<
+        T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    >(): T
+    {
+        return this.resolve<T>(this.getIdentifier());
+    }
+    
+    /**
+     * Resolves the facade's underlying object instance from the service container,
+     * which matches given identifier.
+     * 
+     * **Note**: _If a "spy" has been registered for given identifier, then that spy
+     * object is returned instead._
      *
      * @template T = any
      *
