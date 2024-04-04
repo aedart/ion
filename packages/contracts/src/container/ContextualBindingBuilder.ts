@@ -25,6 +25,8 @@ export default interface ContextualBindingBuilder
      * @param {FactoryCallback | Constructor} implementation
      * 
      * @return {void}
+     * 
+     * @throws {TypeError}
      */
     give(implementation: FactoryCallback | Constructor): void;
 }
