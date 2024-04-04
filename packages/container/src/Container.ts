@@ -326,7 +326,20 @@ export default class Container implements ServiceContainerContract
     }
 
     /**
-     * Determine if a contextual binding is registered for target
+     * Determine if target has one or more contextual bindings registered
+     * 
+     * @param {Constructor} target
+     * 
+     * @return {boolean}
+     */
+    public hasContextualBindings(target: Constructor): boolean
+    {
+        return this.contextualBindings.has(target) &&
+            (this.contextualBindings.get(target) as Map<Identifier, Binding>).size > 0;
+    }
+    
+    /**
+     * Determine if a contextual binding is registered for the identifier in given target
      *
      * @param {Constructor} target
      * @param {Identifier} identifier
@@ -335,7 +348,7 @@ export default class Container implements ServiceContainerContract
      */
     public hasContextualBinding(target: Constructor, identifier: Identifier): boolean
     {
-        return this.contextualBindings.has(target)
+        return this.hasContextualBindings(target)
             && (this.contextualBindings.get(target) as Map<Identifier, Binding>).has(identifier);
     }
 
