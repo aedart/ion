@@ -1,6 +1,8 @@
+import Builder from "./Builder";
 import BindingEntry from "./BindingEntry";
 import Container from "./Container";
 export {
+    Builder,
     BindingEntry,
     Container
 }
