@@ -1,6 +1,12 @@
 # Service Container
 
-TODO: ...
+The `@aedart/container` package offers an adaptation of [Laravel's Service Container](https://laravel.com/docs/11.x/container) package
+(_originally licensed under [MIT](https://github.com/laravel/framework/blob/11.x/src/Illuminate/Container/LICENSE.md)_).
+
+The tools provided by this package give you way to:
+
+* Manage class dependencies
+* Perform [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection)
 
 # Official Documentation
 
