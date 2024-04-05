@@ -700,6 +700,7 @@ export default class Container implements ServiceContainerContract
         this.instances.clear();
         this.aliases.clear();
         this.resolved.clear();
+        this.contextualBindings.clear();
         this.resolveStack.clear();
     }
 
