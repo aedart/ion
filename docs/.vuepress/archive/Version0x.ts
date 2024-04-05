@@ -23,6 +23,18 @@ export default PagesCollection.make('v0.x', '/v0x', [
         children: [
             'packages/',
             {
+                text: 'Container',
+                collapsible: true,
+                children: [
+                    'packages/container/',
+                    'packages/container/prerequisites',
+                    'packages/container/install',
+                    'packages/container/container-instance',
+                    'packages/container/bindings',
+                    'packages/container/resolving',
+                ]
+            },
+            {
                 text: 'Contracts',
                 collapsible: true,
                 children: [
