@@ -6,3 +6,7 @@ sidebarDepth: 0
 # Resolving
 
 // TODO: ...
+
+## The `make()` method
+
+// TODO: ...
