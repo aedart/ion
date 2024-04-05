@@ -31,6 +31,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                     'packages/container/install',
                     'packages/container/container-instance',
                     'packages/container/bindings',
+                    'packages/container/dependencies',
                     'packages/container/resolving',
                 ]
             },
