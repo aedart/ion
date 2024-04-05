@@ -33,6 +33,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                     'packages/container/bindings',
                     'packages/container/dependencies',
                     'packages/container/resolving',
+                    'packages/container/contextual-bindings',
                 ]
             },
             {
