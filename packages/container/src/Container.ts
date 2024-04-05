@@ -56,7 +56,7 @@ export default class Container implements ServiceContainerContract
      * 
      * @static
      */
-    protected static _instance: ServiceContainerContract | null = null;
+    protected static instance: ServiceContainerContract | null = null;
 
     /**
      * Registered bindings
@@ -158,11 +158,11 @@ export default class Container implements ServiceContainerContract
      */
     public static getInstance(): ServiceContainerContract
     {
-        if (this._instance === null) {
+        if (this.instance === null) {
             this.setInstance(new this());
         }
         
-        return this._instance as ServiceContainerContract;
+        return this.instance as ServiceContainerContract;
     }
 
     /**
@@ -174,7 +174,7 @@ export default class Container implements ServiceContainerContract
      */
     public static setInstance(container: ServiceContainerContract | null = null): ServiceContainerContract | null
     {
-        return this._instance = container;
+        return this.instance = container;
     }
     
     /**
