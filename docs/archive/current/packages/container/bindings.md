@@ -12,7 +12,7 @@ sidebarDepth: 0
 The `bind()` method is used to register bindings in the Service Container. It accepts three arguments:
 
 * `identifier: Identifier` - (_see [Identifiers](#identifiers)_).
-* `concrete: FactoryCallback | Constructor` - The value to be resolved.
+* `concrete: FactoryCallback | Constructor` - The value to be resolved from the container.
 * `shared: boolean = false` - (_optional - see [Singletons](#singletons)_).
 
 ```js
@@ -44,7 +44,7 @@ container.singleton('api_client', ApiClient);
 ```
 
 The `singletonIf()` method is similar to `bindIf()`. It will only register a "shared" binding, if one has not already
-registered.
+been registered.
 
 ```js
 container.singletonIf('api_client', ApiClient);
@@ -97,7 +97,7 @@ container.bind(STORAGE, CookieStorage);
 ## `concrete` Types
 
 The `concrete` argument for the `bind()`, `bindIf()`, `singleton()` and `singletonIf()` methods accepts
-either of the following kind of value:
+the following types:
 
 * Class constructor
 * "Factory" callback
@@ -138,7 +138,8 @@ container.bind('recorder', (container) => {
 });
 ```
 
-Although the above example shows an object instance being returned by the factory callback, any kind of value can be returned.
+Although the above example shows an object instance being returned by the factory callback, any kind of value can be returned,
+by the "factory" callback.
 
 ```js
 container.bind('my_message', () => 'Hi there...');
