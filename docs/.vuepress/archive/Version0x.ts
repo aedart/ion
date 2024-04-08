@@ -92,6 +92,13 @@ export default PagesCollection.make('v0.x', '/v0x', [
                         ]
                     },
                     {
+                        text: 'Facades',
+                        collapsible: true,
+                        children: [
+                            'packages/support/facades/',
+                        ]
+                    },
+                    {
                         text: 'Meta',
                         collapsible: true,
                         children: [
