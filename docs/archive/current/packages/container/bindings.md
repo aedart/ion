@@ -138,8 +138,8 @@ container.bind('recorder', (container) => {
 });
 ```
 
-Although the above example shows an object instance being returned by the factory callback, any kind of value can be returned,
-by the "factory" callback.
+Although the above example shows an object instance being returned by the factory callback, any kind of value can be returned
+by the callback.
 
 ```js
 container.bind('my_message', () => 'Hi there...');
