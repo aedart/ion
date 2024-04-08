@@ -1,6 +1,6 @@
 # Service Container
 
-The `@aedart/container` package offers an adaptation of [Laravel's Service Container](https://laravel.com/docs/11.x/container) package
+The `@aedart/container` package offers an adaptation of [Laravel's Service Container](https://laravel.com/docs/11.x/container)
 (_originally licensed under [MIT](https://github.com/laravel/framework/blob/11.x/src/Illuminate/Container/LICENSE.md)_).
 
 The tools provided by this package give you way to:
