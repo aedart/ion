@@ -13,7 +13,7 @@ import type {
     AliasDescriptorFactory,
     RegistrationAware
 } from "@aedart/contracts/support/concerns";
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import {
     CONCERN_CLASSES,
     ALIASES,
@@ -58,9 +58,9 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      * @template T = object
      * @type {T}
      * 
-     * @private
+     * @protected
      */
-    readonly #target: T;
+    protected readonly _target: T;
 
     /**
      * Concern Configuration Factory
@@ -106,7 +106,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         repository?: DescriptorsRepository
     )
     {
-        this.#target = target;
+        this._target = target;
         this.configFactory = configFactory || new ConfigurationFactory();
         this.descriptorFactory = descriptorFactory || new DescriptorFactory();
         this.repository = repository || new Repository();
@@ -121,7 +121,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      */
     public get target(): T
     {
-       return this.#target; 
+       return this._target; 
     }
 
     /**
@@ -388,7 +388,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
             // Fail if concern is already registered
             if (registry.includes(concern)) {
                 const source = this.findSourceOf(concern, target as object, true);
-                throw new AlreadyRegisteredError(target as ConstructorOrAbstractConstructor, concern, source as ConstructorOrAbstractConstructor);
+                throw new AlreadyRegisteredError(target as ConstructorLike, concern, source as ConstructorLike);
             }
 
             registry.push(concern);
@@ -439,8 +439,8 @@ export default class ConcernsInjector<T = object> implements Injector<T>
         const wasDefined: boolean = Reflect.defineProperty((target as object), property, descriptor);
 
         if (!wasDefined) {
-            const reason: string = failMessage || `Unable to define "${property.toString()}" property in target ${getNameOrDesc(target as ConstructorOrAbstractConstructor)}`;
-            throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason);
+            const reason: string = failMessage || `Unable to define "${property.toString()}" property in target ${getNameOrDesc(target as ConstructorLike)}`;
+            throw new InjectionError(target as ConstructorLike, null, reason);
         }
 
         return target;
@@ -460,7 +460,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
      */
     protected findSourceOf(concern: ConcernConstructor, target: object, includeTarget: boolean = false): object | null
     {
-        const parents = getAllParentsOfClass(target as ConstructorOrAbstractConstructor, includeTarget).reverse();
+        const parents = getAllParentsOfClass(target as ConstructorLike, includeTarget).reverse();
 
         for (const parent of parents) {
             if (Reflect.has(parent, CONCERN_CLASSES) && (parent[CONCERN_CLASSES as keyof typeof parent] as ConcernConstructor[]).includes(concern)) {
@@ -485,7 +485,7 @@ export default class ConcernsInjector<T = object> implements Injector<T>
     {
         const output: Map<Alias, UsesConcerns> = new Map();
 
-        const parents = getAllParentsOfClass(target as ConstructorOrAbstractConstructor, includeTarget).reverse();
+        const parents = getAllParentsOfClass(target as ConstructorLike, includeTarget).reverse();
         for (const parent of parents) {
             if (!Reflect.has(parent, ALIASES)) {
                 continue;

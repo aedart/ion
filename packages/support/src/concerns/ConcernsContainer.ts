@@ -29,12 +29,12 @@ export default class ConcernsContainer implements Container
     /**
      * The concerns owner of this container
      * 
-     * @private
-     * @readonly
-     * 
      * @type {Owner}
+     *
+     * @protected
+     * @readonly
      */
-    readonly #owner: Owner;
+    protected readonly _owner: Owner;
 
     /**
      * Create a new Concerns Container instance
@@ -43,7 +43,7 @@ export default class ConcernsContainer implements Container
      * @param {ConcernConstructor[]} concerns
      */
     public constructor(owner: Owner, concerns: ConcernConstructor[]) {
-        this.#owner = owner;
+        this._owner = owner;
         this.map = new Map<ConcernConstructor, Concern | undefined>();
         
         for(const concern of concerns) {
@@ -72,7 +72,7 @@ export default class ConcernsContainer implements Container
      */
     public get owner(): Owner
     {
-        return this.#owner;
+        return this._owner;
     }
 
     /**

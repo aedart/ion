@@ -2,6 +2,7 @@ import {
     targetMeta,
     getTargetMeta,
     hasTargetMeta,
+    hasAnyTargetMeta,
     MetaError
 } from "@aedart/support/meta";
 
@@ -19,8 +20,12 @@ describe('@aedart/support/meta', () => {
 
             // ---------------------------------------------------------------------- //
 
+            expect(hasAnyTargetMeta(A))
+                .withContext('Target does not appear to have any meta')
+                .toBeTrue();
+            
             expect(hasTargetMeta(A, key))
-                .withContext('Target does not appear to have meta')
+                .withContext('Target does not appear to meta for key')
                 .toBeTrue();
 
             const result = getTargetMeta(A, key);

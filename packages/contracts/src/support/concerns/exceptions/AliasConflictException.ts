@@ -1,4 +1,4 @@
-import { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import { ConstructorLike } from "@aedart/contracts";
 import InjectionException from "./InjectionException";
 import UsesConcerns from "../UsesConcerns";
 import { Alias } from '../types'
@@ -34,7 +34,7 @@ export default interface AliasConflictException extends InjectionException
      *
      * @readonly
      *
-     * @type {ConstructorOrAbstractConstructor | UsesConcerns}
+     * @type {ConstructorLike | UsesConcerns}
      */
-    readonly source: ConstructorOrAbstractConstructor | UsesConcerns;
+    readonly source: ConstructorLike | UsesConcerns;
 }

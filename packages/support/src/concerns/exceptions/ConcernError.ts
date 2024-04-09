@@ -10,12 +10,13 @@ export default class ConcernError extends Error implements ConcernException
 {
     /**
      * The Concern class that caused this error or exception
-     *
-     * @private
      * 
      * @type {ConcernConstructor | null}
+     * 
+     * @protected
+     * @readonly
      */
-    readonly #concern: ConcernConstructor | null
+    protected readonly _concern: ConcernConstructor | null
 
     /**
      * Create a new Concern Error instance
@@ -30,7 +31,7 @@ export default class ConcernError extends Error implements ConcernException
 
         configureCustomError(this);
 
-        this.#concern = concern;
+        this._concern = concern;
         
         // Force set the concern in the cause (in case custom was provided)
         (this.cause as Record<PropertyKey, unknown>).concern = concern;
@@ -45,6 +46,6 @@ export default class ConcernError extends Error implements ConcernException
      */
     get concern(): ConcernConstructor | null
     {
-        return this.#concern;
+        return this._concern;
     }
 }

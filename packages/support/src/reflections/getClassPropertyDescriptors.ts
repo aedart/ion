@@ -1,4 +1,4 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { getClassPropertyDescriptor } from "./getClassPropertyDescriptor";
 import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty";
 import { getAllParentsOfClass } from "./getAllParentsOfClass";
@@ -9,7 +9,7 @@ import { merge } from "@aedart/support/objects";
  * 
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/getOwnPropertyDescriptor
  * 
- * @param {ConstructorOrAbstractConstructor} target The target class
+ * @param {ConstructorLike} target The target class
  * @param {boolean} [recursive=false] If `true`, then target's parent prototypes are traversed.
  *                                    Descriptors are merged, such that the top-most class' descriptors
  *                                    are returned.
@@ -19,7 +19,7 @@ import { merge } from "@aedart/support/objects";
  * 
  * @throws {TypeError} If target is not an object or has no prototype property
  */
-export function getClassPropertyDescriptors(target: ConstructorOrAbstractConstructor, recursive: boolean = false): Record<PropertyKey, PropertyDescriptor>
+export function getClassPropertyDescriptors(target: ConstructorLike, recursive: boolean = false): Record<PropertyKey, PropertyDescriptor>
 {
     assertHasPrototypeProperty(target);
 

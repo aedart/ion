@@ -14,17 +14,21 @@ export default class ObjectId
      * Internal counter
      * 
      * @type {number}
-     * @private
+     * 
+     * @protected
+     * @static
      */
-    static #count: number = 0;
+    protected static _count: number = 0;
 
     /**
      * Weak Map of objects and their associated id
      * 
      * @type {WeakMap<object, number>}
-     * @private
+     * 
+     * @protected
+     * @readonly
      */
-    static #map: WeakMap<object, number> = new WeakMap<object, number>();
+    protected static _map: WeakMap<object, number> = new WeakMap<object, number>();
 
     /**
      * Returns a unique ID for target object.
@@ -38,15 +42,15 @@ export default class ObjectId
      */
     static get(target: object): number
     {
-        const id: number | undefined = ObjectId.#map.get(target);
+        const id: number | undefined = ObjectId._map.get(target);
         if (id !== undefined) {
             return id;
         }
 
-        ObjectId.#count += 1;
-        ObjectId.#map.set(target, ObjectId.#count);
+        ObjectId._count += 1;
+        ObjectId._map.set(target, ObjectId._count);
         
-        return ObjectId.#count;
+        return ObjectId._count;
     }
 
     /**
@@ -58,6 +62,6 @@ export default class ObjectId
      */
     static has(target: object): boolean
     {
-        return ObjectId.#map.has(target);
+        return ObjectId._map.has(target);
     }
 }

@@ -1,4 +1,4 @@
-import { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import { ConstructorLike } from "@aedart/contracts";
 import type {
     Aliases,
     ConcernConstructor,
@@ -74,8 +74,8 @@ export default class ConfigurationFactory implements Factory
         }
 
         // Fail if entry is neither a concern class nor a concern configuration
-        const reason: string = `${getNameOrDesc(entry as ConstructorOrAbstractConstructor)} must be a valid Concern class or Concern Configuration`
-        throw new InjectionError(target as ConstructorOrAbstractConstructor, null, reason, { cause: { entry: entry } });
+        const reason: string = `${getNameOrDesc(entry as ConstructorLike)} must be a valid Concern class or Concern Configuration`
+        throw new InjectionError(target as ConstructorLike, null, reason, { cause: { entry: entry } });
     }
 
     /**

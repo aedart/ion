@@ -29,6 +29,46 @@ _TBD: "To be decided"._
 
 ## `v0.x` Highlights
 
+### Service Container <Badge type="tip" text="Available since v0.11" />
+
+An adaptation of Laravel's Service Container that offers a way to with powerful tool to manage dependencies and perform
+dependency injection.
+
+```js
+import { Container } from "@aedart/container";
+
+container.bind('storage', () => {
+    return new CloudService('s3');
+});
+
+// Later in your application.
+const storage = container.make('storage');
+```
+
+For additional examples, see the [Service Container documentation](./packages/container/README.md).
+
+### Facades  <Badge type="tip" text="Available since v0.11" />
+
+Adaptation of Laravel's Facade component. It acts as an interface or gateway to an underlying object that is resolved
+from the Service Container.
+
+```js
+import { Facade } from "@aedart/support/facades";
+
+export default class ApiFacade extends Facade
+{
+    static getIdentifier()
+    {
+        return 'api_client';
+    }
+}
+
+// Later in your application
+const promise = ApiFacade.obtain().fetch('https://acme.com/api/users');
+```
+
+See the [Facades documentation](./packages/support/facades/README.md) for additional details.
+
 ### Concerns <Badge type="tip" text="Available since v0.9" />
 
 Intended as an alternative to mixins, the [Concerns](./packages/support/concerns/README.md) submodule offers a different

@@ -9,18 +9,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Add upgrade guide from v0.7.x- to v0.10.x.
+* Service Container package (`@aedart/container`).
+* `Facade` abstraction, in `@aedart/support/facades`.
+* `DEPENDENCIES` symbol and `Identifier` type in `@aedart/contracts/container`.
+* `dependsOn()`, `dependencies()`, `hasDependencies()`, and `getDependencies()`, in `@aedart/support/container`.
+* `isBindingIdentifier`, in `@aedart/support/container`.
+* `ClassMethodName` and `ClassMethodReference` type aliases in `@aedart/contracts`.
+* `isMethod()` util in `@aedart/support/reflections`.
+* `ConstructorLike` and `Callback` type aliases, in `@aedart/constracts`.
+* `CallbackWrapper` util class, in `@aedart/support`.
+* `isCallbackWrapper` util, in `@aedart/support`.
+* `ArbitraryData` concern, in `@aedart/support`.
+* `arrayMergeOptions` in object `merge()`. 
+* Add upgrade guide for "v0.7.x- to v0.10.x".
 
 ### Changed
 
+**Breaking**
+
+* Added `hasAny()` method in `TargetRepository` interface, in `@aedart/contracts/meta`.
+* Default generic for `defaultValue` changed to `undefined`, for `get()` methods in meta `Repository` and `TargetRepository`.
+
+**Non-breaking Changes**
+
 * Root package Typescript dependency changed to `^5.4.2`.
 * `@typescript-eslint/eslint-plugin` upgraded to `^7.1.1`, in root package.
-* Decorator return types for `meta()`, `targetMeta()`, and `inheritTargetMeta()` (_continued to cause TS1270 and TS1238 errors_). [#8](https://github.com/aedart/ion/pull/8), [#9](https://github.com/aedart/ion/pull/9).
+* Refactored all classes' fields, changed from private to protected visibility (_see [private is not inherited](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) for details in_).
+* Removed decorator return types for `use()`, `meta()`, `targetMeta()`, and `inheritTargetMeta()` (_continued to cause TS1270 and TS1238 errors_). [#8](https://github.com/aedart/ion/pull/8), [#9](https://github.com/aedart/ion/pull/9).
+* Refactored `hasAllMethods()` to use new `isMethod()` internally, in `@aedart/support/reflections`.
+* Refactored all components that used deprecated `ConstructorOrAbstractConstructor` to use new `ConstructorLike` type alias.
+* Marked `isClassConstructor()` and `isCallable()` as stable, in `@aedart/support/reflections`.
+* Refactored / redesigned the array `merge()` to use a new `ArrayMerger` component, that allows custom merge callback and options.
 
 ### Fixed
 
 * Decorator types aliases (_TS1270 and TS1238 issues when applying the various decorator and decorator result types_). [#8](https://github.com/aedart/ion/pull/8).
 * Broken link in docs for `isArrayLike`.
+* Missing `tslib` as peer dependency for `@aedart/support` package.
+* Unable to merge arrays containing functions, in `MetaRepository`. 
+
+### Deprecated
+
+* `ConstructorOrAbstractConstructor` type alias. It has been replaced with the new `ConstructorLike` type., in `@aedart/constracts`.
 
 ## [0.10.0] - 2024-03-07
 

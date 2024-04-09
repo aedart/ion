@@ -1,4 +1,4 @@
-import type { Throwable } from "@aedart/contracts/support/exceptions";
+import type { ArrayMergeException } from "@aedart/contracts/support/arrays";
 import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
@@ -6,7 +6,7 @@ import { configureCustomError } from "@aedart/support/exceptions";
  *
  * To be thrown when two or more arrays are unable to be merged.
  */
-export default class ArrayMergeError extends Error implements Throwable
+export default class ArrayMergeError extends Error implements ArrayMergeException
 {
     /**
      * Create a new Array Merge Error instance

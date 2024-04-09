@@ -3,7 +3,7 @@ import type {
     ConcernConstructor,
     UsesConcerns
 } from "@aedart/contracts/support/concerns";
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import { configureCustomError } from "@aedart/support/exceptions";
 import { getNameOrDesc } from "@aedart/support/reflections";
 import InjectionError from "./InjectionError";
@@ -19,17 +19,26 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
      * The source, e.g. a parent class, in which a concern class
      * was already registered.
      *
-     * @readonly
-     * @private
+     * @type {ConstructorLike|UsesConcerns}
      *
-     * @type {ConstructorOrAbstractConstructor|UsesConcerns}
+     * @readonly
+     * @protected
      */
-    readonly #source: ConstructorOrAbstractConstructor | UsesConcerns;
+    protected readonly _source: ConstructorLike | UsesConcerns;
 
+    /**
+     * Create a new "already registered" error instance
+     * 
+     * @param {ConstructorLike | UsesConcerns} target
+     * @param {ConcernConstructor} concern
+     * @param {ConstructorLike | UsesConcerns} source
+     * @param {string} [message]
+     * @param {ErrorOptions} [options]
+     */
     constructor(
-        target: ConstructorOrAbstractConstructor | UsesConcerns,
+        target: ConstructorLike | UsesConcerns,
         concern: ConcernConstructor,
-        source: ConstructorOrAbstractConstructor | UsesConcerns,
+        source: ConstructorLike | UsesConcerns,
         message?: string,
         options?: ErrorOptions
     ) {
@@ -41,7 +50,7 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
 
         configureCustomError(this);
         
-        this.#source = source;
+        this._source = source;
         
         // Force set the source in the cause
         (this.cause as Record<PropertyKey, unknown>).source = source;
@@ -53,10 +62,10 @@ export default class AlreadyRegisteredError extends InjectionError implements Al
      *
      * @readonly
      *
-     * @returns {ConstructorOrAbstractConstructor | UsesConcerns}
+     * @returns {ConstructorLike | UsesConcerns}
      */
-    get source(): ConstructorOrAbstractConstructor | UsesConcerns
+    get source(): ConstructorLike | UsesConcerns
     {
-        return this.#source;
+        return this._source;
     }
 }

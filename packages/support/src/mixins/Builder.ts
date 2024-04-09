@@ -1,4 +1,4 @@
-import type { ConstructorOrAbstractConstructor } from "@aedart/contracts";
+import type { ConstructorLike } from "@aedart/contracts";
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
 
 /**
@@ -18,18 +18,21 @@ export default class Builder<T = object>
     /**
      * The target superclass
      * 
-     * @type {ConstructorOrAbstractConstructor<T>}
-     * @private
+     * @template T = object
+     * 
+     * @type {ConstructorLike<T>}
+     * 
+     * @protected
      */
-    readonly #superclass: ConstructorOrAbstractConstructor<T>;
+    protected readonly _superclass: ConstructorLike<T>;
 
     /**
      * Create a new Mixin Builder instance
      * 
-     * @param {ConstructorOrAbstractConstructor<T>} [superclass=class {}]
+     * @param {ConstructorLike<T>} [superclass=class {}]
      */
-    constructor(superclass:ConstructorOrAbstractConstructor<T> = class {} as ConstructorOrAbstractConstructor<T>) {
-        this.#superclass = superclass;
+    constructor(superclass:ConstructorLike<T> = class {} as ConstructorLike<T>) {
+        this._superclass = superclass;
     }
 
     /**
@@ -37,12 +40,12 @@ export default class Builder<T = object>
      * 
      * @param {...MixinFunction} mixins
      * 
-     * @return {ConstructorOrAbstractConstructor<T>} Subclass of given superclass with given mixins applied
+     * @return {ConstructorLike<T>} Subclass of given superclass with given mixins applied
      */
-    public with(...mixins: MixinFunction[]): ConstructorOrAbstractConstructor<T>
+    public with(...mixins: MixinFunction[]): ConstructorLike<T>
     {
         return mixins.reduce((
-            superclass: ConstructorOrAbstractConstructor,
+            superclass: ConstructorLike,
             mixin: MixinFunction<typeof superclass>
         ) => {
             // Return superclass, when mixin isn't a function.
@@ -52,7 +55,7 @@ export default class Builder<T = object>
 
             // Apply the mixin...
             return mixin(superclass);
-        }, this.#superclass as ConstructorOrAbstractConstructor) as ConstructorOrAbstractConstructor<T>;
+        }, this._superclass as ConstructorLike) as ConstructorLike<T>;
     }
 
     /**
@@ -63,12 +66,12 @@ export default class Builder<T = object>
      * 
      * @param {...MixinFunction} [mixins] Ignored
      *
-     * @return {ConstructorOrAbstractConstructor<T>} The superclass
+     * @return {ConstructorLike<T>} The superclass
      */
     public none(
         ...mixins: MixinFunction[] /* eslint-disable-line @typescript-eslint/no-unused-vars */
-    ): ConstructorOrAbstractConstructor<T>
+    ): ConstructorLike<T>
     {
-        return this.#superclass;
+        return this._superclass;
     }
 }

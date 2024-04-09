@@ -78,31 +78,28 @@ export default class TargetMetaRepository implements TargetRepository
      * Get value for given key
      *
      * @template T Return value type
-     * @template D=any Type of default value
+     * @template D=undefined Type of default value
      *
      * @param {object} target Class or class method target
      * @param {Key} key
      * @param {D} [defaultValue]
      *
-     * @return {T | D | undefined}
+     * @return {T | D}
      */
-    public get<
-        T,
-        D = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    >(target: object, key: Key, defaultValue?: D): T | D | undefined
+    public get<T, D = undefined>(target: object, key: Key, defaultValue?: D): T | D
     {
         // Find "target" meta address for given target object
         // or return the default value if none is found.
         const address: MetaAddress | undefined = this.find(target);
         if (address === undefined) {
-            return defaultValue;
+            return defaultValue as D;
         }
 
         // When an address was found, we must ensure that the meta
         // owner class still exists. If not, return default value.
         const owner: object | undefined = address[0]?.deref();
         if (owner === undefined) {
-            return defaultValue;
+            return defaultValue as D;
         }
 
         // Finally, use getMeta to obtain desired key.
@@ -137,6 +134,20 @@ export default class TargetMetaRepository implements TargetRepository
         return this.makeRepository(owner).has(
             mergeKeys(address[1], key),
         );
+    }
+
+    /**
+     * Determine there is any metadata associated with target
+     *
+     * @param {object} target
+     *
+     * @return {boolean}
+     */
+    public hasAny(target: object): boolean
+    {
+        const address: MetaAddress | undefined = this.find(target);
+        
+        return address !== undefined && address[0]?.deref() !== undefined;
     }
 
     /**

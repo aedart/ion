@@ -60,6 +60,8 @@ export type MergeCallback = (
 
     /**
      * The merge options to be applied
+     *
+     * @type {Readonly<MergeOptions>}
      */
     options: Readonly<MergeOptions>
 ) => any; /* eslint-disable-line @typescript-eslint/no-explicit-any */

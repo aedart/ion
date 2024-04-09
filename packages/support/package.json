@@ -38,10 +38,20 @@
             "import": "./dist/esm/concerns.js",
             "require": "./dist/cjs/concerns.cjs"
         },
+        "./container": {
+            "types": "./dist/types/container.d.ts",
+            "import": "./dist/esm/container.js",
+            "require": "./dist/cjs/container.cjs"
+        },
         "./exceptions": {
             "types": "./dist/types/exceptions.d.ts",
             "import": "./dist/esm/exceptions.js",
             "require": "./dist/cjs/exceptions.cjs"
+        },
+        "./facades": {
+            "types": "./dist/types/facades.d.ts",
+            "import": "./dist/esm/facades.js",
+            "require": "./dist/cjs/facades.cjs"
         },
         "./meta": {
             "types": "./dist/types/meta.d.ts",
@@ -76,7 +86,8 @@
     "peerDependencies": {
         "@aedart/contracts": "^0.10.0",
         "@types/lodash-es": "^4.17.12",
-        "lodash-es": "^4.17.21"
+        "lodash-es": "^4.17.21",
+        "tslib": "^2.6.2"
     },
     "scripts": {
         "compile": "rollup -c",

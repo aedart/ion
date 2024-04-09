@@ -23,21 +23,22 @@ export default class Merger implements ObjectsMerger
 {
     /**
      * The merge options to be applied
-     *
-     * @private
      * 
      * @type {Readonly<DefaultMergeOptions | MergeOptions>}
+     * 
+     * @protected
      */
-    #options: Readonly<DefaultMergeOptions | MergeOptions>;
+    protected _options: Readonly<DefaultMergeOptions | MergeOptions>;
 
     /**
      * Callback to perform the merging of nested objects.
      * 
-     * @private
-     * 
      * @type {NextCallback}
+     * 
+     * @protected
+     * @readonly
      */
-    readonly #next: NextCallback;
+    protected readonly _next: NextCallback;
     
     /**
      * Create a new objects merger instance
@@ -48,8 +49,8 @@ export default class Merger implements ObjectsMerger
      */
     public constructor(options?: MergeCallback | MergeOptions) {
         // @ts-expect-error Need to init options, however they are resolved via "using".
-        this.#options = null;
-        this.#next = this.merge;
+        this._options = null;
+        this._next = this.merge;
         
         this.using(options);
     }
@@ -61,7 +62,7 @@ export default class Merger implements ObjectsMerger
      */
     get options(): Readonly<DefaultMergeOptions | MergeOptions>
     {
-        return this.#options;
+        return this._options;
     }
 
     /**
@@ -69,7 +70,7 @@ export default class Merger implements ObjectsMerger
      */
     get nextCallback(): NextCallback
     {
-        return this.#next;
+        return this._next;
     }
     
     /**
@@ -83,7 +84,7 @@ export default class Merger implements ObjectsMerger
      */
     public using(options?: MergeCallback | MergeOptions): this
     {
-        this.#options = this.resolveOptions(options);
+        this._options = this.resolveOptions(options);
         
         return this;
     }

@@ -34,18 +34,15 @@ export default interface TargetRepository
      * Get value for given key
      *
      * @template T Return value type
-     * @template D=any Type of default value
+     * @template D=undefined Type of default value
      *
      * @param {object} target Class or class method target
      * @param {Key} key
      * @param {D} [defaultValue]
      *
-     * @return {T | D | undefined}
+     * @return {T | D}
      */
-    get<
-        T,
-        D = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    >(target: object, key: Key, defaultValue?: D): T | D | undefined;
+    get<T, D = undefined>(target: object, key: Key, defaultValue?: D): T | D;
 
     /**
      * Determine if value exists for key
@@ -57,6 +54,15 @@ export default interface TargetRepository
      */
     has(target: object, key: Key): boolean;
 
+    /**
+     * Determine there is any metadata associated with target
+     * 
+     * @param {object} target
+     * 
+     * @return {boolean}
+     */
+    hasAny(target: object): boolean;
+    
     /**
      * Inherit "target" meta from a base class.
      *

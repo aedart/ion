@@ -23,6 +23,20 @@ export default PagesCollection.make('v0.x', '/v0x', [
         children: [
             'packages/',
             {
+                text: 'Container',
+                collapsible: true,
+                children: [
+                    'packages/container/',
+                    'packages/container/prerequisites',
+                    'packages/container/install',
+                    'packages/container/container-instance',
+                    'packages/container/bindings',
+                    'packages/container/dependencies',
+                    'packages/container/resolving',
+                    'packages/container/contextual-bindings',
+                ]
+            },
+            {
                 text: 'Contracts',
                 collapsible: true,
                 children: [
@@ -75,6 +89,13 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/exceptions/configureStackTrace',
                             'packages/support/exceptions/getErrorMessage',
                             'packages/support/exceptions/customErrors',
+                        ]
+                    },
+                    {
+                        text: 'Facades',
+                        collapsible: true,
+                        children: [
+                            'packages/support/facades/',
                         ]
                     },
                     {
@@ -141,9 +162,13 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/reflections/hasAllMethods',
                             'packages/support/reflections/hasMethod',
                             'packages/support/reflections/hasPrototypeProperty',
+                            'packages/support/reflections/isCallable',
+                            'packages/support/reflections/isClassConstructor',
+                            'packages/support/reflections/isClassMethodReference',
                             'packages/support/reflections/isConstructor',
                             'packages/support/reflections/isKeySafe',
                             'packages/support/reflections/isKeyUnsafe',
+                            'packages/support/reflections/isMethod',
                             'packages/support/reflections/isSubclass',
                             'packages/support/reflections/isSubclassOrLooksLike',
                             'packages/support/reflections/isWeakKind',
@@ -164,6 +189,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/misc/toWeakRef',
                         ]
                     },
+                    'packages/support/CallbackWrapper',
                 ]
             },
             {

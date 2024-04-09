@@ -39,9 +39,10 @@ export default class MetaRepository implements Repository
      *
      * @type {object}
      * 
-     * @private
+     * @protected
+     * @readonly
      */
-    readonly #owner: object;
+    protected readonly _owner: object;
 
     /**
      * Create a new Meta Repository instance
@@ -49,7 +50,7 @@ export default class MetaRepository implements Repository
      * @param {object} owner
      */
     constructor(owner: object) {
-        this.#owner = owner;
+        this._owner = owner;
     }
 
     /**
@@ -71,7 +72,7 @@ export default class MetaRepository implements Repository
      */
     public get owner(): object
     {
-        return this.#owner;
+        return this._owner;
     }
 
     /**
@@ -140,17 +141,14 @@ export default class MetaRepository implements Repository
      * Get value for given key
      *
      * @template T Return value type
-     * @template D=any Type of default value
+     * @template D=undefined Type of default value
      *
      * @param {Key} key
      * @param {D} [defaultValue]
      *
-     * @return {T | D | undefined}
+     * @return {T | D}
      */
-    public get<
-        T,
-        D = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    >(key: Key, defaultValue?: D): T | D | undefined
+    public get<T, D = undefined>(key: Key, defaultValue?: D): T | D
     {
         return get(this.all(), key, defaultValue);
     }
@@ -248,10 +246,13 @@ export default class MetaRepository implements Repository
             get: () => {
                 // To ensure that metadata cannot be changed outside the scope and context of a
                 // meta decorator, a deep clone of the record is returned here.
-                return merge(
-                   Object.create(null),
-                registry.get(owner) || Object.create(null)
-                );
+                return merge()
+                    .using({
+                        arrayMergeOptions: {
+                            transferFunctions: true
+                        }
+                    })
+                    .of(Object.create(null), registry.get(owner) || Object.create(null))
             },
 
             // Ensure that the property cannot be deleted
