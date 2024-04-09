@@ -14,7 +14,7 @@ export default class Container extends Facade
      * than to provide a TypeScript return type for the `obtain()`
      * method._
      *
-     * @type {ServiceContainer}
+     * @type {import('@aedart/contracts/container').Container}
      * 
      * @protected
      * @static
