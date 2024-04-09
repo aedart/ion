@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2024-04-09
+
 ### Added
 
 * Service Container package (`@aedart/container`).
@@ -40,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Refactored all components that used deprecated `ConstructorOrAbstractConstructor` to use new `ConstructorLike` type alias.
 * Marked `isClassConstructor()` and `isCallable()` as stable, in `@aedart/support/reflections`.
 * Refactored / redesigned the array `merge()` to use a new `ArrayMerger` component, that allows custom merge callback and options.
+* Upgraded root package dependencies (_service update_).
 
 ### Fixed
 
@@ -47,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Broken link in docs for `isArrayLike`.
 * Missing `tslib` as peer dependency for `@aedart/support` package.
 * Unable to merge arrays containing functions, in `MetaRepository`. 
+* `NOTICE` file not included in distributions.
 
 ### Deprecated
 
@@ -312,7 +316,8 @@ the version command (_configured in root `lerna.json`_).
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.10.0...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.11.0...HEAD
+[0.11.0]: https://github.com/aedart/ion/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/aedart/ion/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/aedart/ion/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/aedart/ion/compare/0.7.0...0.8.0
