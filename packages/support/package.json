@@ -81,7 +81,8 @@
     },
     "files": [
         "dist",
-        "!dist/**/*.map"
+        "!dist/**/*.map",
+        "NOTICE"
     ],
     "peerDependencies": {
         "@aedart/contracts": "^0.10.0",

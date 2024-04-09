@@ -46,7 +46,8 @@
     },
     "files": [
         "dist",
-        "!dist/**/*.map"
+        "!dist/**/*.map",
+        "NOTICE"
     ],
     "peerDependencies": {
         "tslib": "^2.6.2"

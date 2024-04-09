@@ -84,7 +84,8 @@
     },
     "files": [
         "dist",
-        "!dist/**/*.map"
+        "!dist/**/*.map",
+        "NOTICE"
     ],
     "scripts": {
         "compile": "rollup -c",
