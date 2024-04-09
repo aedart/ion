@@ -25,6 +25,18 @@ export default abstract class Facade
     protected static container: Container | undefined = undefined;
 
     /**
+     * The "type" of the resolved object instance.
+     *
+     * **Note**: _This property is not used for anything other
+     * than to provide a TypeScript return type for the `obtain()`
+     * method._
+     * 
+     * @protected
+     * @static
+     */
+    protected static type: any;
+    
+    /**
      * Resolved instances
      * 
      * @type {Map<Identifier, any>}
@@ -68,9 +80,9 @@ export default abstract class Facade
      */
     public static getIdentifier(): Identifier
     {
-        throw new LogicalError('Facade does not implement the getAccessor() method');
+        throw new LogicalError('Facade does not implement the getIdentifier() method');
     }
-
+    
     /**
      * Obtain the underlying object instance, or a "spy" (for testing)
      *
@@ -88,10 +100,7 @@ export default abstract class Facade
      */
     public static obtain()
     {
-        // Use this method to resolve the binding from the service container.
-        // E.g. return this.resolveIdentifier<YOUR_COMPONENT_TYPE>();
-        
-        throw new LogicalError('Facade does not implement the get() method');
+        return this.resolve<typeof this.type>(this.getIdentifier());
     }
 
     /**
@@ -293,29 +302,6 @@ export default abstract class Facade
         this.forgetAllSpies();
         this.forgetAllResolved();
         this.forgetContainer();
-    }
-
-    /**
-     * Resolves the facade's underlying object instance from the service container.
-     * 
-     * @see resolve
-     * 
-     * @template T = any
-     * 
-     * @return {T}
-     *
-     * @throws {NotFoundException}
-     * @throws {ContainerException}
-     * @throws {LogicalError}
-     * 
-     * @protected
-     * @static
-     */
-    protected static resolveIdentifier<
-        T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    >(): T
-    {
-        return this.resolve<T>(this.getIdentifier());
     }
     
     /**

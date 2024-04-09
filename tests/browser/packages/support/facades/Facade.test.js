@@ -31,18 +31,6 @@ describe('@aedart/support/facades', () => {
                 .toThrowError(LogicalError);
         });
 
-        it('fails when obtain() not implemented', () => {
-
-            class MyFacade extends Facade {}
-
-            const callback = () => {
-                return MyFacade.obtain();
-            }
-
-            expect(callback)
-                .toThrowError(LogicalError);
-        });
-
         it('can set and get service container', () => {
             
             const container = new Container();
@@ -146,13 +134,6 @@ describe('@aedart/support/facades', () => {
                 static getIdentifier()
                 {
                     return 'my_identifier';    
-                }
-
-                /**
-                 * @return {Foo}
-                 */
-                static obtain() {
-                    return this.resolveIdentifier();
                 }
             }
 
