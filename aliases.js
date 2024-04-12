@@ -33,6 +33,9 @@ module.exports = {
             '@aedart/contracts/support/reflections': path.resolve(__dirname, './packages/contracts/support/reflections'),
             '@aedart/contracts/support': path.resolve(__dirname, './packages/contracts/support'),
             '@aedart/contracts': path.resolve(__dirname, './packages/contracts/src'),
+
+            // core
+            '@aedart/core': path.resolve(__dirname, './packages/core/src'),
             
             // support
             '@aedart/support': path.resolve(__dirname, './packages/support/src'),

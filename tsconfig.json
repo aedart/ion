@@ -46,6 +46,9 @@
             "@aedart/contracts/*": [
                 "./packages/contracts/src/*"
             ],
+            "@aedart/core/*": [
+                "./packages/core/src/*"
+            ],
             "@aedart/support/*": [
                 "./packages/support/src/*"
             ],
@@ -153,6 +156,9 @@
         },
         {
             "path": "./packages/contracts"
+        },
+        {
+            "path": "./packages/core"
         },
         {
             "path": "./packages/support"
