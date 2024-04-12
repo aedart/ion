@@ -14,7 +14,7 @@ export function unwrap(wrapped: MixinFunction): MixinFunction
     // @see https://github.com/justinfagnani/mixwith.js
     
     if (Reflect.has(wrapped, WRAPPED_MIXIN)) {
-        return wrapped[WRAPPED_MIXIN];
+        return wrapped[WRAPPED_MIXIN as keyof typeof wrapped];
     }
 
     return wrapped;

@@ -16,5 +16,5 @@ export function isApplicationOf(proto: object, mixin: MixinFunction): boolean
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
     
-    return Reflect.has(proto, APPLIED_MIXIN) && proto[APPLIED_MIXIN] === unwrap(mixin);
+    return Reflect.has(proto, APPLIED_MIXIN) && proto[APPLIED_MIXIN as keyof typeof proto] === unwrap(mixin);
 }

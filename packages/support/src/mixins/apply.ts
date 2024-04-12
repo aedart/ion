@@ -1,3 +1,4 @@
+import type { AbstractConstructor } from "@aedart/contracts";
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { APPLIED_MIXIN } from "@aedart/contracts/support/mixins";
 import { unwrap } from "./unwrap";
@@ -15,7 +16,7 @@ export function apply(superclass: object, mixin: MixinFunction): object
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
     
-    const application: object = mixin(superclass);
+    const application = mixin(superclass as AbstractConstructor);
     
     Reflect.set(application.prototype, APPLIED_MIXIN, unwrap(mixin));
     

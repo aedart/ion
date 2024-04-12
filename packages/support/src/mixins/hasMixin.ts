@@ -20,7 +20,7 @@ export function hasMixin(target: object, mixin: MixinFunction): boolean
             return true;
         }
         
-        target = Reflect.getPrototypeOf(target);
+        target = Reflect.getPrototypeOf(target) as object;
     }
     
     return false;

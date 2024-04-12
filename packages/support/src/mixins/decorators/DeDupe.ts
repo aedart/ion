@@ -1,3 +1,4 @@
+import type { AbstractConstructor } from "@aedart/contracts";
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { wrap } from "../wrap";
 import { hasMixin } from "../hasMixin";
@@ -15,9 +16,9 @@ export const DeDupe = function(mixin: MixinFunction): MixinFunction
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
     
-    return wrap(mixin, (superclass: object) => {
+    return wrap(mixin, (superclass: AbstractConstructor) => {
         return hasMixin(superclass.prototype, mixin)
             ? superclass
-            : mixin(superclass);
+            : mixin(superclass as AbstractConstructor);
     });
 }

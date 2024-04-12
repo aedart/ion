@@ -1,3 +1,4 @@
+import type { AbstractConstructor } from "@aedart/contracts";
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { CACHED_APPLICATIONS } from "@aedart/contracts/support/mixins";
 import { wrap } from "../wrap";
@@ -20,10 +21,10 @@ export const Cached = function(mixin: MixinFunction): MixinFunction
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
     
-    return wrap(mixin, (superclass: object) => {
+    return wrap(mixin, (superclass: AbstractConstructor) => {
         // Attempt to resolve "cached applications" map, or make a new map if none exists in superclass...
         let cachedApplications: WeakMap<MixinFunction, object> | undefined = Reflect.has(superclass, CACHED_APPLICATIONS)
-            ? superclass[CACHED_APPLICATIONS]
+            ? superclass[CACHED_APPLICATIONS as keyof typeof superclass]
             : undefined;
 
         if (cachedApplications === undefined) {
@@ -34,10 +35,10 @@ export const Cached = function(mixin: MixinFunction): MixinFunction
         // Retrieve the cached "application" from cache, or cache it...
         let application: object | undefined = cachedApplications.get(mixin);
         if (application === undefined) {
-            application = mixin(superclass);
+            application = mixin(superclass as AbstractConstructor);
             cachedApplications.set(mixin, application);
         }
         
-        return application as MixinFunction;
+        return application as AbstractConstructor;
     });
 }
