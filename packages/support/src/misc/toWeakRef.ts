@@ -21,5 +21,5 @@ export function toWeakRef<T extends WeakKey>(target: WeakRef<T> | T | undefined)
         return target;
     }
     
-    return new WeakRef<T>(target);
+    return new WeakRef<T>(target as T);
 }
