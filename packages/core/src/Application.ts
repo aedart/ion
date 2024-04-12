@@ -29,10 +29,10 @@ export default class Application extends Container implements ApplicationContrac
      */
     public static setInstance(container: ApplicationContract | null = null): ApplicationContract | null
     {
-        const application = super.setInstance(container) as ApplicationContract;
-        
+        const application = super.setInstance(container) as ApplicationContract | null;
+
         // Register core application bindings
-        if (container !== null) {
+        if (application !== null) {
             application.instance(CORE, this);
             application.instance(CONTAINER, this);   
         }
