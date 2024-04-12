@@ -1,6 +1,8 @@
 import type {
     Application as ApplicationContract
 } from "@aedart/contracts/core";
+import { CORE } from "@aedart/contracts/core";
+import { CONTAINER } from "@aedart/contracts/container";
 import { Container } from "@aedart/container";
 
 /**
@@ -27,6 +29,14 @@ export default class Application extends Container implements ApplicationContrac
      */
     public static setInstance(container: ApplicationContract | null = null): ApplicationContract | null
     {
-        return super.setInstance(container);
+        const application = super.setInstance(container) as ApplicationContract;
+        
+        // Register core application bindings
+        if (container !== null) {
+            application.instance(CORE, this);
+            application.instance(CONTAINER, this);   
+        }
+
+        return application;
     }
 }
