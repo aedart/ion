@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Various internal types in `@aedart/support/*` submodules.
-* Es-lint warning for `type: any` property in `Facade`, in `@aedart/support/facades`
+* Es-lint warning for `type: any` property in `Facade`, in `@aedart/support/facades`.
 * Test suite name(s) for container related tests.
 
 ## [0.11.0] - 2024-04-09
