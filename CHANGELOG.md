@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* Missing type cast in `toWeakRef`.
 * Test suite name(s) for container related tests.
 
 ## [0.11.0] - 2024-04-09
