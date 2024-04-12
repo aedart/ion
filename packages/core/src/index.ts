@@ -1,5 +1,4 @@
-/**
- * TODO: Replace this...
- * @type {string}
- */
-export const TODO = 'todo';
+import Application from "./Application";
+export {
+    Application,
+}
