@@ -1,6 +1,6 @@
 import { Container } from "@aedart/container";
 
-describe('@aedart/support/container', () => {
+describe('@aedart/container', () => {
     describe('getInstance', () => {
 
         it('returns singleton instance', () => {

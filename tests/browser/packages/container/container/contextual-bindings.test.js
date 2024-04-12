@@ -1,7 +1,7 @@
 import { Container } from "@aedart/container";
 import { dependencies } from "@aedart/support/container";
 
-describe('@aedart/support/container', () => {
+describe('@aedart/container', () => {
     describe('addContextualBinding', () => {
 
         it('register and resolve contextual binding', () => {

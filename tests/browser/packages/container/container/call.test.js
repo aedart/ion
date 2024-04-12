@@ -3,7 +3,7 @@ import { DEPENDENCIES } from "@aedart/contracts/container";
 import { dependencies } from "@aedart/support/container";
 import { CallbackWrapper } from "@aedart/support";
 
-describe('@aedart/support/container', () => {
+describe('@aedart/container', () => {
     describe('call', () => {
 
         it('fails when unsupported type given as "method" argument', () => {

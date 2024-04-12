@@ -1,6 +1,6 @@
 import { Container } from "@aedart/container";
 
-describe('@aedart/support/container', () => {
+describe('@aedart/container', () => {
     describe('alias', () => {
 
         it('can register alias for binding', () => {

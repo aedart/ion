@@ -1,6 +1,6 @@
 import { Container } from "@aedart/container";
 
-describe('@aedart/support/container', () => {
+describe('@aedart/container', () => {
     describe('instance', () => {
 
         it('can register existing instance', () => {

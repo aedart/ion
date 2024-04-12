@@ -1,6 +1,6 @@
 import { Container } from "@aedart/container";
 
-describe('@aedart/support/container', () => {
+describe('@aedart/container', () => {
     describe('rebinding', () => {
 
         it('invokes rebound-callback when resolved binding is rebound', () => {

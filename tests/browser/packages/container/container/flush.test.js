@@ -1,6 +1,6 @@
 import { Container } from "@aedart/container";
 
-describe('@aedart/support/container', () => {
+describe('@aedart/container', () => {
     describe('flush', () => {
 
         it('flushes bindings, instances, aliases and resolved', () => {
