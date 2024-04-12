@@ -34,7 +34,7 @@ export default abstract class Facade
      * @protected
      * @static
      */
-    protected static type: any;
+    protected static type: any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
     
     /**
      * Resolved instances
