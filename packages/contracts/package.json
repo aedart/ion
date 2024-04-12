@@ -36,6 +36,11 @@
             "import": "./dist/esm/container.js",
             "require": "./dist/cjs/container.cjs"
         },
+        "./core": {
+            "types": "./dist/types/core.d.ts",
+            "import": "./dist/esm/core.js",
+            "require": "./dist/cjs/core.cjs"
+        },
         "./support": {
             "types": "./dist/types/support.d.ts",
             "import": "./dist/esm/support.js",
