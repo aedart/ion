@@ -1,5 +1,4 @@
-import { ServiceProvider } from "@aedart/support/services";
-import { isServiceProviderConstructor } from "@aedart/support/services";
+import { isServiceProviderConstructor, ServiceProvider } from "@aedart/support/services";
 
 describe('@aedart/support/services', () => {
     describe('isServiceProviderConstructor()', () => {
