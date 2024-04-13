@@ -293,7 +293,11 @@ conditions of the included 3rd party software, in the directory where it has bee
     The Facade abstraction is an adaptation of Laravel Facade class.
 
     See https://github.com/laravel/framework/blob/master/src/Illuminate/Support/Facades/Facade.php
-    
+@aedart/support/services (ServiceProvider)
+    The service provider abstraction is an adaptation of Laravel's version thereof.
+
+    See https://github.com/laravel/framework/blob/11.x/src/Illuminate/Support/ServiceProvider.php
+
     License MIT, Copyright (c) Taylor Otwell. 
 
     This part of the NOTICE file corresponds to terms and conditions set by the MIT License

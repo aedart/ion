@@ -19,7 +19,11 @@ conditions of the included 3rd party software, in the directory where it has bee
     The service container interface is heavily inspired by Laravel's Container
 
     See https://github.com/laravel/framework/blob/master/src/Illuminate/Contracts/Container/Container.php
-    
+@aedart/contracts/services (ServiceProvider)
+    The service provider interface is inspired by Laravel's abstract Service Provider class.
+
+    See https://github.com/laravel/framework/blob/11.x/src/Illuminate/Support/ServiceProvider.php
+
     License MIT, Copyright (c) Taylor Otwell. 
 
     This part of the NOTICE file corresponds to terms and conditions set by the MIT License
