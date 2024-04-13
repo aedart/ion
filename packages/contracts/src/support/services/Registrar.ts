@@ -76,6 +76,15 @@ export default interface Registrar
     bootMultiple(providers: ServiceProvider[]): Promise<boolean>;
 
     /**
+     * Boot all registered service providers
+     *
+     * **Note**: _Method skips providers that have already been booted!_
+     * 
+     * @returns {Promise<boolean>}
+     */
+    bootAll(): Promise<boolean>;
+    
+    /**
      * Determine if service provider has already been booted
      * 
      * @param {ServiceProvider} provider
