@@ -1,6 +1,4 @@
-/**
- * TODO: Replace this...
- * 
- * @type {string}
- */
-export const TODO = 'TODO';
+import ServiceProvider from "./ServiceProvider";
+export {
+    ServiceProvider,
+}
