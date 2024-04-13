@@ -85,6 +85,11 @@
             "types": "./dist/types/support/reflections.d.ts",
             "import": "./dist/esm/support/reflections.js",
             "require": "./dist/cjs/support/reflections.cjs"
+        },
+        "./support/services": {
+            "types": "./dist/types/support/services.d.ts",
+            "import": "./dist/esm/support/services.js",
+            "require": "./dist/cjs/support/services.cjs"
         }
     },
     "files": [
