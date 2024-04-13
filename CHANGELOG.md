@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Core `Application` in `@aedart/core` (_new package_).
+* `@aedart/support/services` (_new submodule_).
+* Abstract `ServiceProvider` in `@aedart/support/services`.
+* `isServiceProviderConstructor()` util in `@aedart/support/services`.
 
 ### Fixed
 
