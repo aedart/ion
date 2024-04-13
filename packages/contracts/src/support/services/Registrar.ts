@@ -1,7 +1,6 @@
 import ServiceProvider from "./ServiceProvider";
 import ServiceProviderConstructor from "./ServiceProviderConstructor";
 
-
 /**
  * Service Registrar
  * 
