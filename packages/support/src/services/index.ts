@@ -6,3 +6,5 @@ export {
 export * from "./isServiceProvider";
 export * from "./isServiceProviderConstructor";
 export * from "./ServiceProviderClassBlueprint"
+
+export * from './exceptions/index';
