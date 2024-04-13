@@ -32,6 +32,7 @@ module.exports = {
             '@aedart/contracts/support/mixins': path.resolve(__dirname, './packages/contracts/support/mixins'),
             '@aedart/contracts/support/objects': path.resolve(__dirname, './packages/contracts/support/objects'),
             '@aedart/contracts/support/reflections': path.resolve(__dirname, './packages/contracts/support/reflections'),
+            '@aedart/contracts/support/services': path.resolve(__dirname, './packages/contracts/support/services'),
             '@aedart/contracts/support': path.resolve(__dirname, './packages/contracts/support'),
             '@aedart/contracts': path.resolve(__dirname, './packages/contracts/src'),
 
