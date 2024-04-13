@@ -23,12 +23,16 @@ export default interface Registrar
 
     /**
      * Register multiple service providers
+     *
+     * **Note**: _Method skips providers that have already been registered!_
      * 
      * @param {(ServiceProvider | ServiceProviderConstructor)[]} providers
      * @param {boolean} [boot=true]
      * @param {boolean} [safe=true] If true, given providers are only booted after all providers have been registered.
      * 
      * @returns {Promise<boolean>}
+     * 
+     * @async
      */
     registerMultiple(providers: (ServiceProvider | ServiceProviderConstructor)[], boot?: boolean, safe?: boolean): Promise<boolean>;
 
