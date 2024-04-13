@@ -11,3 +11,5 @@ export {
     type ServiceProvider,
     type ServiceProviderConstructor,
 }
+
+export * from './exceptions/index';
