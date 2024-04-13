@@ -77,6 +77,11 @@
             "types": "./dist/types/reflections.d.ts",
             "import": "./dist/esm/reflections.js",
             "require": "./dist/cjs/reflections.cjs"
+        },
+        "./services": {
+            "types": "./dist/types/services.d.ts",
+            "import": "./dist/esm/services.js",
+            "require": "./dist/cjs/services.cjs"
         }
     },
     "files": [

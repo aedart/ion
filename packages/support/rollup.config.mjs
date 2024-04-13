@@ -15,5 +15,6 @@ export default createConfig({
         '@aedart/contracts/support/mixins',
         '@aedart/contracts/support/objects',
         '@aedart/contracts/support/reflections',
+        '@aedart/contracts/support/services',
     ]
 });
