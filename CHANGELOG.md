@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Core `Application` in `@aedart/core` (_new package_).
+
 ### Fixed
 
 * Various internal types in `@aedart/support/*` submodules.
