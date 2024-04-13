@@ -13,4 +13,13 @@ export default interface ServiceProvider
      * @return {void}
      */
     register(): void;
+
+    /**
+     * Boot this service provider
+     * 
+     * @returns {Promise<boolean>}
+     * 
+     * @async
+     */
+    boot(): Promise<boolean>;
 }

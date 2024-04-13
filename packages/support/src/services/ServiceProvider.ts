@@ -38,4 +38,18 @@ export default abstract class ServiceProvider implements ServiceProviderContract
     {
         // Overwrite this method to register services...
     }
+
+    /**
+     * Boot this service provider
+     *
+     * @returns {Promise<boolean>}
+     *
+     * @async
+     */
+    public async boot(): Promise<boolean>
+    {
+        // Overwrite this method to perform boot logic...
+        
+        return Promise.resolve(true);
+    }
 }
