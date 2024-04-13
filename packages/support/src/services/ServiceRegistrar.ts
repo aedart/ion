@@ -5,10 +5,12 @@ import type {
 } from "@aedart/contracts/support/services";
 import type { Application } from "@aedart/contracts/core";
 import type { ConstructorLike } from "@aedart/contracts";
+import { getNameOrDesc } from "@aedart/support/reflections";
+import { getErrorMessage } from "@aedart/support/exceptions";
+import BootError from "./exceptions/BootError";
 import RegistrationError from "./exceptions/RegistrationError";
 import { isServiceProvider } from "./isServiceProvider";
 import { isServiceProviderConstructor } from "./isServiceProviderConstructor";
-import { getNameOrDesc } from "@aedart/support/reflections";
 
 /**
  * Service Registrar
@@ -24,6 +26,24 @@ export default class ServiceRegistrar implements Registrar
      */
     protected app: Application;
 
+    /**
+     * The registered service providers
+     * 
+     * @type {Set<ServiceProvider>}
+     * 
+     * @protected
+     */
+    protected registeredProviders: Set<ServiceProvider> = new Set();
+
+    /**
+     * Booted service providers
+     * 
+     * @type {WeakSet<ServiceProvider>}
+     * 
+     * @protected
+     */
+    protected bootedProviders: WeakSet<ServiceProvider> = new WeakSet();
+    
     /**
      * Create a new Service Registrar instance
      * 
@@ -44,10 +64,22 @@ export default class ServiceRegistrar implements Registrar
      *
      * @async
      */
-    public register(provider: ServiceProvider | ServiceProviderConstructor, boot?: boolean): Promise<boolean>
+    public async register(provider: ServiceProvider | ServiceProviderConstructor, boot: boolean = true): Promise<boolean>
     {
-        // TODO:
-        return Promise.resolve(false);
+        if (this.isRegistered(provider)) {
+            return Promise.resolve(false); 
+        }
+        
+        // Resolve and register provider
+        provider = this.resolveProvider(provider);
+        this.performRegistration(provider);
+        
+        // Boot if required
+        if (boot) {
+            await this.boot(provider);
+        }
+
+        return Promise.resolve(true);
     }
 
     /**
@@ -63,10 +95,27 @@ export default class ServiceRegistrar implements Registrar
      *
      * @async
      */
-    public registerMultiple(providers: (ServiceProvider | ServiceProviderConstructor)[], boot?: boolean, safe?: boolean): Promise<boolean>
+    public async registerMultiple(
+        providers: (ServiceProvider | ServiceProviderConstructor)[],
+        boot: boolean = true,
+        safe: boolean = true
+    ): Promise<boolean>
     {
-        // TODO:
-        return Promise.resolve(false);
+        // Determine if provider should be booted immediately.
+        const bootImmediately: boolean = boot && !safe;
+        
+        for (const provider of providers) {
+            await this.register(provider, bootImmediately);
+        }
+        
+        // When requested booted safely, all registered providers must be
+        // attempted booted, because given providers could just be class
+        // constructors, and not provider instances!
+        if (boot && safe) {
+            await this.bootMultiple(this.registered);
+        }
+
+        return Promise.resolve(true);
     }
 
     /**
@@ -78,7 +127,20 @@ export default class ServiceRegistrar implements Registrar
      */
     public isRegistered(provider: ServiceProvider | ServiceProviderConstructor): boolean
     {
-        // TODO:
+        if (this.isServiceProvider(provider)) {
+            return this.registeredProviders.has(provider as ServiceProvider);
+        }
+
+        if (!this.isServiceProviderConstructor(provider)) {
+            return false;
+        }
+        
+        for (const registered of this.registeredProviders) {
+            if (registered instanceof (provider as ConstructorLike)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -89,8 +151,7 @@ export default class ServiceRegistrar implements Registrar
      */
     public get registered(): ServiceProvider[]
     {
-        // TODO: 
-        return [];
+        return Array.from(this.registeredProviders);
     }
 
     /**
@@ -102,10 +163,36 @@ export default class ServiceRegistrar implements Registrar
      *
      * @async
      */
-    public boot(provider: ServiceProvider): Promise<boolean>
+    public async boot(provider: ServiceProvider): Promise<boolean>
     {
-        // TODO:
-        return Promise.resolve(false);
+        if (this.hasBooted(provider)) {
+            return Promise.resolve(false);
+        }
+
+        // TODO: start boot timeout? Fail if timeout exceeded?
+        
+        let wasBooted = false;
+        
+        try {
+
+            // TODO: Call "before" boot callbacks (booting)?
+            
+            wasBooted = await provider.boot();
+
+            // TODO: Call "after" boot callbacks (booted)?
+        } catch (e) {
+            const reason: string = getErrorMessage(e);
+            const msg: string = `Unable to boot provider ${getNameOrDesc(provider.constructor as ConstructorLike)}: ${reason}`;
+            throw new BootError(msg, { cause: { provider: provider, previous: e } });
+        }
+
+        if (wasBooted) {
+            this.markAsBooted(provider);
+        }
+
+        // TODO: Clear timeout?
+        
+        return Promise.resolve(wasBooted);
     }
 
     /**
@@ -119,12 +206,27 @@ export default class ServiceRegistrar implements Registrar
      *
      * @async
      */
-    public bootMultiple(providers: ServiceProvider[]): Promise<boolean>
+    public async bootMultiple(providers: ServiceProvider[]): Promise<boolean>
     {
-        // TODO:
-        return Promise.resolve(false);
+        for (const provider of providers) {
+            await this.boot(provider);
+        }
+        
+        return Promise.resolve(true);
     }
 
+    /**
+     * Boot all registered service providers
+     *
+     * **Note**: _Method skips providers that have already been booted!_
+     *
+     * @returns {Promise<boolean>}
+     */
+    public async bootAll(): Promise<boolean>
+    {
+        return this.bootMultiple(this.registered);
+    }
+    
     /**
      * Determine if service provider has already been booted
      *
@@ -134,8 +236,7 @@ export default class ServiceRegistrar implements Registrar
      */
     public hasBooted(provider: ServiceProvider): boolean
     {
-        // TODO:
-        return false;
+        return this.bootedProviders.has(provider);
     }
 
     /**
@@ -145,8 +246,11 @@ export default class ServiceRegistrar implements Registrar
      */
     public get booted(): ServiceProvider[]
     {
-        // TODO:
-        return [];
+        const registered = this.registered;
+        
+        return registered.filter((provider: ServiceProvider) => {
+            return this.hasBooted(provider);
+        });
     }
 
     /**
@@ -160,15 +264,97 @@ export default class ServiceRegistrar implements Registrar
      */
     public resolveProvider(provider: ServiceProvider | ServiceProviderConstructor): ServiceProvider
     {
-        if (isServiceProvider(provider)) {
+        if (this.isServiceProvider(provider)) {
             return provider as ServiceProvider;
         }
         
-        if (isServiceProviderConstructor(provider)) {
+        if (this.isServiceProviderConstructor(provider)) {
             return new (provider as ServiceProviderConstructor)(this.app);
         }
 
         const msg = `Unable to resolve service provider: ${getNameOrDesc(provider as ConstructorLike)} is not a valid service provider`;
         throw new RegistrationError(msg, { cause: { provider: provider } });
+    }
+
+    /**
+     * Performs registration of given service provider
+     * 
+     * @param {ServiceProvider} provider
+     * 
+     * @return {void}
+     *
+     * @throws {RegistrationError}
+     * 
+     * @protected
+     */
+    protected performRegistration(provider: ServiceProvider): void
+    {
+        try {
+            provider.register();
+        } catch (e) {
+            const reason: string = getErrorMessage(e);
+            const msg: string = `Unable to register provider ${getNameOrDesc(provider.constructor as ConstructorLike)}: ${reason}`; 
+            throw new RegistrationError(msg, { cause: { provider: provider, previous: e } });
+        }
+
+        this.markAsRegistered(provider);
+    }
+
+    /**
+     * Mark service provider as "registered"
+     * 
+     * @param {ServiceProvider} provider
+     * 
+     * @return {void}
+     * 
+     * @protected
+     */
+    protected markAsRegistered(provider: ServiceProvider): void
+    {
+        this.registeredProviders.add(provider);
+    }
+
+    /**
+     * Mark service provider as "booted"
+     * 
+     * @param {ServiceProvider} provider
+     * 
+     * @return {void}
+     * 
+     * @protected
+     */
+    protected markAsBooted(provider: ServiceProvider): void
+    {
+        this.bootedProviders.add(provider);
+    }
+    
+    /**
+     * Determine if instance is a service provider
+     * 
+     * @param {object} instance
+     * 
+     * @returns {boolean}
+     * 
+     * @protected
+     */
+    protected isServiceProvider(instance: object): boolean
+    {
+        return isServiceProvider(instance);
+    }
+
+    /**
+     * Determine if target is a service provider class constructor
+     * 
+     * @param {any} target
+     * 
+     * @returns {boolean}
+     * 
+     * @protected
+     */
+    protected isServiceProviderConstructor(
+        target: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): boolean
+    {
+        return isServiceProviderConstructor(target);
     }
 }
