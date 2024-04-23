@@ -18,6 +18,7 @@ packages/*/dist/*
 /packages/*/src/**/*.d.ts
 /packages/*/src/**/*.d.ts.map
 !/packages/*/src/**/shim.d.ts
+packages/*/node_modules/*
 
 # Vuepress
 docs/.vuepress/.temp
