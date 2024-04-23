@@ -348,7 +348,12 @@ export function typescriptPlugin(options = {})
         
         // Set to true to disable the cache and do a clean build.
         // This also wipes any existing cache.
-        clean: true,
+        clean: false,
+
+        // TypeScript to save information about the project graph from the last compilation to files
+        // stored on disk. Should be true, if composite set to true.
+        incremental: true,
+        composite: true,
 
         // If true, declaration files will be emitted in the declarationDir given in the tsconfig.
         // If false, declaration files will be placed inside the destination directory given in
