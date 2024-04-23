@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Abstract `ServiceProvider` in `@aedart/support/services`.
 * `isServiceProviderConstructor()` and `isServiceProvider()` utils in `@aedart/support/services`.
 
+### Changed
+
+* TypeScript compile options now use `composite: true`, `incremental: true` and `clean: false` settings, in `shared/rollup.config.mjs` (_decreases build duration_).
+
 ### Fixed
 
 * Various internal types in `@aedart/support/*` submodules.
