@@ -1,7 +1,7 @@
 import { ServiceProvider, ServiceRegistrar } from "@aedart/support/services";
 import { Application } from "@aedart/core";
 
-describe('@aedart/support/services', () => {
+fdescribe('@aedart/support/services', () => {
     describe('Registrar', () => {
         describe('boot()', () => {
 
@@ -77,6 +77,8 @@ describe('@aedart/support/services', () => {
                     .withContext('Service provider is not marked as booted')
                     .toBeTrue();
             });
+            
+            // TODO: Test of Boot failure error...
         });
     });
 });
