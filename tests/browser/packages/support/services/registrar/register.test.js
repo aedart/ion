@@ -1,4 +1,4 @@
-import { ServiceProvider, ServiceRegistrar, RegistrationError } from "@aedart/support/services";
+import { ServiceProvider, ServiceRegistrar } from "@aedart/support/services";
 import { Application } from "@aedart/core";
 
 describe('@aedart/support/services', () => {
