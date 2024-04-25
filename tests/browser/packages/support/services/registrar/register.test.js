@@ -41,6 +41,24 @@ describe('@aedart/support/services', () => {
                     .withContext('Service provider is not marked as registered')
                     .toBeTrue();
             });
+
+            it('does not register service provider if already registered', async () => {
+                class A extends ServiceProvider {}
+
+                const registrar = new ServiceRegistrar(new Application());
+
+                // ------------------------------------------------------------------------- //
+
+                const resultA = await registrar.register(A, false);
+                const resultB = await registrar.register(A, false);
+
+                expect(resultA)
+                    .toBeTrue();
+
+                expect(resultB)
+                    .withContext('Already registered service provider was re-registered, but should not be!')
+                    .toBeFalse();
+            });
         });
     });
 });
