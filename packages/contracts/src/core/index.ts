@@ -15,8 +15,12 @@ export const CORE: unique symbol = Symbol('@aedart/contracts/core');
 export const APPLICATION: symbol = CORE;
 
 import Application from "./Application";
+import Bootstrapper from "./Bootstrapper";
+import BootstrapperConstructor from "./BootstrapperConstructor";
 export {
     type Application,
+    type Bootstrapper,
+    type BootstrapperConstructor
 }
 
 export * from './types';
