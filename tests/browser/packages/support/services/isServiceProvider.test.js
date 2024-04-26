@@ -11,6 +11,11 @@ describe('@aedart/support/services', () => {
                 register() {}
 
                 boot() {}
+
+                before() {}
+                after() {}
+                callBeforeCallbacks() {}
+                callAfterCallbacks() {}
             }
 
             class C extends B {}
