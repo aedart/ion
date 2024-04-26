@@ -52,7 +52,7 @@ export default class Application extends Container implements ApplicationContrac
         // Register core application bindings
         if (application !== null) {
             application.instance(CORE, this);
-            application.instance(CONTAINER, this);   
+            application.alias(CORE, CONTAINER);
         }
 
         return application;
