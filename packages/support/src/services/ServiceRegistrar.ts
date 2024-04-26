@@ -174,20 +174,21 @@ export default class ServiceRegistrar implements Registrar
         let wasBooted = false;
         
         try {
-
-            // TODO: Call "before" boot callbacks (booting)?
+            // Call "before" boot callbacks (booting)
+            provider.callBeforeCallbacks();
             
             wasBooted = await provider.boot();
 
-            // TODO: Call "after" boot callbacks (booted)?
+            // Call "after" boot callbacks if provider was booted.
+            if (wasBooted) {
+                this.markAsBooted(provider);
+
+                provider.callAfterCallbacks();    
+            }
         } catch (e) {
             const reason: string = getErrorMessage(e);
             const msg: string = `Unable to boot provider ${getNameOrDesc(provider.constructor as ConstructorLike)}: ${reason}`;
             throw new BootError(msg, { cause: { provider: provider, previous: e } });
-        }
-
-        if (wasBooted) {
-            this.markAsBooted(provider);
         }
 
         // TODO: Clear timeout?
