@@ -1,7 +1,7 @@
-import { ServiceProvider, ServiceRegistrar } from "@aedart/support/services";
+import { ServiceProvider, ServiceRegistrar, BootError } from "@aedart/support/services";
 import { Application } from "@aedart/core";
 
-fdescribe('@aedart/support/services', () => {
+describe('@aedart/support/services', () => {
     describe('Registrar', () => {
         describe('boot()', () => {
 
@@ -77,8 +77,33 @@ fdescribe('@aedart/support/services', () => {
                     .withContext('Service provider is not marked as booted')
                     .toBeTrue();
             });
-            
-            // TODO: Test of Boot failure error...
+
+            it('throws boot error when service provider fails booting', async () => {
+                class A extends ServiceProvider {
+                    boot() {
+                        throw new Error('N/A');
+                    }
+                }
+
+                const app = new Application();
+                const registrar = new ServiceRegistrar(app);
+
+                // ------------------------------------------------------------------------- //
+
+                let thrown = false;
+                try {
+                    await registrar.register(A);
+                } catch (e) {
+                    thrown = true;
+                    
+                    expect(e)
+                        .toBeInstanceOf(BootError);
+                }
+                
+                expect(thrown)
+                    .withContext('Boot Error not thrown')
+                    .toBeTrue();
+            });
         });
     });
 });
