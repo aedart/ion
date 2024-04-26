@@ -11,6 +11,11 @@ conditions of the included 3rd party software, in the directory where it has bee
 "node_modules" directory.  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+@aedart/contracts/core (Application)
+    The Application interface is an adaptation of Laravel's Foundation Application interface.
+
+    See https://github.com/laravel/framework/blob/11.x/src/Illuminate/Contracts/Foundation/Application.php
+
 @aedart/contracts/support (Arrayable)
     The Arrayable interface is an interface is an adaptation of Laravel's Arrayable interface.
 
