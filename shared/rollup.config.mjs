@@ -15,6 +15,7 @@ import fs, {readFileSync} from "fs";
 import dts from "rollup-plugin-dts";
 import del from 'rollup-plugin-delete'
 import vue from 'rollup-plugin-vue';
+import json from '@rollup/plugin-json'
 import scss from 'rollup-plugin-scss';
 
 /**
@@ -176,6 +177,7 @@ export function makeMainExport(schema, external = [], outputFormats = [], overwr
         plugins: [
             //vuePlugin(),
             //scssPlugin(),
+            json(),
             typescriptPlugin()
         ]
     }, overwrites);
