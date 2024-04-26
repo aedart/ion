@@ -177,7 +177,9 @@ export function makeMainExport(schema, external = [], outputFormats = [], overwr
         plugins: [
             //vuePlugin(),
             //scssPlugin(),
-            json(),
+            json({
+                preferConst: true
+            }),
             typescriptPlugin()
         ]
     }, overwrites);
