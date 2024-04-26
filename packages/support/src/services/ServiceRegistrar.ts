@@ -169,8 +169,6 @@ export default class ServiceRegistrar implements Registrar
             return Promise.resolve(false);
         }
 
-        // TODO: start boot timeout? Fail if timeout exceeded?
-        
         let wasBooted = false;
         
         try {
@@ -191,8 +189,6 @@ export default class ServiceRegistrar implements Registrar
             throw new BootError(msg, { cause: { provider: provider, previous: e } });
         }
 
-        // TODO: Clear timeout?
-        
         return Promise.resolve(wasBooted);
     }
 
