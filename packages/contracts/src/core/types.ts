@@ -5,3 +5,8 @@ import Application from "./Application";
  * been booted.
  */
 export type BootCallback = (app: Application) => void;
+
+/**
+ * Callback to be invoked when the application is terminating.
+ */
+export type TerminationCallback = (app: Application) => void;
