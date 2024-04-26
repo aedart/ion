@@ -15,6 +15,10 @@ export const ServiceProviderClassBlueprint: ClassBlueprint = {
     
     members: [
         'register',
-        'boot'
+        'boot',
+        'before',
+        'after',
+        'callBeforeCallbacks',
+        'callAfterCallbacks'
     ]
 }
