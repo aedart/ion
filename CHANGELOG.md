@@ -12,11 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Core `Application` in `@aedart/core` (_new package_).
 * `@aedart/support/services` (_new submodule_).
 * Abstract `ServiceProvider` in `@aedart/support/services`.
+* `ServiceRegistrar` in `aedart/support/services`.
 * `isServiceProviderConstructor()` and `isServiceProvider()` utils in `@aedart/support/services`.
 
 ### Changed
 
 * TypeScript compile options now use `composite: true`, `incremental: true` and `clean: false` settings, in `shared/rollup.config.mjs` (_decreases build duration_).
+* `@rollup/plugin-json` has now been enabled for all packages.
 
 ### Fixed
 
