@@ -5,5 +5,10 @@ import { Container } from "@aedart/contracts/container";
  */
 export default interface Application extends Container
 {
-    
+    /**
+     * This core application's current version
+     * 
+     * @type {string}
+     */
+    get version(): string;
 }

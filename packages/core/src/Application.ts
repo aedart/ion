@@ -4,6 +4,7 @@ import type {
 import { CORE } from "@aedart/contracts/core";
 import { CONTAINER } from "@aedart/contracts/container";
 import { Container } from "@aedart/container";
+import { version } from "../package.json";
 
 /**
  * Core Application
@@ -38,5 +39,15 @@ export default class Application extends Container implements ApplicationContrac
         }
 
         return application;
+    }
+
+    /**
+     * This core application's current version
+     *
+     * @type {string}
+     */
+    get version(): string
+    {
+        return version;
     }
 }
