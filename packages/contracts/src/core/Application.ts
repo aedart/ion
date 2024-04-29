@@ -146,6 +146,13 @@ export default interface Application extends Container
     /**
      * Terminate this application
      * 
+     * **Note**: _Method will reset the {@link isRunning} state of this application.
+     * However, the application still remains in a [bootstrapped]{@link hasBeenBootstrapped}
+     * and [booted]{@link hasBooted} state. Call {@link destroy} to completely destroy
+     * this application's bootstrap and boot state, as well as registered bindings._
+     * 
+     * @see destroy
+     * 
      * @return {Promise<boolean>}
      *
      * @async
@@ -160,4 +167,15 @@ export default interface Application extends Container
      * @return {this}
      */
     terminating(callback: TerminationCallback): this;
+
+    /**
+     * Destroy this application instance
+     * 
+     * **Note**: _Method resets this application's [bootstrapped]{@link hasBeenBootstrapped}
+     * and [booted]{@link hasBooted} states, [flushes]{@link flush} registered bindings
+     * and resolved instances, and other vital properties._
+     * 
+     * @return {void}
+     */
+    destroy(): void;
 }
