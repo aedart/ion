@@ -4,6 +4,7 @@ import {
 } from "@aedart/contracts";
 import type {
     Application as ApplicationContract,
+    Bootstrapper,
     BootstrapperConstructor,
     BootCallback,
     TerminationCallback
@@ -17,6 +18,8 @@ import type {
     ServiceProvider,
     ServiceProviderConstructor
 } from "@aedart/contracts/support/services";
+import { ServiceRegistrar } from "@aedart/support/services";
+import { isset } from "@aedart/support/misc";
 import { version } from "../package.json";
 
 /**
@@ -28,6 +31,60 @@ import { version } from "../package.json";
  */
 export default class Application extends Container implements ApplicationContract
 {
+    /**
+     * The service registrar used by this application.
+     * 
+     * @type {Registrar | null}
+     * 
+     * @protected
+     */
+    protected serviceRegistrar: Registrar | null = null
+
+    /**
+     * A state about whether this application has been bootstrapped or not.
+     * 
+     * @type {boolean}
+     * 
+     * @protected
+     */
+    protected hasBootstrapped: boolean = false;
+
+    /**
+     * Callbacks to be invoked before application boots
+     * 
+     * @type {BootCallback[]}
+     * 
+     * @protected
+     */
+    protected beforeBootCallbacks: BootCallback[] = [];
+
+    /**
+     * Callbacks to be invoked after application has booted
+     *
+     * @type {BootCallback[]}
+     *
+     * @protected
+     */
+    protected afterBootCallbacks: BootCallback[] = [];
+
+    /**
+     * Whether this application's "run" method has been invoked or not
+     * 
+     * @type {boolean}
+     * 
+     * @protected
+     */
+    protected runTriggered: boolean = false;
+
+    /**
+     * Callbacks to be invoked when application terminates
+     * 
+     * @type {TerminationCallback[]}
+     * 
+     * @protected
+     */
+    protected terminationCallbacks: TerminationCallback[] = [];
+
     /**
      * Returns the singleton instance of the core application
      *
@@ -75,10 +132,22 @@ export default class Application extends Container implements ApplicationContrac
      */
     public get registrar(): Registrar
     {
-        // TODO: Implement this...
-        return {} as Registrar;
+        if (!isset(this.serviceRegistrar)) {
+            this.serviceRegistrar = this.makeServiceRegistrar();
+        }
+
+        return this.serviceRegistrar as Registrar;
     }
 
+    /**
+     * This "core" application's default bootstrappers
+     */
+    public get coreBootstrappers(): BootstrapperConstructor[]
+    {
+        // TODO:
+        return [];
+    }
+    
     // TODO: Application Environment ???
 
     /**
@@ -92,8 +161,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public async register(provider: ServiceProvider | ServiceProviderConstructor): Promise<boolean>
     {
-        // TODO: Implement this...
-        return Promise.resolve(false);
+        return this.registrar.register(provider, this.hasBooted());
     }
 
     /**
@@ -109,8 +177,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public async registerMultiple(providers: (ServiceProvider | ServiceProviderConstructor)[]): Promise<boolean>
     {
-        // TODO: Implement this...
-        return Promise.resolve(false);
+        return this.registrar.registerMultiple(providers, this.hasBooted());
     }
 
     /**
@@ -127,7 +194,16 @@ export default class Application extends Container implements ApplicationContrac
      */
     public bootstrapWith(bootstrappers: BootstrapperConstructor[]): this
     {
-        // TODO: Implement this...
+        if (this.hasBeenBootstrapped()) {
+            return this;
+        }
+        
+        for (const bootstrapper of bootstrappers) {
+            this.bootstrap(this.make(bootstrapper));
+        }
+        
+        this.hasBootstrapped = true;
+
         return this;
     }
 
@@ -138,8 +214,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public hasBeenBootstrapped(): boolean
     {
-        // TODO: Implement this...
-        return false;
+        return this.hasBootstrapped;
     }
 
     /**
@@ -151,8 +226,20 @@ export default class Application extends Container implements ApplicationContrac
      */
     public async boot(): Promise<boolean>
     {
-        // TODO: Implement this...
-        return Promise.resolve(false);
+        // Skip if already booted
+        if (this.hasBooted()) {
+            return Promise.resolve(false);
+        }
+        
+        // Invoke "before" boot callbacks
+        this.invokeBootCallbacks(this.beforeBootCallbacks);
+        
+        const booted = await this.registrar.bootAll();
+
+        // Invoke "after" boot callbacks
+        this.invokeBootCallbacks(this.afterBootCallbacks);
+
+        return Promise.resolve(booted);
     }
 
     /**
@@ -164,8 +251,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public hasBooted(): boolean
     {
-        // TODO: Implement this...
-        return false;
+        return this.registrar.booted.length > 0;
     }
 
     /**
@@ -177,7 +263,8 @@ export default class Application extends Container implements ApplicationContrac
      */
     public before(callback: BootCallback): this
     {
-        // TODO: Implement this...
+        this.beforeBootCallbacks.push(callback);
+
         return this;
     }
 
@@ -190,7 +277,8 @@ export default class Application extends Container implements ApplicationContrac
      */
     public after(callback: BootCallback): this
     {
-        // TODO: Implement this...
+        this.afterBootCallbacks.push(callback);
+
         return this;
     }
 
@@ -209,8 +297,30 @@ export default class Application extends Container implements ApplicationContrac
      */
     public async run(callback?: Callback | CallbackWrapper | ClassMethodReference): Promise<boolean>
     {
-        // TODO: Implement this...
-        return Promise.resolve(false);
+        if (this.isRunning()) {
+            return Promise.resolve(false);
+        }
+
+        // Bootstrap the application, using the "default" bootstrappers. NOTE: If the
+        // application has already been bootstrapped, then this call will do nothing.
+        this.bootstrapWith(this.coreBootstrappers);
+        
+        // Boot, if not already booted.
+        await this.boot();
+        
+        // Change "run" state,...
+        this.runTriggered = true;
+        
+        // Finally, invoke given callback, if given.
+        if (isset(callback)) {
+            const result = this.call(callback as Callback | CallbackWrapper | ClassMethodReference);
+
+            return Promise.resolve(result);
+        }
+
+        return Promise.resolve(true);
+
+        // TODO: Exception Handling ?
     }
 
     /**
@@ -220,18 +330,42 @@ export default class Application extends Container implements ApplicationContrac
      */
     public isRunning(): boolean
     {
-        // TODO: Implement this...
-        return false;
+        return this.runTriggered
+            && this.hasBeenBootstrapped()
+            && this.hasBooted();
     }
 
     /**
      * Terminate this application
      *
-     * @return {void}
+     * **Note**: _Method will reset the {@link isRunning} state of this application.
+     * However, the application still remains in a [bootstrapped]{@link hasBeenBootstrapped}
+     * and [booted]{@link hasBooted} state. Call {@link destroy} to completely destroy
+     * this application's bootstrap and boot state, as well as registered bindings._
+     *
+     * @see destroy
+     *
+     * @return {Promise<boolean>}
+     *
+     * @async
      */
-    public terminate(): void
+    public async terminate(): Promise<boolean>
     {
-        // TODO: Implement this...
+        // Create a shallow copy of the termination callbacks, in a reversed order.
+        // This allows bootstrappers and service providers to register termination logic,
+        // such that eventual dependencies are still maintained between them.
+        const callbacks = this.terminationCallbacks.toReversed();
+        
+        for (const callback of callbacks) {
+            // Await for terminate logic to complete, before continuing to the next.
+            // Eventual resolve value is ignored here...
+            await callback(this);
+        }
+        
+        // Reset the "run" state.
+        this.runTriggered = false;
+        
+        return Promise.resolve(true);
     }
 
     /**
@@ -243,7 +377,80 @@ export default class Application extends Container implements ApplicationContrac
      */
     public terminating(callback: TerminationCallback): this
     {
-        // TODO: Implement this...
+        this.terminationCallbacks.push(callback);
+
         return this;
+    }
+
+    /**
+     * Destroy this application instance
+     *
+     * **Note**: _Method resets this application's [bootstrapped]{@link hasBeenBootstrapped}
+     * and [booted]{@link hasBooted} states, [flushes]{@link flush} registered bindings
+     * and resolved instances, and other vital properties._
+     *
+     * @return {void}
+     */
+    public destroy(): void
+    {
+        // Regardless whether the application has been terminated or not,
+        // reset the "run" state.
+        this.runTriggered = false;
+        
+        // Reset other states.
+        this.serviceRegistrar = null; // contains the "hasBooted" state
+        this.hasBootstrapped = false;
+        
+        // Clear other properties.
+        this.beforeBootCallbacks = [];
+        this.afterBootCallbacks = [];
+        this.terminationCallbacks = [];
+        this.flush();
+        
+        // Finally, clear the singleton instance of this application.
+        /* @ts-expect-error TS2339 - setInstance is a valid static method */
+        this.constructor.setInstance(null);
+    }
+    
+    /**
+     * Bootstrap this application using given bootstrapper
+     * 
+     * @param {Bootstrapper} bootstrapper
+     * 
+     * @return {void}
+     * 
+     * @protected
+     */
+    protected bootstrap(bootstrapper: Bootstrapper): void
+    {
+        bootstrapper.bootstrap(this);
+    }
+
+    /**
+     * Invokes given boot callbacks
+     *
+     * @param {BootCallback[]} callbacks
+     *
+     * @return {void}
+     *
+     * @protected
+     */
+    protected invokeBootCallbacks(callbacks: BootCallback[]): void
+    {
+        for (const callback of callbacks) {
+            callback(this);
+        }
+    }
+    
+    /**
+     * Returns a new service registrar instance
+     * 
+     * @return {Registrar}
+     * 
+     * @protected
+     */
+    protected makeServiceRegistrar(): Registrar
+    {
+        return new ServiceRegistrar(this);
     }
 }
