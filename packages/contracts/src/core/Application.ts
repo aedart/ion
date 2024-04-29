@@ -146,9 +146,11 @@ export default interface Application extends Container
     /**
      * Terminate this application
      * 
-     * @return {void}
+     * @return {Promise<boolean>}
+     *
+     * @async
      */
-    terminate(): void;
+    terminate(): Promise<boolean>;
 
     /**
      * Register a callback to be invoked when the application is terminating

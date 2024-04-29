@@ -9,4 +9,4 @@ export type BootCallback = (app: Application) => void;
 /**
  * Callback to be invoked when the application is terminating.
  */
-export type TerminationCallback = (app: Application) => void;
+export type TerminationCallback = (app: Application) => Promise<boolean>;
