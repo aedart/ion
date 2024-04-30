@@ -51,6 +51,7 @@
         "cpx2": "^7.0.1",
         "cross-env": "^7.0.3",
         "css-loader": "^6.9.1",
+        "dotenv": "^16.4.5",
         "eslint": "^8.56.0",
         "install": "^0.13.0",
         "jasmine": "^5.1.0",
