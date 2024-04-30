@@ -17,14 +17,6 @@
         ],
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-private-methods",
-        "@babel/plugin-transform-class-static-block",
-        [
-            "module:@import-meta-env/babel",
-            {
-                "example": ".env.example",
-                "env": ".env",
-                "transformMode": "compile-time"
-            }
-        ]
+        "@babel/plugin-transform-class-static-block"
     ]
 }
