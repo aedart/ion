@@ -27,7 +27,8 @@ module.exports = {
                 ],
                 loader: "babel-loader",
                 options: {
-                    presets : babel.presets
+                    presets : babel.presets,
+                    plugins: babel.plugins
                 }
             }
         ]
