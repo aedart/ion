@@ -15,6 +15,7 @@ console.debug('Babel presets', babel.presets);
  * Load .env content
  ****************************************************************/
 
+// @see https://github.com/motdotla/dotenv?tab=readme-ov-file#parsing
 const ENV = dotEnv.parse(
     fs.readFileSync('.env', 'utf8')
 );
@@ -46,7 +47,8 @@ module.exports = {
     },
     plugins: [
         
-        // Inject environment variables into token 
+        // Inject environment variables into token
+        // @see https://webpack.js.org/plugins/define-plugin/
         new webpack.DefinePlugin({
             _ENV: JSON.stringify(ENV)
         })
