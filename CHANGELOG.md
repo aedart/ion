@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * TypeScript compile options now use `composite: true`, `incremental: true` and `clean: false` settings, in `shared/rollup.config.mjs` (_decreases build duration_).
 * `@rollup/plugin-json` has now been enabled for all packages.
+* `.env` file is parsed as `__ENV__`, for tests (_for root package only. File is parsed in `shared/tests/webpack.config.js`_).
 
 ### Fixed
 
