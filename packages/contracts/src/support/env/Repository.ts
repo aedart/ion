@@ -20,7 +20,7 @@ export default interface Repository
      * @template D=undefined
      * 
      * @param {PropertyKey} key
-     * @param {D} defaultValue
+     * @param {D} [defaultValue]
      * 
      * @return {T | D}
      */
