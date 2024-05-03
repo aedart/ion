@@ -87,7 +87,36 @@ export default class Env
      */
     public static get<T, D = undefined>(key: PropertyKey, defaultValue?: D): T | D
     {
-        return this.repository.get(key, defaultValue);
+        if (!this.has(key)) {
+            return defaultValue as D;
+        }
+        
+        const value = this.repository.get<T>(key);
+        if (typeof value !== 'string') {
+            return value as T;
+        }
+
+        // Convert value to boolean, null or an array, if needed.
+        // This part is heavily inspired by Laravel's way of converting
+        // env values.
+        // @see https://github.com/laravel/framework/blob/11.x/src/Illuminate/Support/Env.php#L99
+
+        switch (value.toLowerCase()) {
+            case "true":
+            case "(true)":
+                return true as T;
+                
+            case "false":
+            case "(false)":
+                return false as T;
+                
+            case "null":
+            case "(null)":
+                return null as T;
+
+            default:
+                return value as T;
+        }
     }
 
     /**
