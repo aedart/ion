@@ -297,6 +297,10 @@ conditions of the included 3rd party software, in the directory where it has bee
     The service provider abstraction is an adaptation of Laravel's version thereof.
 
     See https://github.com/laravel/framework/blob/11.x/src/Illuminate/Support/ServiceProvider.php
+@aedart/support/env (Env Util)
+    The Env utility class is an adaptation of Laravel's support Env utility.
+
+    See https://github.com/laravel/framework/blob/11.x/src/Illuminate/Support/Env.php
 
     License MIT, Copyright (c) Taylor Otwell. 
 
