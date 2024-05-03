@@ -1,4 +1,5 @@
 import type { Repository as RepositoryContract } from "@aedart/contracts/support/env";
+import { merge } from "@aedart/support/objects";
 import Repository from "./Repository";
 import ReadonlyAdaptor from "./adaptors/ReadonlyAdaptor";
 
@@ -23,6 +24,8 @@ export default class Env
 
     /**
      * Define the environment variables
+     *
+     * **Caution**: _Defined environment variables can still be [cleared]{@link clear}!_
      * 
      * @param {Record<PropertyKey, any>} variables
      * @param {boolean} [safe=true] If true, then the defined variables cannot be changed. **Note**, defined variables
@@ -35,15 +38,22 @@ export default class Env
     public static define(variables: Record<PropertyKey, any>, safe: boolean = true): void /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         this.clear();
-        
-        const repo = new Repository(variables);
 
+        // When requested defined as "safe", the environment variables object must be copied,
+        // such that outside changes to the given record do not affect those defined here.
+        // Also, a "read-only" repository adapter is used, to prevent setting or deleting
+        // variables...
         if (safe) {
-            this.#repo = new ReadonlyAdaptor(repo);
+            const store = merge(Object.create(null), variables) as Record<PropertyKey, any>;
+            
+            this.#repo = new ReadonlyAdaptor(
+                new Repository(store)
+            );
+
             return;
         }
         
-        this.#repo = repo;
+        this.#repo = new Repository(variables);
     }
 
     /**
