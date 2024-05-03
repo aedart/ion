@@ -43,7 +43,9 @@ describe('@aedart/xyz', () => {
             // variable.
             // @see webpack.config.js
             //console.log('ENV', __ENV__);
-            
+
+            /** @typedef {object} __ENV__ */
+
             const ENV = __ENV__;
             
             expect(ENV)
