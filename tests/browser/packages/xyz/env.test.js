@@ -42,9 +42,9 @@ describe('@aedart/xyz', () => {
             // Using the dotenv module and webpack, the contents if .env is injected into the _ENV
             // variable.
             // @see webpack.config.js
-            //console.log('ENV', _ENV);
+            //console.log('ENV', __ENV__);
             
-            const ENV = _ENV;
+            const ENV = __ENV__;
             
             expect(ENV)
                 .withContext('_ENV has not been injected')

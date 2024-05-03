@@ -50,7 +50,7 @@ module.exports = {
         // Inject environment variables into token
         // @see https://webpack.js.org/plugins/define-plugin/
         new webpack.DefinePlugin({
-            _ENV: JSON.stringify(ENV)
+            __ENV__: JSON.stringify(ENV)
         })
     ]
 };
