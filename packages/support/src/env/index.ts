@@ -1,5 +1,7 @@
+import Env from "./Env";
 import Repository from "./Repository";
 export {
+    Env,
     Repository
 }
 
