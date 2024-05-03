@@ -96,9 +96,8 @@ export default class Env
             return value as T;
         }
 
-        // Convert value to boolean, null or an array, if needed.
-        // This part is heavily inspired by Laravel's way of converting
-        // env values.
+        // Convert value to boolean or null, if needed. This part is heavily
+        // inspired by Laravel's way of converting env values.
         // @see https://github.com/laravel/framework/blob/11.x/src/Illuminate/Support/Env.php#L99
 
         switch (value.toLowerCase()) {
