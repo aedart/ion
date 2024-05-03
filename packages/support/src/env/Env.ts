@@ -44,7 +44,7 @@ export default class Env
         // Also, a "read-only" repository adapter is used, to prevent setting or deleting
         // variables...
         if (safe) {
-            const store = merge(Object.create(null), variables) as Record<PropertyKey, any>;
+            const store = merge(Object.create(null), variables) as Record<PropertyKey, any>; /* eslint-disable-line @typescript-eslint/no-explicit-any */
             
             this.#repo = new ReadonlyAdaptor(
                 new Repository(store)
