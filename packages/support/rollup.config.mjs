@@ -9,6 +9,7 @@ export default createConfig({
         '@aedart/contracts/support',
         '@aedart/contracts/support/arrays',
         '@aedart/contracts/support/concerns',
+        '@aedart/contracts/support/env',
         '@aedart/contracts/support/exceptions',
         '@aedart/contracts/support/facades',
         '@aedart/contracts/support/meta',

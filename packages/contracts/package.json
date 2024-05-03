@@ -56,6 +56,11 @@
             "import": "./dist/esm/support/concerns.js",
             "require": "./dist/cjs/support/concerns.cjs"
         },
+        "./support/env": {
+            "types": "./dist/types/support/env.d.ts",
+            "import": "./dist/esm/support/env.js",
+            "require": "./dist/cjs/support/env.cjs"
+        },
         "./support/exceptions": {
             "types": "./dist/types/support/exceptions.d.ts",
             "import": "./dist/esm/support/exceptions.js",
