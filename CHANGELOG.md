@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Abstract `ServiceProvider` in `@aedart/support/services`.
 * `ServiceRegistrar` in `aedart/support/services`.
 * `isServiceProviderConstructor()` and `isServiceProvider()` utils in `@aedart/support/services`.
-* `Env` utility in `aedart/support/env`.
+* `Env` and `env()` utilities in `aedart/support/env`.
 
 ### Changed
 
