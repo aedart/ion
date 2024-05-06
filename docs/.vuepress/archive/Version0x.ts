@@ -81,6 +81,16 @@ export default PagesCollection.make('v0.x', '/v0x', [
                         ]
                     },
                     {
+                        text: 'Env',
+                        collapsible: true,
+                        children: [
+                            'packages/support/env/',
+                            'packages/support/env/usage',
+                            'packages/support/env/bundlers',
+                            'packages/support/env/security',
+                        ]
+                    },
+                    {
                         text: 'Exceptions',
                         collapsible: true,
                         children: [
