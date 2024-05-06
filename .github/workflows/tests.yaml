@@ -60,6 +60,9 @@ jobs:
             - name: "Install dependencies"
               run: npm install
 
+            - name: "Make .env file"
+              run: npm run make:env
+
             - name: "Lint"
               run: npm run lint
         

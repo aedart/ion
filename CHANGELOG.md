@@ -11,20 +11,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Core `Application` in `@aedart/core` (_new package_).
 * `@aedart/support/services` (_new submodule_).
+* `@aedart/support/env` (_new submodule_).
 * Abstract `ServiceProvider` in `@aedart/support/services`.
 * `ServiceRegistrar` in `aedart/support/services`.
 * `isServiceProviderConstructor()` and `isServiceProvider()` utils in `@aedart/support/services`.
+* `Env` and `env()` utilities in `aedart/support/env`.
 
 ### Changed
 
 * TypeScript compile options now use `composite: true`, `incremental: true` and `clean: false` settings, in `shared/rollup.config.mjs` (_decreases build duration_).
 * `@rollup/plugin-json` has now been enabled for all packages.
+* `.env` file is parsed as `__ENV__`, for tests (_for root package only. File is parsed in `shared/tests/webpack.config.js`_).
 
 ### Fixed
 
 * Various internal types in `@aedart/support/*` submodules.
 * Es-lint warning for `type: any` property in `Facade`, in `@aedart/support/facades`.
 * Test suite name(s) for container related tests.
+* Babel plugins not applied by webpack, for tests.
 
 ## [0.11.0] - 2024-04-09
 

@@ -43,14 +43,15 @@
         "@typescript-eslint/eslint-plugin": "^7.1.1",
         "@typescript-eslint/parser": "^7.1.1",
         "@vue/server-renderer": "^3.4.15",
+        "@vuepress/bundler-webpack": "^2.0.0-rc.2",
         "@vuepress/plugin-back-to-top": "^2.0.0-rc.1",
         "@vuepress/plugin-search": "^2.0.0-rc.1",
         "@vuepress/theme-default": "^2.0.0-rc.1",
-        "@vuepress/bundler-webpack": "^2.0.0-rc.2",
         "babel-loader": "^9.1.3",
         "cpx2": "^7.0.1",
         "cross-env": "^7.0.3",
         "css-loader": "^6.9.1",
+        "dotenv": "^16.4.5",
         "eslint": "^8.56.0",
         "install": "^0.13.0",
         "jasmine": "^5.1.0",
@@ -95,7 +96,8 @@
         "test:prod": "lerna run compile && sh clean.sh && karma start shared/tests/karma-production.conf.js",
         "docs:dev": "cross-env NODE_ENV=development vuepress dev docs --config docs/.vuepress/config.ts",
         "docs:build": "cross-env NODE_ENV=development vuepress build docs --config docs/.vuepress/config.ts",
-        "docs:build-prod": "cross-env NODE_ENV=production vuepress build docs --config docs/.vuepress/config.ts"
+        "docs:build-prod": "cross-env NODE_ENV=production vuepress build docs --config docs/.vuepress/config.ts",
+        "make:env": "cp -u .env.example .env"
     },
     "browserslist": [
         "last 1 version",
