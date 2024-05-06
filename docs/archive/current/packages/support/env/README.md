@@ -19,7 +19,7 @@ Env.define({
 
 // Later in your application
 const environment = Env.get('APP_ENV');
-console.log(environment); E.g. production
+console.log(environment); // production
 ```
 
 ::: warning Disclaimer
