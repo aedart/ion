@@ -29,6 +29,25 @@ _TBD: "To be decided"._
 
 ## `v0.x` Highlights
 
+### Env <Badge type="tip" text="Available since v0.12" />
+
+The `Env` component offers a way to retrieve environment variables for your application's runtime. 
+
+```js
+import { Env } from "@aedart/support/env";
+
+// During your application's bootstrapping...
+Env.define({
+    APP_ENV: 'production'
+});
+
+// Later in your application
+const environment = Env.get('APP_ENV');
+console.log(environment); // production
+```
+
+See the [documentation](./packages/support/env/README.md) for additional details.
+
 ### Service Container <Badge type="tip" text="Available since v0.11" />
 
 An adaptation of Laravel's Service Container that offers a way to with powerful tool to manage dependencies and perform
