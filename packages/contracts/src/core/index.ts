@@ -14,6 +14,13 @@ export const CORE: unique symbol = Symbol('@aedart/contracts/core');
  */
 export const APPLICATION: symbol = CORE;
 
+/**
+ * Application Environment binding identifier
+ * 
+ * @type {Symbol}
+ */
+export const APP_ENV: unique symbol = Symbol('APP_ENV');
+
 import Application from "./Application";
 import Bootstrapper from "./Bootstrapper";
 import BootstrapperConstructor from "./BootstrapperConstructor";
