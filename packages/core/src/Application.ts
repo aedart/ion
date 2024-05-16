@@ -7,11 +7,15 @@ import type {
     Bootstrapper,
     BootstrapperConstructor,
     BootCallback,
-    TerminationCallback
+    TerminationCallback,
+    DetectEnvironmentCallback
 } from "@aedart/contracts/core";
 import { CallbackWrapper } from "@aedart/contracts/support";
 import { Container } from "@aedart/container";
-import { CORE } from "@aedart/contracts/core";
+import {
+    CORE,
+    APP_ENV
+} from "@aedart/contracts/core";
 import { CONTAINER } from "@aedart/contracts/container";
 import type {
     Registrar,
@@ -126,6 +130,85 @@ export default class Application extends Container implements ApplicationContrac
     }
 
     /**
+     * Determine if application is in the local environment
+     *
+     * @return {boolean}
+     */
+    public isLocal(): boolean
+    {
+        return this.isEnvironment('local');
+    }
+
+    /**
+     * Determine if application is in the production environment
+     *
+     * @return {boolean}
+     */
+    public isProduction(): boolean
+    {
+        return this.isEnvironment('production');
+    }
+
+    /**
+     * Determine if application is in a testing environment
+     *
+     * @return {boolean}
+     */
+    public isTesting(): boolean
+    {
+        return this.isEnvironment('testing');
+    }
+
+    /**
+     * Determine if application's environment matches either of the given
+     *
+     * @param {...string} environment
+     *
+     * @return {boolean}
+     */
+    public isEnvironment(...environment: string[]): boolean
+    {
+        const appEnv = this.environment;
+        
+        for (const name of environment) {
+            if (appEnv === name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The current application's environment
+     *
+     * @type {string}
+     */
+    get environment(): string
+    {
+        return this.makeOrDefault(APP_ENV, [], 'production');
+    }
+
+    /**
+     * Detect and return the current application's environment
+     *
+     * @param {DetectEnvironmentCallback} [callback] If no callback is given, then a default
+     *                                              detection callback is used.
+     *
+     * @return {string}
+     */
+    public detectEnvironment(callback?: DetectEnvironmentCallback): string
+    {
+        if (!isset(callback)) {
+            callback = () => 'production';
+        }
+        
+        return this.singleton(APP_ENV, (app) => {
+            return (callback as DetectEnvironmentCallback)(app as ApplicationContract);
+        }).environment;
+    }
+    
+    /**
      * The Service Registrar used by this application
      *
      * @type {Registrar}
@@ -147,8 +230,6 @@ export default class Application extends Container implements ApplicationContrac
         // TODO:
         return [];
     }
-    
-    // TODO: Application Environment ???
 
     /**
      * Register a service provider
