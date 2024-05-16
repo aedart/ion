@@ -1,6 +1,11 @@
 import Application from "./Application";
 
 /**
+ * Callback used to detect the application's current environment.
+ */
+export type DetectEnvironmentCallback = (app: Application) => string;
+
+/**
  * Callback to be invoked before or after the application has
  * been booted.
  */
