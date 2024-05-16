@@ -10,6 +10,7 @@ import {
     ServiceProviderConstructor
 } from "@aedart/contracts/support/services";
 import {
+    DetectEnvironmentCallback,
     BootCallback,
     TerminationCallback
 } from "./types";
@@ -32,13 +33,58 @@ export default interface Application extends Container
     get version(): string;
 
     /**
-     * The Service Registrar used by this application
+     * Determine if application is in the local environment
      * 
+     * @return {boolean}
+     */
+    isLocal(): boolean;
+
+    /**
+     * Determine if application is in the production environment
+     *
+     * @return {boolean}
+     */
+    isProduction(): boolean;
+
+    /**
+     * Determine if application is in a testing environment
+     *
+     * @return {boolean}
+     */
+    isTesting(): boolean;
+
+    /**
+     * Determine if application's environment matches either of the given
+     * 
+     * @param {...string} environment
+     * 
+     * @return {boolean}
+     */
+    isEnvironment(...environment: string[]): boolean;
+    
+    /**
+     * The current application's environment
+     * 
+     * @type {string}
+     */
+    get environment(): string;
+
+    /**
+     * Detect and return the current application's environment
+     * 
+     * @param {DetectEnvironmentCallback} [callback] If no callback is given, then a default
+     *                                              detection callback is used.
+     * 
+     * @return {string}
+     */
+    detectEnvironment(callback?: DetectEnvironmentCallback): string;
+
+    /**
+     * The Service Registrar used by this application
+     *
      * @type {Registrar}
      */
     get registrar(): Registrar;
-    
-    // TODO: Application Environment ???
 
     /**
      * Register a service provider
