@@ -25,6 +25,7 @@ import type {
 import { ServiceRegistrar } from "@aedart/support/services";
 import { isset } from "@aedart/support/misc";
 import LoadEnvironmentVariables from "./bootstrap/LoadEnvironmentVariables";
+import SetupFacades from "./bootstrap/SetupFacades";
 import { version } from "../package.json";
 
 /**
@@ -229,7 +230,8 @@ export default class Application extends Container implements ApplicationContrac
     public get coreBootstrappers(): BootstrapperConstructor[]
     {
         return [
-            LoadEnvironmentVariables
+            LoadEnvironmentVariables,
+            SetupFacades
         ];
     }
 
