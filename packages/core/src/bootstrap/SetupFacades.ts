@@ -14,12 +14,8 @@ export default class SetupFacades implements Bootstrapper {
      * @return {void}
      */
     bootstrap(app: Application): void {
-        Facade.setContainer(app);
+        Facade.forgetAllResolved();
         
-        app.terminating(() => {
-            Facade.destroy();
-            
-            return Promise.resolve(true);
-        });
+        Facade.setContainer(app);
     }
 }
