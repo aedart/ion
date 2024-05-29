@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `ServiceRegistrar` in `aedart/support/services`.
 * `isServiceProviderConstructor()` and `isServiceProvider()` utils in `@aedart/support/services`.
 * `Env` and `env()` utilities in `aedart/support/env`.
+* `App` facade in `aedart/support/facades`.
 
 ### Changed
 
