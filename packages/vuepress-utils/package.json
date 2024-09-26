@@ -59,7 +59,8 @@
         "luxon": "^3.5.0",
         "tslib": "^2.7.0",
         "vue": "^3.5.8",
-        "vuepress": "^2.0.0-rc.15"
+        "vuepress": "^2.0.0-rc.15",
+        "sass": "^1.79.3"
     },
     "scripts": {
         "compile": "rollup -c && npx cpx \"src/**/*.vue\" dist",
