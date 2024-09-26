@@ -1,6 +1,6 @@
 {
     "name": "@aedart/support",
-    "version": "0.12.0",
+    "version": "0.12.1",
     "description": "The Ion support package",
     "keywords": [
         "Support",
@@ -85,7 +85,7 @@
         "NOTICE"
     ],
     "peerDependencies": {
-        "@aedart/contracts": "^0.12.0",
+        "@aedart/contracts": "^0.12.1",
         "@types/lodash-es": "^4.17.12",
         "lodash-es": "^4.17.21",
         "tslib": "^2.7.0"

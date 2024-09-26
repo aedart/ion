@@ -1,6 +1,6 @@
 {
     "name": "@aedart/xyz",
-    "version": "0.12.0",
+    "version": "0.12.1",
     "description": "A private package used for testing, examples and tinkering",
     "keywords": [
         "Tests",

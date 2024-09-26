@@ -1,6 +1,6 @@
 {
     "name": "@aedart/container",
-    "version": "0.12.0",
+    "version": "0.12.1",
     "description": "Service Container",
     "keywords": [
         "Service Container",
@@ -37,8 +37,8 @@
         "NOTICE"
     ],
     "peerDependencies": {
-        "@aedart/contracts": "^0.12.0",
-        "@aedart/support": "^0.12.0"
+        "@aedart/contracts": "^0.12.1",
+        "@aedart/support": "^0.12.1"
     },
     "scripts": {
         "compile": "rollup -c",
