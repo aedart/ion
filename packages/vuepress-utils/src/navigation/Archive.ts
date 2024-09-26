@@ -74,7 +74,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _currentPath: string = '/current';
+    private _currentPath: string = '/current/';
 
     /**
      * Relative path for the "next" collection, in archive
@@ -82,7 +82,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _nextPath: string = '/next';
+    private _nextPath: string = '/next/';
 
     /**
      * Creates a new Archive instance
