@@ -7,9 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+**Breaking**
+
+* Various return types changed for `Archive` and `PagesCollection`, in `@aedart/vuepress-utils` (_due to upgrade to newer `vuepress` release_).
+
+**Non-breaking Changes**
+
+* N/A
+
 ### Fixed
 
 * Unable to build documentation, due to missing `sass` module dependency, in `@aedart/vuepress-utils`.
+* Unable to navigate to "next" or "current" (_caused by missing trailing slashes for `_currentPath` and `_nextPath`, in `Archive`_), in `@aedart/vuepress-utils`.
 
 ## [0.12.1] - 2024-09-26
 
