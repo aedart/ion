@@ -1,16 +1,16 @@
 import {Archive, PagesCollection as PagesCollectionContract} from "@aedart/vuepress-utils/contracts";
 import {prefixPath} from "@aedart/vuepress-utils";
-import type {NavbarItem, SidebarConfigArray, SidebarConfigObject} from "vuepress";
-import {SidebarGroup, SidebarItem} from "vuepress";
+import type { NavGroup, NavbarLinkOptions, SidebarObjectOptions, SidebarArrayOptions, SidebarItemOptions, SidebarGroupOptions } from "@vuepress/theme-default";
 
 /**
  * Pages Collection
  * 
- * @typedef {import('vuepress').NavbarItem} NavbarItem
- * @typedef {import('vuepress').SidebarConfigArray} SidebarConfigArray
- * @typedef {import('vuepress').SidebarConfigObject} SidebarConfigObject
- * @typedef {import('vuepress').SidebarItem} SidebarItem
- * @typedef {import('vuepress').SidebarGroup} SidebarGroup
+ * @typedef {import('@vuepress/theme-default').NavGroup} NavGroup
+ * @typedef {import('@vuepress/theme-default').NavbarLinkOptions} NavbarLinkOptions
+ * @typedef {import('@vuepress/theme-default').SidebarObjectOptions} SidebarObjectOptions
+ * @typedef {import('@vuepress/theme-default').SidebarArrayOptions} SidebarArrayOptions
+ * @typedef {import('@vuepress/theme-default').SidebarItemOptions} SidebarItemOptions
+ * @typedef {import('@vuepress/theme-default').SidebarGroupOptions} SidebarGroupOptions
  */
 export default class PagesCollection implements PagesCollectionContract
 {
@@ -42,18 +42,18 @@ export default class PagesCollection implements PagesCollectionContract
     /**
      * The pages in this collection
      * 
-     * @type {SidebarConfigArray}
+     * @type {SidebarArrayOptions}
      */
-    public pages: SidebarConfigArray;
+    public pages: SidebarArrayOptions;
 
     /**
      * Creates a new pages collection instance
      * 
      * @param {string} name
      * @param {string} path
-     * @param {SidebarConfigArray} [pages=[]]
+     * @param {SidebarArrayOptions} [pages=[]]
      */
-    constructor(name: string, path: string, pages: SidebarConfigArray = [])
+    constructor(name: string, path: string, pages: SidebarArrayOptions = [])
     {
         this._name = name;
         this._path = path;
@@ -65,11 +65,11 @@ export default class PagesCollection implements PagesCollectionContract
      * 
      * @param {string} name
      * @param {string} path
-     * @param {SidebarConfigArray} [pages=[]]
+     * @param {SidebarArrayOptions} [pages=[]]
      * 
      * @returns {PagesCollection}
      */
-    static make(name: string, path: string, pages: SidebarConfigArray = [])
+    static make(name: string, path: string, pages: SidebarArrayOptions = [])
     {
         return new this(name, path, pages);
     }
@@ -133,7 +133,7 @@ export default class PagesCollection implements PagesCollectionContract
     /**
      * @inheritdoc
      */
-    asNavigationItem(): NavbarItem
+    asNavigationItem(): NavbarLinkOptions | NavGroup<NavbarLinkOptions>
     {
         return {
             text: this.name,
@@ -144,7 +144,7 @@ export default class PagesCollection implements PagesCollectionContract
     /**
      * @inheritdoc
      */
-    asSidebarObject(): SidebarConfigObject
+    asSidebarObject(): SidebarObjectOptions
     {
         return {
             [this.fullPath]: this.sidebar()
@@ -154,7 +154,7 @@ export default class PagesCollection implements PagesCollectionContract
     /**
      * @inheritdoc
      */
-    sidebar(): SidebarConfigArray
+    sidebar(): SidebarArrayOptions
     {
         return this.resolvePages(
             this.pages
@@ -168,16 +168,16 @@ export default class PagesCollection implements PagesCollectionContract
     /**
      * Resolves pages' path
      * 
-     * @param {SidebarConfigArray} pages
+     * @param {SidebarArrayOptions} pages
      * 
-     * @returns {SidebarConfigArray}
+     * @returns {SidebarArrayOptions}
      * @protected
      */
-    protected resolvePages(pages: SidebarConfigArray): SidebarConfigArray
+    protected resolvePages(pages: SidebarArrayOptions): SidebarArrayOptions
     {
-        pages.forEach((page: string | SidebarItem | SidebarGroup, index: number, arr: (string | SidebarItem | SidebarGroup)[]) => {
-            arr[index] = this.resolvePage(page);
-        });
+        pages.forEach((page: SidebarItemOptions, index: number, array: SidebarItemOptions[]) => {
+            array[index] = this.resolvePage(page);
+        })
 
         return pages;
     }
@@ -185,23 +185,23 @@ export default class PagesCollection implements PagesCollectionContract
     /**
      * Resolves given page's path
      *
-     * @param {SidebarItem | SidebarGroup | string} page
+     * @param {SidebarItemOptions} page
      *
-     * @returns {SidebarItem | SidebarGroup | string}
+     * @returns {SidebarItemOptions}
      *
      * @protected
      */
-    protected resolvePage(page: SidebarItem | SidebarGroup | string): SidebarItem | SidebarGroup | string
+    protected resolvePage(page: SidebarItemOptions): SidebarItemOptions
     {
         if (typeof page === 'string') {
             return this.prefixWillFullPath(page);
         }
 
-        if (!Reflect.has(page, 'children') || (page as SidebarGroup).children.length === 0) {
+        if (!Reflect.has(page, 'children') || (page as SidebarGroupOptions).children.length === 0) {
             return page;
         }
 
-        (page as SidebarGroup).children.forEach((child: string | SidebarItem | SidebarGroup, index: number, children: (string | SidebarItem | SidebarGroup)[]) => {
+        (page as SidebarGroupOptions).children.forEach((child: SidebarItemOptions, index: number, children: (SidebarItemOptions)[]) => {
             children[index] = this.resolvePage(child);
         });
 
