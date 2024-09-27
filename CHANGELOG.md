@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Es-lint warning for `type: any` property in `Facade`, in `@aedart/support/facades`.
 * Test suite name(s) for container related tests.
 * Babel plugins not applied by webpack, for tests.
+* Cannot start ChromeHeadless (_"No usable sandbox!" error shown_) - new "ChromeHeadlessNoSandbox" launcher added in `karma-development.conf.js` with `--no-sandbox` flag specified.
 
 ## [0.13.0] - 2024-09-27
 
