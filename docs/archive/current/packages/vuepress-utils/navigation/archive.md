@@ -163,8 +163,8 @@ Your archive's directory structure must match the specified `path` or vuepress w
 Whenever a collection is marked as "current" or "next", its `path` is automatically changed to `/current/` or `/next/`.
 This means that the full path of those collections will be the archive's `path` + current or next, e.g.
 
-* `/archive/current`
-* `/archive/next`
+* `/archive/current/`
+* `/archive/next/`
 
 To change these paths, specify the `currentPath` and `nextPath` properties in your `Archive` instance. 
 
