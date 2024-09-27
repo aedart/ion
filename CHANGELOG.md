@@ -7,15 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2024-09-27
+
 ### Changed
 
 **Breaking**
 
-* Various return types changed for `Archive` and `PagesCollection`, in `@aedart/vuepress-utils` (_due to upgrade to newer `vuepress` release_).
+* Various argument and return types changed in the navigation utilities (_`Archive` and `PagesCollection`_), in `@aedart/vuepress-utils` (_due to upgrade to newer `vuepress` release_).
 
 **Non-breaking Changes**
 
 * Adjusted styles and colours for the documentation (_due to upgrade to newer `vuepress` release_).
+* Updated docs for `@aedart/vuepress-utils` package.
 
 ### Fixed
 
@@ -348,7 +351,8 @@ the version command (_configured in root `lerna.json`_).
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.12.1...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.13.0...HEAD
+[0.13.0]: https://github.com/aedart/ion/compare/0.12.1...0.13.0
 [0.12.1]: https://github.com/aedart/ion/compare/0.12.0...0.12.1
 [0.12.0]: https://github.com/aedart/ion/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/aedart/ion/compare/0.10.0...0.11.0
