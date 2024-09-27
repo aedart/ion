@@ -10,9 +10,15 @@ module.exports = function(config) {
         baseConfiguration(config),
         {
             browsers: [
-                'ChromeHeadless',
+                'ChromeHeadlessNoSandbox',
                 'FirefoxHeadless'
             ],
+            customLaunchers: {
+                ChromeHeadlessNoSandbox: {
+                    base: 'ChromeHeadless',
+                    flags: ['--no-sandbox', '--disable-gpu'],
+                }
+            }
         }
     ));
 }
