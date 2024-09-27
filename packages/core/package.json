@@ -36,9 +36,9 @@
         "NOTICE"
     ],
     "peerDependencies": {
-        "@aedart/container": "^0.11.0",
-        "@aedart/contracts": "^0.11.0",
-        "@aedart/support": "^0.11.0"
+        "@aedart/container": "^0.13.0",
+        "@aedart/contracts": "^0.13.0",
+        "@aedart/support": "^0.13.0"
     },
     "scripts": {
         "compile": "rollup -c",
