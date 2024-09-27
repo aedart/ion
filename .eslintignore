@@ -1,8 +1,0 @@
-packages/*/dist/*
-packages/xyz/
-shared/*
-tests/*
-
-shim.d.ts
-aliases.js
-tmp.js

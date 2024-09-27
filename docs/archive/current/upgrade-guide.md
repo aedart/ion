@@ -7,6 +7,20 @@ sidebarDepth: 1
 
 [[TOC]]
 
+## From v0.10.x- to v0.13.x
+
+### Vuepress Utils
+
+The `@aedart/vuepress-utils` has been upgraded to require the latest version of `vuepress` (_`^2.0.0-rc.15` release candidate_).
+This has affected various arguments and return types in the navigation utilities, such as `Archive` and `PagesCollection`.
+
+The changes _should not_ directly affect your documentation application directly, when used as described. However,
+if you have your own implementation of the `Archive` or `PagesCollection` interfaces (_in TypeScript_), or if you have
+extended the default provided classes, then you might have to adapt expected argument and return types.
+
+Please read [vuepress' changelog](https://github.com/vuepress/core/blob/main/CHANGELOG.md) and review the package's
+source code for additional details.
+
 ## From v0.7.x- to v0.10.x
 
 ### Meta (types)

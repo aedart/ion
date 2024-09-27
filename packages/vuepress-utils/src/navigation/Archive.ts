@@ -1,14 +1,14 @@
 import {Archive as ArchiveContract, PagesCollection} from "@aedart/vuepress-utils/contracts";
 import {prefixPath} from "@aedart/vuepress-utils";
-import type {NavbarGroup, NavbarItem, NavLink, SidebarConfig} from "vuepress";
+import type { SidebarOptions, NavbarGroupOptions, NavGroup, NavbarLinkOptions } from "@vuepress/theme-default";
 
 /**
  * Archive
  *
- * @typedef {import('vuepress').NavbarItem} NavbarItem
- * @typedef {import('vuepress').NavbarGroup} NavbarGroup
- * @typedef {import('vuepress').NavLink} NavLink
- * @typedef {import('vuepress').SidebarConfig} SidebarConfig
+ * @typedef {import('@vuepress/theme-default').NavbarGroupOptions} NavbarGroupOptions
+ * @typedef {import('@vuepress/theme-default').NavbarLinkOptions} NavbarLinkOptions
+ * @typedef {import('@vuepress/theme-default').NavGroup} NavGroup
+ * @typedef {import('@vuepress/theme-default').SidebarOptions} SidebarOptions
  */
 export default class Archive implements ArchiveContract
 {
@@ -58,7 +58,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _currentLabel = 'current';
+    private _currentLabel: string = 'current';
 
     /**
      * Navigation label for the "next" collection
@@ -66,7 +66,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _nextLabel = 'next';
+    private _nextLabel: string = 'next';
 
     /**
      * Relative path for the "current" collection, in archive
@@ -74,7 +74,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _currentPath = '/current';
+    private _currentPath: string = '/current/';
 
     /**
      * Relative path for the "next" collection, in archive
@@ -82,7 +82,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _nextPath = '/next';
+    private _nextPath: string = '/next/';
 
     /**
      * Creates a new Archive instance
@@ -291,7 +291,7 @@ export default class Archive implements ArchiveContract
     /**
      * @inheritdoc
      */
-    asNavigationItem(): NavbarItem | NavbarGroup
+    asNavigationItem(): NavbarGroupOptions | NavbarLinkOptions
     {
         return {
             text: this.name,
@@ -303,7 +303,7 @@ export default class Archive implements ArchiveContract
     /**
      * @inheritdoc
      */
-    sidebarConfiguration(): SidebarConfig
+    sidebarConfiguration(): SidebarOptions
     {
         let output = {};
 
@@ -322,12 +322,12 @@ export default class Archive implements ArchiveContract
     /**
      * Returns collections as list of navbar item
      *
-     * @returns {NavLink[]}
+     * @returns {(NavbarLinkOptions | NavGroup<NavbarLinkOptions>)[]}
      * @protected
      */
-    protected makeNavbarItemChildren(): NavLink[]
+    protected makeNavbarItemChildren(): (NavbarLinkOptions | NavGroup<NavbarLinkOptions>)[]
     {
-        const output: NavLink[] = [];
+        const output: (NavbarLinkOptions | NavGroup<NavbarLinkOptions>)[] = [];
 
         this.collections.forEach((collection: PagesCollection) =>
         {

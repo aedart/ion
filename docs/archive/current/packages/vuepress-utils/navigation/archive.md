@@ -53,7 +53,7 @@ Use the static `make()` method to create a new instance. It accepts 3 arguments:
 
 * `name: string` Name or title of the collection.
 * `path: string` The relative path in the archive to the collection.
-* `pages: SidebarConfigArray = []` An array of pages or group of pages. Each page's path is relative to the collection's path.
+* `pages: SidebarArrayOptions = []` An array of pages or group of pages. Each page's path is relative to the collection's path.
 
 ```ts
 // E.g. inside /.vuepress/my_archive/v5x.ts
@@ -160,17 +160,17 @@ Your archive's directory structure must match the specified `path` or vuepress w
 
 ### Current & Next
 
-Whenever a collection is marked as "current" or "next", its `path` is automatically changed to `/current` or `/next`.
+Whenever a collection is marked as "current" or "next", its `path` is automatically changed to `/current/` or `/next/`.
 This means that the full path of those collections will be the archive's `path` + current or next, e.g.
 
-* `/archive/current`
-* `/archive/next`
+* `/archive/current/`
+* `/archive/next/`
 
 To change these paths, specify the `currentPath` and `nextPath` properties in your `Archive` instance. 
 
 ```ts
-archive.currentPath = '/live'
-archive.nextPath = '/upcoming'
+archive.currentPath = '/live/';
+archive.nextPath = '/upcoming/';
 ```
 
 ::: warning

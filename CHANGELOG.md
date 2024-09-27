@@ -31,6 +31,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Test suite name(s) for container related tests.
 * Babel plugins not applied by webpack, for tests.
 
+## [0.13.0] - 2024-09-27
+
+### Changed
+
+**Breaking**
+
+* Various argument and return types changed in the navigation utilities (_`Archive` and `PagesCollection`_), in `@aedart/vuepress-utils` (_due to upgrade to newer `vuepress` release_).
+
+**Non-breaking Changes**
+
+* Adjusted styles and colours for the documentation (_due to upgrade to newer `vuepress` release_).
+* Updated docs for `@aedart/vuepress-utils` package.
+
+### Fixed
+
+* Unable to build documentation, due to missing `sass` module dependency, in `@aedart/vuepress-utils`.
+* Unable to navigate to "next" or "current" documentation via top navigation (_caused by missing trailing slashes for `_currentPath` and `_nextPath`, in `Archive`_), in `@aedart/vuepress-utils`.
+* Incorrect colours in `VersionDisclaimer.vue`, in `@aedart/vuepress-utils` (_after upgrade to newer `vuepress` release_).
+
+## [0.12.1] - 2024-09-26
+
+### Fixed
+
+* `.eslintignore` file no longer supported (_replaced with new `eslint.config.mjs` file_).
+
+## [0.12.0] - 2024-09-26
+
+### Changed
+
+* Updated dependencies (_service update_).
+
+### Fixed
+
+* `node_modules` directory inside packages/* is not ignored by git.
+* 
 ## [0.11.0] - 2024-04-09
 
 ### Added
@@ -340,7 +375,10 @@ the version command (_configured in root `lerna.json`_).
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.11.0...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.13.0...HEAD
+[0.13.0]: https://github.com/aedart/ion/compare/0.12.1...0.13.0
+[0.12.1]: https://github.com/aedart/ion/compare/0.12.0...0.12.1
+[0.12.0]: https://github.com/aedart/ion/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/aedart/ion/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/aedart/ion/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/aedart/ion/compare/0.8.0...0.9.0

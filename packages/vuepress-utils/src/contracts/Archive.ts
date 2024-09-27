@@ -1,6 +1,5 @@
-import type {NavbarGroup, NavbarItem, SidebarConfig} from "vuepress";
+import type { SidebarOptions, NavbarGroupOptions, NavbarLinkOptions } from "@vuepress/theme-default";
 import PagesCollection from "./PagesCollection.js";
-
 
 /**
  * Archive
@@ -154,14 +153,14 @@ export default interface Archive
     /**
      * Returns a navigation "bar item" or "group" representation of this archive
      * 
-     * @returns {NavbarItem | NavbarGroup}
+     * @returns {NavbarGroupOptions | NavbarLinkOptions}
      */
-    asNavigationItem(): NavbarItem | NavbarGroup;
+    asNavigationItem(): NavbarGroupOptions | NavbarLinkOptions;
 
     /**
      * Returns sidebar configuration (all collections' pages)
      *
-     * @returns {SidebarConfig}
+     * @returns {SidebarOptions}
      */
-    sidebarConfiguration(): SidebarConfig;
+    sidebarConfiguration(): SidebarOptions;
 }
