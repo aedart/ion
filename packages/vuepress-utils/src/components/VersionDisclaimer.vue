@@ -69,7 +69,7 @@ export default defineComponent({
     margin: 0 auto;
     padding: 1.2em;
 
-    border-bottom: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--vp-c-border);
 
     label {
         font-weight: bold;
@@ -82,19 +82,19 @@ export default defineComponent({
 
     &.info {
         label {
-            color: var(--c-tip);
+            color: var(--badge-c-tip-text);
         }
     }
 
     &.warning {
         label {
-            color: var(--c-warning);
+            color: var(--badge-c-warning-text);
         }
     }
     
     &.danger {
         label {
-            color: var(--c-danger);
+            color: var(--badge-c-danger-text);
         }
     }
 }
