@@ -17,5 +17,10 @@ export default class SetupFacades implements Bootstrapper {
         Facade.forgetAllResolved();
         
         Facade.setContainer(app);
+        
+        // Register cleanup...
+        app.destroying(() => {
+            Facade.destroy();
+        });
     }
 }
