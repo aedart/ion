@@ -12,7 +12,8 @@ import {
 import {
     DetectEnvironmentCallback,
     BootCallback,
-    TerminationCallback
+    TerminationCallback,
+    DestroyCallback
 } from "./types";
 import BootstrapperConstructor from "./BootstrapperConstructor";
 
@@ -224,4 +225,13 @@ export default interface Application extends Container
      * @return {void}
      */
     destroy(): void;
+
+    /**
+     * Register a callback to be invoked just before the application is destroyed
+     * 
+     * @param {DestroyCallback} callback
+     * 
+     * @returns {this}
+     */
+    destroying(callback: DestroyCallback): this;
 }

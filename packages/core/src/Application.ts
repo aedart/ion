@@ -8,7 +8,8 @@ import type {
     BootstrapperConstructor,
     BootCallback,
     TerminationCallback,
-    DetectEnvironmentCallback
+    DetectEnvironmentCallback,
+    DestroyCallback,
 } from "@aedart/contracts/core";
 import { CallbackWrapper } from "@aedart/contracts/support";
 import { Container } from "@aedart/container";
@@ -91,6 +92,15 @@ export default class Application extends Container implements ApplicationContrac
      */
     protected terminationCallbacks: TerminationCallback[] = [];
 
+    /**
+     * Callbacks to be invoked just be fore application is destroyed
+     * 
+     * @type {DestroyCallback[]}
+     * 
+     * @protected
+     */
+    protected destroyCallbacks: DestroyCallback[] = [];
+    
     /**
      * Returns the singleton instance of the core application
      *
@@ -482,6 +492,11 @@ export default class Application extends Container implements ApplicationContrac
         // reset the "run" state.
         this.runTriggered = false;
         
+        // Invoke the destroy callbacks (in reverse order).
+        this.invokeDestroyCallbacks(
+            this.destroyCallbacks.toReversed()
+        );
+        
         // Reset other states.
         this.serviceRegistrar = null; // contains the "hasBooted" state
         this.hasBootstrapped = false;
@@ -490,11 +505,26 @@ export default class Application extends Container implements ApplicationContrac
         this.beforeBootCallbacks = [];
         this.afterBootCallbacks = [];
         this.terminationCallbacks = [];
+        this.destroyCallbacks = [];
         this.flush();
         
         // Finally, clear the singleton instance of this application.
         /* @ts-expect-error TS2339 - setInstance is a valid static method */
         this.constructor.setInstance(null);
+    }
+
+    /**
+     * Register a callback to be invoked just before the application is destroyed
+     *
+     * @param {DestroyCallback} callback
+     *
+     * @returns {this}
+     */
+    destroying(callback: DestroyCallback): this
+    {
+        this.destroyCallbacks.push(callback);
+        
+        return this;
     }
     
     /**
@@ -521,6 +551,20 @@ export default class Application extends Container implements ApplicationContrac
      * @protected
      */
     protected invokeBootCallbacks(callbacks: BootCallback[]): void
+    {
+        for (const callback of callbacks) {
+            callback(this);
+        }
+    }
+
+    /**
+     * Invokes given destroy callbacks
+     * 
+     * @param {DestroyCallback[]} callbacks
+     * 
+     * @protected
+     */
+    protected invokeDestroyCallbacks(callbacks: DestroyCallback[]): void
     {
         for (const callback of callbacks) {
             callback(this);
