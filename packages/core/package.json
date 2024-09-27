@@ -1,6 +1,6 @@
 {
     "name": "@aedart/core",
-    "version": "0.11.0",
+    "version": "0.13.0",
     "description": "Ioc Core Application",
     "keywords": [
         "Application",
