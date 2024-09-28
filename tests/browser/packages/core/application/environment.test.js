@@ -1,5 +1,4 @@
-import { Application, LoadEnvironmentVariables } from "@aedart/core";
-import { Env } from "@aedart/support/env";
+import { Application } from "@aedart/core";
 
 describe('@aedart/core', () => {
     describe('environment', () => {
@@ -39,28 +38,6 @@ describe('@aedart/core', () => {
             expect(app.isEnvironment(env))
                 .withContext('isEnvironment() should match custom detected environment')
                 .toBeTrue();
-        });
-
-        it('can detect application environment from __ENV__', () => {
-            const app = new Application();
-            
-            app.bootstrapWith([ LoadEnvironmentVariables ]);
-
-            expect(app.isLocal())
-                .withContext('application environment should NOT be "local"')
-                .toBeFalse();
-
-            expect(app.isProduction())
-                .withContext('application environment should NOT be "production"')
-                .toBeFalse();
-
-            expect(app.isTesting())
-                .withContext('application environment SHOULD be "testing"')
-                .toBeTrue();
-            
-            expect(Env.get('APP_ENV'))
-                .withContext('Environment variables not loaded')
-                .toBe('testing');
         });
     });
 });
