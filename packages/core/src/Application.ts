@@ -28,6 +28,7 @@ import {
     BootError
 } from "@aedart/support/services";
 import { isset } from "@aedart/support/misc";
+import { isPromise } from "@aedart/support/reflections";
 import LoadEnvironmentVariables from "./bootstrap/LoadEnvironmentVariables";
 import SetupFacades from "./bootstrap/SetupFacades";
 import { version } from "../package.json";
@@ -420,11 +421,15 @@ export default class Application extends Container implements ApplicationContrac
         // Change "running" state,...
         this.runTriggered = true;
         
-        // If a callback has been provided, invoke it. If the callback returns a promise, resolve it.
+        // If a callback has been provided, invoke it.
         if (isset(callback)) {
             const result = this.call(callback as Callback | CallbackWrapper | ClassMethodReference);
             
-            return Promise.resolve(result);
+            // In case that the call results in a promise, then return it. Otherwise, any evt. return
+            // value is just ignored.
+            if (isPromise(result)) {
+                return result;
+            }
         }
 
         return Promise.resolve(true);
