@@ -442,9 +442,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public isRunning(): boolean
     {
-        return this.runTriggered
-            && this.hasBeenBootstrapped()
-            && this.hasBooted();
+        return this.runTriggered;
     }
 
     /**
