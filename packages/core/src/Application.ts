@@ -461,6 +461,11 @@ export default class Application extends Container implements ApplicationContrac
      */
     public async terminate(): Promise<boolean>
     {
+        // Skip termination, if application is not running
+        if (!this.isRunning()) {
+            return Promise.resolve(false);
+        }
+        
         // Create a shallow copy of the termination callbacks, in a reversed order.
         // This allows bootstrappers and service providers to register termination logic,
         // such that eventual dependencies are still maintained between them.
