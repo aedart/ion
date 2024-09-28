@@ -243,6 +243,12 @@ export default class Application extends Container implements ApplicationContrac
      */
     public get coreBootstrappers(): BootstrapperConstructor[]
     {
+        // TODO: Ah... this can cause a side effect if multiple application instances are
+        // TODO: instantiated and bootstrapped, e.g. the Facade's container application will
+        // TODO: be overwritten!!!
+        // TODO: This needs to be changed somehow, such that ONLY the singleton instance
+        // TODO: automatically uses these "core" bootstrappers.
+        
         return [
             LoadEnvironmentVariables,
             SetupFacades
