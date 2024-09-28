@@ -31,9 +31,9 @@ describe('@aedart/core', () => {
             it('removes Facade\'s container when application is destroyed', () => {
                 const app = new Application();
 
-                app.bootstrapWith([ SetupFacades ]);
-                
-                app.destroy();
+                app
+                    .bootstrapWith([ SetupFacades ])
+                    .destroy();
 
                 // --------------------------------------------------------------- //
 
