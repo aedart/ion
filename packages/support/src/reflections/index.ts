@@ -17,6 +17,7 @@ export * from './isConstructor';
 export * from './isKeySafe';
 export * from './isKeyUnsafe';
 export * from './isMethod';
+export * from './isPromise';
 export * from './isSubclass';
 export * from './isSubclassOrLooksLike';
 export * from './isWeakKind';
