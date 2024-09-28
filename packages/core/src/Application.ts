@@ -23,7 +23,10 @@ import type {
     ServiceProvider,
     ServiceProviderConstructor
 } from "@aedart/contracts/support/services";
-import { ServiceRegistrar } from "@aedart/support/services";
+import {
+    ServiceRegistrar,
+    BootError
+} from "@aedart/support/services";
 import { isset } from "@aedart/support/misc";
 import LoadEnvironmentVariables from "./bootstrap/LoadEnvironmentVariables";
 import SetupFacades from "./bootstrap/SetupFacades";
@@ -315,12 +318,22 @@ export default class Application extends Container implements ApplicationContrac
     /**
      * Boot this application's service providers
      *
+     * **Note**: _The application cannot be booted, if it has not yet been
+     * [bootstrapped]{@link hasBeenBootstrapped}._
+     *
      * @returns {Promise<boolean>}
+     *
+     * @throws {BootError}
      *
      * @async
      */
     public async boot(): Promise<boolean>
     {
+        // Prevent booting, if application has not yet been bootstrapped
+        if (!this.hasBeenBootstrapped()) {
+            throw new BootError('Application has not been bootstrapped');
+        }
+        
         // Skip if already booted
         if (this.hasBooted()) {
             return Promise.resolve(false);

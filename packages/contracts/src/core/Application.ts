@@ -7,7 +7,8 @@ import { CallbackWrapper } from "@aedart/contracts/support";
 import {
     Registrar,
     ServiceProvider,
-    ServiceProviderConstructor
+    ServiceProviderConstructor,
+    BootException,
 } from "@aedart/contracts/support/services";
 import {
     DetectEnvironmentCallback,
@@ -135,8 +136,13 @@ export default interface Application extends Container
     /**
      * Boot this application's service providers
      *
+     * **Note**: _The application cannot be booted, if it has not yet been
+     * [bootstrapped]{@link hasBeenBootstrapped}._
+     * 
      * @returns {Promise<boolean>}
      *
+     * @throws {BootException}
+     * 
      * @async
      */
     boot(): Promise<boolean>;
