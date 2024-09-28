@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isServiceProviderConstructor()` and `isServiceProvider()` utils in `@aedart/support/services`.
 * `Env` and `env()` utilities in `aedart/support/env`.
 * `App` facade in `aedart/support/facades`.
+* `test:fast` script in `packages.json`, to allow testing without (re)transpiling all packages.
 
 ### Changed
 
