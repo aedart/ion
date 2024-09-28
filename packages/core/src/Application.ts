@@ -405,6 +405,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public async run(callback?: Callback | CallbackWrapper | ClassMethodReference): Promise<boolean>
     {
+        // Do nothing if the application is already in a "running" state.
         if (this.isRunning()) {
             return Promise.resolve(false);
         }
@@ -416,19 +417,17 @@ export default class Application extends Container implements ApplicationContrac
         // Boot, if not already booted.
         await this.boot();
         
-        // Change "run" state,...
+        // Change "running" state,...
         this.runTriggered = true;
         
-        // Finally, invoke given callback, if given.
+        // If a callback has been provided, invoke it. If the callback returns a promise, resolve it.
         if (isset(callback)) {
             const result = this.call(callback as Callback | CallbackWrapper | ClassMethodReference);
-
+            
             return Promise.resolve(result);
         }
 
         return Promise.resolve(true);
-
-        // TODO: Exception Handling ?
     }
 
     /**
