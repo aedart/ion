@@ -94,6 +94,7 @@
         "watch": "lerna run watch",
         "lint": "eslint .",
         "test": "lerna run compile && sh clean.sh && karma start shared/tests/karma-development.conf.js",
+        "test:fast": "karma start shared/tests/karma-development.conf.js",
         "test:prod": "lerna run compile && sh clean.sh && karma start shared/tests/karma-production.conf.js",
         "docs:dev": "cross-env NODE_ENV=development vuepress dev docs --config docs/.vuepress/config.ts",
         "docs:build": "cross-env NODE_ENV=development vuepress build docs --config docs/.vuepress/config.ts",
