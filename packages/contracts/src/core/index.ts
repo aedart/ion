@@ -30,4 +30,5 @@ export {
     type BootstrapperConstructor
 }
 
+export * from './configuration/index';
 export * from './types';
