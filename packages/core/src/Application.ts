@@ -104,6 +104,16 @@ export default class Application extends Container implements ApplicationContrac
      * @protected
      */
     protected destroyCallbacks: DestroyCallback[] = [];
+
+    /**
+     * The "core" application bootstrappers to be used when no other
+     * bootstrappers are specified.
+     * 
+     * @type {BootstrapperConstructor[]}
+     * 
+     * @protected
+     */
+    protected coreDefaultBootstrappers: BootstrapperConstructor[] = [];
     
     /**
      * Returns the singleton instance of the core application
@@ -126,13 +136,31 @@ export default class Application extends Container implements ApplicationContrac
     {
         const application = super.setInstance(container) as ApplicationContract | null;
 
-        // Register core application bindings
+        // Edge-case: when multiple application instances are instantiated (not this singleton instance),
+        // the core bootstrappers, e.g. the "SetupFacades", can negatively affect the other instances.
+        // To avoid such kind of issues, only this singleton instance is configured to have core
+        // bootstrappers, base bindings, core service providers, etc.
+
         if (application !== null) {
-            application.instance(CORE, this);
-            application.alias(CORE, CONTAINER);
+            this.configureInstance(application);
         }
 
         return application;
+    }
+
+    /**
+     * Configure the singleton instance of the given application
+     * 
+     * @param {ApplicationContract} app
+     * 
+     * @protected
+     */
+    protected static configureInstance(app: ApplicationContract): void
+    {
+        app
+            /* @ts-expect-error TS2339 methods are available in this implementation */
+            .registerBaseBindings()
+            .setupCoreBootstrappers();
     }
 
     /**
@@ -243,16 +271,12 @@ export default class Application extends Container implements ApplicationContrac
      */
     public get coreBootstrappers(): BootstrapperConstructor[]
     {
-        // TODO: Ah... this can cause a side effect if multiple application instances are
-        // TODO: instantiated and bootstrapped, e.g. the Facade's container application will
-        // TODO: be overwritten!!!
-        // TODO: This needs to be changed somehow, such that ONLY the singleton instance
-        // TODO: automatically uses these "core" bootstrappers.
+        // Core bootstrappers are only set automatically for the singleton
+        // instance of this application.
+        // @see setInstance()
+        // @see configureInstance()
         
-        return [
-            LoadEnvironmentVariables,
-            SetupFacades
-        ];
+        return this.coreDefaultBootstrappers;
     }
 
     /**
@@ -546,13 +570,45 @@ export default class Application extends Container implements ApplicationContrac
      *
      * @returns {this}
      */
-    destroying(callback: DestroyCallback): this
+    public destroying(callback: DestroyCallback): this
     {
         this.destroyCallbacks.push(callback);
         
         return this;
     }
-    
+
+    /**
+     * Register the "base" bindings for this application
+     *
+     * @returns {ApplicationContract | this}
+     *
+     * @protected
+     */
+    protected registerBaseBindings(): this
+    {
+        this.instance(CORE, this);
+        this.alias(CORE, CONTAINER);
+
+        return this;
+    }
+
+    /**
+     * Set the default "core" bootstrappers
+     *
+     * @returns {ApplicationContract | this}
+     *
+     * @protected
+     */
+    protected setupCoreBootstrappers(): this
+    {
+        this.coreDefaultBootstrappers = [
+            LoadEnvironmentVariables,
+            SetupFacades
+        ];
+
+        return this;
+    }
+
     /**
      * Bootstrap this application using given bootstrapper
      * 
