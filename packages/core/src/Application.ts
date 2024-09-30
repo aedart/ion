@@ -1,6 +1,6 @@
 import {
     Callback,
-    ClassMethodReference
+    ClassMethodReference, type ConstructorLike
 } from "@aedart/contracts";
 import type {
     Application as ApplicationContract,
@@ -10,6 +10,8 @@ import type {
     TerminationCallback,
     DetectEnvironmentCallback,
     DestroyCallback,
+    Configurator,
+    ConfiguratorConstructor
 } from "@aedart/contracts/core";
 import { CallbackWrapper } from "@aedart/contracts/support";
 import { Container } from "@aedart/container";
@@ -28,9 +30,16 @@ import {
     BootError
 } from "@aedart/support/services";
 import { isset } from "@aedart/support/misc";
-import { isPromise } from "@aedart/support/reflections";
+import {
+    getNameOrDesc,
+    isPromise
+} from "@aedart/support/reflections";
+import { isConfigurator } from "./configuration/isConfigurator";
+import { isConfiguratorConstructor } from "./configuration/isConfiguratorConstructor";
+import ConfigurationError from "./exceptions/ConfigurationError";
 import LoadEnvironmentVariables from "./bootstrap/LoadEnvironmentVariables";
 import SetupFacades from "./bootstrap/SetupFacades";
+import DefaultConfigurator from './DefaultConfigurator';
 import { version } from "../package.json";
 
 /**
@@ -106,6 +115,8 @@ export default class Application extends Container implements ApplicationContrac
     protected destroyCallbacks: DestroyCallback[] = [];
 
     /**
+     * @deprecated TODO: Refactor this
+     * 
      * The "core" application bootstrappers to be used when no other
      * bootstrappers are specified.
      * 
@@ -141,6 +152,7 @@ export default class Application extends Container implements ApplicationContrac
         // To avoid such kind of issues, only this singleton instance is configured to have core
         // bootstrappers, base bindings, core service providers, etc.
 
+        // TODO: Refactor this
         if (application !== null) {
             this.configureInstance(application);
         }
@@ -149,6 +161,8 @@ export default class Application extends Container implements ApplicationContrac
     }
 
     /**
+     * @deprecated TODO: Refactor this
+     * 
      * Configure the singleton instance of the given application
      * 
      * @param {ApplicationContract} app
@@ -163,6 +177,25 @@ export default class Application extends Container implements ApplicationContrac
             .setupCoreBootstrappers();
     }
 
+    /**
+     * Configure this application using given configurator
+     *
+     * @param {Configurator | ConfiguratorConstructor} [configurator] If no configurator is given, then
+     *                                                  a default configurator is applied.
+     *
+     * @return {this}
+     *
+     * @throws {ConfigurationException}
+     */
+    public configure(configurator?: Configurator | ConfiguratorConstructor): this
+    {
+        configurator = this.resolveConfigurator(configurator || this.makeDefaultConfigurator());
+
+        return configurator
+            .for(this)
+            .apply() as this;
+    }
+    
     /**
      * This core application's current version
      *
@@ -267,9 +300,11 @@ export default class Application extends Container implements ApplicationContrac
     }
 
     /**
+     * @deprecated TODO: Refactor this
+     * 
      * This "core" application's default bootstrappers
      */
-    public get coreBootstrappers(): BootstrapperConstructor[]
+    public get _coreBootstrappers(): BootstrapperConstructor[]
     {
         // Core bootstrappers are only set automatically for the singleton
         // instance of this application.
@@ -443,7 +478,7 @@ export default class Application extends Container implements ApplicationContrac
 
         // Bootstrap the application, using the "default" bootstrappers. NOTE: If the
         // application has already been bootstrapped, then this call will do nothing.
-        this.bootstrapWith(this.coreBootstrappers);
+        this.bootstrapWith(this._coreBootstrappers);
         
         // Boot, if not already booted.
         await this.boot();
@@ -578,6 +613,8 @@ export default class Application extends Container implements ApplicationContrac
     }
 
     /**
+     * @deprecated TODO: Refactor this
+     * 
      * Register the "base" bindings for this application
      *
      * @returns {ApplicationContract | this}
@@ -593,6 +630,8 @@ export default class Application extends Container implements ApplicationContrac
     }
 
     /**
+     * @deprecated TODO: Refactor this
+     * 
      * Set the default "core" bootstrappers
      *
      * @returns {ApplicationContract | this}
@@ -663,5 +702,42 @@ export default class Application extends Container implements ApplicationContrac
     protected makeServiceRegistrar(): Registrar
     {
         return new ServiceRegistrar(this);
+    }
+
+    /**
+     * Returns a new "default" application configurator instance
+     * 
+     * @return {Configurator}
+     * 
+     * @protected
+     */
+    protected makeDefaultConfigurator(): Configurator
+    {
+        return new DefaultConfigurator(this);
+    }
+
+    /**
+     * Resolves Application Configurator
+     *
+     * @param {Configurator | ConfiguratorConstructor} configurator
+     *
+     * @return {Configurator}
+     *
+     * @throws {ConfigurationException}
+     *
+     * @protected
+     */
+    protected resolveConfigurator(configurator: Configurator | ConfiguratorConstructor): Configurator
+    {
+        if (isConfigurator(configurator)) {
+            return configurator as Configurator;
+        }
+
+        if (isConfiguratorConstructor(configurator)) {
+            return new (configurator as ConfiguratorConstructor)();
+        }
+
+        const msg = `Unable to resolve application configurator: ${getNameOrDesc(configurator as ConstructorLike)} is not a valid configurator`;
+        throw new ConfigurationError(msg, { cause: { configurator: configurator } })
     }
 }
