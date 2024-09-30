@@ -85,10 +85,3 @@ export type BindingTuple<
     FactoryCallback<T> | Constructor<T>,
     boolean? // Shared state
 ];
-
-/**
- * Bindings
- * 
- * List of binding entry instances or binding tuples
- */
-export type Bindings = (Binding | BindingTuple)[];
