@@ -74,7 +74,7 @@ export type AfterResolvedCallback<
 /**
  * Binding Tuple
  * 
- * A binding entry when defined as an array.
+ * An array that contains binding identifier, factory callback / constructor, and shared state.
  * 
  * @see Binding
  */
@@ -89,11 +89,21 @@ export type BindingTuple<
 /**
  * Identifier / Instance Tuple
  * 
- * Existing object that is to be defined as a shared binding, when defined as an array. 
+ * An array that contains binding identifier for an existing object instance.
  */
 export type IdentifierInstanceTuple<
     T = object
 > = [
     Identifier,
     T
+];
+
+/**
+ * Identifier / Alias Tuple
+ * 
+ * An array that contains binding identifier and an alias for that identifier.
+ */
+export type IdentifierAliasTuple = [
+    Identifier,
+    Alias
 ];
