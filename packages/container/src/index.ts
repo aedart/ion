@@ -10,3 +10,4 @@ export {
 export * from './exceptions';
 export * from './BindingEntryBlueprint';
 export * from './isBinding';
+export * from './isBindingTuple';
