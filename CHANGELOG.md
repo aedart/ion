@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `Env` and `env()` utilities in `@aedart/support/env`.
 * `App` facade in `@aedart/support/facades`.
 * `isPromise()` utility in `@aedart/support/reflections`.
-* `BindingTuple` type alias in `@aedart/contracts/container`.
+* `BindingTuple`, `IdentifierInstanceTuple` and `IdentifierAliasTuple` type aliases in `@aedart/contracts/container`.
 * `isBindingTuple` util in `@aedart/container`.
 * `test:fast` script in `packages.json`, to allow testing without (re)transpiling all packages.
 
