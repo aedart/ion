@@ -30,5 +30,6 @@ export {
     type BootstrapperConstructor
 }
 
+export * from './exceptions/index';
 export * from './configuration/index';
 export * from './types';
