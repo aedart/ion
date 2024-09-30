@@ -2,7 +2,11 @@ import {
     ServiceProvider,
     ServiceProviderConstructor,
 } from "@aedart/contracts/support/services";
-import { Binding, BindingTuple } from "@aedart/contracts/container";
+import {
+    Binding,
+    BindingTuple,
+    IdentifierInstanceTuple,
+} from "@aedart/contracts/container";
 import BootstrapperConstructor from "../BootstrapperConstructor";
 import Application from '../Application';
 
@@ -31,6 +35,15 @@ export default interface Configurator
      * @return {this}
      */
     withSingletons(bindings: (Binding | BindingTuple)[]): this;
+
+    /**
+     * Add "core" existing object instances to be registered as shared bindings
+     * 
+     * @param {IdentifierInstanceTuple[]} instances
+     * 
+     * @returns {this}
+     */
+    withInstances(instances: IdentifierInstanceTuple[]): this;
     
     /**
      * Add "core" bootstrappers that application must use

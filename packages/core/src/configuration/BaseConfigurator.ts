@@ -2,7 +2,11 @@ import type { Application, BootstrapperConstructor, Configurator} from "@aedart/
 import type { ServiceProvider, ServiceProviderConstructor } from "@aedart/contracts/support/services";
 import { AbstractClassError } from "@aedart/support/exceptions";
 import { isset } from "@aedart/support/misc";
-import {Binding, BindingTuple} from "@aedart/contracts/container";
+import type {
+    Binding,
+    BindingTuple,
+    IdentifierInstanceTuple
+} from "@aedart/contracts/container";
 
 /**
  * TODO: Incomplete....
@@ -39,6 +43,15 @@ export default abstract class BaseConfigurator implements Configurator {
      * @protected
      */
     protected singletons: (Binding | BindingTuple)[] = [];
+
+    /**
+     * List of object instances to be registered as shared bindings
+     * 
+     * @type {IdentifierInstanceTuple[]}
+     * 
+     * @protected
+     */
+    protected instances: IdentifierInstanceTuple[] = [];
     
     /**
      * List of application bootstrappers
@@ -101,7 +114,21 @@ export default abstract class BaseConfigurator implements Configurator {
         
         return this;
     }
-    
+
+    /**
+     * Add "core" existing object instances to be registered as shared bindings
+     *
+     * @param {IdentifierInstanceTuple[]} instances
+     *
+     * @returns {this}
+     */
+    public withInstances(instances: IdentifierInstanceTuple[]): this
+    {
+        this.instances = this.instances.concat(instances);
+        
+        return this;
+    }
+
     /**
      * Add "core" bootstrappers that application must use
      *
