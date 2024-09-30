@@ -41,7 +41,7 @@ describe('@aedart/core', () => {
         it('singleton instance has core bootstrappers set', () => {
             const app = Application.getInstance();
             
-            expect(app.coreBootstrappers.length)
+            expect(app._coreBootstrappers.length)
                 .withContext('No core bootstrappers available in singleton instance')
                 .not
                 .toBe(0);
