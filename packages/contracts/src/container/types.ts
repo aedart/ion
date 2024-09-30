@@ -1,4 +1,5 @@
-import { Callback, ConstructorLike } from "@aedart/contracts";
+import { Callback, ConstructorLike, Constructor } from "@aedart/contracts";
+import Binding from './Binding';
 import Container from "./Container";
 
 /**
@@ -69,3 +70,25 @@ export type AfterResolvedCallback<
     resolved: Value,
     container: Container
 ) => void;
+
+/**
+ * Binding Tuple
+ * 
+ * A binding entry when defined as an array.
+ * 
+ * @see Binding
+ */
+export type BindingTuple<
+    T = any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+> = [
+    Identifier,
+    FactoryCallback<T> | Constructor<T>,
+    boolean? // Shared state
+];
+
+/**
+ * Bindings
+ * 
+ * List of binding entry instances or binding tuples
+ */
+export type Bindings = (Binding | BindingTuple)[];
