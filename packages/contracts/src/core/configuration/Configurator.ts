@@ -2,12 +2,11 @@ import {
     ServiceProvider,
     ServiceProviderConstructor,
 } from "@aedart/contracts/support/services";
+import { Binding, BindingTuple } from "@aedart/contracts/container";
 import BootstrapperConstructor from "../BootstrapperConstructor";
 import Application from '../Application';
 
 /**
- * TODO: Incomplete...
- * 
  * Application Configurator
  * 
  * Responsible for setup and configuration of a given application,
@@ -16,9 +15,25 @@ import Application from '../Application';
 export default interface Configurator
 {
     /**
-     * TODO: Move to application interface!
+     * Add "core" bindings to be registered
      * 
-     * Set the "core" bootstrappers the application must use
+     * @param {(Binding | BindingTuple)[]} bindings
+     * 
+     * @return {this}
+     */
+    withBindings(bindings: (Binding | BindingTuple)[]): this;
+
+    /**
+     * Add "core" shared bindings to be registered
+     *
+     * @param {(Binding | BindingTuple)[]} bindings
+     *
+     * @return {this}
+     */
+    withSingletons(bindings: (Binding | BindingTuple)[]): this;
+    
+    /**
+     * Add "core" bootstrappers that application must use
      * 
      * @param {BootstrapperConstructor[]} bootstrappers
      * 
@@ -27,9 +42,7 @@ export default interface Configurator
     withBootstrappers(bootstrappers: BootstrapperConstructor[]): this;
 
     /**
-     * TODO: Move to application interface!
-     * 
-     * Set the "core" service providers to be registered by the application
+     * Add "core" service providers to be registered by the application
      * 
      * @param {(ServiceProvider | ServiceProviderConstructor)[]} providers
      * 
@@ -38,7 +51,16 @@ export default interface Configurator
     withServiceProviders(providers: (ServiceProvider | ServiceProviderConstructor)[]): this;
 
     /**
-     * TODO: This method should be the only method in this interface...
+     * Set the application that must be configured
+     * 
+     * @param {Application} app
+     * 
+     * @return {this}
+     */
+    for(app: Application): this;
+    
+    /**
+     * TODO: More specifics about what this should do
      * 
      * Applies setup and configuration of the application and returns it
      * 
