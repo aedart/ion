@@ -1,3 +1,4 @@
+import Application from '../Application';
 import Configurator from "./Configurator";
 
 /**
@@ -8,7 +9,9 @@ export default interface ConfiguratorConstructor
     /**
      * Create a new Application Configurator instance
      * 
+     * @param {Application} [app]
+     * 
      * @return {Configurator}
      */
-    new (): Configurator;
+    new (app?: Application): Configurator;
 }
