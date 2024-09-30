@@ -85,3 +85,15 @@ export type BindingTuple<
     FactoryCallback<T> | Constructor<T>,
     boolean? // Shared state
 ];
+
+/**
+ * Identifier / Instance Tuple
+ * 
+ * Existing object that is to be defined as a shared binding, when defined as an array. 
+ */
+export type IdentifierInstanceTuple<
+    T = object
+> = [
+    Identifier,
+    T
+];
