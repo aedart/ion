@@ -16,6 +16,8 @@ import {
     TerminationCallback,
     DestroyCallback
 } from "./types";
+import Configurator from "./configuration/Configurator";
+import ConfiguratorConstructor from "./configuration/ConfiguratorConstructor";
 import BootstrapperConstructor from "./BootstrapperConstructor";
 
 /**
@@ -27,6 +29,18 @@ import BootstrapperConstructor from "./BootstrapperConstructor";
  */
 export default interface Application extends Container
 {
+    /**
+     * Configure this application using given configurator
+     *
+     * @param {Configurator | ConfiguratorConstructor} [configurator] If no configurator is given, then
+     *                                                  a default configurator is applied.
+     * 
+     * @return {this}
+     * 
+     * @throws {ConfigurationException}
+     */
+    configure(configurator?: Configurator | ConfiguratorConstructor): this;
+    
     /**
      * This core application's current version
      * 
