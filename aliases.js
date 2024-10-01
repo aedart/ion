@@ -18,6 +18,9 @@ module.exports = {
         // conditionNames: ['require', 'import'],
 
         alias: {
+            // config
+            '@aedart/config': path.resolve(__dirname, './packages/config/src'),
+            
             // container
             '@aedart/container': path.resolve(__dirname, './packages/container/src'),
 

@@ -40,6 +40,9 @@
         "baseUrl": ".",
         /* Specify the base directory to resolve non-relative module names. */
         "paths": {
+            "@aedart/config/*": [
+                "./packages/config/src/*"
+            ],
             "@aedart/container/*": [
                 "./packages/container/src/*"
             ],
@@ -151,6 +154,9 @@
         "node_modules"
     ],
     "references": [
+        {
+            "path": "./packages/config"
+        },
         {
             "path": "./packages/container"
         },

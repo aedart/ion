@@ -1,0 +1,46 @@
+{
+    "name": "@aedart/config",
+    "version": "0.13.0",
+    "description": "Ion Configuration package",
+    "keywords": [
+        "Configuration",
+        "Ion"
+    ],
+    "author": "Alin Eugen Deac <aedart@gmail.com>",
+    "license": "BSD-3-Clause",
+    "homepage": "https://aedart.github.io/ion/",
+    "bugs": {
+        "url": "https://github.com/aedart/ion/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aedart/ion.git",
+        "directory": "packages/config"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./dist/types/config.d.ts",
+            "import": "./dist/esm/config.js",
+            "require": "./dist/cjs/config.cjs"
+        }
+    },
+    "files": [
+        "dist",
+        "!dist/**/*.map",
+        "NOTICE"
+    ],
+    "peerDependencies": {
+        "@aedart/contracts": "^0.13.0",
+        "@aedart/support": "^0.13.0"
+    },
+    "scripts": {
+        "compile": "rollup -c",
+        "watch": "rollup -c -w"
+    },
+    "sideEffects": false
+}

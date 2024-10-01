@@ -1,0 +1,44 @@
+NOTICES AND INFORMATION
+Please do not translate or Localize.
+
+Parts of the herein provided software are considered an "adaptation", or "derivative work", of 3rd party software.
+Below you will find general information about which parts are affected, or where you may find additional information
+, along with original license(s), terms and conditions as provided by the 3rd party software.
+
+3rd party software that are included as dependencies by this software is NOT covered by this NOTICE file, unless
+explicitly required by 3rd party software license(s). You can find original license(s), terms and
+conditions of the included 3rd party software, in the directory where it has been installed, e.g. inside your
+"node_modules" directory.  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+@aedart/config (Repository)
+    The configuration Repository is an adaptation of Laravel's Repository
+
+    See https://github.com/laravel/framework/blob/master/src/Illuminate/Config/Repository.php
+    
+    License MIT, Copyright (c) Taylor Otwell. 
+
+    This part of the NOTICE file corresponds to terms and conditions set by the MIT License
+    =======================================================================================
+
+    The MIT License (MIT)
+    
+    Copyright (c) Taylor Otwell
+    
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+    
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+    
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
