@@ -1,4 +1,10 @@
 import Application from "./Application";
+import Configurator from './configuration/Configurator';
+
+/**
+ * Callback that is provided with a "default" [Application Configurator]{@link Configurator}.
+ */
+export type ConfiguratorCallback = (configurator: Configurator) => Configurator;
 
 /**
  * Callback used to detect the application's current environment.
