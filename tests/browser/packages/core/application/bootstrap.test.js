@@ -23,11 +23,11 @@ describe('@aedart/core', () => {
 
             // ------------------------------------------------------------------------------- //
             
-            const before = app.hasBeenBootstrapped();
+            const before = app.hasBootstrapped();
             
-            app.bootstrapWith([ A, B, C ]);
+            app.bootstrap([ A, B, C ]);
             
-            const after = app.hasBeenBootstrapped();
+            const after = app.hasBootstrapped();
 
             // ------------------------------------------------------------------------------- //
             

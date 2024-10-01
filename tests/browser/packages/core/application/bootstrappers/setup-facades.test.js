@@ -13,7 +13,7 @@ describe('@aedart/core', () => {
             it('sets the Application as the Facade\'s container', () => {
                 const app = new Application();
 
-                app.bootstrapWith([ SetupFacades ]);
+                app.bootstrap([ SetupFacades ]);
 
                 // --------------------------------------------------------------- //
                 
@@ -32,7 +32,7 @@ describe('@aedart/core', () => {
                 const app = new Application();
 
                 app
-                    .bootstrapWith([ SetupFacades ])
+                    .bootstrap([ SetupFacades ])
                     .destroy();
 
                 // --------------------------------------------------------------- //

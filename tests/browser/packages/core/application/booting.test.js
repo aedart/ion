@@ -24,7 +24,7 @@ describe('@aedart/core', () => {
             // ------------------------------------------------------------------------------- //
             
             await app
-                .bootstrapWith([])
+                .bootstrap([])
                 .registerMultiple([ A ]);
             
             const result = await app.boot();
@@ -56,7 +56,7 @@ describe('@aedart/core', () => {
             // ------------------------------------------------------------------------------- //
 
             await app
-                .bootstrapWith([])
+                .bootstrap([])
                 .registerMultiple([ A ]);
 
             await app
