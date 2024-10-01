@@ -127,31 +127,46 @@ export default interface Application extends Container
     registerMultiple(providers: (ServiceProvider | ServiceProviderConstructor)[]): Promise<boolean>;
 
     /**
-     * Run given application bootstrappers
-     * 
-     * **Note**: _Method does nothing if application has already
-     * been bootstrapped._
-     * 
-     * @see hasBeenBootstrapped
+     * Add "core" bootstrappers that this application must use when bootstrapping
      * 
      * @param {BootstrapperConstructor[]} bootstrappers
      * 
      * @return {this}
      */
-    bootstrapWith(bootstrappers: BootstrapperConstructor[]): this;
+    withCoreBootstrappers(bootstrappers: BootstrapperConstructor[]): this;
+
+    /**
+     * The "core" bootstrappers of this application
+     * 
+     * @type {BootstrapperConstructor[]}
+     */
+    get coreBootstrappers(): BootstrapperConstructor[];
+    
+    /**
+     * Bootstrap this application using given bootstrappers.
+     * 
+     * **Note**: _Method does nothing if application has already been bootstrapped._
+     * 
+     * @see hasBootstrapped
+     * 
+     * @param {BootstrapperConstructor[]} bootstrappers
+     * 
+     * @return {this}
+     */
+    bootstrap(bootstrappers: BootstrapperConstructor[]): this;
 
     /**
      * Determine if application has been bootstrapped
      * 
      * @return {boolean}
      */
-    hasBeenBootstrapped(): boolean;
+    hasBootstrapped(): boolean;
     
     /**
      * Boot this application's service providers
      *
      * **Note**: _The application cannot be booted, if it has not yet been
-     * [bootstrapped]{@link hasBeenBootstrapped}._
+     * [bootstrapped]{@link hasBootstrapped}._
      * 
      * @returns {Promise<boolean>}
      *
@@ -192,9 +207,10 @@ export default interface Application extends Container
      * Run this application
      * 
      * **Note**: _Method will automatically bootstrap and boot the application, if not
-     * already bootstrapped and booted._
+     * already bootstrapped and booted. The {@link coreBootstrappers} are automatically applied
+     * if the application has not been bootstrapped._
      *
-     * **Note**: _Method will do nothing, if the application is already running._
+     * **Note**: _Method will do nothing, if the application is already running!_
      * 
      * @param {Callback | CallbackWrapper | ClassMethodReference} [callback] Invoked after bootstrapping and booting has completed
      * 
@@ -215,7 +231,7 @@ export default interface Application extends Container
      * Terminate this application
      * 
      * **Note**: _Method will reset the {@link isRunning} state of this application.
-     * However, the application still remains in a [bootstrapped]{@link hasBeenBootstrapped}
+     * However, the application still remains in a [bootstrapped]{@link hasBootstrapped}
      * and [booted]{@link hasBooted} state. Call {@link destroy} to completely destroy
      * this application's bootstrap and boot state, as well as registered bindings._
      * 
@@ -239,7 +255,7 @@ export default interface Application extends Container
     /**
      * Destroy this application instance
      * 
-     * **Note**: _Method resets this application's [bootstrapped]{@link hasBeenBootstrapped}
+     * **Note**: _Method resets this application's [bootstrapped]{@link hasBootstrapped}
      * and [booted]{@link hasBooted} states, [flushes]{@link flush} registered bindings
      * and resolved instances, and other vital properties._
      * 

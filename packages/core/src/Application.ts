@@ -61,13 +61,22 @@ export default class Application extends Container implements ApplicationContrac
     protected serviceRegistrar: Registrar | null = null
 
     /**
+     * The "core" bootstrappers.
+     *
+     * @type {BootstrapperConstructor[]}
+     *
+     * @protected
+     */
+    protected bootstrappers: BootstrapperConstructor[] = [];
+    
+    /**
      * A state about whether this application has been bootstrapped or not.
      * 
      * @type {boolean}
      * 
      * @protected
      */
-    protected hasBootstrapped: boolean = false;
+    protected bootstrapped: boolean = false;
 
     /**
      * Callbacks to be invoked before application boots
@@ -113,18 +122,6 @@ export default class Application extends Container implements ApplicationContrac
      * @protected
      */
     protected destroyCallbacks: DestroyCallback[] = [];
-
-    /**
-     * @deprecated TODO: Refactor this
-     * 
-     * The "core" application bootstrappers to be used when no other
-     * bootstrappers are specified.
-     * 
-     * @type {BootstrapperConstructor[]}
-     * 
-     * @protected
-     */
-    protected coreDefaultBootstrappers: BootstrapperConstructor[] = [];
     
     /**
      * Returns the singleton instance of the core application
@@ -300,21 +297,6 @@ export default class Application extends Container implements ApplicationContrac
     }
 
     /**
-     * @deprecated TODO: Refactor this
-     * 
-     * This "core" application's default bootstrappers
-     */
-    public get _coreBootstrappers(): BootstrapperConstructor[]
-    {
-        // Core bootstrappers are only set automatically for the singleton
-        // instance of this application.
-        // @see setInstance()
-        // @see configureInstance()
-        
-        return this.coreDefaultBootstrappers;
-    }
-
-    /**
      * Register a service provider
      *
      * @param {ServiceProvider | ServiceProviderConstructor} provider
@@ -345,28 +327,51 @@ export default class Application extends Container implements ApplicationContrac
     }
 
     /**
-     * Run given application bootstrappers
-     *
-     * **Note**: _Method does nothing if application has already
-     * been bootstrapped._
-     *
-     * @see hasBeenBootstrapped
+     * Add "core" bootstrappers that this application must use when bootstrapping
      *
      * @param {BootstrapperConstructor[]} bootstrappers
      *
      * @return {this}
      */
-    public bootstrapWith(bootstrappers: BootstrapperConstructor[]): this
+    public withCoreBootstrappers(bootstrappers: BootstrapperConstructor[]): this
     {
-        if (this.hasBeenBootstrapped()) {
+        this.bootstrappers = this.bootstrappers.concat(bootstrappers);
+        
+        return this;
+    }
+
+    /**
+     * The "core" bootstrappers of this application
+     *
+     * @type {BootstrapperConstructor[]}
+     */
+    public get coreBootstrappers(): BootstrapperConstructor[]
+    {
+        return this.bootstrappers;
+    }
+    
+    /**
+     * Run given application bootstrappers
+     *
+     * **Note**: _Method does nothing if application has already been bootstrapped._
+     *
+     * @see hasBootstrapped
+     *
+     * @param {BootstrapperConstructor[]} bootstrappers
+     *
+     * @return {this}
+     */
+    public bootstrap(bootstrappers: BootstrapperConstructor[]): this
+    {
+        if (this.hasBootstrapped()) {
             return this;
         }
         
         for (const bootstrapper of bootstrappers) {
-            this.bootstrap(this.make(bootstrapper));
+            this.invokeBootstrapper(this.make(bootstrapper));
         }
         
-        this.hasBootstrapped = true;
+        this.bootstrapped = true;
 
         return this;
     }
@@ -376,16 +381,16 @@ export default class Application extends Container implements ApplicationContrac
      *
      * @return {boolean}
      */
-    public hasBeenBootstrapped(): boolean
+    public hasBootstrapped(): boolean
     {
-        return this.hasBootstrapped;
+        return this.bootstrapped;
     }
 
     /**
      * Boot this application's service providers
      *
      * **Note**: _The application cannot be booted, if it has not yet been
-     * [bootstrapped]{@link hasBeenBootstrapped}._
+     * [bootstrapped]{@link hasBootstrapped}._
      *
      * @returns {Promise<boolean>}
      *
@@ -396,7 +401,7 @@ export default class Application extends Container implements ApplicationContrac
     public async boot(): Promise<boolean>
     {
         // Prevent booting, if application has not yet been bootstrapped
-        if (!this.hasBeenBootstrapped()) {
+        if (!this.hasBootstrapped()) {
             throw new BootError('Application has not been bootstrapped');
         }
         
@@ -460,9 +465,10 @@ export default class Application extends Container implements ApplicationContrac
      * Run this application
      *
      * **Note**: _Method will automatically bootstrap and boot the application, if not
-     * already bootstrapped and booted._
+     * already bootstrapped and booted. The {@link coreBootstrappers} are automatically applied
+     * if the application has not been bootstrapped._
      *
-     * **Note**: _Method will do nothing, if the application is already running._
+     * **Note**: _Method will do nothing, if the application is already running!_
      *
      * @param {Callback | CallbackWrapper | ClassMethodReference} [callback] Invoked after bootstrapping and booting has completed
      *
@@ -477,9 +483,9 @@ export default class Application extends Container implements ApplicationContrac
             return Promise.resolve(false);
         }
 
-        // Bootstrap the application, using the "default" bootstrappers. NOTE: If the
+        // Bootstrap the application, using the "core" bootstrappers. NOTE: If the
         // application has already been bootstrapped, then this call will do nothing.
-        this.bootstrapWith(this._coreBootstrappers);
+        this.bootstrap(this.coreBootstrappers);
         
         // Boot, if not already booted.
         await this.boot();
@@ -515,7 +521,7 @@ export default class Application extends Container implements ApplicationContrac
      * Terminate this application
      *
      * **Note**: _Method will reset the {@link isRunning} state of this application.
-     * However, the application still remains in a [bootstrapped]{@link hasBeenBootstrapped}
+     * However, the application still remains in a [bootstrapped]{@link hasBootstrapped}
      * and [booted]{@link hasBooted} state. Call {@link destroy} to completely destroy
      * this application's bootstrap and boot state, as well as registered bindings._
      *
@@ -566,7 +572,7 @@ export default class Application extends Container implements ApplicationContrac
     /**
      * Destroy this application instance
      *
-     * **Note**: _Method resets this application's [bootstrapped]{@link hasBeenBootstrapped}
+     * **Note**: _Method resets this application's [bootstrapped]{@link hasBootstrapped}
      * and [booted]{@link hasBooted} states, [flushes]{@link flush} registered bindings
      * and resolved instances, and other vital properties._
      *
@@ -585,9 +591,10 @@ export default class Application extends Container implements ApplicationContrac
         
         // Reset other states.
         this.serviceRegistrar = null; // contains the "hasBooted" state
-        this.hasBootstrapped = false;
+        this.bootstrapped = false;
         
         // Clear other properties.
+        this.bootstrappers = [];
         this.beforeBootCallbacks = [];
         this.afterBootCallbacks = [];
         this.terminationCallbacks = [];
@@ -641,7 +648,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     protected setupCoreBootstrappers(): this
     {
-        this.coreDefaultBootstrappers = [
+        this.bootstrappers = [
             LoadEnvironmentVariables,
             SetupFacades
         ];
@@ -650,7 +657,7 @@ export default class Application extends Container implements ApplicationContrac
     }
 
     /**
-     * Bootstrap this application using given bootstrapper
+     * Invokes given bootstrapper's bootstrap method 
      * 
      * @param {Bootstrapper} bootstrapper
      * 
@@ -658,7 +665,7 @@ export default class Application extends Container implements ApplicationContrac
      * 
      * @protected
      */
-    protected bootstrap(bootstrapper: Bootstrapper): void
+    protected invokeBootstrapper(bootstrapper: Bootstrapper): void
     {
         bootstrapper.bootstrap(this);
     }
