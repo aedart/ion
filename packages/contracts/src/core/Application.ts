@@ -11,6 +11,7 @@ import {
     BootException,
 } from "@aedart/contracts/support/services";
 import {
+    ConfiguratorCallback,
     DetectEnvironmentCallback,
     BootCallback,
     TerminationCallback,
@@ -32,14 +33,15 @@ export default interface Application extends Container
     /**
      * Configure this application using given configurator
      *
-     * @param {Configurator | ConfiguratorConstructor} [configurator] If no configurator is given, then
-     *                                                  a default configurator is applied.
+     * @param {Configurator | ConfiguratorConstructor | ConfiguratorCallback} [configurator] If no configurator is given, then
+     *                                                  a default configurator is applied. If a callback is provided, then it
+     *                                                  will be given a default configurator instance as argument.
      * 
      * @return {this}
      * 
      * @throws {ConfigurationException}
      */
-    configure(configurator?: Configurator | ConfiguratorConstructor): this;
+    configure(configurator?: Configurator | ConfiguratorConstructor | ConfiguratorCallback): this;
     
     /**
      * This core application's current version
