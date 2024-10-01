@@ -14,7 +14,7 @@ import Application from '../Application';
 /**
  * Application Configurator
  * 
- * Responsible for setup and configuration of a given application,
+ * Responsible for the initial setup and configuration of a given application,
  * e.g. registration of "core" bindings, bootstrappers, service providers, ...etc.
  */
 export default interface Configurator
