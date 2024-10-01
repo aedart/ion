@@ -16,11 +16,7 @@ import type {
 } from "@aedart/contracts/core";
 import { CallbackWrapper } from "@aedart/contracts/support";
 import { Container } from "@aedart/container";
-import {
-    CORE,
-    APP_ENV
-} from "@aedart/contracts/core";
-import { CONTAINER } from "@aedart/contracts/container";
+import { APP_ENV } from "@aedart/contracts/core";
 import type {
     Registrar,
     ServiceProvider,
@@ -38,8 +34,6 @@ import {
 import { isConfigurator } from "./configuration/isConfigurator";
 import { isConfiguratorConstructor } from "./configuration/isConfiguratorConstructor";
 import ConfigurationError from "./exceptions/ConfigurationError";
-import LoadEnvironmentVariables from "./bootstrap/LoadEnvironmentVariables";
-import SetupFacades from "./bootstrap/SetupFacades";
 import DefaultConfigurator from './DefaultConfigurator';
 import { version } from "../package.json";
 
@@ -143,36 +137,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public static setInstance(container: ApplicationContract | null = null): ApplicationContract | null
     {
-        const application = super.setInstance(container) as ApplicationContract | null;
-
-        // Edge-case: when multiple application instances are instantiated (not this singleton instance),
-        // the core bootstrappers, e.g. the "SetupFacades", can negatively affect the other instances.
-        // To avoid such kind of issues, only this singleton instance is configured to have core
-        // bootstrappers, base bindings, core service providers, etc.
-
-        // TODO: Refactor this
-        if (application !== null) {
-            this.configureInstance(application);
-        }
-
-        return application;
-    }
-
-    /**
-     * @deprecated TODO: Refactor this
-     * 
-     * Configure the singleton instance of the given application
-     * 
-     * @param {ApplicationContract} app
-     * 
-     * @protected
-     */
-    protected static configureInstance(app: ApplicationContract): void
-    {
-        app
-            /* @ts-expect-error TS2339 methods are available in this implementation */
-            .registerBaseBindings()
-            .setupCoreBootstrappers();
+        return super.setInstance(container) as ApplicationContract | null;
     }
 
     /**
@@ -619,42 +584,6 @@ export default class Application extends Container implements ApplicationContrac
     {
         this.destroyCallbacks.push(callback);
         
-        return this;
-    }
-
-    /**
-     * @deprecated TODO: Refactor this
-     * 
-     * Register the "base" bindings for this application
-     *
-     * @returns {ApplicationContract | this}
-     *
-     * @protected
-     */
-    protected registerBaseBindings(): this
-    {
-        this.instance(CORE, this);
-        this.alias(CORE, CONTAINER);
-
-        return this;
-    }
-
-    /**
-     * @deprecated TODO: Refactor this
-     * 
-     * Set the default "core" bootstrappers
-     *
-     * @returns {ApplicationContract | this}
-     *
-     * @protected
-     */
-    protected setupCoreBootstrappers(): this
-    {
-        this.bootstrappers = [
-            LoadEnvironmentVariables,
-            SetupFacades
-        ];
-
         return this;
     }
 
