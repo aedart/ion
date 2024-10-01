@@ -14,6 +14,7 @@ import {
     IdentifierAliasTuple,
     IdentifierInstanceTuple
 } from "@aedart/contracts/container";
+import ConfigurationError from "../exceptions/ConfigurationError";
 
 /**
  * Base Configurator
@@ -205,9 +206,15 @@ export default abstract class BaseConfigurator implements Configurator {
      * Applies setup and configuration of the application and returns it
      *
      * @returns {Application}
+     *
+     * @throws {ConfigurationException}
      */
     public apply(): Application
     {
+        if (!isset(this.app)) {
+            throw new ConfigurationError('No application instance has been specified - unable to apply setup and configuration');
+        }
+        
         this
             .registerInstances()
             .registerSingletons()
