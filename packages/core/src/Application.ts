@@ -101,13 +101,13 @@ export default class Application extends Container implements ApplicationContrac
     protected afterBootCallbacks: BootCallback[] = [];
 
     /**
-     * Whether this application's "run" method has been invoked or not
+     * Whether the application is running or not
      * 
      * @type {boolean}
      * 
      * @protected
      */
-    protected runTriggered: boolean = false;
+    protected running: boolean = false;
 
     /**
      * Callbacks to be invoked when application terminates
@@ -466,8 +466,8 @@ export default class Application extends Container implements ApplicationContrac
         // Boot, if not already booted.
         await this.boot();
         
-        // Change "running" state,...
-        this.runTriggered = true;
+        // Change state
+        this.running = true;
         
         // If a callback has been provided, invoke it.
         if (isset(callback)) {
@@ -490,7 +490,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public isRunning(): boolean
     {
-        return this.runTriggered;
+        return this.running;
     }
 
     /**
@@ -525,8 +525,8 @@ export default class Application extends Container implements ApplicationContrac
             await callback(this);
         }
         
-        // Reset the "run" state.
-        this.runTriggered = false;
+        // Reset state
+        this.running = false;
         
         return Promise.resolve(true);
     }
@@ -557,8 +557,8 @@ export default class Application extends Container implements ApplicationContrac
     public destroy(): void
     {
         // Regardless whether the application has been terminated or not,
-        // reset the "run" state.
-        this.runTriggered = false;
+        // reset running state.
+        this.running = false;
         
         // Invoke the destroy callbacks (in reverse order).
         this.invokeDestroyCallbacks(
