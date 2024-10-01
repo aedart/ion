@@ -5,6 +5,7 @@ import {
 import {
     Binding,
     BindingTuple,
+    IdentifierAliasTuple,
     IdentifierInstanceTuple,
 } from "@aedart/contracts/container";
 import BootstrapperConstructor from "../BootstrapperConstructor";
@@ -18,6 +19,15 @@ import Application from '../Application';
  */
 export default interface Configurator
 {
+    /**
+     * Set the application that must be configured
+     *
+     * @param {Application} app
+     *
+     * @return {this}
+     */
+    for(app: Application): this;
+    
     /**
      * Add "core" bindings to be registered
      * 
@@ -44,6 +54,15 @@ export default interface Configurator
      * @returns {this}
      */
     withInstances(instances: IdentifierInstanceTuple[]): this;
+
+    /**
+     * Add "core" aliases to be registered
+     * 
+     * @param {IdentifierAliasTuple[]} aliases
+     * 
+     * @return {this}
+     */
+    withAliases(aliases: IdentifierAliasTuple[]): this;
     
     /**
      * Add "core" bootstrappers that application must use
@@ -62,19 +81,8 @@ export default interface Configurator
      * @returns {this}
      */
     withServiceProviders(providers: (ServiceProvider | ServiceProviderConstructor)[]): this;
-
-    /**
-     * Set the application that must be configured
-     * 
-     * @param {Application} app
-     * 
-     * @return {this}
-     */
-    for(app: Application): this;
     
     /**
-     * TODO: More specifics about what this should do
-     * 
      * Applies setup and configuration of the application and returns it
      * 
      * @returns {Application}

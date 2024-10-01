@@ -2,16 +2,17 @@ import type { Application, BootstrapperConstructor, Configurator} from "@aedart/
 import type { ServiceProvider, ServiceProviderConstructor } from "@aedart/contracts/support/services";
 import { AbstractClassError } from "@aedart/support/exceptions";
 import { isset } from "@aedart/support/misc";
-import type {
+import {
     Binding,
     BindingTuple,
+    IdentifierAliasTuple,
     IdentifierInstanceTuple
 } from "@aedart/contracts/container";
 
 /**
- * TODO: Incomplete....
- * 
  * Base Configurator
+ * 
+ * @see {import('@aedart/contracts/core').Configurator}
  * 
  * @abstract
  */
@@ -52,6 +53,16 @@ export default abstract class BaseConfigurator implements Configurator {
      * @protected
      */
     protected instances: IdentifierInstanceTuple[] = [];
+
+    /**
+     * 
+     * List of aliases to be registered
+     * 
+     * @type {IdentifierAliasTuple[]}
+     * 
+     * @protected
+     */
+    protected aliases: IdentifierAliasTuple[] = [];
     
     /**
      * List of application bootstrappers
@@ -87,6 +98,19 @@ export default abstract class BaseConfigurator implements Configurator {
         }
     }
 
+    /**
+     * Set the application that must be configured
+     *
+     * @param {Application} app
+     *
+     * @return {this}
+     */
+    public for(app: Application): this {
+        this.app = app;
+
+        return this;
+    }
+    
     /**
      * Add "core" bindings to be registered
      *
@@ -130,6 +154,18 @@ export default abstract class BaseConfigurator implements Configurator {
     }
 
     /**
+     * Add "core" aliases to be registered
+     *
+     * @param {IdentifierAliasTuple[]} aliases
+     *
+     * @return {this}
+     */
+    public withAliases(aliases: IdentifierAliasTuple[]): this
+    {
+        return this;
+    }
+    
+    /**
      * Add "core" bootstrappers that application must use
      *
      * @param {BootstrapperConstructor[]} bootstrappers
@@ -158,19 +194,12 @@ export default abstract class BaseConfigurator implements Configurator {
     }
 
     /**
-     * Set the application that must be configured
+     * Applies setup and configuration of the application and returns it
      *
-     * @param {Application} app
-     *
-     * @return {this}
+     * @returns {Application}
      */
-    public for(app: Application): this {
-        this.app = app;
-        
-        return this;
-    }
-    
     public apply(): Application {
+        // TODO: Implement this...
         throw new Error("Method not implemented.");
     }
 }
