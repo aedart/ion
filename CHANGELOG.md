@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `BindingTuple`, `IdentifierInstanceTuple` and `IdentifierAliasTuple` type aliases in `@aedart/contracts/container`.
 * `isBindingTuple` util in `@aedart/container`.
 * `test:fast` script in `packages.json`, to allow testing without (re)transpiling all packages.
-* `@types/jasmine` as development dependency (_root package only_).
+* `@types/jasmine` as development dependency (_in root package only_).
 
 ### Changed
 
