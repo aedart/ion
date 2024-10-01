@@ -85,6 +85,8 @@ export default interface Configurator
      * Applies setup and configuration of the application and returns it
      * 
      * @returns {Application}
+     * 
+     * @throws {ConfigurationException}
      */
     apply(): Application;
 }
