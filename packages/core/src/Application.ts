@@ -1,6 +1,6 @@
-import {
+import type {
     Callback,
-    ClassMethodReference, type ConstructorLike
+    ClassMethodReference
 } from "@aedart/contracts";
 import type {
     Application as ApplicationContract,
@@ -11,7 +11,8 @@ import type {
     DetectEnvironmentCallback,
     DestroyCallback,
     Configurator,
-    ConfiguratorConstructor
+    ConfiguratorConstructor,
+    ConfiguratorCallback
 } from "@aedart/contracts/core";
 import { CallbackWrapper } from "@aedart/contracts/support";
 import { Container } from "@aedart/container";
@@ -31,8 +32,8 @@ import {
 } from "@aedart/support/services";
 import { isset } from "@aedart/support/misc";
 import {
-    getNameOrDesc,
-    isPromise
+    isPromise,
+    isCallable
 } from "@aedart/support/reflections";
 import { isConfigurator } from "./configuration/isConfigurator";
 import { isConfiguratorConstructor } from "./configuration/isConfiguratorConstructor";
@@ -177,16 +178,17 @@ export default class Application extends Container implements ApplicationContrac
     /**
      * Configure this application using given configurator
      *
-     * @param {Configurator | ConfiguratorConstructor} [configurator] If no configurator is given, then
-     *                                                  a default configurator is applied.
+     * @param {Configurator | ConfiguratorConstructor | ConfiguratorCallback} [configurator] If no configurator is given, then
+     *                                                  a default configurator is applied. If a callback is provided, then it
+     *                                                  will be given a default configurator instance as argument.
      *
      * @return {this}
      *
      * @throws {ConfigurationException}
      */
-    public configure(configurator?: Configurator | ConfiguratorConstructor): this
+    public configure(configurator?: Configurator | ConfiguratorConstructor | ConfiguratorCallback): this
     {
-        configurator = this.resolveConfigurator(configurator || this.makeDefaultConfigurator());
+        configurator = this.resolveConfigurator(configurator);
 
         return configurator
             .for(this)
@@ -727,7 +729,7 @@ export default class Application extends Container implements ApplicationContrac
     /**
      * Resolves Application Configurator
      *
-     * @param {Configurator | ConfiguratorConstructor} configurator
+     * @param {Configurator | ConfiguratorConstructor | ConfiguratorCallback} [configurator]
      *
      * @return {Configurator}
      *
@@ -735,8 +737,10 @@ export default class Application extends Container implements ApplicationContrac
      *
      * @protected
      */
-    protected resolveConfigurator(configurator: Configurator | ConfiguratorConstructor): Configurator
+    protected resolveConfigurator(configurator?: Configurator | ConfiguratorConstructor | ConfiguratorCallback): Configurator
     {
+        configurator = configurator || this.makeDefaultConfigurator();
+        
         if (isConfigurator(configurator)) {
             return configurator as Configurator;
         }
@@ -745,7 +749,10 @@ export default class Application extends Container implements ApplicationContrac
             return new (configurator as ConfiguratorConstructor)();
         }
 
-        const msg = `Unable to resolve application configurator: ${getNameOrDesc(configurator as ConstructorLike)} is not a valid configurator`;
-        throw new ConfigurationError(msg, { cause: { configurator: configurator } })
+        if (isCallable(configurator)) {
+            return (configurator as ConfiguratorCallback)(this.makeDefaultConfigurator());
+        }
+        
+        throw new ConfigurationError('Invalid application configurator provided', { cause: { configurator: configurator } })
     }
 }
