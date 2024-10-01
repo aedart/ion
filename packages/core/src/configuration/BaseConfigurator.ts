@@ -1,9 +1,15 @@
-import type { Application, BootstrapperConstructor, Configurator} from "@aedart/contracts/core";
-import type { ServiceProvider, ServiceProviderConstructor } from "@aedart/contracts/support/services";
+import type {
+    Application,
+    BootstrapperConstructor,
+    Configurator
+} from "@aedart/contracts/core";
+import type {
+    ServiceProvider,
+    ServiceProviderConstructor
+} from "@aedart/contracts/support/services";
 import { AbstractClassError } from "@aedart/support/exceptions";
 import { isset } from "@aedart/support/misc";
 import {
-    Binding,
     BindingTuple,
     IdentifierAliasTuple,
     IdentifierInstanceTuple
@@ -30,20 +36,20 @@ export default abstract class BaseConfigurator implements Configurator {
     /**
      * List of bindings to be registered
      * 
-     * @type {(Binding | BindingTuple)[]}
+     * @type {BindingTuple[]}
      * 
      * @protected
      */
-    protected bindings: (Binding | BindingTuple)[] = [];
+    protected bindings: BindingTuple[] = [];
 
     /**
      * List of shared bindings to be registered
      *
-     * @type {(Binding | BindingTuple)[]}
+     * @type {BindingTuple[]}
      * 
      * @protected
      */
-    protected singletons: (Binding | BindingTuple)[] = [];
+    protected singletons: BindingTuple[] = [];
 
     /**
      * List of object instances to be registered as shared bindings
@@ -114,11 +120,11 @@ export default abstract class BaseConfigurator implements Configurator {
     /**
      * Add "core" bindings to be registered
      *
-     * @param {(Binding | BindingTuple)[]} bindings
+     * @param {BindingTuple[]} bindings
      *
      * @return {this}
      */
-    public withBindings(bindings: (Binding | BindingTuple)[]): this
+    public withBindings(bindings: BindingTuple[]): this
     {
         this.bindings = this.bindings.concat(bindings);
         
@@ -128,11 +134,11 @@ export default abstract class BaseConfigurator implements Configurator {
     /**
      * Add "core" shared bindings to be registered
      *
-     * @param {(Binding | BindingTuple)[]} bindings
+     * @param {BindingTuple[]} bindings
      *
      * @return {this}
      */
-    public withSingletons(bindings: (Binding | BindingTuple)[]): this
+    public withSingletons(bindings: BindingTuple[]): this
     {
         this.singletons = this.singletons.concat(bindings);
         
@@ -162,6 +168,8 @@ export default abstract class BaseConfigurator implements Configurator {
      */
     public withAliases(aliases: IdentifierAliasTuple[]): this
     {
+        this.aliases = this.aliases.concat(aliases);
+        
         return this;
     }
     
@@ -198,8 +206,108 @@ export default abstract class BaseConfigurator implements Configurator {
      *
      * @returns {Application}
      */
-    public apply(): Application {
-        // TODO: Implement this...
-        throw new Error("Method not implemented.");
+    public apply(): Application
+    {
+        this
+            .registerInstances()
+            .registerSingletons()
+            .registerBindings()
+            .registerAliases()
+            .registerBootstrappers()
+            .registerServiceProviders();
+        
+        return this.app as Application;
+    }
+
+    /**
+     * Register the "core" object instances as shared bindings
+     * 
+     * @return {this}
+     * 
+     * @protected
+     */
+    protected registerInstances(): this
+    {
+        for (const [ identifier, instance ] of this.instances) {
+            this.app?.instance(identifier, instance);
+        }
+        
+        return this;
+    }
+
+    /**
+     * Register "core" shared bindings
+     * 
+     * @return {this}
+     * 
+     * @protected
+     */
+    protected registerSingletons(): this
+    {
+        for (const [ identifier, concrete ] of this.singletons) {
+            this.app?.singleton(identifier, concrete);
+        }
+        
+        return this;
+    }
+
+    /**
+     * Register "core" bindings
+     * 
+     * @return {this}
+     * 
+     * @protected
+     */
+    protected registerBindings(): this
+    {
+        for (const [ identifier, concrete, shared ] of this.bindings) {
+            this.app?.bind(identifier, concrete, shared);
+        }
+        
+        return this;
+    }
+
+    /**
+     * Register "core" binding aliases
+     * 
+     * @return {this}
+     * 
+     * @protected
+     */
+    protected registerAliases(): this
+    {
+        for (const [ identifier, alias ] of this.aliases) {
+            this.app?.alias(identifier, alias);
+        }
+        
+        return this;
+    }
+
+    /**
+     * Register "core" bootstrappers
+     * 
+     * @return {this}
+     * 
+     * @protected
+     */
+    protected registerBootstrappers(): this
+    {
+        this.app?.withCoreBootstrappers(this.bootstrappers);
+        
+        return this;
+    }
+
+    /**
+     * Register "core" service providers
+     * 
+     * @return {this}
+     * 
+     * @protected
+     */
+    protected registerServiceProviders(): this
+    {
+        this.app?.registerMultiple(this.providers);
+        
+        return this;
     }
 }
