@@ -215,6 +215,8 @@ export default abstract class BaseConfigurator implements Configurator {
             throw new ConfigurationError('No application instance has been specified - unable to apply setup and configuration');
         }
         
+        this.before(this.app as Application);
+        
         this
             .registerInstances()
             .registerSingletons()
@@ -223,9 +225,35 @@ export default abstract class BaseConfigurator implements Configurator {
             .registerBootstrappers()
             .registerServiceProviders();
         
+        this.after(this.app as Application);
+        
         return this.app as Application;
     }
 
+    /**
+     * "hook" method that is invoked before setup and configuration is applied
+     * 
+     * @param {Application} app
+     * 
+     * @return {void}
+     */
+    public before(app: Application): void
+    {
+        // Overwrite this method to perform logic before "apply" logic
+    }
+
+    /**
+     * "hook" method that is invoked after setup and configuration is applied
+     *
+     * @param {Application} app
+     *
+     * @return {void}
+     */
+    public after(app: Application): void
+    {
+        // Overwrite this method to perform logic after "apply" logic
+    }
+    
     /**
      * Register the "core" object instances as shared bindings
      * 
