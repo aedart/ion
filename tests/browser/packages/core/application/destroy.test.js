@@ -28,7 +28,7 @@ describe('@aedart/core', () => {
                 .withContext('application should NOT be booted')
                 .toBeFalse();
 
-            expect(app.hasBeenBootstrapped())
+            expect(app.hasBootstrapped())
                 .withContext('application should NOT be bootstrapped')
                 .toBeFalse();
             
