@@ -3,7 +3,6 @@ import {
     ServiceProviderConstructor,
 } from "@aedart/contracts/support/services";
 import {
-    Binding,
     BindingTuple,
     IdentifierAliasTuple,
     IdentifierInstanceTuple,
@@ -31,20 +30,20 @@ export default interface Configurator
     /**
      * Add "core" bindings to be registered
      * 
-     * @param {(Binding | BindingTuple)[]} bindings
+     * @param {BindingTuple[]} bindings
      * 
      * @return {this}
      */
-    withBindings(bindings: (Binding | BindingTuple)[]): this;
+    withBindings(bindings: BindingTuple[]): this;
 
     /**
      * Add "core" shared bindings to be registered
      *
-     * @param {(Binding | BindingTuple)[]} bindings
+     * @param {BindingTuple[]} bindings
      *
      * @return {this}
      */
-    withSingletons(bindings: (Binding | BindingTuple)[]): this;
+    withSingletons(bindings: BindingTuple[]): this;
 
     /**
      * Add "core" existing object instances to be registered as shared bindings
