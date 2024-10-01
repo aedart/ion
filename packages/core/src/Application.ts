@@ -459,9 +459,10 @@ export default class Application extends Container implements ApplicationContrac
     /**
      * Run this application
      *
-     * **Note**: _Method will bootstrap application's bootstrappers and boot
-     * the registered service providers. It does nothing if the application is
-     * already running._
+     * **Note**: _Method will automatically bootstrap and boot the application, if not
+     * already bootstrapped and booted._
+     *
+     * **Note**: _Method will do nothing, if the application is already running._
      *
      * @param {Callback | CallbackWrapper | ClassMethodReference} [callback] Invoked after bootstrapping and booting has completed
      *
