@@ -74,6 +74,15 @@ export default class Application extends Container implements ApplicationContrac
     protected bootstrapped: boolean = false;
 
     /**
+     * The applications booted state
+     * 
+     * @type {boolean}
+     * 
+     * @protected
+     */
+    protected booted: boolean = false;
+    
+    /**
      * Callbacks to be invoked before application boots
      * 
      * @type {BootCallback[]}
@@ -379,13 +388,13 @@ export default class Application extends Container implements ApplicationContrac
         
         // Invoke "before" boot callbacks
         this.invokeBootCallbacks(this.beforeBootCallbacks);
-        
-        const booted = await this.registrar.bootAll();
+
+        this.booted = await this.registrar.bootAll()
 
         // Invoke "after" boot callbacks
         this.invokeBootCallbacks(this.afterBootCallbacks);
 
-        return Promise.resolve(booted);
+        return Promise.resolve(this.booted);
     }
 
     /**
@@ -397,7 +406,7 @@ export default class Application extends Container implements ApplicationContrac
      */
     public hasBooted(): boolean
     {
-        return this.registrar.booted.length > 0;
+        return this.booted;
     }
 
     /**
@@ -559,6 +568,7 @@ export default class Application extends Container implements ApplicationContrac
         // Reset other states.
         this.serviceRegistrar = null; // contains the "hasBooted" state
         this.bootstrapped = false;
+        this.booted = false;
         
         // Clear other properties.
         this.bootstrappers = [];
