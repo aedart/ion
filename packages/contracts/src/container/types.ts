@@ -1,5 +1,4 @@
 import { Callback, ConstructorLike, Constructor } from "@aedart/contracts";
-import Binding from './Binding';
 import Container from "./Container";
 
 /**
