@@ -11,6 +11,11 @@ conditions of the included 3rd party software, in the directory where it has bee
 "node_modules" directory.  
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+@aedart/contracts/config (Repository)
+    The Configuration Repository interface is an adaptation of Laravel's interface or same name.
+
+    See https://github.com/laravel/framework/blob/master/src/Illuminate/Contracts/Config/Repository.php
+
 @aedart/contracts/core (Application)
     The Application interface is an adaptation of Laravel's Foundation Application interface.
 
