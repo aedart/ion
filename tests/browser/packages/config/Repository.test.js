@@ -212,5 +212,38 @@ describe('@aedart/config', () => {
             expect(config.get(key))
                 .toEqual([ valueA, valueB, valueC ]);
         });
+
+        it('can merge items into existing configuration items', () => {
+            
+            const items = {
+                a: true,
+                b: {
+                    c: 'foo'
+                }
+            };
+
+            const config = new Repository(items);
+
+            // -------------------------------------------------------------------------- //
+            
+            const source = {
+                b: {
+                    d: 'bar'
+                },
+                c: false
+            };
+            
+            config.merge(source);
+            
+            expect(config.all())
+                .toEqual({
+                    a: true,
+                    b: {
+                        // NOTE: shallow copy causes "c: 'bar'" to be overwritten!
+                        d: 'bar'
+                    },
+                    c: false
+                })
+        });
     });
 });
