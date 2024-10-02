@@ -9,6 +9,7 @@
     "./src/**/*"
   ],
   "references": [
+      { "path": "../config", "prepend": false },
       { "path": "../container", "prepend": false },
       { "path": "../contracts", "prepend": false },
       { "path": "../support", "prepend": false },
