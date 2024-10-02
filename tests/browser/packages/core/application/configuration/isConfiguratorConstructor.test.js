@@ -11,7 +11,14 @@ describe('@aedart/core', () => {
 
                 class B {
                     for() {}
-
+                    with() {}
+                    withConfiguration(){}
+                    withBindings() {}
+                    withSingletons() {}
+                    withInstances() {}
+                    withAliases() {}
+                    withBootstrappers() {}
+                    withServiceProviders() {}
                     apply() {}
                 }
 
