@@ -3,6 +3,7 @@ import {
     CORE,
 } from "@aedart/contracts/core";
 import { CONTAINER } from "@aedart/contracts/container";
+import { ConfigServiceProvider } from "@aedart/config";
 import LoadEnvironmentVariables from "./bootstrap/LoadEnvironmentVariables";
 import SetupFacades from "./bootstrap/SetupFacades";
 import BaseConfigurator from "./configuration/BaseConfigurator";
@@ -29,6 +30,9 @@ export default class DefaultConfigurator extends BaseConfigurator
             .withBootstrappers([
                 LoadEnvironmentVariables,
                 SetupFacades
+            ])
+            .withServiceProviders([
+                ConfigServiceProvider
             ]);
     }
 }
