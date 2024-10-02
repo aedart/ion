@@ -14,6 +14,7 @@ import {
     IdentifierAliasTuple,
     IdentifierInstanceTuple
 } from "@aedart/contracts/container";
+import { shallowMerge } from "@aedart/support/objects";
 import ConfigurationError from "../exceptions/ConfigurationError";
 
 /**
@@ -34,6 +35,15 @@ export default abstract class BaseConfigurator implements Configurator {
      */
     protected app: Application | undefined;
 
+    /**
+     * Configuration items for the application
+     * 
+     * @type {Record<PropertyKey, any>}
+     * 
+     * @protected
+     */
+    protected configurationItems: Record<PropertyKey, any> = {};
+    
     /**
      * List of bindings to be registered
      * 
@@ -115,6 +125,32 @@ export default abstract class BaseConfigurator implements Configurator {
     public for(app: Application): this {
         this.app = app;
 
+        return this;
+    }
+
+    /**
+     * Alias for {@see withConfiguration}
+     *
+     * @param {Record<PropertyKey, any>} items
+     *
+     * @return {this}
+     */
+    public with(items: Record<PropertyKey, any>): this /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        return this.withConfiguration(items);
+    }
+
+    /**
+     * Add configuration items for the application
+     *
+     * @param {Record<PropertyKey, any>} items
+     *
+     * @return {this}
+     */
+    public withConfiguration(items: Record<PropertyKey, any>): this /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        this.configurationItems = shallowMerge(this.configurationItems, items);
+        
         return this;
     }
     
