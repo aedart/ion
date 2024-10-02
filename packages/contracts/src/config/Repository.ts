@@ -71,6 +71,17 @@ export default interface Repository
     forget(key: Key): boolean;
 
     /**
+     * Merge items into this repository's configuration items
+     * 
+     * **Note**: _Merging is performed via [shallow coping](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy) of items._
+     * 
+     * @param {Record<PropertyKey, any>} items
+     * 
+     * @return {this}
+     */
+    merge(items: Record<PropertyKey, any>): this; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    
+    /**
      * Get all configuration items
      * 
      * @return {Record<PropertyKey, any>}

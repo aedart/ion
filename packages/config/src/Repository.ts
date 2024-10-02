@@ -4,7 +4,8 @@ import {
     set,
     get,
     has,
-    forget
+    forget,
+    shallowMerge
 } from "@aedart/support/objects";
 
 /**
@@ -30,7 +31,7 @@ export default class Repository implements RepositoryContract
      */
     public constructor(items: Record<PropertyKey, any> = {}) /* eslint-disable-line @typescript-eslint/no-explicit-any */
     { 
-        this.items = Object.assign(Object.create(null), items);
+        this.items = shallowMerge(items);
     }
     
     /**
@@ -130,6 +131,22 @@ export default class Repository implements RepositoryContract
         return forget(this.items, key);
     }
 
+    /**
+     * Merge items into this repository's configuration items
+     *
+     * **Note**: _Merging is performed via [shallow coping](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy) of items._
+     *
+     * @param {Record<PropertyKey, any>} items
+     *
+     * @return {this}
+     */
+    public merge(items: Record<PropertyKey, any>): this /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    {
+        this.items = shallowMerge(this.items, items);
+        
+        return this;
+    }
+    
     /**
      * Get all configuration items
      *
