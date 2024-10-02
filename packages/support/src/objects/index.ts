@@ -11,6 +11,7 @@ export * from './isset';
 export * from './merge';
 export * from './populate';
 export * from './set';
+export * from './shallowMerge';
 export * from './uniqueId';
 
 import ObjectId from "./ObjectId";
