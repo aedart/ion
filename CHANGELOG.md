@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isServiceProviderConstructor()` and `isServiceProvider()` utils in `@aedart/support/services`.
 * `Env` and `env()` utilities in `@aedart/support/env`.
 * `shallowMerge()` in `@aedart/support/objects`.
-* `App` facade in `@aedart/support/facades`.
+* `App` and `Config` facades in `@aedart/support/facades`.
 * `isPromise()` utility in `@aedart/support/reflections`.
 * `BindingTuple`, `IdentifierInstanceTuple` and `IdentifierAliasTuple` type aliases in `@aedart/contracts/container`.
 * `isBindingTuple` util in `@aedart/container`.
