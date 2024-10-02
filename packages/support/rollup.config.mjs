@@ -4,6 +4,7 @@ export default createConfig({
     baseDir: new URL('.', import.meta.url),
     external: [
         '@aedart/contracts',
+        '@aedart/contracts/config',
         '@aedart/contracts/container',
         '@aedart/contracts/core',
         '@aedart/contracts/support',
