@@ -14,6 +14,7 @@ export default createConfig({
         '@aedart/contracts/support/mixins',
         '@aedart/contracts/support/objects',
         '@aedart/contracts/support/reflections',
+        '@aedart/contracts/support/services',
         '@aedart/support',
         '@aedart/support/arrays',
         '@aedart/support/container',
@@ -25,6 +26,7 @@ export default createConfig({
         '@aedart/support/mixins',
         '@aedart/support/objects',
         '@aedart/support/reflections',
+        '@aedart/support/services',
         
         'lodash-es'
     ]
