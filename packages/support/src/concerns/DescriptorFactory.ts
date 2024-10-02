@@ -4,6 +4,7 @@ import type {
     Owner
 } from "@aedart/contracts/support/concerns";
 import { CONCERNS } from "@aedart/contracts/support/concerns";
+import { shallowMerge } from "@aedart/support/objects";
 
 /**
  * Alias Descriptor Factory
@@ -23,12 +24,12 @@ export default class DescriptorFactory implements AliasDescriptorFactory
      */
     make(key: PropertyKey, source: ConcernConstructor, keyDescriptor: PropertyDescriptor): PropertyDescriptor
     {
-        const proxy: PropertyDescriptor = Object.assign(Object.create(null), {
+        const proxy: PropertyDescriptor = shallowMerge({
             configurable: keyDescriptor.configurable,
             enumerable: keyDescriptor.enumerable,
-            // writable: keyDescriptor.writable // Do not specify here...            
+            // writable: keyDescriptor.writable // Do not specify here...
         });
-
+        
         // A descriptor can only have an accessor, a value or writable attribute. Depending on the "value"
         // a different kind of proxy must be defined.
 
