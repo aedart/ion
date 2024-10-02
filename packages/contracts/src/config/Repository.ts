@@ -73,7 +73,7 @@ export default interface Repository
     /**
      * Merge items into this repository's configuration items
      * 
-     * **Note**: _Merging is performed via [shallow coping](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy) of items._
+     * **Caution**: _Merging is performed via [shallow coping](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy) of items._
      * 
      * @param {Record<PropertyKey, any>} items
      * 
