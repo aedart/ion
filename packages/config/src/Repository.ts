@@ -30,7 +30,7 @@ export default class Repository implements RepositoryContract
      */
     public constructor(items: Record<PropertyKey, any> = {}) /* eslint-disable-line @typescript-eslint/no-explicit-any */
     { 
-        this.items = items;
+        this.items = Object.assign(Object.create(null), items);
     }
     
     /**
