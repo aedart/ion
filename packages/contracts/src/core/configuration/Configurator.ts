@@ -26,6 +26,24 @@ export default interface Configurator
      * @return {this}
      */
     for(app: Application): this;
+
+    /**
+     * Alias for {@see withConfiguration}
+     * 
+     * @param {Record<PropertyKey, any>} items
+     * 
+     * @return {this}
+     */
+    with(items: Record<PropertyKey, any>): this; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+
+    /**
+     * Add configuration items for the application
+     * 
+     * @param {Record<PropertyKey, any>} items
+     *
+     * @return {this}
+     */
+    withConfiguration(items: Record<PropertyKey, any>): this; /* eslint-disable-line @typescript-eslint/no-explicit-any */
     
     /**
      * Add "core" bindings to be registered
