@@ -3,7 +3,9 @@ import { createConfig } from '../../shared/rollup.config.mjs';
 export default createConfig({
     baseDir: new URL('.', import.meta.url),
     external: [
+        '@aedart/config',
         '@aedart/container',
+        '@aedart/contracts/config',
         '@aedart/contracts/container',
         '@aedart/contracts/core',
         '@aedart/contracts/support',
