@@ -15,6 +15,14 @@ export const ConfiguratorClassBlueprint: ClassBlueprint = {
 
     members: [
         'for',
+        'with',
+        'withConfiguration',
+        'withBindings',
+        'withSingletons',
+        'withInstances',
+        'withAliases',
+        'withBootstrappers',
+        'withServiceProviders',
         'apply',
     ]
 }
