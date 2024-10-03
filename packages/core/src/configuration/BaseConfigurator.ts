@@ -7,13 +7,15 @@ import type {
     ServiceProvider,
     ServiceProviderConstructor
 } from "@aedart/contracts/support/services";
-import { AbstractClassError } from "@aedart/support/exceptions";
-import { isset } from "@aedart/support/misc";
-import {
+import type {
     BindingTuple,
     IdentifierAliasTuple,
     IdentifierInstanceTuple
 } from "@aedart/contracts/container";
+import type { Repository } from "@aedart/contracts/config";
+import { CONFIG } from "@aedart/contracts/config";
+import { AbstractClassError } from "@aedart/support/exceptions";
+import { isset } from "@aedart/support/misc";
 import { shallowMerge } from "@aedart/support/objects";
 import ConfigurationError from "../exceptions/ConfigurationError";
 
@@ -249,6 +251,7 @@ export default abstract class BaseConfigurator implements Configurator {
             .registerBindings()
             .registerAliases()
             .registerBootstrappers()
+            .setConfigurationItems()
             .registerServiceProviders();
         
         this.after(this.app as Application);
@@ -358,6 +361,22 @@ export default abstract class BaseConfigurator implements Configurator {
         return this;
     }
 
+    /**
+     * Set the items in the application's [Configuration Repository]{@link import('@aedart/contracts/config').Repository}
+     * 
+     * @return {this}
+     * 
+     * @protected
+     */
+    protected setConfigurationItems(): this
+    {
+        this.app?.extend(CONFIG, (resolved: Repository) => {
+            return resolved.merge(this.configurationItems);
+        });
+
+        return this;
+    }
+    
     /**
      * Register "core" service providers
      * 
