@@ -129,25 +129,15 @@ export default abstract class BaseConfigurator implements Configurator {
     }
 
     /**
-     * Alias for {@see withConfiguration}
+     * Add configuration items for the application
+     *
+     * @see {import('@aedart/contracts/config').Repository}
      *
      * @param {Record<PropertyKey, any>} items
      *
      * @return {this}
      */
     public with(items: Record<PropertyKey, any>): this /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    {
-        return this.withConfiguration(items);
-    }
-
-    /**
-     * Add configuration items for the application
-     *
-     * @param {Record<PropertyKey, any>} items
-     *
-     * @return {this}
-     */
-    public withConfiguration(items: Record<PropertyKey, any>): this /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         this.configurationItems = shallowMerge(this.configurationItems, items);
         

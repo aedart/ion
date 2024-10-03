@@ -28,22 +28,15 @@ export default interface Configurator
     for(app: Application): this;
 
     /**
-     * Alias for {@see withConfiguration}
+     * Add configuration items for the application
+     * 
+     * @see {import('@aedart/contracts/config').Repository}
      * 
      * @param {Record<PropertyKey, any>} items
      * 
      * @return {this}
      */
     with(items: Record<PropertyKey, any>): this; /* eslint-disable-line @typescript-eslint/no-explicit-any */
-
-    /**
-     * Add configuration items for the application
-     * 
-     * @param {Record<PropertyKey, any>} items
-     *
-     * @return {this}
-     */
-    withConfiguration(items: Record<PropertyKey, any>): this; /* eslint-disable-line @typescript-eslint/no-explicit-any */
     
     /**
      * Add "core" bindings to be registered

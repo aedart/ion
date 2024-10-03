@@ -16,7 +16,6 @@ export const ConfiguratorClassBlueprint: ClassBlueprint = {
     members: [
         'for',
         'with',
-        'withConfiguration',
         'withBindings',
         'withSingletons',
         'withInstances',
