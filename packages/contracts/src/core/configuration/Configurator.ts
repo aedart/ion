@@ -7,6 +7,7 @@ import {
     IdentifierAliasTuple,
     IdentifierInstanceTuple,
 } from "@aedart/contracts/container";
+import { Items } from "@aedart/contracts/config";
 import BootstrapperConstructor from "../BootstrapperConstructor";
 import Application from '../Application';
 
@@ -32,11 +33,11 @@ export default interface Configurator
      * 
      * @see {import('@aedart/contracts/config').Repository}
      * 
-     * @param {Record<PropertyKey, any>} items
+     * @param {Items} items
      * 
      * @return {this}
      */
-    with(items: Record<PropertyKey, any>): this; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    with(items: Items): this;
     
     /**
      * Add "core" bindings to be registered

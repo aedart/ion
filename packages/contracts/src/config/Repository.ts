@@ -1,4 +1,5 @@
 import { Key } from "@aedart/contracts/support";
+import { Items } from './types';
 
 /**
  * Configuration Repository
@@ -75,16 +76,16 @@ export default interface Repository
      * 
      * **Caution**: _Merging is performed via [shallow coping](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy) of items._
      * 
-     * @param {Record<PropertyKey, any>} items
+     * @param {Items} items
      * 
      * @return {this}
      */
-    merge(items: Record<PropertyKey, any>): this; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    merge(items: Items): this;
     
     /**
      * Get all configuration items
      * 
-     * @return {Record<PropertyKey, any>}
+     * @return {Items}
      */
-    all(): Record<PropertyKey, any>; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    all(): Items;
 }

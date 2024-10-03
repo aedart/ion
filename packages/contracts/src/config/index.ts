@@ -9,3 +9,5 @@ import Repository from './Repository';
 export {
     type Repository
 }
+
+export type * from './types';

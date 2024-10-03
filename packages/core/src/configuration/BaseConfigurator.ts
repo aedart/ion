@@ -12,7 +12,7 @@ import type {
     IdentifierAliasTuple,
     IdentifierInstanceTuple
 } from "@aedart/contracts/container";
-import type { Repository } from "@aedart/contracts/config";
+import type { Repository, Items } from "@aedart/contracts/config";
 import { CONFIG } from "@aedart/contracts/config";
 import { AbstractClassError } from "@aedart/support/exceptions";
 import { isset } from "@aedart/support/misc";
@@ -40,11 +40,11 @@ export default abstract class BaseConfigurator implements Configurator {
     /**
      * Configuration items for the application
      * 
-     * @type {Record<PropertyKey, any>}
+     * @type {Items}
      * 
      * @protected
      */
-    protected configurationItems: Record<PropertyKey, any> = {};
+    protected configurationItems: Items = {};
     
     /**
      * List of bindings to be registered
@@ -135,11 +135,11 @@ export default abstract class BaseConfigurator implements Configurator {
      *
      * @see {import('@aedart/contracts/config').Repository}
      *
-     * @param {Record<PropertyKey, any>} items
+     * @param {Items} items
      *
      * @return {this}
      */
-    public with(items: Record<PropertyKey, any>): this /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    public with(items: Items): this
     {
         this.configurationItems = shallowMerge(this.configurationItems, items);
         

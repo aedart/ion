@@ -1,4 +1,7 @@
-import type { Repository as RepositoryContract } from "@aedart/contracts/config";
+import type {
+    Repository as RepositoryContract,
+    Items
+} from "@aedart/contracts/config";
 import type { Key } from "@aedart/contracts/support";
 import {
     set,
@@ -18,18 +21,18 @@ export default class Repository implements RepositoryContract
     /**
      * The configuration items
      * 
-     * @type {Record<PropertyKey, any>}
+     * @type {Items}
      * 
      * @protected
      */
-    protected items: Record<PropertyKey, any>; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    protected items: Items;
 
     /**
      * Create a new Configuration Repository instance
      * 
-     * @param {Record<PropertyKey, any>} [items]
+     * @param {Items} [items]
      */
-    public constructor(items: Record<PropertyKey, any> = {}) /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    public constructor(items: Items = {})
     { 
         this.items = shallowMerge(items);
     }
@@ -136,11 +139,11 @@ export default class Repository implements RepositoryContract
      *
      * **Caution**: _Merging is performed via [shallow coping](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy) of items._
      *
-     * @param {Record<PropertyKey, any>} items
+     * @param {Items} items
      *
      * @return {this}
      */
-    public merge(items: Record<PropertyKey, any>): this /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    public merge(items: Items): this
     {
         this.items = shallowMerge(this.items, items);
         
@@ -150,9 +153,9 @@ export default class Repository implements RepositoryContract
     /**
      * Get all configuration items
      *
-     * @return {Record<PropertyKey, any>}
+     * @return {Items}
      */
-    public all(): Record<PropertyKey, any> /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    public all(): Items
     {
         return this.items;
     }
