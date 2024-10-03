@@ -1,5 +1,6 @@
 import { CORE } from "@aedart/contracts/core";
 import { CONTAINER } from "@aedart/contracts/container";
+import { Config } from "@aedart/support/facades";
 import {
     Application,
     BaseConfigurator,
@@ -26,6 +27,8 @@ describe('@aedart/core', () => {
             expect(callback)
                 .withContext('Should NOT accept invalid configurator instance')
                 .toThrowError(ConfigurationError);
+            
+            app.destroy();
         });
 
         it('can be configured using configurator instance', () => {
@@ -50,6 +53,8 @@ describe('@aedart/core', () => {
             expect(invoked)
                 .withContext('Configurator (instance) not applied')
                 .toBeTrue();
+            
+            app.destroy();
         });
 
         it('can be configured using configurator class constructor', () => {
@@ -74,6 +79,8 @@ describe('@aedart/core', () => {
             expect(invoked)
                 .withContext('Configurator (constructor) not applied')
                 .toBeTrue();
+            
+            app.destroy();
         });
 
         it('can be configured using configurator callback', () => {
@@ -93,6 +100,8 @@ describe('@aedart/core', () => {
             expect(invoked)
                 .withContext('Configurator (callback) not applied')
                 .toBeTrue();
+            
+            app.destroy();
         });
 
         it('applies a default application configurator', () => {
@@ -122,6 +131,37 @@ describe('@aedart/core', () => {
             expect(app.coreBootstrappers.length)
                 .withContext('No core bootstrappers have been registered')
                 .toBeGreaterThan(0);
+            
+            app.destroy();
+        });
+
+        it('configuration items are set', () => {
+            
+            const items = {
+                app: {
+                    name: 'Core Application'
+                }
+            }
+            
+            const app = new Application();
+
+            // ---------------------------------------------------------------------------- //
+            
+            app
+                .configure( (configurator) => configurator.with(items) )
+                .run();
+
+            // ---------------------------------------------------------------------------- //
+            
+            const result = Config
+                .obtain()
+                .get('app.name');
+            
+            expect(result)
+                .withContext('Configuration items do not appear to have been set')
+                .toBe(items.app.name);
+            
+            app.destroy();
         });
     });
 });
