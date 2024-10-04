@@ -1,4 +1,6 @@
 import BaseLoader from "./BaseLoader";
 export {
-    BaseLoader
+    BaseLoader,
 }
+
+export * from './LoaderBlueprint';
