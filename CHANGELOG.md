@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `ModuleName` type alias in `@aedart/contracts`.
 * `test:fast` script in `packages.json`, to allow testing without (re)transpiling all packages.
 * `@types/jasmine` as development dependency (_in root package only_).
+* `@babel/plugin-syntax-dynamic-import` and `@babel/plugin-syntax-import-attributes` as development dependency (_in root package, for testing_).
 
 ### Changed
 
