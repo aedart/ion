@@ -56,7 +56,7 @@ describe('@aedart/config', () => {
                     
                     const result = await loader.load();
                     expect(result)
-                        .withContext(`Loaded configuration appears to be invalid, for ${entry.name}`)
+                        .withContext(`Loaded configuration items appear to be invalid, for ${entry.name}`)
                         .toEqual(entry.expected);
                 }
             });
