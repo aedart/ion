@@ -6,4 +6,4 @@ export type Items = Record<PropertyKey, any>; /* eslint-disable-line @typescript
 /**
  * Callback that is responsible for loading configuration {@link Items}.
  */
-export type ConfigurationLoaderCallback = () => Promise<Items>;
+export type LoaderCallback = () => Promise<Items>;
