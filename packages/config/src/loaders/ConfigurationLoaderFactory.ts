@@ -7,6 +7,7 @@ import type {
 } from '@aedart/contracts/config';
 import UnsupportedSourceError from '../exceptions/UnsupportedSourceError';
 import ItemsLoader from './ItemsLoader';
+import PathLoader from './PathLoader';
 
 /**
  * Configuration Loader Factory
@@ -44,6 +45,10 @@ export default class ConfigurationLoaderFactory implements Factory
      */
     public make(source: Source): Loader
     {
+        if (typeof source === 'string') {
+            return this.makeLoader(PathLoader, [ source ]);
+        }
+        
         if (typeof source === 'object') {
             return this.makeLoader(ItemsLoader, [ source ]);
         }
