@@ -4,3 +4,4 @@ export {
 }
 
 export * from './providers/index';
+export * from './exceptions/index';
