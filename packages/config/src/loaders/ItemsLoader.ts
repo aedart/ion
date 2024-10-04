@@ -1,5 +1,5 @@
-import BaseLoader from "./BaseLoader";
 import type { Items } from "@aedart/contracts/config";
+import BaseLoader from "./BaseLoader";
 
 /**
  * Items Loader
