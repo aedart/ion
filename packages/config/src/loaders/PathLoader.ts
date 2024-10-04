@@ -41,10 +41,12 @@ export default class PathLoader extends BaseLoader
     public async load(): Promise<Items>
     {
         try {
-             return await import(this.path);
+            const module = await import(this.path);
+
+            return module?.default;
         } catch (e) {
             const reason: string = getErrorMessage(e);
-            throw new LoaderError(`Unable to load configuration items from path: ${reason}`, { cause: { path: this.path, previous: e } });
+            throw new LoaderError(`Unable to load configuration items: ${reason}`, { cause: { path: this.path, previous: e } });
         }
     }
 }
