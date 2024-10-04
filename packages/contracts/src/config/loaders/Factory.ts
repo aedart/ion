@@ -13,7 +13,7 @@ export default interface Factory
      * 
      * @return {Loader}
      * 
-     * @throws {import('@aedart/contracts/config').LoaderException}
+     * @throws {import('@aedart/contracts/config').UnsupportedSourceException}
      */
     make(source: Source): Loader;
 }
