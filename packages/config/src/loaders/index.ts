@@ -1,6 +1,8 @@
+import ConfigurationLoaderFactory from "./ConfigurationLoaderFactory";
 import BaseLoader from "./BaseLoader";
 import ItemsLoader from "./ItemsLoader";
 export {
+    ConfigurationLoaderFactory,
     BaseLoader,
     ItemsLoader,
 }
