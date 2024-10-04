@@ -1,4 +1,6 @@
 import { ModuleName } from "@aedart/contracts";
+import Loader from "./loaders/Loader";
+import LoaderConstructor from "./loaders/LoaderConstructor";
 
 /**
  * A key-value store containing configuration items for an application, its service, and or component.
@@ -18,4 +20,4 @@ export type LoaderCallback = () => Promise<Items>;
 /**
  * A source that ultimately must resolve into configuration {@link Items}.
  */
-export type Source = Items | Path | LoaderCallback;
+export type Source = Items | Path | Loader | LoaderConstructor | LoaderCallback;
