@@ -4,3 +4,4 @@ export {
 }
 
 export * from './LoaderBlueprint';
+export * from './isConfigurationLoaderConstructor';
