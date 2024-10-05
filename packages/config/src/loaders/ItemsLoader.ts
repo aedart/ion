@@ -2,6 +2,8 @@ import type { Items } from "@aedart/contracts/config";
 import BaseLoader from "./BaseLoader";
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Items Loader
  * 
  * @see {BaseLoader}

@@ -1,6 +1,8 @@
 import type { ClassBlueprint } from "@aedart/contracts/support/reflections";
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Configuration Loader Blueprint
  *
  * Defines the minimum members that a target class should contain, before it is

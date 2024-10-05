@@ -5,6 +5,8 @@ import BaseLoader from "./BaseLoader";
 import { LoaderBlueprint } from "./LoaderBlueprint";
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Determine if target is a [Configuration Loader Constructor]{@link import('@aedart/contracts/config').LoaderConstructor}
  * 
  * @param {any} target

@@ -5,6 +5,9 @@ import {
 } from "@aedart/config";
 import makeLoaderFactory from "../helpers/makeLoaderFactory";
 
+/**
+ * @deprecated TODO: Remove this...
+ */
 describe('@aedart/config', () => {
     describe('loaders', () => {
 

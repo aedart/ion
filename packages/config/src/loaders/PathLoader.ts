@@ -4,6 +4,8 @@ import BaseLoader from './BaseLoader';
 import LoaderError from '../exceptions/LoaderError';
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Path (module) Loader
  * 
  * @see {BaseLoader}

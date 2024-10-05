@@ -3,6 +3,8 @@ import { isConfigurationLoaderConstructor } from "./isConfigurationLoaderConstru
 import BaseLoader from "./BaseLoader";
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Determine if given object is a [Configuration Loader]{@link import('@aedart/contracts/config').Loader}
  *
  * @param {object} instance

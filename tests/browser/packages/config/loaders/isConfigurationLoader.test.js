@@ -1,5 +1,8 @@
 import { BaseLoader, isConfigurationLoader } from "@aedart/config";
 
+/**
+ * @deprecated TODO: Remove this...
+ */
 describe('@aedart/config', () => {
     describe('loaders', () => {
 

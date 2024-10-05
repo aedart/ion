@@ -3,6 +3,8 @@ import type { Items, Loader } from "@aedart/contracts/config";
 import { AbstractClassError } from "@aedart/support/exceptions";
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Base Configuration Loader
  * 
  * @see {Loader}

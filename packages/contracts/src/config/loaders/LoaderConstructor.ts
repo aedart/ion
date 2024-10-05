@@ -1,6 +1,8 @@
 import Loader from './Loader';
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Configuration Loader Constructor
  */
 export default interface LoaderConstructor

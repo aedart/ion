@@ -10,6 +10,8 @@ import ItemsLoader from './ItemsLoader';
 import PathLoader from './PathLoader';
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Configuration Loader Factory
  * 
  * @see {import('@aedart/contracts/config').Factory}

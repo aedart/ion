@@ -2,6 +2,8 @@ import { Application } from "@aedart/core";
 import { ConfigurationLoaderFactory } from "@aedart/config";
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Returns a new configuration loader factory instance
  * 
  * @param {Application} [app]

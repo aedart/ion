@@ -1,6 +1,8 @@
 import { Items } from '../types';
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Configuration Loader
  */
 export default interface Loader

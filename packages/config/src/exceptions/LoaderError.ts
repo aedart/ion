@@ -2,6 +2,8 @@ import type { LoaderException } from "@aedart/contracts/config";
 import { configureCustomError } from "@aedart/support/exceptions";
 
 /**
+ * @deprecated TODO: Rename this, e.g. Configuration Resolve Error
+ * 
  * Configuration Loader Error
  * 
  * @see {LoaderException}

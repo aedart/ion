@@ -2,6 +2,8 @@ import { Source } from '../types';
 import Loader from './Loader';
 
 /**
+ * @deprecated TODO: Remove this...
+ * 
  * Configuration Loader Factory
  */
 export default interface Factory
