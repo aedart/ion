@@ -8,6 +8,8 @@ import LoaderConstructor from "./loaders/LoaderConstructor";
 export type Items = Record<PropertyKey, any>; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
 /**
+ * @deprecated TODO: Remove this
+ * 
  * Path ([module-name]{@link ModuleName}) from where to load configuration {@link Items}. 
  */
 export type Path = ModuleName;
@@ -20,4 +22,4 @@ export type LoaderCallback = () => Promise<Items>;
 /**
  * A source that ultimately must resolve into configuration {@link Items}.
  */
-export type Source = Items | Path | Loader | LoaderConstructor | LoaderCallback;
+export type Source = Items | LoaderCallback;
