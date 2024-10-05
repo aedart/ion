@@ -22,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isPromise()` utility in `@aedart/support/reflections`.
 * `BindingTuple`, `IdentifierInstanceTuple` and `IdentifierAliasTuple` type aliases in `@aedart/contracts/container`.
 * `isBindingTuple` util in `@aedart/container`.
-* `ModuleName` type alias in `@aedart/contracts`.
 * `test:fast` script in `packages.json`, to allow testing without (re)transpiling all packages.
 * `@types/jasmine` as development dependency (_in root package only_).
 * `@babel/plugin-syntax-dynamic-import` as development dependency (_in root package, for testing_).
