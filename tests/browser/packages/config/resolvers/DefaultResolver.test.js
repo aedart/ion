@@ -123,7 +123,11 @@ describe('@aedart/config', () => {
                 // returned from Webpack, which could already have the env() calls resolved.
                 // const result = await resolver.resolve((await import('../fixtures/my-env-config'))?.default);
                 
-                const result = await resolver.resolve((await import('../fixtures/my-other-env-config'))?.default);
+                // const result = await resolver.resolve((await import('../fixtures/my-other-env-config'))?.default);
+                const result = await resolver.resolve(
+                    import('../fixtures/my-other-env-config')
+                        .then((module) => module.default)
+                );
 
                 expect(Reflect.has(result, 'app'))
                     .withContext('"app" item not resolved')
