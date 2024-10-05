@@ -15,11 +15,11 @@ export type Items = Record<PropertyKey, any>; /* eslint-disable-line @typescript
 export type Path = ModuleName;
 
 /**
- * Callback that is responsible for loading configuration {@link Items}.
+ * Callback that is responsible for resolving configuration {@link Items}.
  */
-export type LoaderCallback = () => Promise<Items>;
+export type ResolveCallback = () => Promise<Items>;
 
 /**
  * A source that ultimately must resolve into configuration {@link Items}.
  */
-export type Source = Items | LoaderCallback;
+export type Source = Items | ResolveCallback;
