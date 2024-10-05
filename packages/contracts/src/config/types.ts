@@ -22,4 +22,4 @@ export type ResolveCallback = () => Promise<Items>;
 /**
  * A source that ultimately must resolve into configuration {@link Items}.
  */
-export type Source = Items | ResolveCallback;
+export type Source = Items | Promise<Items> | ResolveCallback;
