@@ -6,15 +6,6 @@
 export const CONFIG: unique symbol = Symbol('@aedart/contracts/config');
 
 /**
- * @deprecated TODO: Remove this ....
- * 
- * Configuration Loader Factory identifier
- * 
- * @type {Symbol}
- */
-export const CONFIG_LOADER_FACTORY: unique symbol = Symbol('@aedart/contracts/config/loaders/factory');
-
-/**
  * Configuration Resolver identifier
  * 
  * @type {Symbol}
@@ -28,6 +19,5 @@ export {
     type Resolver
 }
 
-export * from './loaders/index';
 export * from './exceptions/index';
 export type * from './types';
