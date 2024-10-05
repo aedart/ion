@@ -9,6 +9,10 @@ describe('@aedart/config', () => {
 
         describe('DefaultResolver', () => {
 
+            beforeEach(() => {
+                Env.clear();
+            });
+            
             afterEach(() => {
                 Env.clear();
             });
