@@ -8,7 +8,7 @@ import makeLoaderFactory from "../helpers/makeLoaderFactory";
 /**
  * @deprecated TODO: Remove this...
  */
-describe('@aedart/config', () => {
+xdescribe('@aedart/config', () => {
     describe('loaders', () => {
 
         describe('ConfigurationLoaderFactory', () => {

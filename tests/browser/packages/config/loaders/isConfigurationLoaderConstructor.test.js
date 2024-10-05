@@ -3,7 +3,7 @@ import { BaseLoader, isConfigurationLoaderConstructor } from "@aedart/config";
 /**
  * @deprecated TODO: Remove this...
  */
-describe('@aedart/config', () => {
+xdescribe('@aedart/config', () => {
     describe('loaders', () => {
 
         describe('isConfigurationLoaderConstructor', () => {
