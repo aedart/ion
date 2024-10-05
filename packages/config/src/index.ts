@@ -4,5 +4,6 @@ export {
 }
 
 export * from './loaders/index';
+export * from './resolvers/index';
 export * from './providers/index';
 export * from './exceptions/index';
