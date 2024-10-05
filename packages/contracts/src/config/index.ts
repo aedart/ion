@@ -6,6 +6,8 @@
 export const CONFIG: unique symbol = Symbol('@aedart/contracts/config');
 
 /**
+ * @deprecated TODO: Remove this ....
+ * 
  * Configuration Loader Factory identifier
  * 
  * @type {Symbol}
