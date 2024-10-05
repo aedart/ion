@@ -1,10 +1,10 @@
-import LoaderException from "./LoaderException";
+import ResolveException from './ResolveException';
 
 /**
  * Unsupported Configuration Source Exception
  * 
- * To be thrown whenever a configuration loader factory is unable to resolve an appropriate
- * configuration loader, for the given [source]{@link import('@aedart/contracts/config').Source}.
+ * To be thrown whenever a [Resolver]{@link import('@aedart/contracts/config').Resolver} is unable to
+ * resolve configuration items, due to an unsupported [source]{@link import('@aedart/contracts/config').Source}.
  */
-export default interface UnsupportedSourceException extends LoaderException
+export default interface UnsupportedSourceException extends ResolveException
 {}
