@@ -41,9 +41,17 @@ export default class PathLoader extends BaseLoader
     public async load(): Promise<Items>
     {
         try {
-            const module = await import(this.path);
+            // Warning: depending on what bundler is used, fully dynamic imports might not be supported.
+            // This means that `(await import(this.path)).default` cannot work. When using Vite, Webpack,
+            // Rollup,...etc., part of the import path must be pre-specified, such that the bundler can
+            // perform some static analysis of what file(s) to load.
+            //
+            // @see https://webpack.js.org/api/module-methods/#dynamic-expressions-in-import
+            // @see https://vite.dev/guide/features#dynamic-import
+            // @see https://rollupjs.org/es-module-syntax/#dynamic-import (see dynamic import vars plugin)
+            // @see https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars
 
-            return module?.default;
+            return (await import(`./config/${this.path}.js`)).default;
         } catch (e) {
             const reason: string = getErrorMessage(e);
             throw new LoaderError(`Unable to load configuration items: ${reason}`, { cause: { path: this.path, previous: e } });
