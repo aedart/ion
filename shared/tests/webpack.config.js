@@ -1,4 +1,5 @@
 const fs = require('node:fs');
+const path = require('node:path');
 const dotEnv = require('dotenv');
 const webpack = require('webpack');
 
@@ -47,10 +48,13 @@ module.exports = {
     },
     plugins: [
         
-        // Inject environment variables into token
         // @see https://webpack.js.org/plugins/define-plugin/
         new webpack.DefinePlugin({
-            __ENV__: JSON.stringify(ENV)
-        })
+            // Inject environment variables into token
+            __ENV__: JSON.stringify(ENV),
+            
+            // Inject absolute path to where tests are located
+            __TESTS_PATH__: JSON.stringify(path.resolve(__dirname, '../../tests')),
+        }),
     ]
 };
