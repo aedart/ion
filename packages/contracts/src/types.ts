@@ -55,6 +55,8 @@ export type ClassMethodName<T = object> = {
 export type ClassMethodReference<T = object> = [ Constructor<T> | T, ClassMethodName<T> ];
 
 /**
+ * @deprecated TODO: Remove this ...
+ * 
  * A [module-name](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import#modulename) to
  * be imported. This is often a relative or absolute URL to *.js file that contains the module itself.
  */
