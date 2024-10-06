@@ -122,13 +122,20 @@ describe('@aedart/config', () => {
                 // Warning: re-loading the same chunk (as previous test) can yield strange results. The resolved promise might be
                 // returned from Webpack, which could already have the env() calls resolved.
                 // const result = await resolver.resolve((await import('../fixtures/my-env-config'))?.default);
-                
-                // const result = await resolver.resolve((await import('../fixtures/my-other-env-config'))?.default);
-                const result = await resolver.resolve(
-                    import('../fixtures/my-other-env-config')
-                        .then((module) => module.default)
-                );
 
+                // Works...
+                // const result = await resolver.resolve((await import('../fixtures/my-other-env-config'))?.default);
+                
+                // Also works...
+                // const result = await resolver.resolve(
+                //     import('../fixtures/my-other-env-config')
+                //         .then((module) => module.default)
+                // );
+
+                const result = await resolver.resolve(
+                    async () => (await import('../fixtures/my-other-env-config')).default
+                )
+                
                 expect(Reflect.has(result, 'app'))
                     .withContext('"app" item not resolved')
                     .toBeTrue()
