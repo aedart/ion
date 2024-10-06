@@ -5,6 +5,7 @@ export {
     DefaultConfigurator
 }
 
-export * from './exceptions/index';
-export * from './configuration/index';
 export * from "./bootstrap/index";
+export * from './configuration/index';
+export * from './exceptions/index';
+export * from './providers/index';

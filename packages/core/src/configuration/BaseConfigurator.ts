@@ -3,6 +3,7 @@ import type {
     BootstrapperConstructor,
     Configurator
 } from "@aedart/contracts/core";
+import { CONFIG_SOURCE } from "@aedart/contracts/core";
 import type {
     ServiceProvider,
     ServiceProviderConstructor
@@ -12,11 +13,9 @@ import type {
     IdentifierAliasTuple,
     IdentifierInstanceTuple
 } from "@aedart/contracts/container";
-import type { Repository, Items } from "@aedart/contracts/config";
-import { CONFIG } from "@aedart/contracts/config";
+import type { Source } from "@aedart/contracts/config";
 import { AbstractClassError } from "@aedart/support/exceptions";
 import { isset } from "@aedart/support/misc";
-import { shallowMerge } from "@aedart/support/objects";
 import ConfigurationError from "../exceptions/ConfigurationError";
 
 /**
@@ -38,13 +37,13 @@ export default abstract class BaseConfigurator implements Configurator {
     protected app: Application | undefined;
 
     /**
-     * Configuration items for the application
+     * Configuration source
      * 
-     * @type {Items}
+     * @type {Source}
      * 
      * @protected
      */
-    protected configurationItems: Items = {};
+    protected source: Source = {}
     
     /**
      * List of bindings to be registered
@@ -131,17 +130,19 @@ export default abstract class BaseConfigurator implements Configurator {
     }
 
     /**
-     * Add configuration items for the application
+     * Set the source of the application's configuration items
+     *
+     * **Caution**: _Method overwrites eventual previous set configuration source!_
      *
      * @see {import('@aedart/contracts/config').Repository}
      *
-     * @param {Items} items
+     * @param {Source} source A source that resolves into configuration [items]{@link import('@aedart/contracts/config').Items}
      *
      * @return {this}
      */
-    public with(items: Items): this
+    public with(source: Source): this
     {
-        this.configurationItems = shallowMerge(this.configurationItems, items);
+        this.source = source;
         
         return this;
     }
@@ -251,7 +252,7 @@ export default abstract class BaseConfigurator implements Configurator {
             .registerBindings()
             .registerAliases()
             .registerBootstrappers()
-            .setConfigurationItems()
+            .registerConfigurationSource()
             .registerServiceProviders();
         
         this.after(this.app as Application);
@@ -362,18 +363,16 @@ export default abstract class BaseConfigurator implements Configurator {
     }
 
     /**
-     * Set the items in the application's [Configuration Repository]{@link import('@aedart/contracts/config').Repository}
+     * Register the configuration {@link Source} to be resolved
      * 
-     * @return {this}
+     * @returns {this}
      * 
      * @protected
      */
-    protected setConfigurationItems(): this
+    protected registerConfigurationSource(): this
     {
-        this.app?.extend(CONFIG, (resolved: Repository) => {
-            return resolved.merge(this.configurationItems);
-        });
-
+        this.app?.singletonIf(CONFIG_SOURCE, () => this.source);
+        
         return this;
     }
     
