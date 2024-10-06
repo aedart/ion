@@ -2,13 +2,13 @@ import {
     Callback,
     ClassMethodReference
 } from "@aedart/contracts";
+import { Source } from "@aedart/contracts/config";
 import { Container } from "@aedart/contracts/container";
 import { CallbackWrapper } from "@aedart/contracts/support";
 import {
     Registrar,
     ServiceProvider,
     ServiceProviderConstructor,
-    BootException,
 } from "@aedart/contracts/support/services";
 import {
     ConfiguratorCallback,
@@ -30,6 +30,29 @@ import BootstrapperConstructor from "./BootstrapperConstructor";
  */
 export default interface Application extends Container
 {
+    /**
+     * Prepare this application using the given configuration source.
+     *
+     * **Note**: _Method is shorthand for [configuring]{@link configure} this application
+     * using a default {@link Configurator} with a configuration {@link Source}:_
+     * 
+     * @example
+     * const source = {}; // not shown here...
+     * 
+     * // Prepare using configuration source
+     * app.prepare(source);
+     * 
+     * // Above is equivalent to:
+     * app.configure( (configurator) => configurator.with(...) )
+     * 
+     * @param {Source} using
+     * 
+     * @returns {this}
+     * 
+     * @see {Configurator.with}
+     */
+    prepare(using: Source): this;
+    
     /**
      * Configure this application using given configurator
      *

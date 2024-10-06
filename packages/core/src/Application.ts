@@ -31,6 +31,7 @@ import {
     isPromise,
     isCallable
 } from "@aedart/support/reflections";
+import type { Source } from "@aedart/contracts/config";
 import { isConfigurator } from "./configuration/isConfigurator";
 import { isConfiguratorConstructor } from "./configuration/isConfiguratorConstructor";
 import ConfigurationError from "./exceptions/ConfigurationError";
@@ -149,6 +150,34 @@ export default class Application extends Container implements ApplicationContrac
         return super.setInstance(container) as ApplicationContract | null;
     }
 
+    /**
+     * Prepare this application using the given configuration source.
+     *
+     * **Note**: _Method is shorthand for [configuring]{@link configure} this application
+     * using a default {@link Configurator} with a configuration {@link Source}:_
+     *
+     * @example
+     * const source = {}; // not shown here...
+     *
+     * // Prepare using configuration source
+     * app.prepare(source);
+     *
+     * // Above is equivalent to:
+     * app.configure( (configurator) => configurator.with(...) )
+     *
+     * @param {Source} using
+     *
+     * @returns {this}
+     *
+     * @see {Configurator.with}
+     */
+    public prepare(using: Source): this
+    {
+        return this.configure(
+            (configurator) => configurator.with(using)
+        );
+    }
+    
     /**
      * Configure this application using given configurator
      *

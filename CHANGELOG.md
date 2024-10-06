@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `isBindingTuple` util in `@aedart/container`.
 * `test:fast` script in `packages.json`, to allow testing without (re)transpiling all packages.
 * `@types/jasmine` as development dependency (_in root package only_).
+* `@babel/plugin-syntax-dynamic-import` as development dependency (_in root package, for testing_).
 
 ### Changed
 

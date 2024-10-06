@@ -6,10 +6,19 @@ import {
     BaseConfigurator,
     ConfigurationError
 } from "@aedart/core";
+import { Env } from "@aedart/support/env";
 
 describe('@aedart/core', () => {
     describe('configure', () => {
 
+        beforeEach(() => {
+            Env.clear();
+        });
+
+        afterEach(() => {
+            Env.clear();
+        });
+        
         it('fails when invalid configurator provided', () => {
             
             class A {}
@@ -135,7 +144,7 @@ describe('@aedart/core', () => {
             app.destroy();
         });
 
-        it('configuration items are set', () => {
+        it('sets configuration items (after boot)', async () => {
             
             const items = {
                 app: {
@@ -147,8 +156,8 @@ describe('@aedart/core', () => {
 
             // ---------------------------------------------------------------------------- //
             
-            app
-                .configure( (configurator) => configurator.with(items) )
+            await app
+                .prepare(items)
                 .run();
 
             // ---------------------------------------------------------------------------- //
@@ -161,6 +170,31 @@ describe('@aedart/core', () => {
                 .withContext('Configuration items do not appear to have been set')
                 .toBe(items.app.name);
             
+            app.destroy();
+        });
+
+        it('resolves external (async) configuration source and applies environment variables', async () => {
+            
+            const app = new Application();
+
+            // ---------------------------------------------------------------------------- //
+
+            await app
+                .prepare(
+                    async () => (await import('./fixtures/example-config')).default
+                )
+                .run();
+
+            // ---------------------------------------------------------------------------- //
+
+            const result = Config
+                .obtain()
+                .get('app.environment');
+
+            expect(result)
+                .withContext('External configuration was not resolved correctly')
+                .toBe('testing');
+
             app.destroy();
         });
     });

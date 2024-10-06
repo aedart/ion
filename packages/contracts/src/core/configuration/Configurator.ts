@@ -7,7 +7,7 @@ import {
     IdentifierAliasTuple,
     IdentifierInstanceTuple,
 } from "@aedart/contracts/container";
-import { Items } from "@aedart/contracts/config";
+import { Source } from "@aedart/contracts/config";
 import BootstrapperConstructor from "../BootstrapperConstructor";
 import Application from '../Application';
 
@@ -29,15 +29,17 @@ export default interface Configurator
     for(app: Application): this;
 
     /**
-     * Add configuration items for the application
+     * Set the source of the application's configuration items
+     * 
+     * **Caution**: _Method overwrites eventual previous set configuration source!_
      * 
      * @see {import('@aedart/contracts/config').Repository}
      * 
-     * @param {Items} items
+     * @param {Source} source A source that resolves into configuration [items]{@link import('@aedart/contracts/config').Items}
      * 
      * @return {this}
      */
-    with(items: Items): this;
+    with(source: Source): this;
     
     /**
      * Add "core" bindings to be registered
