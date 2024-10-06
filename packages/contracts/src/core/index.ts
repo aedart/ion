@@ -21,6 +21,15 @@ export const APPLICATION: symbol = CORE;
  */
 export const APP_ENV: unique symbol = Symbol('APP_ENV');
 
+/**
+ * Configuration Source identifier
+ * 
+ * @type {Symbol}
+ * 
+ * @see {import('@aedart/contracts/config').Source}
+ */
+export const CONFIG_SOURCE: unique symbol = Symbol('@aedart/contracts/core/config/source');
+
 import Application from "./Application";
 import Bootstrapper from "./Bootstrapper";
 import BootstrapperConstructor from "./BootstrapperConstructor";
