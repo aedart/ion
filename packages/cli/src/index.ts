@@ -1,6 +1,8 @@
+import { version } from "../package.json";
+
 /**
- * TODO: Remove this again...
+ * CLI package version
  * 
  * @type {string}
  */
-export const TMP = 'TODO';
+export const VERSION: string = version;
