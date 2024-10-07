@@ -1,0 +1,48 @@
+{
+    "name": "@aedart/cli",
+    "version": "0.13.0",
+    "description": "Ion CLI - Development tools for applications that make use of Ion",
+    "keywords": [
+        "CLI",
+        "Console",
+        "Tools",
+        "Ion"
+    ],
+    "author": "Alin Eugen Deac <aedart@gmail.com>",
+    "license": "BSD-3-Clause",
+    "homepage": "https://aedart.github.io/ion/",
+    "bugs": {
+        "url": "https://github.com/aedart/ion/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aedart/ion.git",
+        "directory": "packages/cli"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./dist/types/cli.d.ts",
+            "import": "./dist/esm/cli.js",
+            "require": "./dist/cjs/cli.cjs"
+        }
+    },
+    "files": [
+        "dist",
+        "!dist/**/*.map",
+        "NOTICE"
+    ],
+    "peerDependencies": {
+        "@aedart/contracts": "^0.13.0",
+        "@aedart/support": "^0.13.0"
+    },
+    "scripts": {
+        "compile": "rollup -c",
+        "watch": "rollup -c -w"
+    },
+    "sideEffects": false
+}

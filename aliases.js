@@ -18,6 +18,9 @@ module.exports = {
         // conditionNames: ['require', 'import'],
 
         alias: {
+            // cli
+            '@aedart/cli': path.resolve(__dirname, './packages/cli/src'),
+            
             // config
             '@aedart/config': path.resolve(__dirname, './packages/config/src'),
             
