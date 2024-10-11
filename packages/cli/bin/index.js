@@ -7,7 +7,7 @@ import { VERSION } from "@aedart/cli";
 
 program
     .version(VERSION)
-    .description(`Ion CLI v${VERSION}`)
+    .description(`Ion CLI v${VERSION} in ${process.cwd()}`)
     .command('fisk', )
     .description('Bla bla')
     .argument('name', 'More bla bla')
