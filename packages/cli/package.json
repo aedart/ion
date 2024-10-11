@@ -39,6 +39,9 @@
         "!dist/**/*.map",
         "NOTICE"
     ],
+    "engines": {
+        "node": "^22.9.0"
+    },
     "peerDependencies": {
         "@aedart/contracts": "^0.13.0",
         "@aedart/support": "^0.13.0",
