@@ -18,8 +18,8 @@ program
 // TODO: Add commands...
 
 // Display help automatically, when no command is requested.
-if (process.argv.length < 3) {
-    program.help();
-}
+// if (process.argv.length < 3) {
+//     program.help();
+// }
 
 await program.parseAsync();
