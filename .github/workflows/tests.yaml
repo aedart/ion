@@ -58,7 +58,7 @@ jobs:
             # ------------------------------------------------------------------------------------------------------- #
     
             - name: "Install dependencies"
-              run: npm install
+              run: npm ci
 
             - name: "Make .env file"
               run: npm run make:env
