@@ -66,8 +66,11 @@ jobs:
             - name: "Lint"
               run: npm run lint
 
+            - name: "Build"
+              run: npm run build
+
             - name: "Test (Cli)"
               run: npm run test:cli
         
             - name: "Test (Browser)"
-              run: npm run test
+              run: npm run test:fast
