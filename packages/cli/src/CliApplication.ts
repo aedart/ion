@@ -2,7 +2,7 @@ import type {
     ParseOptions,
     OutputConfiguration
 } from "commander";
-import { Command } from "commander";
+import { Command as CommanderJs } from "commander";
 import { version } from "../package.json";
 
 /**
@@ -13,11 +13,11 @@ export default class CliApplication
     /**
      * The underlying "driver" of this cli application
      * 
-     * @type {Command}
+     * @type {import('commander').Command}
      * 
      * @protected
      */
-    protected _driver: Command;
+    protected _driver: CommanderJs;
     
     // TODO
     constructor()
@@ -48,9 +48,9 @@ export default class CliApplication
     /**
      * Returns the underlying "driver" of this Cli Application
      * 
-     * @returns {Command}
+     * @returns {import('commander').Command}
      */
-    public get driver(): Command
+    public get driver(): CommanderJs
     {
         return this._driver;
     }
@@ -90,13 +90,13 @@ export default class CliApplication
     /**
      * Creates a new "driver" and returns it.
      * 
-     * @returns {Command}
+     * @returns {import('commander').Command}
      * 
      * @protected
      */
-    protected makeDriver(): Command
+    protected makeDriver(): CommanderJs
     {
-        return (new Command())
+        return (new CommanderJs())
             .version(this.version)
             .description(this.description);
     }
