@@ -1,4 +1,4 @@
-const webpackConfiguration = require('./webpack.config');
+// const webpackConfiguration = require('./webpack.config');
 
 /*****************************************************************
  * High level setup...
@@ -14,7 +14,9 @@ const TESTS_PATH_PATTERN = 'tests/browser/packages/**/*.test.js';
  * Karma (Base) Configuration
  ****************************************************************/
 
-module.exports = function (config) {
+module.exports = async (config) => {
+    const webpackConfiguration = (await import('./webpack.config.cjs')).default;
+    
     return {
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -36,7 +38,7 @@ module.exports = function (config) {
 
             // !!! use watched: false as we use webpacks watch
             watched: false
-          },
+          }
         ],
 
 
