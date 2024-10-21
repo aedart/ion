@@ -4,6 +4,7 @@ import type {
 } from "commander";
 import { Command as CommanderJs } from "commander";
 import { version } from "../package.json";
+import * as process from "node:process";
 
 /**
  * Cli Application
@@ -77,7 +78,7 @@ export default class CliApplication
         // TODO: ... Add commands to the underlying driver.
         
         // When no arguments are given, then force display the default help.
-        if (!argv || argv?.length < 3) {
+        if ((argv === undefined && process.argv.length < 3) || argv?.length === 0) {
             driver.help();
         }
         
