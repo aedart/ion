@@ -29,9 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* TypeScript compile options now use `composite: true`, `incremental: true` and `clean: false` settings, in `shared/rollup.config.mjs` (_decreases build duration_).
+* TypeScript compile options now use `composite: true`, `incremental: true` and `clean: false` settings, in `shared/rollup.config` (_decreases build duration_).
 * `@rollup/plugin-json` has now been enabled for all packages.
-* `.env` file is parsed as `__ENV__`, for tests (_for root package only. File is parsed in `shared/tests/webpack.config.js`_).
+* `.env` file is parsed as `__ENV__`, for tests (_for root package only. File is parsed in `shared/tests/webpack.config`_).
 * Use Node `v22` in Github Actions (_CI environment_).
 
 ### Fixed
@@ -40,7 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Es-lint warning for `type: any` property in `Facade`, in `@aedart/support/facades`.
 * Test suite name(s) for container related tests.
 * Babel plugins not applied by webpack, for tests.
-* Cannot start ChromeHeadless (_"No usable sandbox!" error shown_) - new "ChromeHeadlessNoSandbox" launcher added in `karma-development.conf.js` with `--no-sandbox` flag specified.
+* Cannot start ChromeHeadless (_"No usable sandbox!" error shown_) - new "ChromeHeadlessNoSandbox" launcher added in `karma-development.conf.cjs` with `--no-sandbox` flag specified.
+* Karma JS unable to run, when root package contains "type: module" property.
 
 ## [0.13.0] - 2024-09-27
 
