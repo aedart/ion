@@ -1,7 +1,19 @@
 import { CliApplication } from "@aedart/cli";
 
-// TODO: ...
-export default function makeCliApplication()
+/**
+ * TODO: 
+ * 
+ * @param {import('commander').OutputConfiguration} [output]
+ * 
+ * @return {CliApplication}
+ */
+export default function makeCliApplication(output)
 {
-    return new CliApplication();
+    const cli = new CliApplication();
+    
+    if (output) {
+        cli.output(output);
+    }
+    
+    return cli.preventProcessExit();
 }
