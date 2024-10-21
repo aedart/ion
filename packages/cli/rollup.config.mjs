@@ -29,6 +29,8 @@ export default createConfig({
         '@aedart/support/reflections',
         '@aedart/support/services',
         
-        'lodash-es'
+        'lodash-es',
+        
+        'node:process'
     ]
 });
