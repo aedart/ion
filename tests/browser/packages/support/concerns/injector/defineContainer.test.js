@@ -1,6 +1,6 @@
 import { CONCERNS } from "@aedart/contracts/support/concerns";
 import { AbstractConcern, ConcernsContainer, InjectionError } from "@aedart/support/concerns";
-import makeConcernsInjector from "../helpers/makeConcernsInjector";
+import makeConcernsInjector from "../helpers/makeConcernsInjector.js";
 
 describe('@aedart/support/concerns', () => {
     describe('ConcernsInjector', () => {

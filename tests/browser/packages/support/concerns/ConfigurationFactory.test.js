@@ -1,4 +1,4 @@
-import makeConfigurationFactory from "./helpers/makeConfigurationFactory";
+import makeConfigurationFactory from "./helpers/makeConfigurationFactory.js";
 import {AbstractConcern, InjectionError, isUnsafeKey} from "@aedart/support/concerns";
 
 describe('@aedart/support/concerns', () => {

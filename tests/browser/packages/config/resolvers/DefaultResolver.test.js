@@ -67,7 +67,7 @@ describe('@aedart/config', () => {
                     },
                     {
                         name: 'Promise (dynamic import)',
-                        source: (await import('../fixtures/my-config'))?.default,
+                        source: (await import('../fixtures/my-config.js'))?.default,
                         expected: { app: { name: 'Foo' } }
                     },
                 ];
@@ -91,7 +91,7 @@ describe('@aedart/config', () => {
 
                 // ------------------------------------------------------------------------------------ //
                 
-                const result = await resolver.resolve((await import('../fixtures/my-env-config'))?.default);
+                const result = await resolver.resolve((await import('../fixtures/my-env-config.js'))?.default);
                 
                 expect(Reflect.has(result, 'app'))
                     .withContext('"app" item not resolved')
@@ -133,7 +133,7 @@ describe('@aedart/config', () => {
                 // );
 
                 const result = await resolver.resolve(
-                    async () => (await import('../fixtures/my-other-env-config')).default
+                    async () => (await import('../fixtures/my-other-env-config.js')).default
                 )
                 
                 expect(Reflect.has(result, 'app'))

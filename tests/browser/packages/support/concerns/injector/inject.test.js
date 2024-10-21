@@ -1,4 +1,4 @@
-import makeConcernsInjector from "../helpers/makeConcernsInjector";
+import makeConcernsInjector from "../helpers/makeConcernsInjector.js";
 import { AbstractConcern } from "@aedart/support/concerns";
 import { BEFORE, AFTER } from "@aedart/contracts/support/concerns";
 
