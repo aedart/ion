@@ -1,6 +1,6 @@
 import { AbstractConcern, AlreadyRegisteredError, InjectionError } from "@aedart/support/concerns";
 import { CONCERN_CLASSES } from "@aedart/contracts/support/concerns";
-import makeConcernsInjector from "../helpers/makeConcernsInjector";
+import makeConcernsInjector from "../helpers/makeConcernsInjector.js";
 
 describe('@aedart/support/concerns', () => {
     describe('ConcernsInjector', () => {

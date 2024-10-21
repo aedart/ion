@@ -1,5 +1,5 @@
 import { ConcernsInjector } from "@aedart/support/concerns";
-import makeConcernsInjector from "./helpers/makeConcernsInjector";
+import makeConcernsInjector from "./helpers/makeConcernsInjector.js";
 
 describe('@aedart/support/concerns', () => {
     describe('ConcernsInjector', () => {

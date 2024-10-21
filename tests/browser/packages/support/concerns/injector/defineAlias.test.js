@@ -1,4 +1,4 @@
-import makeConcernsInjector from "../helpers/makeConcernsInjector";
+import makeConcernsInjector from "../helpers/makeConcernsInjector.js";
 import { AbstractConcern, InjectionError, UnsafeAliasError } from "@aedart/support/concerns";
 
 describe('@aedart/support/concerns', () => {

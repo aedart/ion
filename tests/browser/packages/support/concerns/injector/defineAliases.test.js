@@ -1,4 +1,4 @@
-import makeConcernsInjector from "../helpers/makeConcernsInjector";
+import makeConcernsInjector from "../helpers/makeConcernsInjector.js";
 import { ALIASES } from "@aedart/contracts/support/concerns";
 import { AbstractConcern, AliasConflictError } from "@aedart/support/concerns";
 

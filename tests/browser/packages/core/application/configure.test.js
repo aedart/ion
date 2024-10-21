@@ -181,7 +181,7 @@ describe('@aedart/core', () => {
 
             await app
                 .prepare(
-                    async () => (await import('./fixtures/example-config')).default
+                    async () => (await import('./fixtures/example-config.js')).default
                 )
                 .run();
 
