@@ -2,6 +2,10 @@ import type {
     ParseOptions,
     OutputConfiguration
 } from "commander";
+import type {
+    Application
+} from "@aedart/contracts/core";
+import { Application as CoreApplication } from "@aedart/core";
 import { Command as CommanderJs } from "commander";
 import SkipProcessExitError from "./exceptions/SkipProcessExitError";
 import { version } from "../package.json";
@@ -13,13 +17,22 @@ import * as process from "node:process";
 export default class CliApplication
 {
     /**
+     * The "core" application instance
+     * 
+     * @type {Application}
+     * 
+     * @protected
+     */
+    protected coreApp: Application;
+    
+    /**
      * The underlying "driver" of this cli application
      * 
      * @type {import('commander').Command}
      * 
      * @protected
      */
-    protected _driver: CommanderJs;
+    protected commander: CommanderJs;
 
     /**
      * State whether `process.exit()` is permitted invoked or not.
@@ -28,12 +41,18 @@ export default class CliApplication
      * 
      * @protected
      */
-    protected _allowProcessExit: boolean = true;
-    
-    // TODO
-    constructor()
+    protected processExit: boolean = true;
+
+    /**
+     * Create a new Cli Application instance
+     * 
+     * @param {Application} [core] Core Application instance. If none is provided,
+     *                      then a default configured application is used. 
+     */
+    constructor(core?: Application)
     {
-        this._driver = this.makeDriver();
+        this.coreApp = core ?? this.makeCoreApplication();
+        this.commander = this.makeDriver();
     }
 
     /**
@@ -57,15 +76,25 @@ export default class CliApplication
     }
     
     /**
-     * Returns the underlying "driver" of this Cli Application
+     * The underlying "driver" of this Cli Application
      * 
      * @returns {import('commander').Command}
      */
     public get driver(): CommanderJs
     {
-        return this._driver;
+        return this.commander;
     }
 
+    /**
+     * The "core" application instance used by this Cli Application
+     * 
+     * @returns {Application}
+     */
+    public get core(): Application
+    {
+        return this.coreApp;
+    }
+    
     /**
      * Customise the output should be handled
      * 
@@ -75,7 +104,7 @@ export default class CliApplication
      */
     public output(configuration: OutputConfiguration): this
     {
-        this.driver.configureOutput(configuration);
+        this.commander.configureOutput(configuration);
         
         return this;
     }
@@ -92,7 +121,7 @@ export default class CliApplication
      */
     public allowProcessExit(allow: boolean = true): this
     {
-        this._allowProcessExit = allow;
+        this.processExit = allow;
 
         return this;
     }
@@ -121,7 +150,7 @@ export default class CliApplication
         const argsFromUser = (options?.from === 'user');
         
         // Overwrite process exit, if needed.
-        if (!this._allowProcessExit && argsFromUser) {
+        if (!this.processExit && argsFromUser) {
             this.overwriteProcessExit();
         }
         
@@ -162,13 +191,25 @@ export default class CliApplication
     }
 
     /**
+     * Creates a new configured "core" application instance
+     * 
+     * @returns {Application}
+     * 
+     * @protected
+     */
+    protected makeCoreApplication(): Application
+    {
+        return (new CoreApplication());
+    }
+    
+    /**
      * Overwrites the process exit call, in the "driver"
      * 
      * @protected
      */
     protected overwriteProcessExit(): void
     {
-        this.driver.exitOverride((err) => {
+        this.commander.exitOverride((err) => {
             // When command was successful, wrap the command error into a "skip process exit" error 
             if (err.exitCode === 0) {
                 throw new SkipProcessExitError(err.message, { cause: { previous: err } })
