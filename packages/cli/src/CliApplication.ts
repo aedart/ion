@@ -116,13 +116,20 @@ export default class CliApplication
   
         // TODO: ... Add commands to the underlying driver.
         
+        // Determine if args are from "user".
+        // @see https://github.com/tj/commander.js?tab=readme-ov-file#parse-and-parseasync
+        const argsFromUser = (options?.from === 'user');
+        
         // Overwrite process exit, if needed.
-        if (!this._allowProcessExit && options?.from === 'user') {
+        if (!this._allowProcessExit && argsFromUser) {
             this.overwriteProcessExit();
         }
         
         // When no arguments are given, then force display the default help.
-        if ((argv === undefined && process.argv.length < 3) || argv?.length === 0) {
+        const minArgsLength = argsFromUser
+            ? 1  // when args are from "user", then no special parsing is done for argv[0]...etc.   
+            : 3; // argv[0] is the application and argv[1] is the script being run.
+        if ((argv === undefined && process.argv.length < minArgsLength) || argv?.length === 0) {
             driver.help();
         }
         
