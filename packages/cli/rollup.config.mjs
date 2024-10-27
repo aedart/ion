@@ -28,6 +28,7 @@ export default createConfig({
         '@aedart/support/objects',
         '@aedart/support/reflections',
         '@aedart/support/services',
+        '@aedart/core',
         
         'lodash-es',
         
