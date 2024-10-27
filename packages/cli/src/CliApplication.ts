@@ -6,6 +6,7 @@ import type {
     Application
 } from "@aedart/contracts/core";
 import { Application as CoreApplication } from "@aedart/core";
+import { CallbackWrapper } from "@aedart/support";
 import { Command as CommanderJs } from "commander";
 import SkipProcessExitError from "./exceptions/SkipProcessExitError";
 import { version } from "../package.json";
@@ -137,43 +138,76 @@ export default class CliApplication
     {
         return this.allowProcessExit(!prevent);
     }
+
+    /**
+     * Run this application with given arguments
+     * 
+     * @param {readonly string[]} [argv] Defaults to `process.argv` when no arguments given.
+     * @param {ParseOptions} [options]
+     * 
+     * @returns {Promise<boolean>}
+     */
+    public async run(argv?: readonly string[], options?: ParseOptions): Promise<boolean>
+    {
+        const callback = CallbackWrapper.makeFor(
+            this,
+            this.parse,
+            [argv, options]
+        ); 
+        
+        await this.core.run(callback);
+        
+        return this.core.terminate();
+    }
+
+    /**
+     * Destroy this Cli Application instance.
+     * 
+     * @see {Application.destroy}
+     *
+     * @return {void}
+     */
+    public destroy(): void
+    {
+        this.core.destroy();
+    }
     
-    // TODO:...
-    public async run(argv?: readonly string[], options?: ParseOptions)
+    // TODO: 
+    protected async parse(argv?: readonly string[], options?: ParseOptions): Promise<boolean>
     {
         const driver = this.driver;
-  
+
         // TODO: ... Add commands to the underlying driver.
-        
+
         // Determine if args are from "user".
         // @see https://github.com/tj/commander.js?tab=readme-ov-file#parse-and-parseasync
         const argsFromUser = (options?.from === 'user');
-        
+
         // Overwrite process exit, if needed.
         if (!this.processExit && argsFromUser) {
             this.overwriteProcessExit();
         }
-        
+
         // When no arguments are given, then force display the default help.
         const minArgsLength = argsFromUser
             ? 1  // when args are from "user", then no special parsing is done for argv[0]...etc.   
             : 3; // argv[0] is the application and argv[1] is the script being run.
+
         if ((argv === undefined && process.argv.length < minArgsLength) || argv?.length === 0) {
             driver.help();
         }
-        
-        // Run the application...
+
+        // Parse arguments and invoke requested command...
         try {
-            await driver.parseAsync(argv, options);    
+            await driver.parseAsync(argv, options);
         } catch (e) {
             // Re-throw error, if it's not a "skip process exit" error. 
             if (!(e instanceof SkipProcessExitError)) {
                 throw e;
             }
         }
-        
-        
-        return Promise.resolve(this);
+
+        return Promise.resolve(true);
     }
     
     /**
