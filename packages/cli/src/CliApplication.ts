@@ -188,10 +188,10 @@ export default class CliApplication
             this.overwriteProcessExit();
         }
 
-        // When no arguments are given, then force display the default help.
+        // When no arguments are given, force display the default help.
         const minArgsLength = argsFromUser
             ? 1  // when args are from "user", then no special parsing is done for argv[0]...etc.   
-            : 3; // argv[0] is the application and argv[1] is the script being run.
+            : 3; // argv[0] is the application and argv[1] is the script being run...etc.
 
         if ((argv === undefined && process.argv.length < minArgsLength) || argv?.length === 0) {
             driver.help();
