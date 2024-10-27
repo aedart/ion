@@ -149,13 +149,11 @@ export default class CliApplication
      */
     public async run(argv?: readonly string[], options?: ParseOptions): Promise<boolean>
     {
-        const callback = CallbackWrapper.makeFor(
+        return await this.core.run(CallbackWrapper.makeFor(
             this,
             this.parse,
             [argv, options]
-        ); 
-        
-        return await this.core.run(callback);
+        ));
     }
 
     /**
@@ -228,6 +226,8 @@ export default class CliApplication
      */
     protected exit(code: number = 0): void|never
     {
+        this.core.destroy();
+        
         if (this.processExit) {
             process.exit(code);
         }
