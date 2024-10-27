@@ -714,7 +714,7 @@ export default class Application extends Container implements ApplicationContrac
         }
 
         if (isConfiguratorConstructor(configurator)) {
-            return new (configurator as ConfiguratorConstructor)();
+            return new (configurator as ConfiguratorConstructor)(this);
         }
 
         if (isCallable(configurator)) {
