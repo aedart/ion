@@ -155,9 +155,7 @@ export default class CliApplication
             [argv, options]
         ); 
         
-        await this.core.run(callback);
-        
-        return this.core.terminate();
+        return await this.core.run(callback);
     }
 
     /**
@@ -179,35 +177,60 @@ export default class CliApplication
 
         // TODO: ... Add commands to the underlying driver.
 
-        // Determine if args are from "user".
+        // Overwrite the `process.exit()` call, to ensure that the "core" application can be terminated,
+        // regardless of what this Cli Application has been configured to do.
         // @see https://github.com/tj/commander.js?tab=readme-ov-file#parse-and-parseasync
-        const argsFromUser = (options?.from === 'user');
-
-        // Overwrite process exit, if needed.
-        if (!this.processExit && argsFromUser) {
-            this.overwriteProcessExit();
-        }
-
-        // When no arguments are given, force display the default help.
-        const minArgsLength = argsFromUser
-            ? 1  // when args are from "user", then no special parsing is done for argv[0]...etc.   
-            : 3; // argv[0] is the application and argv[1] is the script being run...etc.
-
-        if ((argv === undefined && process.argv.length < minArgsLength) || argv?.length === 0) {
-            driver.help();
-        }
-
-        // Parse arguments and invoke requested command...
+        // @see https://github.com/tj/commander.js/blob/master/Readme.md#override-exit-and-output-handling
+        this.overwriteProcessExit();
+        
+        let exitCode = 0;
+        let terminated: boolean;
         try {
-            await driver.parseAsync(argv, options);
+            // Force display help, when no arguments have been provided.
+            // When args are from "user", then no special parsing is done for argv[0]...etc.
+            // When args are from `process.argv`, then argv[0] is the application and argv[1] is the script being run...etc.
+            if ((argv === undefined && process.argv.length < 3) || argv?.length === 0) {
+                driver.help();
+            } else {
+                // Otherwise, parse the requested command and its arguments...
+                await driver.parseAsync(argv, options);    
+            }
         } catch (e) {
             // Re-throw error, if it's not a "skip process exit" error. 
             if (!(e instanceof SkipProcessExitError)) {
                 throw e;
             }
+            
+            // Set the exist code.
+            exitCode = (e.cause as { exitCode?: number })?.exitCode ?? exitCode;
+        } finally {
+            // Regardless of circumstance, ensure that the "core" application is terminated.
+            terminated = await this.core.terminate();
+
+            // Call `process.exit()`, if allowed...
+            this.exit(exitCode);
         }
 
-        return Promise.resolve(true);
+        return Promise.resolve(terminated);
+    }
+
+    /**
+     * Terminates this Cli Application with the given exit code
+     * 
+     * **Caution**: _Method will invoke `process.exit()`, if {@link processExit} is set to `true`.
+     * Otherwise, this method will do nothing!_
+     * 
+     * @param {number} [code]
+     * 
+     * @returns {void|never}
+     * 
+     * @protected
+     */
+    protected exit(code: number = 0): void|never
+    {
+        if (this.processExit) {
+            process.exit(code);
+        }
     }
     
     /**
@@ -246,7 +269,10 @@ export default class CliApplication
         this.commander.exitOverride((err) => {
             // When command was successful, wrap the command error into a "skip process exit" error 
             if (err.exitCode === 0) {
-                throw new SkipProcessExitError(err.message, { cause: { previous: err } })
+                throw new SkipProcessExitError(err.message, { cause: {
+                    exitCode: err.exitCode,
+                    previous: err
+                } });
             }
             
             // Otherwise, simply re-throw error
