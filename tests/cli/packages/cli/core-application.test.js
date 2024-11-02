@@ -19,5 +19,26 @@ describe('@aedart/cli', () => {
             
             assert.strictEqual(cli.core === core, true, 'Incorrect "core" application')
         });
+
+        it('destroys "core" application before cli exits', async () => {
+            let destroyInvoked = false;
+            
+            const core = new Application();
+            core.destroying(() => {
+                destroyInvoked = true;
+            });
+
+            const cli = makeCliApplication({
+                writeOut: () => {
+                    // Ignore output
+                }
+            }, core);
+
+            // --------------------------------------------------------------- //
+            
+            await cli.run([], { from: 'user' });
+
+            assert.ok(destroyInvoked, '"core" application not destroyed');
+        });
     });
 });
