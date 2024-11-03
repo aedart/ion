@@ -32,6 +32,7 @@ export default createConfig({
         
         'lodash-es',
         
-        'node:process'
+        'node:process',
+        'node:util'
     ]
 });
