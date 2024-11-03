@@ -5,12 +5,14 @@ import type {
 import type {
     Application
 } from "@aedart/contracts/core";
+import type { ParseArgsConfig } from "node:util";
 import { Application as CoreApplication } from "@aedart/core";
 import { CallbackWrapper } from "@aedart/support";
 import { Command as CommanderJs } from "commander";
 import SkipProcessExitError from "./exceptions/SkipProcessExitError";
 import { version } from "../package.json";
 import * as process from "node:process";
+import { parseArgs } from "node:util";
 
 /**
  * Cli Application
@@ -149,13 +151,15 @@ export default class CliApplication
      */
     public async run(argv?: readonly string[], options?: ParseOptions): Promise<boolean>
     {
+        this.processEnvOption(argv);
+        
         return await this.core.run(CallbackWrapper.makeFor(
             this,
             this.parse,
             [argv, options]
         ));
     }
-
+    
     // TODO: 
     protected async parse(argv?: readonly string[], options?: ParseOptions): Promise<boolean>
     {
@@ -232,7 +236,11 @@ export default class CliApplication
     {
         return (new CommanderJs())
             .version(this.version)
-            .description(this.description);
+            .description(this.description)
+            
+            // This option will be processed outside the "driver's" usual way of dealing with options!
+            // @see processEnvOption()
+            .option('--env <file>', 'set environment variables from supplied file.');
     }
 
     /**
@@ -266,5 +274,45 @@ export default class CliApplication
             // Otherwise, simply re-throw error
             throw err;
         })
+    }
+
+    /**
+     * Processes the `--env` option for the cli application
+     * 
+     * @param {readonly string[]} [argv] Defaults to `process.argv` when no arguments given.
+     * 
+     * @protected
+     */
+    protected processEnvOption(argv?: readonly string[]): void
+    {
+        // Prepare options for the `parseArgs`.
+        const argsOptions: ParseArgsConfig = {
+            args: (argv as string[] | undefined),
+
+            // Define the '--env' option
+            options: {
+                'env': {
+                    type: 'string',
+                    //default: '.env'
+                }
+            },
+
+            // Ignore any other arguments and options...
+            strict: false,
+        }
+
+        // Parse the arguments and extract the values
+        const { values } = parseArgs(argsOptions);
+
+        // Resolve path to `.env` file.
+        const path = Reflect.has(values, 'env')
+            ? values['env']
+            : undefined;
+
+        // Load environment variables into `process.env`, if a path has been provided.
+        // If nothing was specified, then avoid doing anything.
+        if (typeof path === 'string' && path.length > 0) {
+            process.loadEnvFile(path);
+        }
     }
 }
