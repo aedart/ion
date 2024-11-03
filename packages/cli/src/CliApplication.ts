@@ -156,18 +156,6 @@ export default class CliApplication
         ));
     }
 
-    /**
-     * Destroy this Cli Application instance.
-     * 
-     * @see {Application.destroy}
-     *
-     * @return {void}
-     */
-    public destroy(): void
-    {
-        this.core.destroy();
-    }
-    
     // TODO: 
     protected async parse(argv?: readonly string[], options?: ParseOptions): Promise<boolean>
     {
