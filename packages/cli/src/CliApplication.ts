@@ -187,8 +187,10 @@ export default class CliApplication
         let terminated: boolean;
         try {
             // Force display help, when no arguments have been provided.
-            // When args are from "user", then no special parsing is done for argv[0]...etc.
-            // When args are from `process.argv`, then argv[0] is the application and argv[1] is the script being run...etc.
+            // - When args are from "user", then no special parsing is done for argv[0]...etc.
+            // - When args are from `process.argv`, then argv[0] is the application and argv[1] is the script being run...etc.
+            // NOTE: In case that options are provided, the default help might not get displayed, depending on the requested
+            // option...
             if ((argv === undefined && process.argv.length < 3) || argv?.length === 0) {
                 driver.help();
             } else {
