@@ -162,7 +162,7 @@ export default class Application extends Container implements ApplicationContrac
      * // Prepare using configuration source
      * app.prepare(source);
      *
-     * // Above is equivalent to:
+     * // Calling `prepare()` is equivalent to calling:
      * app.configure( (configurator) => configurator.with(...) )
      *
      * @param {Source} using

@@ -41,8 +41,8 @@ export default interface Application extends Container
      * 
      * // Prepare using configuration source
      * app.prepare(source);
-     * 
-     * // Above is equivalent to:
+     *
+     * // Calling `prepare()` is equivalent to calling:
      * app.configure( (configurator) => configurator.with(...) )
      * 
      * @param {Source} using
