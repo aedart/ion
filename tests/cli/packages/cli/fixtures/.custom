@@ -1,0 +1,8 @@
+# Custom environment file
+
+# Application Environment
+# NOTE: Key might NOT be set, if previously defined in `process.env`!
+APP_ENV=custom
+
+# A custom key...
+CUSTOM_KEY=custom
