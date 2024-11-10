@@ -1,4 +1,8 @@
-import { CliApplication } from "@aedart/cli";
+import {
+    CliApplication,
+    DefaultCliConfigurator
+} from "@aedart/cli";
+import { Application } from "@aedart/core";
 
 /**
  * Returns a new Cli Application instance
@@ -10,6 +14,9 @@ import { CliApplication } from "@aedart/cli";
  */
 export default function makeCliApplication(output, core)
 {
+    core = core ?? (new Application())
+        .configure(DefaultCliConfigurator)
+    
     const cli = new CliApplication(core);
     
     if (output) {
