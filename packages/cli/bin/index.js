@@ -36,15 +36,15 @@
 //
 // await program.parseAsync();
 
+import { Application } from "@aedart/core";
 import {
     CliApplication,
     DefaultCliConfigurator
 } from "@aedart/cli";
-import { Application } from "@aedart/core";
 
-const core = (new Application())
-    .configure(DefaultCliConfigurator)
-
-// TODO: Add default Ion commands...
-
-await (new CliApplication(core)).run();
+await (new CliApplication(
+    (new Application())
+        .configure(DefaultCliConfigurator)
+))
+    // TODO: Add default Ion commands...
+    .run();
