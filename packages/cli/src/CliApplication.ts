@@ -13,6 +13,7 @@ import SkipProcessExitError from "./exceptions/SkipProcessExitError";
 import { version } from "../package.json";
 import * as process from "node:process";
 import { parseArgs } from "node:util";
+import { existsSync } from "node:fs";
 
 /**
  * Cli Application
@@ -46,6 +47,15 @@ export default class CliApplication
      */
     protected processExit: boolean = true;
 
+    /**
+     * The default environment variables file path to use, when none is specified
+     * 
+     * @type {string}
+     * 
+     * @protected
+     */
+    protected defaultEnvFile = '.env';
+    
     /**
      * Create a new Cli Application instance
      * 
@@ -240,7 +250,7 @@ export default class CliApplication
             
             // This option will be processed outside the "driver's" usual way of dealing with options!
             // @see processEnvOption()
-            .option('--env <file>', 'set environment variables from supplied file.');
+            .option('--env <file>', 'set environment variables from supplied file.', this.defaultEnvFile);
     }
 
     /**
@@ -293,7 +303,7 @@ export default class CliApplication
             options: {
                 'env': {
                     type: 'string',
-                    //default: '.env'
+                    default: this.defaultEnvFile
                 }
             },
 
@@ -308,11 +318,15 @@ export default class CliApplication
         const path = Reflect.has(values, 'env')
             ? values['env']
             : undefined;
-
-        // Load environment variables into `process.env`, if a path has been provided.
-        // If nothing was specified, then avoid doing anything.
-        if (typeof path === 'string' && path.length > 0) {
-            process.loadEnvFile(path);
+        
+        // Skip loading if the default environment file path is used, but does not exist
+        const exists = typeof path === 'string' && existsSync(path);
+        if (!exists && path === this.defaultEnvFile) {
+            return;
         }
+        
+        // Otherwise, regardless if the file exists, attempt to load it into `process.env`.
+        // If it does not exist, the `loadEnvFile()` will simply throw an error.
+        process.loadEnvFile(path as string);
     }
 }
