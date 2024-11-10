@@ -146,6 +146,18 @@ export default abstract class BaseConfigurator implements Configurator {
         
         return this;
     }
+
+    /**
+     * Clears the registered {@link Source} in this configurator
+     * 
+     * @see {with}
+     * 
+     * @returns {this}
+     */
+    public withoutSource(): this
+    {
+        return this.with({});
+    }
     
     /**
      * Add "core" bindings to be registered
@@ -162,6 +174,20 @@ export default abstract class BaseConfigurator implements Configurator {
     }
 
     /**
+     * Clear "core" bindings in this configurator
+     * 
+     * @see {withBindings}
+     * 
+     * @returns {this}
+     */
+    public clearBindings(): this
+    {
+        this.bindings = [];
+        
+        return this;
+    }
+    
+    /**
      * Add "core" shared bindings to be registered
      *
      * @param {BindingTuple[]} bindings
@@ -175,6 +201,20 @@ export default abstract class BaseConfigurator implements Configurator {
         return this;
     }
 
+    /**
+     * Clear "core" shared bindings in this configurator
+     * 
+     * @see {withSingletons}
+     * 
+     * @returns {this}
+     */
+    public clearSingletons(): this
+    {
+        this.singletons = [];
+        
+        return this;
+    }
+    
     /**
      * Add "core" existing object instances to be registered as shared bindings
      *
@@ -190,6 +230,20 @@ export default abstract class BaseConfigurator implements Configurator {
     }
 
     /**
+     * Clear "core" existing object instances in this configurator
+     *
+     * @see {withSingletons}
+     *
+     * @returns {this}
+     */
+    public clearInstances(): this
+    {
+        this.instances = [];
+
+        return this;
+    }
+    
+    /**
      * Add "core" aliases to be registered
      *
      * @param {IdentifierAliasTuple[]} aliases
@@ -199,6 +253,20 @@ export default abstract class BaseConfigurator implements Configurator {
     public withAliases(aliases: IdentifierAliasTuple[]): this
     {
         this.aliases = this.aliases.concat(aliases);
+        
+        return this;
+    }
+
+    /**
+     * Clear "core" aliases in this configurator
+     * 
+     * @see {withAliases}
+     * 
+     * @returns {this}
+     */
+    public clearAliases(): this
+    {
+        this.aliases = [];
         
         return this;
     }
@@ -218,6 +286,18 @@ export default abstract class BaseConfigurator implements Configurator {
     }
 
     /**
+     * Clear all "core" bootstrappers in this configurator
+     * 
+     * @returns {this}
+     */
+    public clearBootstrappers(): this
+    {
+        this.bootstrappers = [];
+        
+        return this;
+    }
+    
+    /**
      * Add "core" service providers to be registered by the application
      *
      * @param {(ServiceProvider | ServiceProviderConstructor)[]} providers
@@ -231,6 +311,18 @@ export default abstract class BaseConfigurator implements Configurator {
         return this;
     }
 
+    /**
+     * Clear all "core" service providers in this configurator
+     * 
+     * @returns {this}
+     */
+    public clearServiceProviders(): this
+    {
+        this.providers = [];
+        
+        return this;
+    }
+    
     /**
      * Applies setup and configuration of the application and returns it
      *
