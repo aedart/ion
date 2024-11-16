@@ -28,6 +28,7 @@ module.exports = {
             '@aedart/container': path.resolve(__dirname, './packages/container/src'),
 
             // contracts
+            '@aedart/contracts/cli': path.resolve(__dirname, './packages/contracts/cli'),
             '@aedart/contracts/config': path.resolve(__dirname, './packages/contracts/config'),
             '@aedart/contracts/container': path.resolve(__dirname, './packages/contracts/container'),
             '@aedart/contracts/core': path.resolve(__dirname, './packages/contracts/core'),

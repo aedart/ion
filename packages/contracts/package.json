@@ -31,6 +31,11 @@
             "import": "./dist/esm/contracts.js",
             "require": "./dist/cjs/contracts.cjs"
         },
+        "./cli": {
+            "types": "./dist/types/cli.d.ts",
+            "import": "./dist/esm/cli.js",
+            "require": "./dist/cjs/cli.cjs"
+        },
         "./config": {
             "types": "./dist/types/config.d.ts",
             "import": "./dist/esm/config.js",
