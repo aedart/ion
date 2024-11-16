@@ -54,7 +54,7 @@ export default class CliApplication
      * 
      * @protected
      */
-    protected defaultEnvFile = '.env';
+    protected defaultEnvFile: string = '.env';
     
     /**
      * Create a new Cli Application instance
