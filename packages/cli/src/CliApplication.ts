@@ -125,9 +125,6 @@ export default class CliApplication
     /**
      * Specify whether the Cli Application must invoke `process.exit()` or not.
      * 
-     * **Note**: _Process exit is only prevented, if the `run()`'s [options]{@link import('commander').ParseOptions}
-     * argument is set to `{ from: "user" }`!_
-     * 
      * @param {boolean} [allow=true]
      * 
      * @return {this}
