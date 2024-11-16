@@ -3,6 +3,9 @@ import type {
     OutputConfiguration
 } from "commander";
 import type {
+    CliApplication as CliApplicationContract
+} from "@aedart/contracts/cli";
+import type {
     Application
 } from "@aedart/contracts/core";
 import type { ParseArgsConfig } from "node:util";
@@ -18,7 +21,7 @@ import { existsSync } from "node:fs";
 /**
  * Cli Application
  */
-export default class CliApplication
+export default class CliApplication implements CliApplicationContract
 {
     /**
      * The "core" application instance
