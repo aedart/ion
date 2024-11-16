@@ -15,7 +15,7 @@ import { Application } from "@aedart/core";
 export default function makeCliApplication(output, core)
 {
     core = core ?? (new Application())
-        .configure(DefaultCliConfigurator)
+        .configure(DefaultCliConfigurator);
     
     const cli = new CliApplication(core);
     
@@ -23,5 +23,5 @@ export default function makeCliApplication(output, core)
         cli.output(output);
     }
     
-    return cli.preventProcessExit();
+    return cli.preventExit();
 }

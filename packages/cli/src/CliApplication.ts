@@ -129,7 +129,7 @@ export default class CliApplication
      * 
      * @return {this}
      */
-    public allowProcessExit(allow: boolean = true): this
+    public allowExit(allow: boolean = true): this
     {
         this.processExit = allow;
 
@@ -137,15 +137,15 @@ export default class CliApplication
     }
 
     /**
-     * Opposite of {@link allowProcessExit}
+     * Opposite of {@link allowExit}
      * 
      * @param {boolean} [prevent=true]
      * 
      * @return {this}
      */ 
-    public preventProcessExit(prevent: boolean = true): this
+    public preventExit(prevent: boolean = true): this
     {
-        return this.allowProcessExit(!prevent);
+        return this.allowExit(!prevent);
     }
 
     /**
