@@ -9,3 +9,5 @@ import CliApplication from "./CliApplication";
 export {
     type CliApplication
 }
+
+export * from './input/index';
