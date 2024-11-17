@@ -11,3 +11,4 @@ export {
 }
 
 export * from './input/index';
+export * from './types';
