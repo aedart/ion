@@ -7,3 +7,4 @@ export {
 
 export * from "./bootstrap/index";
 export * from './exceptions/index';
+export * from "./input/index";
