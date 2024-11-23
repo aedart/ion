@@ -19,9 +19,9 @@ export default interface Option
     /**
      * Single character alias for the option
      * 
-     * @returns {string | undefined}
+     * @type {string | null}
      */
-    get short(): string | undefined;
+    get short(): string | null;
     
     /**
      * Short description of this option
