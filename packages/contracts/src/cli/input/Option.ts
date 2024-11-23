@@ -59,6 +59,17 @@ export default interface Option
     isOptional(): boolean;
 
     /**
+     * Determine if option is negatable
+     * 
+     * **Note**: _If `true`, allows explicitly setting boolean
+     * option to `false` by prefixing the option name with `--no-`,
+     * e.g. `--no-print`_
+     * 
+     * @returns {boolean}
+     */
+    isNegatable(): boolean;
+    
+    /**
      * Determine if this option accepts multiple values
      *
      * @returns {boolean}
