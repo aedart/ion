@@ -2,6 +2,16 @@ import type { Argument as ArgumentContract } from "@aedart/contracts/cli";
 import { LogicalError } from "@aedart/support/exceptions";
 
 /**
+ * Parameters accepted by the static `make` method.
+ */
+type ArgumentParams = {
+    description: string,
+    required: boolean,
+    isArray: boolean,
+    defaultValue?: string | number | boolean | (string|number|boolean)[] | null,
+};
+
+/**
  * Input Argument
  * 
  * @see {import('@aedart/contracts/cli').Argument}
@@ -79,6 +89,33 @@ export default class Argument implements ArgumentContract
         this._isArray = isArray;
         
         this.setDefault(defaultValue);
+    }
+
+    /**
+     * Create a new input argument instance
+     * 
+     * @param {string} name
+     * @param {ArgumentParams} [params]
+     * 
+     * @returns {ArgumentContract|this}
+     */
+    public static make(
+        name: string,
+        params: ArgumentParams = {
+            description: '',
+            required: true,
+            isArray: false,
+            defaultValue: null,
+        }
+    ): ArgumentContract
+    {
+        return new this(
+            name,
+            params.description,
+            params.required,
+            params.isArray,
+            params.defaultValue
+        );
     }
     
     /**
