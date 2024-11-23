@@ -1,15 +1,8 @@
-import type { Argument as ArgumentContract } from "@aedart/contracts/cli";
+import type {
+    Argument as ArgumentContract,
+    ArgumentParams
+} from "@aedart/contracts/cli";
 import { LogicalError } from "@aedart/support/exceptions";
-
-/**
- * Parameters accepted by the static `make` method.
- */
-type ArgumentParams = {
-    description: string,
-    required: boolean,
-    isArray: boolean,
-    defaultValue?: string | number | boolean | (string|number|boolean)[] | null,
-};
 
 /**
  * Input Argument
