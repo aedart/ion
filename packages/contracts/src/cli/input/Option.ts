@@ -36,6 +36,13 @@ export default interface Option
      * @type {OptionType}
      */
     get type(): OptionType;
+
+    /**
+     * Determine if this option accepts a value
+     * 
+     * @returns {boolean}
+     */
+    acceptsValue(): boolean;
     
     /**
      * Determine if this option is required
