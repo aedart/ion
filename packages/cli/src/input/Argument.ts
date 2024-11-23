@@ -4,9 +4,7 @@ import { LogicalError } from "@aedart/support/exceptions";
 /**
  * Input Argument
  * 
- * Adaptation of Symfony Console's `InputArgument`
- * 
- * @see https://github.com/symfony/console/blob/7.1/Input/InputArgument.php
+ * @see {import('@aedart/contracts/cli').Argument}
  */
 export default class Argument implements ArgumentContract
 {
