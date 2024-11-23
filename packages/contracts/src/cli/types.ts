@@ -2,9 +2,25 @@
  * Parameters accepted by the static `make()` method.
  */
 export type ArgumentParams = {
+
+    /**
+     * Short description of the argument
+     */
     description: string,
+
+    /**
+     * If the argument is required
+     */
     required: boolean,
+
+    /**
+     * If the argument accepts multiple values
+     */
     isArray: boolean,
+
+    /**
+     * Default value of the argument
+     */
     defaultValue?: string | number | boolean | (string|number|boolean)[] | null,
 };
 
