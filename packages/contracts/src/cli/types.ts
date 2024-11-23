@@ -1,5 +1,7 @@
 /**
- * Parameters accepted by the static `make()` method.
+ * Parameters accepted by a static `make()` method for an Input Argument
+ * 
+ * @see {Argument}
  */
 export type ArgumentParams = {
 
