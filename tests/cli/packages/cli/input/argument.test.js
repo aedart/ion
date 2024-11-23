@@ -30,14 +30,18 @@ describe('@aedart/cli', () => {
             });
 
             it('can create optional argument', () => {
-                const arg = new Argument('my arg', '', false);
+                const arg = Argument.make('my arg', {
+                    required: false
+                });
 
                 assert.equal(arg.isRequired(), false, 'Should NOT be required');
                 assert.equal(arg.isOptional(), true, 'Should be optional');
             });
 
             it('can create as array type', () => {
-                const arg = new Argument('my arg', '', true, true);
+                const arg = Argument.make('my arg', {
+                    isArray: true
+                });
 
                 assert.equal(arg.isArray(), true, 'Argument should be of the type array');
             });
@@ -50,13 +54,18 @@ describe('@aedart/cli', () => {
             
             it('can set and get default value', () => {
                 const defaultValue = 'Weee';
-                const arg = new Argument('my arg', '', false, false, defaultValue);
+                const arg = Argument.make('my arg', {
+                    required: false,
+                    defaultValue: defaultValue
+                });
 
                 assert.deepEqual(arg.getDefault(), defaultValue, 'Incorrect default value');
             });
 
             it('converts null to empty array when of array type', () => {
-                const arg = new Argument('my arg', '', false, true);
+                const arg = Argument.make('my arg', {
+                    isArray: true
+                });
 
                 assert.deepEqual(arg.getDefault(), [], 'Default value should be an empty array');
             });
@@ -64,7 +73,7 @@ describe('@aedart/cli', () => {
             it('fails setting default value when argument is required', () => {
                 assert.throws(
                     () => {
-                        new Argument('my arg', '', true, false, 'my default');
+                        return Argument.make('my arg', { defaultValue: 'my default value' });
                     }, 
                     {
                         name: 'LogicalError'
@@ -75,7 +84,11 @@ describe('@aedart/cli', () => {
             it('fails setting default value (not an array), when argument of array type', () => {
                 assert.throws(
                     () => {
-                        new Argument('my arg', '', false, true, 'my default');
+                        return Argument.make('my arg', {
+                            required: false,
+                            isArray: true,
+                            defaultValue: 'my default value'
+                        });
                     },
                     {
                         name: 'TypeError'
