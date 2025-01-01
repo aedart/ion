@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2025-01-01
+
+### Changed
+
+* Updated dependencies (_service update_).
+* License year changed to `2023-present`.
+
 ## [0.13.0] - 2024-09-27
 
 ### Changed
@@ -351,7 +358,8 @@ the version command (_configured in root `lerna.json`_).
 * Browser tests setup using karma, webpack, and jasmine.
 * Project init, lerna, directory structure, ...etc.
 
-[Unreleased]: https://github.com/aedart/ion/compare/0.13.0...HEAD
+[Unreleased]: https://github.com/aedart/ion/compare/0.14.0...HEAD
+[0.14.0]: https://github.com/aedart/ion/compare/0.13.0...0.14.0
 [0.13.0]: https://github.com/aedart/ion/compare/0.12.1...0.13.0
 [0.12.1]: https://github.com/aedart/ion/compare/0.12.0...0.12.1
 [0.12.0]: https://github.com/aedart/ion/compare/0.11.0...0.12.0
