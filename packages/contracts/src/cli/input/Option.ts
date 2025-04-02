@@ -1,4 +1,4 @@
-import type { OptionType } from "../types";
+import OptionType from './OptionType';
 
 /**
  * Input Option
