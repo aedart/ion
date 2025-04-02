@@ -1,6 +1,6 @@
 {
     "name": "@aedart/config",
-    "version": "0.13.0",
+    "version": "0.14.0",
     "description": "Ion Configuration package",
     "keywords": [
         "Configuration",
@@ -35,8 +35,8 @@
         "NOTICE"
     ],
     "peerDependencies": {
-        "@aedart/contracts": "^0.13.0",
-        "@aedart/support": "^0.13.0"
+        "@aedart/contracts": "^0.14.0",
+        "@aedart/support": "^0.14.0"
     },
     "scripts": {
         "compile": "rollup -c",
