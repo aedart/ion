@@ -1,4 +1,6 @@
 import Argument from "./Argument";
+import Option from './Option';
 export {
-    Argument
+    Argument,
+    Option
 }
