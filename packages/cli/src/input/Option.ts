@@ -102,14 +102,14 @@ export default class Option implements OptionContract
     ) {
         this._name = this.resolveName(name);
         this._short = this.resolveShortcut(short);
-        this._type = type;
+        this._type = this.resolveType(type);
         this._description = description;
         this._required = required;
         this._isArray = isArray;
         
         this.setDefault(defaultValue);
     }
-    
+
     /**
      * Name of this option
      *
@@ -272,5 +272,27 @@ export default class Option implements OptionContract
         }
 
         return short;
+    }
+
+    /**
+     * Resolve option type
+     * 
+     * @param {any} type
+     * 
+     * @return {OptionType}
+     * 
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
+    protected resolveType(
+        type: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): OptionType
+    {
+        if (!Object.values(OptionType).includes(type as OptionType)) {
+            throw TypeError('Invalid option type');
+        }
+
+        return type as OptionType;
     }
 }
