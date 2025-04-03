@@ -100,27 +100,8 @@ export default class Option implements OptionContract
         isArray: boolean = false,
         defaultValue?: string | number | boolean | (string|number|boolean)[] | null,
     ) {
-        if (name.startsWith('--')) {
-            name = name.substring(2);
-        }
-        
-        if (name.length === 0) {
-            throw new TypeError('Option name cannot be be empty.')
-        }
-        
-        if (short !== undefined) {
-            // Left trim dashes for shortcut.
-            if (short.startsWith('-')) {
-                short = short.replace(/^(-)+/, '');
-            }
-
-            if (short.length === 0) {
-                throw new TypeError('Option shortcut cannot be be empty.')
-            }
-        }
-        
-        this._name = name;
-        this._short = short;
+        this._name = this.resolveName(name);
+        this._short = this.resolveShortcut(short);
         this._type = type;
         this._description = description;
         this._required = required;
@@ -205,6 +186,9 @@ export default class Option implements OptionContract
      * @param {string | number | boolean | (string | number | boolean)[] | null} [value]
      *
      * @returns {this}
+     *
+     * @throws {LogicalError}
+     * @throws {TypeError}
      */
     public setDefault(value?: string | number | boolean | (string|number|boolean)[] | null): this
     {
@@ -235,5 +219,58 @@ export default class Option implements OptionContract
     public getDefault(): string | number | boolean | (string|number|boolean)[] | null
     {
         return this.defaultValue;
+    }
+
+    /**
+     * Resolve option name
+     *
+     * @param {string} name
+     * 
+     * @return {string}
+     *
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
+    protected resolveName(name: string): string
+    {
+        if (name.startsWith('--')) {
+            name = name.substring(2);
+        }
+
+        if (name.length === 0) {
+            throw new TypeError('Option name cannot be be empty.')
+        }
+
+        return name;
+    }
+
+    /**
+     * Resolves option shortcut
+     *
+     * @param {string | undefined} [short]
+     * 
+     * @return {string | undefined}
+     *
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
+    protected resolveShortcut(short?: string | undefined): string | undefined
+    {
+        if (short === undefined) {
+            return short;
+        }
+
+        // Left trim dashes for shortcut.
+        if (short.startsWith('-')) {
+            short = short.replace(/^(-)+/, '');
+        }
+
+        if (short.length === 0) {
+            throw new TypeError('Option shortcut cannot be be empty.')
+        }
+
+        return short;
     }
 }
