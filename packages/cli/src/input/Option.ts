@@ -108,8 +108,14 @@ export default class Option implements OptionContract
             throw new TypeError('Option name cannot be be empty.')
         }
         
-        if (short !== undefined && short.length === 0) {
-            throw new TypeError('Option shortcut cannot be be empty.')
+        if (short !== undefined) {
+            if (short.startsWith('-')) {
+                short = short.substring(1);
+            }
+
+            if (short.length === 0) {
+                throw new TypeError('Option shortcut cannot be be empty.')
+            }
         }
         
         this._name = name;
