@@ -1,6 +1,5 @@
-import type {Option as OptionContract} from "@aedart/contracts/cli";
-import { OptionType } from "@aedart/contracts/cli";
-import { LogicalError } from "@aedart/support/exceptions";
+import {Option as OptionContract, ValueMode} from "@aedart/contracts/cli";
+import {LogicalError} from "@aedart/support/exceptions";
 
 /**
  * Input Option
@@ -42,25 +41,25 @@ export default class Option implements OptionContract
     protected readonly _description: string;
 
     /**
-     * The value datatype for this option
+     * The value mode of this option
      * 
-     * @type {OptionType}
+     * @type {ValueMode}
      * 
      * @protected
      * @readonly
      */
-    protected readonly _type: OptionType;
+    protected readonly _valueMode: ValueMode;
     
     /**
-     * If this option is required
-     *
+     * If this option's value is negatable
+     * 
      * @type {boolean}
-     *
+     * 
      * @protected
      * @readonly
      */
-    protected readonly _required: boolean;
-
+    protected readonly _negatable: boolean;
+    
     /**
      * If this option accepts multiple values
      *
@@ -85,26 +84,26 @@ export default class Option implements OptionContract
      * 
      * @param {string} name
      * @param {string | undefined} [short]
-     * @param {OptionType} [type]
+     * @param {ValueMode} [mode]
      * @param {string} [description]
-     * @param {boolean} [required]
-     * @param {boolean} [isArray]
+     * @param {boolean} [negatable=false]
+     * @param {boolean} [isArray=false]
      * @param {string | number | boolean | (string | number | boolean)[] | null} [defaultValue]
      */
     public constructor(
         name: string,
         short?: string | undefined,
-        type: OptionType = OptionType.BOOLEAN,
+        mode: ValueMode = ValueMode.NONE,
         description: string = '',
-        required: boolean = false,
+        negatable: boolean = false,
         isArray: boolean = false,
         defaultValue?: string | number | boolean | (string|number|boolean)[] | null,
     ) {
         this._name = this.resolveName(name);
         this._short = this.resolveShortcut(short);
-        this._type = this.resolveType(type);
+        this._valueMode = this.resolveValueMode(mode);
         this._description = description;
-        this._required = required;
+        this._negatable = this.resolveNegatable(negatable);
         this._isArray = isArray;
         
         this.setDefault(defaultValue);
@@ -141,35 +140,55 @@ export default class Option implements OptionContract
     }
 
     /**
-     * The value datatype for this option
+     * The value mode of this option
      *
-     * @type {OptionType}
+     * @type {ValueMode}
      */
-    public get type(): OptionType
+    public get valueMode(): ValueMode
     {
-        return this._type;
+        return this._valueMode;
     }
-
+    
     /**
-     * Determine if this option is required
+     * Determine if option accepts a value when used
+     *
+     * @return {boolean}
+     */
+    public acceptsValue(): boolean
+    {
+        return this.isValueRequired() || this.isValueOptional();
+    }
+    
+    /**
+     * Determine if value is required, when option is used
      *
      * @returns {boolean}
      */
-    public isRequired(): boolean
+    public isValueRequired(): boolean
     {
-        return this._required;
+        return this.valueMode == ValueMode.REQUIRED;
     }
 
     /**
-     * Opposite of {@link isRequired}
+     * Determine if value is optional, when option is used
      *
      * @returns {boolean}
      */
-    public isOptional(): boolean
+    public isValueOptional(): boolean
     {
-        return !this.isRequired();
+        return this.valueMode == ValueMode.OPTIONAL;
     }
 
+    /**
+     * Determine if option allows passing a negated variant, e.g. --ansi or --no-ansi
+     *
+     * @return {boolean}
+     */
+    public isNegatable(): boolean
+    {
+        return this._negatable;
+    }
+    
     /**
      * Determine if this option accepts multiple values
      *
@@ -193,9 +212,9 @@ export default class Option implements OptionContract
     public setDefault(value?: string | number | boolean | (string|number|boolean)[] | null): this
     {
         value = value ?? null;
-
-        if (this.isRequired() && value !== null) {
-            throw new LogicalError('Cannot set default value for required option');
+        
+        if (this.valueMode === ValueMode.NONE && value !== null) {
+            throw new LogicalError('Cannot set default value when using ValueMode.NONE');
         }
 
         if (this.isArray()) {
@@ -204,11 +223,11 @@ export default class Option implements OptionContract
             } else if (!Array.isArray(value)) {
                 throw new TypeError('Default value must be an array, for option of the type "array"');
             }
-        } else if(value !== null && typeof value !== this.type.toString()) {
-            throw new TypeError(`Default value must be of the type "${this.type.toString()}"`);
         }
 
-        this.defaultValue = value;
+        this.defaultValue = this.acceptsValue() || this.isNegatable()
+            ? value
+            : false;
 
         return this;
     }
@@ -277,24 +296,43 @@ export default class Option implements OptionContract
     }
 
     /**
-     * Resolve option type
+     * Resolve value mode
+     *
+     * @param {any} mode
+     *
+     * @return {ValueMode}
+     *
+     * @throws {TypeError}
+     *
+     * @protected
+     */
+    protected resolveValueMode(
+        mode: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): ValueMode
+    {
+        if (!Object.values(ValueMode).includes(mode as ValueMode)) {
+            throw TypeError('Invalid option value mode');
+        }
+
+        return mode as ValueMode;
+    }
+
+    /**
+     * Resolve negatable
      * 
-     * @param {any} type
-     * 
-     * @return {OptionType}
-     * 
+     * @param {boolean} value
+     * @return {boolean}
+     *
      * @throws {TypeError}
      * 
      * @protected
      */
-    protected resolveType(
-        type: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    ): OptionType
+    protected resolveNegatable(value: boolean): boolean
     {
-        if (!Object.values(OptionType).includes(type as OptionType)) {
-            throw TypeError('Invalid option type');
+        if (value && this.acceptsValue()) {
+            throw TypeError('Option value cannot be negatable and also accept a value');
         }
-
-        return type as OptionType;
+        
+        return value;
     }
 }

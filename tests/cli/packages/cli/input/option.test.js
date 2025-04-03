@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import * as assert from "node:assert";
-import { Argument, Option } from "@aedart/cli";
-import { OptionType } from "@aedart/contracts/cli";
+import { Option } from "@aedart/cli";
+import { ValueMode } from "@aedart/contracts/cli";
 
 describe('@aedart/cli', () => {
 
@@ -22,7 +22,7 @@ describe('@aedart/cli', () => {
 
                 assert.equal(opt.name, name);
             });
-            
+
             it('fails if option name is empty', () => {
                     assert.throws(
                         () => {
@@ -40,7 +40,7 @@ describe('@aedart/cli', () => {
 
                 assert.equal(opt.short, shortcut);
             });
-            
+
             it('fails if option shortcut is empty string', () => {
                 assert.throws(
                     () => {
@@ -51,18 +51,73 @@ describe('@aedart/cli', () => {
                     }
                 );
             });
+
+            it('has ValueMode.NONE by default', () => {
+                const opt = new Option('foo');
+
+                assert.equal(opt.valueMode, ValueMode.NONE);
+                assert.equal(opt.acceptsValue(), false, 'should NOT accept value');
+                assert.equal(opt.isValueRequired(), false, 'a value should NOT be required');
+                assert.equal(opt.isValueOptional(), false, 'a value should NOT be optional');
+            })
             
-            it('can obtain option type', () => {
-                const type = OptionType.STRING;
-                const opt = new Option('foo', undefined, type);
-                
-                assert.equal(opt.type, type);
+            it('can set required value mode', () => {
+                const mode = ValueMode.REQUIRED;
+                const opt = new Option('foo', undefined, mode);
+
+                assert.equal(opt.valueMode, mode, 'Incorrect value mode');
+                assert.equal(opt.isValueRequired(), true, 'a value should be required');
+                assert.equal(opt.acceptsValue(), true, 'should accept value');
             });
 
-            it('fails if option type is invalid', () => {
+            it('can set optional value mode', () => {
+                const mode = ValueMode.OPTIONAL;
+                const opt = new Option('foo', undefined, mode);
+
+                assert.equal(opt.valueMode, mode, 'Incorrect value mode');
+                assert.equal(opt.isValueOptional(), true, 'a value should be optional');
+                assert.equal(opt.acceptsValue(), true, 'should accept value');
+            });
+            
+            it('fails if option value mode is invalid', () => {
                 assert.throws(
                     () => {
-                        new Option('foo', undefined, 'unknown-type');
+                        new Option('foo', undefined, 'unknown-mode');
+                    },
+                    {
+                        name: 'TypeError'
+                    }
+                );
+            });
+
+            it('can set description', () => {
+                const description = 'Lorum lipsum...';
+                const opt = new Option('foo', undefined, ValueMode.NONE, description);
+
+                assert.deepEqual(opt.description, description);
+            });
+
+            it('can allow negatable value', () => {
+                const opt = new Option('foo', undefined, ValueMode.NONE, '', true);
+
+                assert.equal(opt.isNegatable(), true);
+            });
+
+            it('fails allowing negatable value when value required', () => {
+                assert.throws(
+                    () => {
+                        new Option('foo', undefined, ValueMode.REQUIRED, '', true);
+                    },
+                    {
+                        name: 'TypeError'
+                    }
+                );
+            });
+
+            it('fails allowing negatable value when value optional', () => {
+                assert.throws(
+                    () => {
+                        new Option('foo', undefined, ValueMode.OPTIONAL, '', true);
                     },
                     {
                         name: 'TypeError'
@@ -70,32 +125,11 @@ describe('@aedart/cli', () => {
                 );
             });
             
-            it('can obtain description', () => {
-                const description = 'Lorum lipsum...';
-                const opt = new Option('foo', undefined, OptionType.BOOLEAN, description);
-
-                assert.deepEqual(opt.description, description);
-            });
-            
-            it('is optional by default', () => {
-                const opt = new Option('foo');
-
-                assert.equal(opt.isRequired(), false, 'Should be NOT required');
-                assert.equal(opt.isOptional(), true, 'Should be optional');
-            });
-            
-            it('can create optional argument', () => {
-                const opt = new Option('foo', undefined, OptionType.BOOLEAN, '', true);
-
-                assert.equal(opt.isRequired(), true, 'Should be required');
-                assert.equal(opt.isOptional(), false, 'Should NOT be optional');
-            });
-
             it('can create option as array type', () => {
                 const opt = new Option(
                     'foo',
                     undefined,
-                    OptionType.BOOLEAN,
+                    ValueMode.REQUIRED,
                     '',
                     false,
                     true
@@ -104,10 +138,10 @@ describe('@aedart/cli', () => {
                 assert.equal(opt.isArray(), true, 'Option should be of the type array');
             });
 
-            it('has null as default value', () => {
+            it('has false as default value', () => {
                 const opt = new Option('foo');
 
-                assert.deepEqual(opt.getDefault(), null, 'Default value should be null');
+                assert.equal(opt.getDefault(), false, 'Default value should be false (for ValueMode.NONE)');
             });
 
             it('can set and get default value', () => {
@@ -115,7 +149,7 @@ describe('@aedart/cli', () => {
                 const opt = new Option(
                     'foo',
                     undefined,
-                    OptionType.STRING,
+                    ValueMode.OPTIONAL,
                     '',
                     false,
                     false,
@@ -129,7 +163,7 @@ describe('@aedart/cli', () => {
                 const opt = new Option(
                     'foo',
                     undefined,
-                    OptionType.BOOLEAN,
+                    ValueMode.REQUIRED,
                     '',
                     false,
                     true,
@@ -137,14 +171,14 @@ describe('@aedart/cli', () => {
 
                 assert.deepEqual(opt.getDefault(), [], 'Default value should be an empty array');
             });
-
-            it('fails setting default value when option is required', () => {
+            
+            it('fails setting default value when ValueMode.NONE is used', () => {
                 assert.throws(
                     () => {
                         new Option(
                             'foo',
                             undefined,
-                            OptionType.STRING,
+                            ValueMode.NONE,
                             '',
                             true,
                             false,
@@ -156,33 +190,14 @@ describe('@aedart/cli', () => {
                     }
                 );
             });
-
-            it('fails setting default value when value of incorrect type', () => {
-                assert.throws(
-                    () => {
-                        new Option(
-                            'foo',
-                            undefined,
-                            OptionType.BOOLEAN,
-                            '',
-                            false,
-                            false,
-                            'string default value'
-                        );
-                    },
-                    {
-                        name: 'TypeError'
-                    }
-                );
-            });
-
+            
             it('fails setting default value (not an array), when option of array type', () => {
                 assert.throws(
                     () => {
                         new Option(
                             'foo',
                             undefined,
-                            OptionType.BOOLEAN,
+                            ValueMode.OPTIONAL,
                             '',
                             false,
                             true,

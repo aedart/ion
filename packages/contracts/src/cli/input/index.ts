@@ -1,11 +1,12 @@
 import Argument from "./Argument";
 import Option from "./Option";
 import Definition from "./Definition";
-import OptionType from "./OptionType";
+import ValueMode from "./ValueMode";
 
 export {
     type Argument,
     type Option,
     type Definition,
-    OptionType
+
+    ValueMode
 }

@@ -1,4 +1,4 @@
-import OptionType from './OptionType';
+import ValueMode from './ValueMode';
 
 /**
  * Input Option
@@ -31,25 +31,39 @@ export default interface Option
     get description(): string;
 
     /**
-     * The value datatype for this option
+     * The value mode of this option
      * 
-     * @type {OptionType}
+     * @type {ValueMode}
      */
-    get type(): OptionType;
+    get valueMode(): ValueMode;
     
     /**
-     * Determine if this option is required
+     * Determine if option accepts a value when used
+     * 
+     * @return {boolean}
+     */
+    acceptsValue(): boolean;
+    
+    /**
+     * Determine if value is required, when option is used
      *
      * @returns {boolean}
      */
-    isRequired(): boolean;
+    isValueRequired(): boolean;
 
     /**
-     * Opposite of {@link isRequired}
+     * Determine if value is optional, when option is used
      *
      * @returns {boolean}
      */
-    isOptional(): boolean;
+    isValueOptional(): boolean;
+
+    /**
+     * Determine if option allows passing a negated variant, e.g. --ansi or --no-ansi
+     * 
+     * @return {boolean}
+     */
+    isNegatable(): boolean;
 
     /**
      * Determine if this option accepts multiple values
