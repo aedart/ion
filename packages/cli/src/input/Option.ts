@@ -5,7 +5,7 @@ import { LogicalError } from "@aedart/support/exceptions";
 /**
  * Input Option
  *
- * Adaptation of Symfony Console's `InputOption`
+ * Adaptation of Symfony Console's `InputOption` - Copyright Fabien Potencier 2004-present, MIT License.
  *
  * @see https://github.com/symfony/console/blob/7.1/Input/InputOption.php
  */
