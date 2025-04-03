@@ -109,8 +109,9 @@ export default class Option implements OptionContract
         }
         
         if (short !== undefined) {
+            // Left trim dashes for shortcut.
             if (short.startsWith('-')) {
-                short = short.substring(1);
+                short = short.replace(/^(-)+/, '');
             }
 
             if (short.length === 0) {
