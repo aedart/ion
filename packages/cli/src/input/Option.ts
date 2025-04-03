@@ -100,6 +100,18 @@ export default class Option implements OptionContract
         isArray: boolean = false,
         defaultValue?: string | number | boolean | (string|number|boolean)[] | null,
     ) {
+        if (name.startsWith('--')) {
+            name = name.substring(2);
+        }
+        
+        if (name.length === 0) {
+            throw new TypeError('Option name cannot be be empty.')
+        }
+        
+        if (short !== undefined && short.length === 0) {
+            throw new TypeError('Option shortcut cannot be be empty.')
+        }
+        
         this._name = name;
         this._short = short;
         this._type = type;
