@@ -204,6 +204,8 @@ export default class Option implements OptionContract
             } else if (!Array.isArray(value)) {
                 throw new TypeError('Default value must be an array, for option of the type "array"');
             }
+        } else if(value !== null && typeof value !== this.type.toString()) {
+            throw new TypeError(`Default value must be of the type "${this.type.toString()}"`);
         }
 
         this.defaultValue = value;
