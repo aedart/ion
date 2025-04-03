@@ -141,6 +141,7 @@ export default class Argument implements ArgumentContract
      * @returns {this}
      * 
      * @throws {LogicalError}
+     * @throws {TypeError}
      */
     public setDefault(value?: string | number | boolean | (string|number|boolean)[] | null): this
     {
