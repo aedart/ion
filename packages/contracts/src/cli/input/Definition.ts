@@ -153,6 +153,15 @@ export default interface Definition
     hasShortcut(name: string): boolean;
 
     /**
+     * Determine if input option exists using its negated name
+     * 
+     * @param {string} name
+     * 
+     * @return {boolean}
+     */
+    hasNegation(name: string): boolean;
+    
+    /**
      * Returns the input option's name that matches given shortcut
      * 
      * @param {string} shortcut
@@ -163,6 +172,17 @@ export default interface Definition
      */
     shortcutToName(shortcut: string): string;
 
+    /**
+     * Returns the input option's name that matches given negated name
+     *
+     * @param {string} negated
+     *
+     * @return {string}
+     *
+     * @throws {TypeError}
+     */
+    negationToName(negated: string): string;
+    
     /**
      * Returns input option that matches given shortcut
      * 
