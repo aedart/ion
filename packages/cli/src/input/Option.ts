@@ -21,14 +21,14 @@ export default class Option implements OptionContract
     protected readonly _name: string;
 
     /**
-     * Single character alias for the option
+     * Single character aliases for this option
      * 
-     * @type {string|undefined}
+     * @type {string[]}
      * 
      * @protected
      * @readonly
      */
-    protected readonly _short: string | undefined;
+    protected readonly _shortcuts: string[];
     
     /**
      * Short description of this option
@@ -83,7 +83,7 @@ export default class Option implements OptionContract
      * Create a new input option instance
      * 
      * @param {string} name
-     * @param {string | undefined} [short]
+     * @param {string|string[]} [shortcuts]
      * @param {ValueMode} [mode]
      * @param {string} [description]
      * @param {boolean} [negatable=false]
@@ -92,7 +92,7 @@ export default class Option implements OptionContract
      */
     public constructor(
         name: string,
-        short?: string | undefined,
+        shortcuts: string|string[] = [],
         mode: ValueMode = ValueMode.NONE,
         description: string = '',
         negatable: boolean = false,
@@ -100,7 +100,7 @@ export default class Option implements OptionContract
         defaultValue?: string | number | boolean | (string|number|boolean)[] | null,
     ) {
         this._name = this.resolveName(name);
-        this._short = this.resolveShortcut(short);
+        this._shortcuts = this.resolveShortcuts(shortcuts);
         this._valueMode = this.resolveValueMode(mode);
         this._description = description;
         this._negatable = this.resolveNegatable(negatable);
@@ -120,13 +120,13 @@ export default class Option implements OptionContract
     }
 
     /**
-     * Single character alias for the option
+     * Single character aliases for this option
      *
-     * @returns {string | undefined}
+     * @returns {string[]}
      */
-    public get short(): string | undefined
+    public get shortcuts(): string[]
     {
-        return this._short;
+        return this._shortcuts;
     }
 
     /**
@@ -269,7 +269,7 @@ export default class Option implements OptionContract
     /**
      * Resolves option shortcut
      *
-     * @param {string | undefined} [short]
+     * @param {string|string[]} [shortcuts]
      * 
      * @return {string | undefined}
      *
@@ -277,22 +277,34 @@ export default class Option implements OptionContract
      * 
      * @protected
      */
-    protected resolveShortcut(short?: string | undefined): string | undefined
+    protected resolveShortcuts(shortcuts: string | string[]): string[]
     {
-        if (short === undefined) {
-            return short;
+        if (typeof shortcuts === 'string') {
+            shortcuts = [ shortcuts ];
+        }
+        
+        if (shortcuts.length === 0) {
+            return shortcuts;
         }
 
-        // Left trim dashes for shortcut.
-        if (short.startsWith('-')) {
-            short = short.replace(/^(-)+/, '');
+        let resolved: string[] = [];
+        
+        for (const shortcut of shortcuts) {
+            let x: string = shortcut;
+            
+            // Left trim dashes for shortcut.
+            if (x.startsWith('-')) {
+                x = x.replace(/^(-)+/, '');
+            }
+
+            if (x.length === 0) {
+                throw new TypeError('Option shortcut cannot be be empty.')
+            }
+            
+            resolved.push(x);
         }
 
-        if (short.length === 0) {
-            throw new TypeError('Option shortcut cannot be be empty.')
-        }
-
-        return short;
+        return resolved;
     }
 
     /**

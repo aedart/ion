@@ -17,11 +17,11 @@ export default interface Option
     get name(): string;
 
     /**
-     * Single character alias for the option
+     * Single character aliases for this option
      * 
-     * @returns {string | undefined}
+     * @returns {string[]}
      */
-    get short(): string | undefined;
+    get shortcuts(): string[];
     
     /**
      * Short description of this option

@@ -38,9 +38,20 @@ describe('@aedart/cli', () => {
                 const shortcut = 'f';
                 const opt = new Option('foo', `----${shortcut}`);
 
-                assert.equal(opt.short, shortcut);
+                assert.equal(opt.shortcuts.includes(shortcut), true);
             });
 
+            it('can specify multiple shortcuts', () => {
+                const shortcutA = 'a';
+                const shortcutB = 'b';
+                const shortcutC = 'C';
+                const opt = new Option('foo', [shortcutA, `-${shortcutB}`, shortcutC]);
+
+                assert.equal(opt.shortcuts.includes(shortcutA), true, 'shortcut A missing');
+                assert.equal(opt.shortcuts.includes(shortcutB), true, 'shortcut B missing');
+                assert.equal(opt.shortcuts.includes(shortcutC), true, 'shortcut C missing');
+            });
+            
             it('fails if option shortcut is empty string', () => {
                 assert.throws(
                     () => {
@@ -63,7 +74,7 @@ describe('@aedart/cli', () => {
             
             it('can set required value mode', () => {
                 const mode = ValueMode.REQUIRED;
-                const opt = new Option('foo', undefined, mode);
+                const opt = new Option('foo', [], mode);
 
                 assert.equal(opt.valueMode, mode, 'Incorrect value mode');
                 assert.equal(opt.isValueRequired(), true, 'a value should be required');
@@ -72,7 +83,7 @@ describe('@aedart/cli', () => {
 
             it('can set optional value mode', () => {
                 const mode = ValueMode.OPTIONAL;
-                const opt = new Option('foo', undefined, mode);
+                const opt = new Option('foo', [], mode);
 
                 assert.equal(opt.valueMode, mode, 'Incorrect value mode');
                 assert.equal(opt.isValueOptional(), true, 'a value should be optional');
@@ -82,7 +93,7 @@ describe('@aedart/cli', () => {
             it('fails if option value mode is invalid', () => {
                 assert.throws(
                     () => {
-                        new Option('foo', undefined, 'unknown-mode');
+                        new Option('foo', [], 'unknown-mode');
                     },
                     {
                         name: 'TypeError'
@@ -92,7 +103,7 @@ describe('@aedart/cli', () => {
 
             it('can set description', () => {
                 const description = 'Lorum lipsum...';
-                const opt = new Option('foo', undefined, ValueMode.NONE, description);
+                const opt = new Option('foo', [], ValueMode.NONE, description);
 
                 assert.deepEqual(opt.description, description);
             });
@@ -106,7 +117,7 @@ describe('@aedart/cli', () => {
             it('fails allowing negatable value when value required', () => {
                 assert.throws(
                     () => {
-                        new Option('foo', undefined, ValueMode.REQUIRED, '', true);
+                        new Option('foo', [], ValueMode.REQUIRED, '', true);
                     },
                     {
                         name: 'TypeError'
@@ -117,7 +128,7 @@ describe('@aedart/cli', () => {
             it('fails allowing negatable value when value optional', () => {
                 assert.throws(
                     () => {
-                        new Option('foo', undefined, ValueMode.OPTIONAL, '', true);
+                        new Option('foo', [], ValueMode.OPTIONAL, '', true);
                     },
                     {
                         name: 'TypeError'
@@ -128,7 +139,7 @@ describe('@aedart/cli', () => {
             it('can create option as array type', () => {
                 const opt = new Option(
                     'foo',
-                    undefined,
+                    [],
                     ValueMode.REQUIRED,
                     '',
                     false,
@@ -148,7 +159,7 @@ describe('@aedart/cli', () => {
                 const defaultValue = 'Weee';
                 const opt = new Option(
                     'foo',
-                    undefined,
+                    [],
                     ValueMode.OPTIONAL,
                     '',
                     false,
@@ -162,7 +173,7 @@ describe('@aedart/cli', () => {
             it('converts null to empty array when of array type', () => {
                 const opt = new Option(
                     'foo',
-                    undefined,
+                    [],
                     ValueMode.REQUIRED,
                     '',
                     false,
@@ -177,7 +188,7 @@ describe('@aedart/cli', () => {
                     () => {
                         new Option(
                             'foo',
-                            undefined,
+                            [],
                             ValueMode.NONE,
                             '',
                             true,
@@ -196,7 +207,7 @@ describe('@aedart/cli', () => {
                     () => {
                         new Option(
                             'foo',
-                            undefined,
+                            [],
                             ValueMode.OPTIONAL,
                             '',
                             false,
