@@ -220,6 +220,15 @@ describe('@aedart/cli', () => {
                     }
                 );
             });
+
+            it('can compare options via equals', () => {
+                const a = new Option('foo', 'f');
+                const b = new Option('foo', 'f');
+                const c = new Option('foo', 'f', ValueMode.REQUIRED);
+                
+                assert.equal(a.equals(b), true, 'a should equal b');
+                assert.equal(a.equals(c), false, 'a should NOT equal c');
+            });
         });
     });
 });

@@ -87,4 +87,13 @@ export default interface Option
      * @returns {string | number | boolean | (string | number | boolean)[] | null}
      */
     getDefault(): string | number | boolean | (string|number|boolean)[] | null;
+
+    /**
+     * Determine if given input option is the same this option
+     * 
+     * @param {Option} option
+     * 
+     * @return {boolean}
+     */
+    equals(option: Option): boolean;
 }

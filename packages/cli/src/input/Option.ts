@@ -243,6 +243,27 @@ export default class Option implements OptionContract
     }
 
     /**
+     * Determine if given input option is the same this option
+     *
+     * @param {Option} option
+     *
+     * @return {boolean}
+     */
+    public equals(option: Option): boolean
+    {
+        const shortcutsA: string = option.shortcuts.toString();
+        const shortcutsB: string = this.shortcuts.toString();
+        const shortcutsMatch: boolean = shortcutsA === shortcutsB;
+        
+        return option.name === this.name
+            && shortcutsMatch
+            && option.valueMode === this.valueMode
+            && option.getDefault() === this.getDefault()
+            && option.isNegatable() === this.isNegatable()
+            && option.isArray() === this.isArray();
+    }
+
+    /**
      * Resolve option name
      *
      * @param {string} name
