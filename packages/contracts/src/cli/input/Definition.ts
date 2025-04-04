@@ -71,9 +71,9 @@ export default interface Definition
     /**
      * The input arguments
      * 
-     * @type {Readonly<Argument[]>}
+     * @type {Map<string, Argument>}
      */
-    get arguments(): Readonly<Argument[]>;
+    get arguments(): Map<string, Argument>
 
     /**
      * Amount of input arguments
@@ -177,9 +177,9 @@ export default interface Definition
     /**
      * The input options
      * 
-     * @type {Readonly<Option[]>}
+     * @type {Map<string, Option>}
      */
-    get options(): Readonly<Option[]>;
+    get options(): Map<string, Option>;
 
     /**
      * Amount of input options
