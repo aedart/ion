@@ -5,6 +5,3 @@ export {
     Argument,
     Option
 }
-
-export * from './ArgumentClassBlueprint';
-export * from './OptionClassBlueprint';
