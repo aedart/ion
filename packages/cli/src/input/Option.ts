@@ -120,6 +120,18 @@ export default class Option implements OptionContract
     }
 
     /**
+     * Negated name of this option
+     *
+     * @see {isNegatable}
+     *
+     * @type {string}
+     */
+    public get negatedName(): string
+    {
+        return `no-${this.name}`;
+    }
+    
+    /**
      * Single character aliases for this option
      *
      * @returns {string[]}

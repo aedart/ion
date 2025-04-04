@@ -17,6 +17,15 @@ export default interface Option
     get name(): string;
 
     /**
+     * Negated name of this option
+     * 
+     * @see {isNegatable}
+     * 
+     * @type {string}
+     */
+    get negatedName(): string;
+    
+    /**
      * Single character aliases for this option
      * 
      * @returns {string[]}
