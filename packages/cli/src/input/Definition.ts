@@ -259,22 +259,6 @@ export default class Definition implements DefinitionContract
     }
 
     /**
-     * Map of input arguments (names) and their default value
-     *
-     * @type {Map<string, string | number | boolean | (string | number | boolean)[] | null>}
-     */
-    public get argumentDefaults(): Map<string, string | number | boolean | (string|number|boolean)[] | null>
-    {
-        const defaults: Map<string, string | number | boolean | (string|number|boolean)[] | null> = new Map();
-        
-        this._arguments.forEach((argument, name) => {
-            defaults.set(name, argument.getDefault());
-        })
-        
-        return defaults;
-    }
-
-    /**
      * Set the input options
      *
      * @param {Option[]} [options]
@@ -473,21 +457,5 @@ export default class Definition implements DefinitionContract
     public get amountOfOptions(): number
     {
         return this._options.size;
-    }
-
-    /**
-     * Map of input options (names) and their default value
-     *
-     * @type {Map<string, string | number | boolean | (string | number | boolean)[] | null>}
-     */
-    public get optionDefaults(): Map<string, string | number | boolean | (string|number|boolean)[] | null>
-    {
-        const defaults: Map<string, string | number | boolean | (string|number|boolean)[] | null> = new Map();
-        
-        this._options.forEach((option, name) => {
-            defaults.set(name, option.getDefault());
-        })
-
-        return defaults;
     }
 }

@@ -98,26 +98,6 @@ describe('@aedart/cli', () => {
                 )
             });
 
-            it('can obtain arguments\' defaults', () => {
-                const a = 'aaa';
-                const b = 'aaa';
-                const c = 'aaa';
-                
-                const def = new Definition([
-                    (new Argument('name', '', false)).setDefault(a),
-                    (new Argument('email', '', false)).setDefault(b),
-                    (new Argument('role', '', false)).setDefault(c),
-                ]);
-
-                const result = def.argumentDefaults;
-                
-                assert.equal(result.size, 3, 'Incorrect amount of defaults');
-                
-                assert.equal(result.get('name'), a, 'invalid default for a');
-                assert.equal(result.get('email'), b, 'invalid default for b');
-                assert.equal(result.get('role'), c, 'invalid default for c');
-            });
-
             it('fails adding option with name that already exists', () => {
                 const def = new Definition([
                     new Option('foo'),
@@ -225,26 +205,6 @@ describe('@aedart/cli', () => {
 
                 assert.equal(def.hasNegation('no-foo'), true, `"no-foo" does not exist`);
                 assert.equal(def.hasNegation('no-zar'), false, `"no-zar" should NOT exist`);
-            });
-
-            it('can obtain options\' defaults', () => {
-                const a = 'aaa';
-                const b = 'aaa';
-                const c = 'aaa';
-
-                const def = new Definition([
-                    (new Option('name', [], ValueMode.OPTIONAL)).setDefault(a),
-                    (new Option('email', [], ValueMode.OPTIONAL)).setDefault(b),
-                    (new Option('role', [], ValueMode.OPTIONAL)).setDefault(c),
-                ]);
-
-                const result = def.optionDefaults;
-
-                assert.equal(result.size, 3, 'Incorrect amount of defaults');
-
-                assert.equal(result.get('name'), a, 'invalid default for a');
-                assert.equal(result.get('email'), b, 'invalid default for b');
-                assert.equal(result.get('role'), c, 'invalid default for c');
             });
         });
     });

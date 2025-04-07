@@ -90,13 +90,6 @@ export default interface Definition
     get amountOfRequiredArguments(): number;
 
     /**
-     * Map of input arguments (names) and their default value
-     * 
-     * @type {Map<string, string | number | boolean | (string | number | boolean)[] | null>}
-     */
-    get argumentDefaults(): Map<string, string | number | boolean | (string|number|boolean)[] | null>;
-
-    /**
      * Set the input options
      * 
      * @param {Option[]} [options]
@@ -207,11 +200,4 @@ export default interface Definition
      * @type {number}
      */
     get amountOfOptions(): number;
-
-    /**
-     * Map of input options (names) and their default value
-     * 
-     * @type {Map<string, string | number | boolean | (string | number | boolean)[] | null>}
-     */
-    get optionDefaults(): Map<string, string | number | boolean | (string|number|boolean)[] | null>;
 }
