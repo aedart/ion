@@ -206,6 +206,23 @@ describe('@aedart/cli', () => {
                 assert.equal(def.hasNegation('no-foo'), true, `"no-foo" does not exist`);
                 assert.equal(def.hasNegation('no-zar'), false, `"no-zar" should NOT exist`);
             });
+
+            it('can determine and obtain argument via its index', () => {
+                const foo = new Argument('foo'); 
+                const bar = new Argument('bar'); 
+                const zar = new Argument('zar'); 
+                
+                const def = new Definition([
+                    foo, // 0
+                    bar, // 1
+                    zar, // 2
+                ]);
+
+                assert.equal(def.hasArgument(1), true, "bar does not exist");
+                assert.deepStrictEqual(def.getArgument(1), bar, "incorrect argument instance (bar)")
+
+                assert.equal(def.hasArgument(4), false, "argument at index 4 should not exist");
+            });
         });
     });
 });

@@ -201,31 +201,35 @@ export default class Definition implements DefinitionContract
     /**
      * Determine if input argument exists
      *
-     * @param {string} name
+     * @param {string|number} name Argument name or index
      *
      * @return {boolean}
      */
-    public hasArgument(name: string): boolean
+    public hasArgument(name: string|number): boolean
     {
-        return this._arguments.has(name);
+        name = this.resolveArgumentName(name);
+        
+        return this._arguments.has(name as string);
     }
 
     /**
      * Returns input argument that matches given name
      *
-     * @param {string} name
+     * @param {string|number} name Argument name or index
      *
      * @return {Argument}
      *
      * @throws {TypeError}
      */
-    public getArgument(name: string): Argument
+    public getArgument(name: string|number): Argument
     {
         if (!this.hasArgument(name)) {
             throw new TypeError(`Argument "${name}" does not exist`);
         }
+
+        name = this.resolveArgumentName(name);
         
-        return this._arguments.get(name) as Argument;
+        return this._arguments.get(name as string) as Argument;
     }
 
     /**
@@ -457,5 +461,37 @@ export default class Definition implements DefinitionContract
     public get amountOfOptions(): number
     {
         return this._options.size;
+    }
+
+    /**
+     * Resolves argument's name
+     *
+     * @param {string | number} name Argument name or index
+     *
+     * @return {string}
+     *
+     * @protected
+     */
+    protected resolveArgumentName(name: string|number): string
+    {
+        // If a string integer has been given
+        if (Number.isInteger(name)) {
+            name = Number.parseInt(name as string);
+        }
+
+        // Skip if name is a string...
+        if (typeof name === 'string') {
+            return name;
+        }
+
+        // Otherwise, we assume that an index has been requested.
+        // Note: Map.prototype.keys() returns the keys in the insertion
+        // order, so we can create a new array from there...
+        // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/keys
+        const keys = Array.from(this._arguments.keys());
+
+        return (typeof keys[name as number] !== 'undefined')
+            ? keys[name as number] as string
+            : (name as unknown) as string;
     }
 }

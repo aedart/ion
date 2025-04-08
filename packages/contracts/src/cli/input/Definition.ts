@@ -51,22 +51,22 @@ export default interface Definition
     /**
      * Determine if input argument exists
      * 
-     * @param {string} name
+     * @param {string|number} name Argument name or index
      * 
      * @return {boolean}
      */
-    hasArgument(name: string): boolean;
+    hasArgument(name: string|number): boolean;
 
     /**
      * Returns input argument that matches given name
      * 
-     * @param {string} name
+     * @param {string|number} name Argument name or index
      * 
      * @return {Argument}
      * 
      * @throws {TypeError}
      */
-    getArgument(name: string): Argument;
+    getArgument(name: string|number): Argument;
 
     /**
      * The input arguments
