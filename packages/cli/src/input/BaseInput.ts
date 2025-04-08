@@ -11,6 +11,8 @@ import { default as InputDefinition } from "./Definition";
  * 2004-present, MIT License.
  * 
  * @see https://github.com/symfony/console/blob/7.1/Input/Input.php
+ * 
+ * @abstract
  */
 export default abstract class BaseInput implements Input
 {
