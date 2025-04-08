@@ -57,30 +57,26 @@ export default abstract class BaseInput implements Input
             throw new AbstractClassError(BaseInput);
         }
 
-        // Defaults
+        definition = definition ?? new InputDefinition();
+        
         this._arguments = new Map();
         this._options = new Map();
-        this.definition = new InputDefinition();
-        
-        // Stop processing if no definition provided
-        if (!isset(definition)) {
-            return;
-        }
-
-        this
-            .bind(definition as Definition)
-            .validate();
+        this.definition = definition;
     }
-    
+
     /**
      * Bind given Input Definition to this input
      *
-     * @param {Definition} definition
+     * @param {Definition} [definition] Defaults to already bound definition,
+     *                                  if none given and an existing definition
+     *                                  is available.
      *
      * @return {this}
      */
-    public bind(definition: Definition): this
+    public bind(definition?: Definition): this
     {
+        definition = definition ?? this.definition;
+        
         this._arguments.clear();
         this._options.clear();
         this.definition = definition;

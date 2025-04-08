@@ -13,11 +13,13 @@ export default interface Input
     /**
      * Bind given Input Definition to this input
      * 
-     * @param {Definition} definition
+     * @param {Definition} [definition] Defaults to already bound definition,
+     *                                  if none given and an existing definition
+     *                                  is available.
      * 
      * @return {this}
      */
-    bind(definition: Definition): this;
+    bind(definition?: Definition): this;
 
     /**
      * Validate the input
