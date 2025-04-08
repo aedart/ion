@@ -142,10 +142,7 @@ export default abstract class BaseInput implements Input
             throw new TypeError(`The "${name}" argument does not exist.`);
         }
         
-        this._arguments.set(
-            name,
-            this.definition.getArgument(name).getDefault()
-        );
+        this._arguments.set(name, value);
 
         return this;
     }
