@@ -1,4 +1,4 @@
-import type { Definition } from "@aedart/contracts/cli";
+import type { Definition, Option } from "@aedart/contracts/cli";
 import { isset } from "@aedart/support/misc";
 import process from "node:process";
 import BaseInput from "./BaseInput";
@@ -25,7 +25,7 @@ export default class ArgvInput extends BaseInput
     protected tokens: string[] = [];
 
     /**
-     * Parsed tokens
+     * Command line arguments (tokens) to be parsed.
      * 
      * @type {string[]}
      * @protected
@@ -114,20 +114,207 @@ export default class ArgvInput extends BaseInput
         
         return parseOptions;
     }
-    
+
+    /**
+     * Parse an option via its shortcut alias
+     * 
+     * @param {string} token
+     * 
+     * @return {this}
+     * 
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
     protected parseShortOption(token: string): this
     {
-        // TODO:
+        // Obtain shortcut name, without leading dash "-"
+        const name = token.substring(1);
+        
+        if (name.length > 1) {
+            if (this.definition.hasShortcut(name.at(0) as string) && this.definition.getOptionForShortcut(name.at(0) as string).acceptsValue()) {
+                return this.addShortOption(name.at(0) as string, name.substring(1));
+            }
+
+            return this.parseShortOptionSet(name);
+        }
+        
+        return this.addShortOption(name, null);
+    }
+
+    /**
+     * Parse a short option set
+     * 
+     * @param {string} name
+     * 
+     * @return {this}
+     * 
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
+    protected parseShortOptionSet(name: string): this
+    {
+        for (let i = 0; i < name.length; i++) {
+            const shortcut: string = name.at(i) as string;
+
+            if (!this.definition.hasShortcut(shortcut)) {
+                throw new TypeError(`The "-${shortcut}" option does not exist.`);
+            }
+
+            const option: Option = this.definition.getOptionForShortcut(shortcut);
+            if (option.acceptsValue()) {
+                return this.addLongOption(
+                    option.name,
+                    (i === name.length - 1)
+                        ? null
+                        : name.substring(i + 1)
+                );
+                //break;
+            }
+            
+            this.addLongOption(option.name, null);
+        }
+
         return this;
     }
-    
+
+    /**
+     * Parse a long option
+     * 
+     * @param {string} token
+     * 
+     * @return {this}
+     * 
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
     protected parseLongOption(token: string): this
     {
-        // TODO:
-        return this;
+        // Obtain option name, without leading dashes "--"
+        const name = token.substring(2);
+        
+        const position: number = name.indexOf('=');
+        if (position !== -1) {
+            const value: string = name.substring(position + 1);
+            
+            if (value.length === 0) {
+                this.parsed.unshift(value);
+            }
+            
+            return this.addLongOption(name.substring(0, position), value);
+        }
+        
+        return this.addLongOption(name, null);
     }
     
     protected parseArgument(token: string): this
+    {
+        // TODO:
+        return this;
+    }
+
+    /**
+     * Add an option via its shortcut alias
+     *
+     * @param {string} shortcut
+     * @param {string | number | boolean | (string | number | boolean)[] | null} value
+     *
+     * @return {this}
+     *
+     * @throws {TypeError}
+     *
+     * @protected
+     */
+    protected addShortOption(shortcut: string, value: string | number | boolean | (string|number|boolean)[] | null): this
+    {
+        if (!this.definition.hasShortcut(shortcut)) {
+            throw new TypeError(`The "-${shortcut}" option does not exist.`);
+        }
+
+        return this.addLongOption(
+            this.definition.getOptionForShortcut(shortcut).name,
+            value
+        )
+    }
+
+    /**
+     * Add an option
+     *
+     * @param {string} name
+     * @param {string | number | boolean | (string | number | boolean)[] | null} value
+     *
+     * @return {this}
+     *
+     * @throws {TypeError}
+     *
+     * @protected
+     */
+    protected addLongOption(name: string, value: string | number | boolean | (string|number|boolean)[] | null): this
+    {
+        if (!this.definition.hasOption(name)) {
+            if (!this.definition.hasNegation(name)) {
+                throw new TypeError(`The "--${name}" option does not exist.`);
+            }
+
+            // Resolve negated option
+            name = this.definition.negationToName(name);
+            if (isset(value)) {
+                throw new TypeError(`The "--${name}" option does not accept a value.`);
+            }
+            
+            this._options.set(name, false);
+
+            return this;
+        }
+
+        const option: Option = this.definition.getOption(name);
+
+        if (isset(value) && !option.acceptsValue()) {
+            throw new TypeError(`The "--${name}" option does not accept a value.`);
+        }
+        
+        if (['', null, undefined].indexOf(value as string) !== -1 && option.acceptsValue() && this.parsed.length > 0) {
+            const next = this.parsed.shift();
+            
+            if ((isset(next?.at(0)) && next?.at(0) !== '') || [next, null, undefined].indexOf(value as string) !== -1) {
+                value = next as string;
+            } else {
+                this.parsed.unshift(next as string);
+            }
+        }
+
+        if (!isset(value)) {
+            if (option.isValueRequired()) {
+                throw new TypeError(`The "--${name}" option requires a value.`);
+            }
+
+            if (!option.isArray() && !option.isValueOptional()) {
+                value = true;
+            }
+        }
+        
+        if (option.isArray()) {
+            let existing = this._options.has(name)
+                ? this._options.get(name)
+                : [];
+            
+            if (isset(existing) && !Array.isArray(existing)) {
+                existing = [ existing as string ];
+            }
+
+            (existing as string[]).push(value as string);
+
+            this._options.set(name, existing as string[]);
+            return this;
+        }
+        
+        this._options.set(name, value);
+        return this;
+    }
+
+    protected addArgument(name: string|number, value: string | number | boolean | (string|number|boolean)[] | null): this
     {
         // TODO:
         return this;
