@@ -1,4 +1,4 @@
-import type { Definition, Option } from "@aedart/contracts/cli";
+import type { Definition, Argument, Option } from "@aedart/contracts/cli";
 import { isset } from "@aedart/support/misc";
 import process from "node:process";
 import BaseInput from "./BaseInput";
@@ -208,11 +208,84 @@ export default class ArgvInput extends BaseInput
         
         return this.addLongOption(name, null);
     }
-    
+
+    /**
+     * Parse an argument
+     * 
+     * @param {string} token
+     * 
+     * @return {this}
+     * 
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
     protected parseArgument(token: string): this
     {
-        // TODO:
-        return this;
+        const amount: number = this._arguments.size;
+        
+        // Add another argument, if input expects it...
+        if (this.definition.hasArgument(amount)) {
+            const argument: Argument = this.definition.getArgument(amount);
+            
+            return this.setArgument(
+                argument.name,
+                argument.isArray()
+                    ? [ token ]
+                    : token
+            );
+        }
+        
+        // Append token, if last argument is defined as an array...
+        if (this.definition.hasArgument(amount - 1) && this.definition.getArgument(amount - 1).isArray()) {
+            const argument: Argument = this.definition.getArgument(amount - 1);
+
+            let existing = this._arguments.has(argument.name)
+                ? this._arguments.get(argument.name)
+                : [];
+
+            if (isset(existing) && !Array.isArray(existing)) {
+                existing = [ existing as string ];
+            }
+
+            (existing as string[]).push(token as string);
+
+            return this.setArgument(argument.name, existing as string[]);
+        }
+        
+        // Otherwise, deal with an "unexpected" argument...
+        const all = structuredClone(this.definition.arguments);
+        const first = all.keys().next().value;
+        const argument: Argument | undefined = isset(first)
+            ? all.get(first as string)
+            : undefined;
+        
+        const target: string = 'command';
+        let commandName: string|null = null;
+        if (isset(argument) && argument?.name === target) {
+            commandName = this._arguments.has(target)
+                ? this._arguments.get(target) as string
+                : null;
+            
+            all.delete(first as string);
+        }
+        
+        let message: string;
+        if (all.size > 0) {
+            const expectedArgs: string = Array.from(all.keys()).join('" "');
+            
+            if (isset(commandName)) {
+                message = `Too many arguments to "${commandName}" command, expected arguments "${expectedArgs}".`;
+            } else {
+                message = `Too many arguments, expected arguments "${expectedArgs}".`;
+            }
+        } else if (isset(commandName)) {
+            message = `No arguments expected for "${commandName}" command, got "${token}".`;
+        } else {
+            message = `No arguments expected, got "${token}".`;
+        }
+        
+        throw new TypeError(message);
     }
 
     /**
@@ -311,12 +384,6 @@ export default class ArgvInput extends BaseInput
         }
         
         this._options.set(name, value);
-        return this;
-    }
-
-    protected addArgument(name: string|number, value: string | number | boolean | (string|number|boolean)[] | null): this
-    {
-        // TODO:
         return this;
     }
 }
