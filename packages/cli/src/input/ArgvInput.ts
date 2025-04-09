@@ -69,6 +69,19 @@ export default class ArgvInput extends BaseInput
         
         return this;
     }
+
+    /**
+     * The raw command-line arguments
+     * 
+     * @type {string[]}
+     */
+    public get rawTokens(): string[]
+    {
+        // Ensure that a copy of the raw tokens array is
+        // returned, to avoid unintended changes.
+
+        return structuredClone(this.tokens);
+    }
     
     /**
      * @inheritdoc
