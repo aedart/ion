@@ -361,10 +361,11 @@ export default class ArgvInput extends BaseInput
             throw new TypeError(`The "--${name}" option does not accept a value.`);
         }
         
-        if (['', null, undefined].indexOf(value as string) !== -1 && option.acceptsValue() && this.parsed.length > 0) {
+        const emptyValues = ['', null, undefined]; 
+        if (emptyValues.indexOf(value as string) !== -1 && option.acceptsValue() && this.parsed.length > 0) {
             const next = this.parsed.shift();
-            
-            if ((isset(next?.at(0)) && next?.at(0) !== '') || [next, null, undefined].indexOf(value as string) !== -1) {
+
+            if ((isset(next?.at(0)) && next?.at(0) !== '-') || emptyValues.indexOf(next) !== -1) {
                 value = next as string;
             } else {
                 this.parsed.unshift(next as string);
