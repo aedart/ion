@@ -354,12 +354,12 @@ export default class ArgvInput extends BaseInput
             }
 
             // Resolve negated option
-            name = this.definition.negationToName(name);
+            const optionName = this.definition.negationToName(name);
             if (isset(value)) {
                 throw new TypeError(`The "--${name}" option does not accept a value.`);
             }
             
-            this._options.set(name, false);
+            this._options.set(optionName, false);
 
             return this;
         }
