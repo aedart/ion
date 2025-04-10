@@ -191,7 +191,7 @@ describe('@aedart/cli', () => {
                             [],
                             ValueMode.NONE,
                             '',
-                            true,
+                            false, // negatable
                             false,
                             'my default value'
                         );
@@ -200,6 +200,20 @@ describe('@aedart/cli', () => {
                         name: 'LogicalError'
                     }
                 );
+            });
+
+            it('can set default value for ValueMode.NONE, when also negatable', () => {
+                const opt = new Option(
+                    'foo',
+                    [],
+                    ValueMode.NONE,
+                    '',
+                    true,
+                    false,
+                    false // default
+                );
+
+                assert.deepEqual(opt.getDefault(), false, 'Default value should be a boolean value');
             });
             
             it('fails setting default value (not an array), when option of array type', () => {

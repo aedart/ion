@@ -225,7 +225,7 @@ export default class Option implements OptionContract
     {
         value = value ?? null;
         
-        if (this.valueMode === ValueMode.NONE && value !== null) {
+        if (this.valueMode === ValueMode.NONE && !this.isNegatable() && value !== null) {
             throw new LogicalError('Cannot set default value when using ValueMode.NONE');
         }
 
