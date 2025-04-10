@@ -269,13 +269,22 @@ export default class ArgvInput extends BaseInput
         // Otherwise, deal with an "unexpected" argument...
         const all = structuredClone(this.definition.arguments);
         const first = all.keys().next().value;
+        
+        // WARNING: Due to the structuredClone(...), the evt. obtained Argument is NOT
+        // an actual instance of the Argument class. It is a raw object! E.g. the "name"
+        // property does NOT exist here.
         const argument: Argument | undefined = isset(first)
             ? all.get(first as string)
             : undefined;
         
         const target: string = 'command';
         let commandName: string|null = null;
-        if (isset(argument) && argument?.name === target) {
+
+        if (
+            isset(argument)
+            /** @ts-expect-error: TS2551 - not a real Argument instance, but a raw object instead. */
+            && argument?._name === target 
+        ) {
             commandName = this._arguments.has(target)
                 ? this._arguments.get(target) as string
                 : null;
