@@ -4,6 +4,7 @@ import Definition from './Definition';
 import BaseInput from './BaseInput';
 import MapInput from './MapInput';
 import ArgvInput from './ArgvInput';
+import RecordInput from './RecordInput';
 
 export {
     Argument,
@@ -11,5 +12,6 @@ export {
     Definition,
     BaseInput,
     MapInput,
-    ArgvInput
+    ArgvInput,
+    RecordInput
 }
