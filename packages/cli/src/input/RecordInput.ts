@@ -20,8 +20,9 @@ export default class RecordInput extends MapInput
         record: Record<string, string | number | boolean | (string|number|boolean)[] | null>,
         definition?: Definition
     ) {
-        const map = new Map(Object.entries(record));
-        
-        super(map, definition);
+        super(
+            new Map(Object.entries(record)),
+            definition
+        );
     }
 }
