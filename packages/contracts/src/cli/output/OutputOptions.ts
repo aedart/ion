@@ -1,5 +1,5 @@
 import Verbosity from "./Verbosity";
-import Mode from "./Mode";
+import OutputMode from "./OutputMode";
 
 /**
  * Output Options
@@ -16,7 +16,7 @@ export default interface OutputOptions
     /**
      * Output mode
      * 
-     * @type {Mode}
+     * @type {OutputMode}
      */
-    mode?: Mode;
+    mode?: OutputMode;
 }

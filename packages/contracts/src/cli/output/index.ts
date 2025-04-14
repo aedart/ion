@@ -1,5 +1,5 @@
 import Verbosity from "./Verbosity";
-import Mode from "./Mode";
+import OutputMode from "./OutputMode";
 import OutputOptions from "./OutputOptions";
 import Output from "./Output";
 
@@ -8,5 +8,5 @@ export {
     type OutputOptions,
     
     Verbosity,
-    Mode
+    OutputMode
 }

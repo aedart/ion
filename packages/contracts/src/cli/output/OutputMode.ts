@@ -7,28 +7,28 @@
  *
  * @see https://github.com/symfony/console/blob/7.2/Output/OutputInterface.php
  */
-enum Mode
+enum OutputMode
 {
     /**
      * Outputs formatted messages
      * 
-     * @type {Mode.NORMAL}
+     * @type {OutputMode.NORMAL}
      */
     NORMAL = 1,
 
     /**
      * Outputs messages without any formatting
      * 
-     * @type {Mode.RAW}
+     * @type {OutputMode.RAW}
      */
     RAW = 2,
 
     /**
      * Outputs messages as plain text (but contains formatting characters or tokens)
      * 
-     * @type {Mode.PLAIN}
+     * @type {OutputMode.PLAIN}
      */
     PLAIN = 4,
 }
 
-export default Mode;
+export default OutputMode;

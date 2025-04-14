@@ -1,5 +1,5 @@
 import type { OutputOptions } from "@aedart/contracts/cli";
-import { Mode, Verbosity } from "@aedart/contracts/cli";
+import { OutputMode, Verbosity } from "@aedart/contracts/cli";
 import { populate } from "@aedart/support/objects";
 
 /**
@@ -19,9 +19,9 @@ export default class DefaultOutputOptions implements OutputOptions
     /**
      * Output mode
      *
-     * @type {Mode}
+     * @type {OutputMode}
      */
-    mode: Mode = Mode.NORMAL;
+    mode: OutputMode = OutputMode.NORMAL;
 
     /**
      * Create new "default" Output Options instance
