@@ -59,7 +59,7 @@ export default interface OutputFormatter
     setDecorated(state: boolean): this;
 
     /**
-     * Determine if output will be decorated by formatter or not
+     * Determine if output must be decorated by formatter or not
      * 
      * @see {setDecorated}
      * 
