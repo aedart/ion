@@ -40,6 +40,7 @@ export default interface OutputFormatter
 
     /**
      * Returns the style that matches given name
+     * 
      * @param {string} name
      * 
      * @return {Style}
