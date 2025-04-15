@@ -61,7 +61,8 @@ export default abstract class BaseOutputFormatter implements OutputFormatter
      */
     public format(message?: string): string|undefined
     {
-        // TODO: ...
+        // TODO: ... Hmmm... a general <tag>xyz</[tag]> parser, able to handle nested tags.
+        // TODO: This will / SHOULD be similar to what Symfony does,... 
         
         return undefined;
     }
