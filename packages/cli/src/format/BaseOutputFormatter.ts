@@ -62,7 +62,29 @@ export default abstract class BaseOutputFormatter implements OutputFormatter
     public format(message?: string): string|undefined
     {
         // TODO: ... Hmmm... a general <tag>xyz</[tag]> parser, able to handle nested tags.
-        // TODO: This will / SHOULD be similar to what Symfony does,... 
+        // TODO: This will / SHOULD be similar to what Symfony does,...
+        
+        // TODO: Possible regex for matching "open tags": <([a-z]+)(?![^>]*\/>)[^>]*>
+        
+        /* TODO: Experiment: ... use https://jsfiddle.net/ and https://regex101.com/
+const text = '<warning att="fisk">This is a <strong>test</strong> \\<ignore>that should work</ignore>!</>';
+
+const regex = /(?<open>\\\\<|<)(?<name>[a-z]+)(?![^>]*\/>)[^>]*>/dimg;
+
+const matches = text.matchAll(regex);
+for (const match of matches) {
+	console.log({
+  	full: match[0],
+    open: match[1],
+    name: match[2],
+    index: match.index,
+    input: match.input,
+    // groups: match.groups, // works
+    indices: match.indices,
+    text_without_tag: text.substr(match.index + match[0].length)
+  })
+}
+        * */
         
         return undefined;
     }
