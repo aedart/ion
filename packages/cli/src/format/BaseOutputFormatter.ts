@@ -66,24 +66,88 @@ export default abstract class BaseOutputFormatter implements OutputFormatter
         
         // TODO: Possible regex for matching "open tags": <([a-z]+)(?![^>]*\/>)[^>]*>
         
-        /* TODO: Experiment: ... use https://jsfiddle.net/ and https://regex101.com/
-const text = '<warning att="fisk">This is a <strong>test</strong> \\<ignore>that should work</ignore>!</>';
+        /* TODO: Experiment: ... use https://jsfiddle.net/ (browser), https://www.jdoodle.com/execute-nodejs-online (nodes JS) and https://regex101.com/
+        // TODO: EXPERIMENT RESULT: This appears to be doable. But, perhaps this should be extracted into its own class.    
+const text = '<warning att="attributes-ignored-in-this-version">This is a <strong>test</strong> \\<ignore>that should work</ignore>! Some tags should <self-closing /> <other><b>NOT</b> be selected.</>';
 
-const regex = /(?<open>\\\\<|<)(?<name>[a-z]+)(?![^>]*\/>)[^>]*>/dimg;
+let output = text;
+
+const regex = /(?<open_token>\\<|<)(?<name>[a-z]+)(?![^>]*\/>)[^>]*>/dimg;
+// const regex = /(?<open_token>[\\]{2}<|<)(?<name>[a-z]+)(?![^>]*\/>)[^>]*>/dimg; // ALTERNATIVE... that SHOULD work, but unclear why not...
 
 const matches = text.matchAll(regex);
 for (const match of matches) {
-	console.log({
+  
+  // Skip if starts with...
+  if (match[1].startsWith('\\<')) {
+    console.log('Skipping:', match[0]);
+    continue;
+  }
+  
+  const openTagEndPos = match.index + match[0].length;
+  const textWithoutOpenTag = text.substring(openTagEndPos);
+  
+  let closeTag = `</${match[2]}>`; // E.g. </warning>
+  
+  // Determine if close tag exists in the output text
+  // if(!text.includes(closeTag)) {
+  //   closeTag = '</>';
+  // }
+    if(!output.includes(closeTag)) {
+    closeTag = '</>';
+  }
+  
+  let closeTagPosition = text.indexOf(closeTag);
+  if(closeTagPosition === -1) {
+    console.log('Skipping:', match[0], 'no close tag found');
+    continue;
+  }
+  
+  const textWithoutOpenCloseTags = text.substring(openTagEndPos, closeTagPosition);
+  const replaceTarget = text.substring(match.index, closeTagPosition + closeTag.length);
+  
+  	console.log({
   	full: match[0],
     open: match[1],
+    close: closeTag,
     name: match[2],
     index: match.index,
     input: match.input,
-    // groups: match.groups, // works
+    groups: match.groups, // works
     indices: match.indices,
-    text_without_tag: text.substr(match.index + match[0].length)
-  })
+    text_without_open_tag: textWithoutOpenTag,
+    text_without_open_close_tags: textWithoutOpenCloseTags,
+    replace_target: replaceTarget
+  });
+  
+  // This is where a callback for handling a "tag" and "style" could be placed...
+  // The "replace target" can be formatted or styled with whatever is needed...
+  switch(match[2]) {
+    
+    case 'warning':
+      output = output.replace(replaceTarget, 'WARNING: ' + textWithoutOpenCloseTags);
+      break;
+    
+    case 'strong':
+    case 'b':
+      output = output.replace(replaceTarget, textWithoutOpenCloseTags.toUpperCase());
+      break;
+    
+    // Do nothing, when the tag is unknown...
+    default:
+      continue;
+  }
 }
+
+// TODO: Well, this might seem a bit off...
+output = output
+  .replace('\0', '\\')
+  .replace('\\<', '<')
+  .replace('\<', '<')
+  .replace('\\>', '>')
+  .replace('\>', '>');
+
+console.log('Final output:', output);
         * */
         
         return undefined;
