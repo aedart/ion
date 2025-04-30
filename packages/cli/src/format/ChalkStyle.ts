@@ -71,7 +71,7 @@ export default class ChalkStyle implements Style
         
         // NOTE: In case that chalk instance has not been specified,
         // then this can fail. However, for the sake of performance,
-        // no additional "isset" check is performed here..
+        // no additional "isset" check is performed here...
         return callback(text, this.chalk as ChalkInstance);
     }
 }
