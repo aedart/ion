@@ -1,3 +1,5 @@
+import type { StyleOptions } from '../types';
+
 /**
  * Style
  * 
@@ -13,8 +15,9 @@ export default interface Style
      * Apply this formatting style to given text.
      * 
      * @param {string} text
+     * @param {StyleOptions} [options] Defaults to empty object when none given.
      * 
      * @return {string}
      */
-    apply(text: string): string;
+    apply(text: string, options?: StyleOptions): string;
 }

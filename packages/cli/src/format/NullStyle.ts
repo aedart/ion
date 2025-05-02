@@ -1,4 +1,4 @@
-import type { Style } from "@aedart/contracts/cli";
+import type { Style, StyleOptions } from "@aedart/contracts/cli";
 
 /**
  * Null Output Style
@@ -14,10 +14,11 @@ export default class NullStyle implements Style
      * Apply this formatting style to given text.
      *
      * @param {string} text
-     *
+     * @param {StyleOptions} [options] Defaults to empty object when none given.
+     * 
      * @return {string}
      */
-    public apply(text: string): string
+    public apply(text: string, options: StyleOptions = {}): string
     {
         return text;
     }

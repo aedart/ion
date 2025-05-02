@@ -1,4 +1,4 @@
-import type { Style } from "@aedart/contracts/cli";
+import type { Style, StyleOptions } from "@aedart/contracts/cli";
 import type { StyleTextCallback } from "../types";
 import type { ChalkInstance } from "chalk";
 
@@ -60,18 +60,19 @@ export default class ChalkStyle implements Style
      * Apply this formatting style to given text.
      *
      * @param {string} text
-     *
+     * @param {StyleOptions} [options] Defaults to empty object when none given.
+     * 
      * @return {string}
      * 
      * @throws {LogicalError}
      */
-    public apply(text: string): string
+    public apply(text: string, options: StyleOptions = {}): string
     {
         const callback = this.styleCallback;
         
         // NOTE: In case that chalk instance has not been specified,
         // then this can fail. However, for the sake of performance,
         // no additional "isset" check is performed here...
-        return callback(text, this.chalk as ChalkInstance);
+        return callback(text, this.chalk as ChalkInstance, options);
     }
 }
