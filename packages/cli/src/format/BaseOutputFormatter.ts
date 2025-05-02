@@ -68,12 +68,14 @@ export default abstract class BaseOutputFormatter implements OutputFormatter
         
         /* TODO: Experiment: ... use https://jsfiddle.net/ (browser), https://www.jdoodle.com/execute-nodejs-online (nodes JS) and https://regex101.com/
         // TODO: EXPERIMENT RESULT: This appears to be doable. But, perhaps this should be extracted into its own class.    
-const text = '<warning att="attributes-ignored-in-this-version">This is a <strong>test</strong> \\<ignore>that should work</ignore>! Some tags should <self-closing /> <other><b>NOT</b> be selected.</>';
+const text = '<warning my-attr="attributes-ignored-in-this-version" italic>This is a <strong bg="#FFbb45" fg=red style=\'underline\'>test</strong> \\<ignore>that should work</ignore>! Some tags should <self-closing /> <other><b>NOT</b> be selected.</>';
 
 let output = text;
 
 const regex = /(?<open_token>\\<|<)(?<name>[a-z]+)(?![^>]*\/>)[^>]*>/dimg;
 // const regex = /(?<open_token>[\\]{2}<|<)(?<name>[a-z]+)(?![^>]*\/>)[^>]*>/dimg; // ALTERNATIVE... that SHOULD work, but unclear why not...
+
+const attributtesRegex = /\s+(?<attribute>[a-zA-Z0-9_-]+)(?:\s*=\s*(?:"(?<value_a>[^"]*)"|'(?<value_b>[^']*)'|(?<value_c>[^><"'\s]+)))?(?=(?:\s+\w+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\/>]|[^><"'\s]+))?)*\s*?\s*>)/dmig;
 
 const matches = text.matchAll(regex);
 for (const match of matches) {
@@ -106,7 +108,27 @@ for (const match of matches) {
   const textWithoutOpenCloseTags = text.substring(openTagEndPos, closeTagPosition);
   const replaceTarget = text.substring(match.index, closeTagPosition + closeTag.length);
   
-  	console.log({
+  // ATTRIBUTES
+  const attrMatches = match[0].matchAll(attributtesRegex);
+  const attributes = {};
+  for (const attrMatch of attrMatches) {
+    const attr = attrMatch.groups.attribute;
+    let attrValue = true;
+    
+    if(attrMatch.groups?.value_a) {
+      attrValue = attrMatch.groups.value_a;
+    } else if(attrMatch.groups?.value_b) {
+      attrValue = attrMatch.groups.value_b;
+    } else if(attrMatch.groups?.value_c) {
+      attrValue = attrMatch.groups.value_c;
+    }
+    
+    attributes[attr] = attrValue;
+  }
+
+  // ATTRIBUTES-END
+  
+  console.log({
   	full: match[0],
     open: match[1],
     close: closeTag,
@@ -115,6 +137,7 @@ for (const match of matches) {
     input: match.input,
     groups: match.groups, // works
     indices: match.indices,
+    attributes: attributes,
     text_without_open_tag: textWithoutOpenTag,
     text_without_open_close_tags: textWithoutOpenCloseTags,
     replace_target: replaceTarget
@@ -143,9 +166,9 @@ for (const match of matches) {
 output = output
   .replace('\0', '\\')
   .replace('\\<', '<')
-  .replace('\<', '<')
-  .replace('\\>', '>')
-  .replace('\>', '>');
+  //.replace('\<', '<')
+  .replace('\\>', '>');
+  //.replace('\>', '>');
 
 console.log('Final output:', output);
         * */
