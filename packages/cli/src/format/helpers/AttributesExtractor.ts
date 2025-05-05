@@ -6,11 +6,14 @@ export default class AttributesExtractor
     /**
      * Regex that extracts attributes and values from a DOM Element string
      * 
+     * Pattern is an adaptation from stackoverflow answers (Dietrich Baumgarten).
+     * @see https://stackoverflow.com/a/56635204
+     * 
      * @type {RegExp}
      * 
      * @protected
      */
-    protected static regex: RegExp = /\s+(?<attribute>[a-zA-Z0-9_-]+)(?:\s*=\s*(?:"(?<value_a>[^"]*)"|'(?<value_b>[^']*)'|(?<value_c>[^><"'\s]+)))?(?=(?:\s+\w+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\/>]|[^><"'\s]+))?)*\s*?\s*>)/dmig;
+    protected static regex: RegExp = /\s+(?<attribute>[a-z0-9_-]+)(?:\s*=\s*(?:"(?<value_a>([^"]*))"|'(?<value_b>([^']*))'|(?<value_c>([^><"'\s]+))))?(?=(?:\s+[a-z0-9_-]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^><"'\s]+))?)*\s*\/?\s*>)/mig;
 
     /**
      * Extract attributes from given DOM Element string
