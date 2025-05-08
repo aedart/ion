@@ -25,7 +25,7 @@ export default class AttributesExtractor
      */
     public static extract(element: string): Record<string, string | number | boolean>
     {
-        const output: Record<string, string | number | boolean> = {};
+        const output: Record<string, string | number | boolean> = Object.create(null);
 
         const matches: RegExpStringIterator<RegExpExecArray> = element.matchAll(this.regex);
         
