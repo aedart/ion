@@ -50,14 +50,17 @@ export type OptionParams = {
 
     /**
      * Value datatype for the option
+     * 
+     * When set to `boolean`, then the option does NOT
+     * require a value.
      */
     type: OptionType,
 
     /**
-     * If this option accepts a value
+     * If the option requires a value
      */
-    acceptsValue: boolean,
-
+    valueRequired: boolean;
+    
     /**
      * If option is negatable
      *
@@ -66,12 +69,7 @@ export type OptionParams = {
      * e.g. `--no-print`_
      */
     negatable: boolean,
-
-    /**
-     * If the option is required
-     */
-    required: boolean,
-
+    
     /**
      * If the option accepts multiple values
      */

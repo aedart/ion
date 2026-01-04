@@ -40,24 +40,25 @@ export default interface Option
     /**
      * Determine if this option accepts a value
      * 
-     * @returns {boolean}
+     * @returns {boolean} True if option requires a value, or if {@link type}
+     *                    is not set to `boolean`.
      */
     acceptsValue(): boolean;
     
     /**
-     * Determine if this option is required
-     *
+     * Determine if this option requires a value
+     * 
      * @returns {boolean}
      */
-    isRequired(): boolean;
+    isValueRequired(): boolean;
 
     /**
-     * Opposite of {@link isRequired}
-     *
+     * Opposite of {@link isValueRequired}
+     * 
      * @returns {boolean}
      */
-    isOptional(): boolean;
-
+    isValueOptional(): boolean;
+    
     /**
      * Determine if option is negatable
      * 
