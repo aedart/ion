@@ -1,16 +1,12 @@
-import type {
-    Option as OptionContract,
-    OptionType,
-    OptionParams
-} from "@aedart/contracts/cli";
-import { empty } from "@aedart/support/misc";
-import { isset } from "@aedart/support/misc";
-import { LogicalError } from "@aedart/support/exceptions";
+import {Option as OptionContract, ValueMode} from "@aedart/contracts/cli";
+import {LogicalError} from "@aedart/support/exceptions";
 
 /**
  * Input Option
  *
- * @see {import('@aedart/contracts/cli').Option}
+ * Adaptation of Symfony Console's `InputOption` - Copyright Fabien Potencier 2004-present, MIT License.
+ *
+ * @see https://github.com/symfony/console/blob/7.1/Input/InputOption.php
  */
 export default class Option implements OptionContract
 {
@@ -25,12 +21,14 @@ export default class Option implements OptionContract
     protected readonly _name: string;
 
     /**
-     * Single character alias for the option
+     * Single character aliases for this option
      * 
-     * @type {string | null}
+     * @type {string[]}
+     * 
      * @protected
+     * @readonly
      */
-    protected readonly _short: string | null = null;
+    protected readonly _shortcuts: string[];
     
     /**
      * Short description of this option
@@ -43,28 +41,22 @@ export default class Option implements OptionContract
     protected readonly _description: string;
 
     /**
-     * Value datatype for this option
+     * The value mode of this option
      * 
-     * @type {OptionType}
-     * @protected
-     */
-    protected readonly _type: OptionType;
-    
-    /**
-     * If this option requires a value
-     *
-     * @type {boolean}
-     *
+     * @type {ValueMode}
+     * 
      * @protected
      * @readonly
      */
-    protected readonly _valueRequired: boolean;
-
+    protected readonly _valueMode: ValueMode;
+    
     /**
-     * If option is negatable
+     * If this option's value is negatable
      * 
      * @type {boolean}
+     * 
      * @protected
+     * @readonly
      */
     protected readonly _negatable: boolean;
     
@@ -91,88 +83,32 @@ export default class Option implements OptionContract
      * Create a new input option instance
      * 
      * @param {string} name
+     * @param {string|string[]} [shortcuts]
+     * @param {ValueMode} [mode]
      * @param {string} [description]
-     * @param {string | null} [short]
-     * @param {OptionType} [type]
-     * @param {boolean} [valueRequired]
-     * @param {boolean} [negatable]
-     * @param {boolean} [isArray]
+     * @param {boolean} [negatable=false]
+     * @param {boolean} [isArray=false]
      * @param {string | number | boolean | (string | number | boolean)[] | null} [defaultValue]
-     * 
-     * @throws {TypeError}
-     */
-
-    /**
-     * 
-     * @param {string} name
-     * @param {OptionParams} [params]
      */
     public constructor(
         name: string,
-        params: OptionParams = {
-            description: '',
-            short: null,
-            type: 'boolean',
-            valueRequired: false,
-            negatable: false,
-            isArray: false,
-            defaultValue: null,
-        },
-    )
-    {
-        if (!isset(name) || empty(name)) {
-            throw new TypeError('Option must have a name');
-        }
+        shortcuts: string|string[] = [],
+        mode: ValueMode = ValueMode.NONE,
+        description: string = '',
+        negatable: boolean = false,
+        isArray: boolean = false,
+        defaultValue?: string | number | boolean | (string|number|boolean)[] | null,
+    ) {
+        this._name = this.resolveName(name);
+        this._shortcuts = this.resolveShortcuts(shortcuts);
+        this._valueMode = this.resolveValueMode(mode);
+        this._description = description;
+        this._negatable = this.resolveNegatable(negatable);
+        this._isArray = isArray;
         
-        if (isset(params.short) && (params.short as string)?.length > 1) {
-            throw new TypeError(`Option "${name}"'s short alias must not exceed more than 1 character`);
-        }
-
-        this._name = name;
-        this._description = params.description;
-        this._short = params.short;
-        this._type = params.type;
-        this._valueRequired = params.valueRequired;
-        this._negatable = params.negatable;
-        this._isArray = params.isArray;
-        
-        if (this.isArray() && !this.acceptsValue()) {
-            throw new LogicalError(`Option "${name}" must accept values, if it allows multiple values`);
-        }
-        
-        if (this.isNegatable() && this.acceptsValue()) {
-            throw new LogicalError(`Option "${name}" cannot be negatable and accept values`);
-        }
-        
-        this.setDefault(params.defaultValue);
+        this.setDefault(defaultValue);
     }
 
-    /**
-     * Create a new input option instance
-     * 
-     * @param {string} name
-     * @param {OptionParams} [params]
-     * 
-     * @returns {OptionContract|this}
-     * 
-     * @throws {TypeError}
-     */
-    public static make(
-        name: string,
-        params: OptionParams = {
-            description: '',
-            short: null,
-            type: 'boolean',
-            valueRequired: false,
-            negatable: false,
-            isArray: false,
-            defaultValue: null,
-        },
-    ): OptionContract
-    {
-        return new this(name, params);
-    }
-    
     /**
      * Name of this option
      *
@@ -184,13 +120,25 @@ export default class Option implements OptionContract
     }
 
     /**
-     * Single character alias for the option
+     * Negated name of this option
      *
-     * @type {string | null}
+     * @see {isNegatable}
+     *
+     * @type {string}
      */
-    public get short(): string | null
+    public get negatedName(): string
     {
-        return this._short;
+        return `no-${this.name}`;
+    }
+    
+    /**
+     * Single character aliases for this option
+     *
+     * @returns {string[]}
+     */
+    public get shortcuts(): string[]
+    {
+        return this._shortcuts;
     }
 
     /**
@@ -204,59 +152,55 @@ export default class Option implements OptionContract
     }
 
     /**
-     * The value datatype for this option
+     * The value mode of this option
      *
-     * @type {OptionType}
+     * @type {ValueMode}
      */
-    public get type(): OptionType
+    public get valueMode(): ValueMode
     {
-        return this._type;
+        return this._valueMode;
     }
-
+    
     /**
-     * Determine if this option accepts a value
+     * Determine if option accepts a value when used
      *
-     * @returns {boolean} True if option requires a value
+     * @return {boolean}
      */
     public acceptsValue(): boolean
     {
-        return this.isValueRequired() || this.type !== 'boolean';
+        return this.isValueRequired() || this.isValueOptional();
     }
-
+    
     /**
-     * Determine if this option requires a value
+     * Determine if value is required, when option is used
      *
      * @returns {boolean}
      */
     public isValueRequired(): boolean
     {
-        return this._valueRequired;
+        return this.valueMode == ValueMode.REQUIRED;
     }
 
     /**
-     * Opposite of {@link isValueRequired}
+     * Determine if value is optional, when option is used
      *
      * @returns {boolean}
      */
     public isValueOptional(): boolean
     {
-        return !this.isValueRequired();
+        return this.valueMode == ValueMode.OPTIONAL;
     }
 
     /**
-     * Determine if option is negatable
+     * Determine if option allows passing a negated variant, e.g. --ansi or --no-ansi
      *
-     * **Note**: _If `true`, allows explicitly setting boolean
-     * option to `false` by prefixing the option name with `--no-`,
-     * e.g. `--no-print`_
-     *
-     * @returns {boolean}
+     * @return {boolean}
      */
     public isNegatable(): boolean
     {
         return this._negatable;
     }
-
+    
     /**
      * Determine if this option accepts multiple values
      *
@@ -280,22 +224,23 @@ export default class Option implements OptionContract
     public setDefault(value?: string | number | boolean | (string|number|boolean)[] | null): this
     {
         value = value ?? null;
+        
+        if (this.valueMode === ValueMode.NONE && !this.isNegatable() && value !== null) {
+            throw new LogicalError('Cannot set default value when using ValueMode.NONE');
+        }
 
-        // TODO: Fail is does not accept values and default is not null
-        
-        
         if (this.isArray()) {
             if (value === null) {
                 value = [];
             } else if (!Array.isArray(value)) {
                 throw new TypeError('Default value must be an array, for option of the type "array"');
             }
-        }   
-        
-        this.defaultValue = (this.acceptsValue() || this.isNegatable())
+        }
+
+        this.defaultValue = this.acceptsValue() || this.isNegatable()
             ? value
             : false;
-        
+
         return this;
     }
 
@@ -307,5 +252,132 @@ export default class Option implements OptionContract
     public getDefault(): string | number | boolean | (string|number|boolean)[] | null
     {
         return this.defaultValue;
+    }
+
+    /**
+     * Determine if given input option is the same this option
+     *
+     * @param {Option} option
+     *
+     * @return {boolean}
+     */
+    public equals(option: Option): boolean
+    {
+        const shortcutsA: string = option.shortcuts.toString();
+        const shortcutsB: string = this.shortcuts.toString();
+        const shortcutsMatch: boolean = shortcutsA === shortcutsB;
+        
+        return option.name === this.name
+            && shortcutsMatch
+            && option.valueMode === this.valueMode
+            && option.getDefault() === this.getDefault()
+            && option.isNegatable() === this.isNegatable()
+            && option.isArray() === this.isArray();
+    }
+
+    /**
+     * Resolve option name
+     *
+     * @param {string} name
+     * 
+     * @return {string}
+     *
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
+    protected resolveName(name: string): string
+    {
+        if (name.startsWith('--')) {
+            name = name.substring(2);
+        }
+
+        if (name.length === 0) {
+            throw new TypeError('Option name cannot be be empty.')
+        }
+
+        return name;
+    }
+
+    /**
+     * Resolves option shortcut
+     *
+     * @param {string|string[]} [shortcuts]
+     * 
+     * @return {string | undefined}
+     *
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
+    protected resolveShortcuts(shortcuts: string | string[]): string[]
+    {
+        if (typeof shortcuts === 'string') {
+            shortcuts = [ shortcuts ];
+        }
+        
+        if (shortcuts.length === 0) {
+            return shortcuts;
+        }
+
+        let resolved: string[] = [];
+        
+        for (const shortcut of shortcuts) {
+            let x: string = shortcut;
+            
+            // Left trim dashes for shortcut.
+            if (x.startsWith('-')) {
+                x = x.replace(/^(-)+/, '');
+            }
+
+            if (x.length === 0) {
+                throw new TypeError('Option shortcut cannot be be empty.')
+            }
+            
+            resolved.push(x);
+        }
+
+        return resolved;
+    }
+
+    /**
+     * Resolve value mode
+     *
+     * @param {any} mode
+     *
+     * @return {ValueMode}
+     *
+     * @throws {TypeError}
+     *
+     * @protected
+     */
+    protected resolveValueMode(
+        mode: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    ): ValueMode
+    {
+        if (!Object.values(ValueMode).includes(mode as ValueMode)) {
+            throw TypeError('Invalid option value mode');
+        }
+
+        return mode as ValueMode;
+    }
+
+    /**
+     * Resolve negatable
+     * 
+     * @param {boolean} value
+     * @return {boolean}
+     *
+     * @throws {TypeError}
+     * 
+     * @protected
+     */
+    protected resolveNegatable(value: boolean): boolean
+    {
+        if (value && this.acceptsValue()) {
+            throw TypeError('Option value cannot be negatable and also accept a value');
+        }
+        
+        return value;
     }
 }

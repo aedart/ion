@@ -1,9 +1,9 @@
-import type { OptionType } from "../types";
+import ValueMode from './ValueMode';
 
 /**
  * Input Option
  * 
- * Adaptation of Symfony Console's `InputOption`
+ * Adaptation of Symfony Console's `InputOption` - Copyright Fabien Potencier 2004-present, MIT License.
  * 
  * @see https://github.com/symfony/console/blob/7.1/Input/InputOption.php
  */
@@ -17,11 +17,20 @@ export default interface Option
     get name(): string;
 
     /**
-     * Single character alias for the option
+     * Negated name of this option
      * 
-     * @type {string | null}
+     * @see {isNegatable}
+     * 
+     * @type {string}
      */
-    get short(): string | null;
+    get negatedName(): string;
+    
+    /**
+     * Single character aliases for this option
+     * 
+     * @returns {string[]}
+     */
+    get shortcuts(): string[];
     
     /**
      * Short description of this option
@@ -31,45 +40,40 @@ export default interface Option
     get description(): string;
 
     /**
-     * The value datatype for this option
+     * The value mode of this option
      * 
-     * @type {OptionType}
+     * @type {ValueMode}
      */
-    get type(): OptionType;
-
+    get valueMode(): ValueMode;
+    
     /**
-     * Determine if this option accepts a value
+     * Determine if option accepts a value when used
      * 
-     * @returns {boolean} True if option requires a value, or if {@link type}
-     *                    is not set to `boolean`.
+     * @return {boolean}
      */
     acceptsValue(): boolean;
     
     /**
-     * Determine if this option requires a value
-     * 
+     * Determine if value is required, when option is used
+     *
      * @returns {boolean}
      */
     isValueRequired(): boolean;
 
     /**
-     * Opposite of {@link isValueRequired}
-     * 
+     * Determine if value is optional, when option is used
+     *
      * @returns {boolean}
      */
     isValueOptional(): boolean;
-    
+
     /**
-     * Determine if option is negatable
+     * Determine if option allows passing a negated variant, e.g. --ansi or --no-ansi
      * 
-     * **Note**: _If `true`, allows explicitly setting boolean
-     * option to `false` by prefixing the option name with `--no-`,
-     * e.g. `--no-print`_
-     * 
-     * @returns {boolean}
+     * @return {boolean}
      */
     isNegatable(): boolean;
-    
+
     /**
      * Determine if this option accepts multiple values
      *
@@ -92,4 +96,13 @@ export default interface Option
      * @returns {string | number | boolean | (string | number | boolean)[] | null}
      */
     getDefault(): string | number | boolean | (string|number|boolean)[] | null;
+
+    /**
+     * Determine if given input option is the same this option
+     * 
+     * @param {Option} option
+     * 
+     * @return {boolean}
+     */
+    equals(option: Option): boolean;
 }

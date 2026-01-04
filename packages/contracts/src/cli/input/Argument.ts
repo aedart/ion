@@ -1,7 +1,7 @@
 /**
  * Input Argument
  * 
- * Adaptation of Symfony's `InputArgument` component.
+ * Adaptation of Symfony's `InputArgument` component - Copyright Fabien Potencier 2004-present, MIT License.
  * 
  * @see https://github.com/symfony/console/blob/7.1/Input/InputArgument.php
  */

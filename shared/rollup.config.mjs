@@ -558,12 +558,11 @@ export function makeBanner(schema)
 {
     const name = schema.name;
     const license = schema.license;
-    const date = new Date().getFullYear();
 
     return `/**
  * ${name}
  * 
- * ${license}, Copyright (c) 2023-${date} Alin Eugen Deac <aedart@gmail.com>.
+ * ${license}, Copyright (c) 2023-present Alin Eugen Deac <aedart@gmail.com>.
  */
 `;
 }
