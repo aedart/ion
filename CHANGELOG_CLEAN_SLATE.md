@@ -4,6 +4,10 @@ Temporary changelog for feature branch.
 
 ## [Unreleased]
 
+### Added
+
+- `CONTEXT.md` (_AI context_).
+
 ### Changed
 
 **Breaking**
