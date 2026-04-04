@@ -1,0 +1,33 @@
+{
+    "$schema": "https://turbo.build",
+    "tasks": {
+        "copy-license": {
+            "inputs": ["../../LICENSE"],
+            "outputs": ["LICENSE"]
+        },
+        "check-versions": {
+            "cache": false
+        },
+        "build": {
+            "dependsOn": [
+                "^build",
+                "copy-license",
+                "check-versions"
+            ],
+            "outputs": ["dist/**", "LICENSE"]
+        },
+        "type-check": {
+            "dependsOn": ["^build"],
+            "cache": true
+        },
+        "lint": {
+            "cache": true
+        },
+        "format": {
+            "cache": true
+        },
+        "test": {
+            "dependsOn": ["build"]
+        }
+    }
+}

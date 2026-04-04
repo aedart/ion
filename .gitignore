@@ -5,8 +5,9 @@ temp/*
 .nx
 
 yarn.lock
+packages.lock
+pnpm-lock.yaml
 lerna-debug.log
-# package-lock.json # Lerna really likes having package-lock.json included...
 /node_modules
 .build/
 tsconfig.tsbuildinfo
@@ -14,6 +15,14 @@ tsconfig.tsbuildinfo
 
 tmp.js
 
+# Turbo specific
+.turbo
+packages/*/.turbo
+
+# Test Specific
+coverage/*
+
+# Packages
 packages/*/dist/*
 /packages/*/src/**/*.d.ts
 /packages/*/src/**/*.d.ts.map

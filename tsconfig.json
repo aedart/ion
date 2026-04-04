@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "paths": {
+            "@aedart/xyz": ["./packages/xyz/src/index.ts"],
+            "@aedart/xyz/utils": ["./packages/xyz/src/utils/index.ts"]
+        },
+        "noEmit": true,
+        "outDir": "dist",
+
+        "strict": true,
+        "composite": true,
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    }
+}

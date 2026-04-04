@@ -1,67 +1,61 @@
 name: 'Tests'
+
 on:
     push:
+        branches: [main, master]
     pull_request:
-    
-    # Schedule tests to run every day at 07:00 (if possible)
-    # Doing so should enable us to capture evt. changes in
-    # dependencies that are breaking...
-#    schedule:
-#        - cron: '0 7 * * *'
+    schedule:
+        # Runs every day at 07:00 UTC
+        - cron: '0 7 * * *'
 
 jobs:
-    ion_tests:
-        name: "Ion (Node ${{ matrix.node }} on ${{ matrix.os }})"
+    monorepo_pipeline:
+        name: 'Build & Test (Node ${{ matrix.node }} on ${{ matrix.os }})'
         runs-on: ${{ matrix.os }}
-        
+
         strategy:
             fail-fast: true
             matrix:
-                os: [ 'ubuntu-22.04' ]
-                node: [ '20' ]
-        
+                os: [ubuntu-latest]
+                node: [24]
+
         steps:
-            
-            # ------------------------------------------------------------------------------------------------------- #
-            # Checkout code ...
-            # ------------------------------------------------------------------------------------------------------- #
+            - name: 'Checkout'
+              uses: actions/checkout@v4
 
-            - name: "Checkout"
-              uses: actions/checkout@v3
-
-            # ------------------------------------------------------------------------------------------------------- #
-            # Install Browsers
-            # ------------------------------------------------------------------------------------------------------- #
-
-            - name: "Install Chrome"
-              uses: browser-actions/setup-chrome@v1
+            # 1. Setup pnpm
+            - name: 'Install pnpm'
+              uses: pnpm/action-setup@v4
               with:
-                  chrome-version: latest
+                  version: 9
 
-            - name: "Install Firefox"
-              uses: browser-actions/setup-firefox@v1
-              with:
-                  firefox-version: latest
-            
-            # ------------------------------------------------------------------------------------------------------- #
-            # Install Node
-            # ------------------------------------------------------------------------------------------------------- #
-    
-            - name: "Use Node ${{ matrix.node }}"
-              uses: actions/setup-node@v3
+            # 2. Setup Node 24 (No pnpm cache here to ensure a fresh fetch)
+            - name: 'Use Node ${{ matrix.node }}'
+              uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node }}
-                  cache: npm
-            
-            # ------------------------------------------------------------------------------------------------------- #
-            # Run...
-            # ------------------------------------------------------------------------------------------------------- #
-    
-            - name: "Install dependencies"
-              run: npm install
 
-            - name: "Lint"
-              run: npm run lint
-        
-            - name: "Test"
-              run: npm run test
+            # 3. Force Fresh Dependency Resolution
+            # We ignore the lockfile and prefer the latest versions in range.
+            - name: 'Install latest dependencies'
+              run: pnpm install --no-frozen-lockfile --prefer-latest
+
+            # 4. Install Playwright Browsers (Required for Vitest)
+            - name: 'Install Playwright Browsers'
+              run: pnpm exec playwright install --with-deps chromium firefox
+
+            # 5. Run the Pipeline
+            - name: 'Check Formatting'
+              run: pnpm format
+
+            - name: 'Lint'
+              run: pnpm lint
+
+            - name: 'Type Check'
+              run: pnpm type-check
+
+            - name: 'Build'
+              run: pnpm build
+
+            - name: 'Test (Node & Headless Browsers)'
+              run: pnpm test

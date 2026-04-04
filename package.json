@@ -1,0 +1,59 @@
+{
+    "name": "@aedart/ion-monorepo",
+    "description": "Monorepo for JS / TS packages",
+    "keywords": [
+        "Ion",
+        "Library"
+    ],
+    "author": "Alin Eugen Deac",
+    "license": "BSD-3-Clause",
+    "bugs": {
+        "url": "https://github.com/aedart/ion/issues"
+    },
+    "homepage": "https://aedart.github.io/ion/",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aedart/ion.git"
+    },
+    "type": "module",
+    "engines": {
+        "node": ">=24.0.0",
+        "pnpm": ">=9.0.0"
+    },
+    "dependencies": {
+        "@aedart/xyz": "workspace:*"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.4",
+        "@types/node": "^22.19.17",
+        "@vitest/browser": "^4.1.2",
+        "@vitest/browser-playwright": "^4.1.2",
+        "@vitest/coverage-istanbul": "^4.1.2",
+        "@vitest/coverage-v8": "4.1.2",
+        "dprint": "^0.53.2",
+        "eslint": "^9.10.0",
+        "globals": "^15.15.0",
+        "playwright": "^1.48.0",
+        "tslib": "^2.8.0",
+        "turbo": "^2.3.0",
+        "typescript": "^6.0.0",
+        "typescript-eslint": "^8.58.0",
+        "vite": "^8.0.3",
+        "vitest": "^4.0.0"
+    },
+    "scripts": {
+        "version:sync": "node scripts/check-versions.js",
+        "version:tag": "node scripts/git-tag.js",
+        "build": "turbo run build",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "lint": "turbo run lint",
+        "lint:fix": "eslint . --fix",
+        "format": "dprint check",
+        "format:fix": "dprint fmt",
+        "type-check": "turbo run type-check && tsc -p tsconfig.json --noEmit",
+        "publish-check": "pnpm -r publish --dry-run",
+        "publish": "pnpm version:sync && pnpm build && pnpm version:tag && pnpm -r publish --access public"
+    },
+    "packageManager": "pnpm@10.33.0"
+}
