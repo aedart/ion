@@ -23,8 +23,11 @@
     "json": {
         "indentWidth": 4
     },
+    "markdown": {
+        "unorderedListKind": "asterisks"
+    },
     "includes": [
-        "**/*.{ts,tsx,js,jsx,json}"
+        "**/*.{ts,tsx,js,jsx,json,md}"
     ],
     "excludes": [
         "**/node_modules",
