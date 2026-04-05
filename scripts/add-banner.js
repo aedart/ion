@@ -35,8 +35,7 @@ function processPackage(packageName)
     const pkgJsonPath = path.join(pkgPath, 'package.json');
 
     // Skip if not a valid package or no build output exists
-    if (!fs.existsSync(pkgJsonPath) || !fs.existsSync(distPath))
-    {
+    if (!fs.existsSync(pkgJsonPath) || !fs.existsSync(distPath)) {
         throw new Error(`❌ dist/ directory not found in ${packageName}. Did tsc run correctly?`);
     }
 
@@ -48,18 +47,16 @@ function processPackage(packageName)
     const files = fs.readdirSync(distPath, { recursive: true })
         .map((file) => path.join(distPath, file))
         .filter((file) =>
-            fs.statSync(file).isFile() &&
-            (file.endsWith('.js') || file.endsWith('.d.ts'))
+            fs.statSync(file).isFile()
+            && (file.endsWith('.js') || file.endsWith('.d.ts'))
         );
 
-    files.forEach((filePath) =>
-    {
+    files.forEach((filePath) => {
         const content = fs.readFileSync(filePath, 'utf-8');
 
         // Only prepend if our specific package signature isn't already there.
         // This prevents double-tagging and ignores existing JSDoc blocks.
-        if (!content.includes(signature))
-        {
+        if (!content.includes(signature)) {
             fs.writeFileSync(filePath, banner + content);
         }
     });
@@ -76,16 +73,13 @@ function run()
     const cwd = process.cwd();
     const isRoot = fs.existsSync(path.join(cwd, 'pnpm-workspace.yaml'));
 
-    if (!isRoot)
-    {
+    if (!isRoot) {
         // We are inside a package folder (e.g., /packages/xyz)
         // Extract the folder name from the path
         const packageName = path.basename(cwd);
         processPackage(packageName);
         console.log(`✅ Banner applied to ${packageName}.`);
-    }
-    else
-    {
+    } else {
         // We are at the root, process everything
         const packagesDir = path.join(ROOT, 'packages');
         const packages = fs.readdirSync(packagesDir).filter((f) =>
@@ -96,7 +90,6 @@ function run()
         console.log('✅ Banners applied to all packages.');
     }
 }
-
 
 // Start the process
 run();
