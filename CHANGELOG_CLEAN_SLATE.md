@@ -7,6 +7,7 @@ Temporary changelog for feature branch.
 ### Added
 
 * `CONTEXT.md` (_AI context_).
+* `scripts/fix-esm-imports.js` util for fixing ESM imports.
 
 ### Changed
 
