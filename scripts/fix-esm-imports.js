@@ -6,12 +6,12 @@ const PACKAGES_DIR = path.join(process.cwd(), 'packages');
 
 const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
 });
 
 /**
  * Recursively fixes relative imports by adding .js extension
- * 
+ *
  * @param {PathLike|string} dir
  */
 function fixImports(dir)
@@ -31,7 +31,8 @@ function fixImports(dir)
             const content = fs.readFileSync(fullPath, 'utf8');
 
             // Regex: Matches relative imports/exports missing an extension
-            const pattern = /(from\s+['"]|import\s+['"]|export\s+.*?\s+from\s+['"])(\.\.?\/[^"'.\n]+)(?=['"])/g;
+            const pattern =
+                /(from\s+['"]|import\s+['"]|export\s+.*?\s+from\s+['"])(\.\.?\/[^"'.\n]+)(?=['"])/g;
 
             const newContent = content.replace(pattern, (match, prefix, importPath) => {
                 return `${prefix}${importPath}.js`;

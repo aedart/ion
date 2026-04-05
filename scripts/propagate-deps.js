@@ -20,7 +20,7 @@ function propagateDependencies()
     const rootVersions = {
         ...(rootPkg.dependencies || {}),
         ...(rootPkg.devDependencies || {}),
-        ...(rootPkg.peerDependencies || {})
+        ...(rootPkg.peerDependencies || {}),
     };
 
     const packages = fs.readdirSync(PACKAGES_DIR).filter(f =>
@@ -40,7 +40,11 @@ function propagateDependencies()
             for (const [dep, currentVersion] of Object.entries(pkgJson[type])) {
                 // If root defines this dependency, propagate the version down
                 if (rootVersions[dep] && rootVersions[dep] !== currentVersion) {
-                    console.log(`📣 [${pkgName}] Propagating ${dep}: ${currentVersion} -> ${rootVersions[dep]}`);
+                    console.log(
+                        `📣 [${pkgName}] Propagating ${dep}: ${currentVersion} -> ${
+                            rootVersions[dep]
+                        }`,
+                    );
                     pkgJson[type][dep] = rootVersions[dep];
                     hasChanged = true;
                 }
