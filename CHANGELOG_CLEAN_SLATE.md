@@ -6,13 +6,16 @@ Temporary changelog for feature branch.
 
 ### Added
 
-- `CONTEXT.md` (_AI context_).
+* `CONTEXT.md` (_AI context_).
 
 ### Changed
 
 **Breaking**
 
-- Switched to use TypeScript `v6`.
-- Now using pnpm, with turbo, vite, and vitest (_previously used rollup, karma.js, webpack and other_).
+* Switched to use TypeScript `v6` and Node.js `v24`.
+* Now using pnpm, with turbo, vite, and vitest (_previously used rollup, karma.js, webpack and other_).
 
 **Non-breaking Changes**
+
+* The TypeScript source files are now also published, along with appropriate source maps.
+* dprint is now used for formatting.
