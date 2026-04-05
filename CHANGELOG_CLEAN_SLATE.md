@@ -7,6 +7,7 @@ Temporary changelog for feature branch.
 ### Added
 
 * `CONTEXT.md` (_AI context_).
+* `scripts/sync-peer-deps.js` and `scripts/propagate-deps.js` utils scripts for synchronising dependencies between root package.json and packages' dependencies.
 * `scripts/fix-esm-imports.js` util for fixing ESM imports.
 
 ### Changed
