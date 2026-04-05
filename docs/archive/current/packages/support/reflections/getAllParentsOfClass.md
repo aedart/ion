@@ -9,17 +9,20 @@ sidebarDepth: 0
 Returns all parents of target class.
 It accepts the following arguments:
 
-- `target: ConstructorOrAbstractConstructor` - The target class.
-- `includeTarget: boolean = false` - (_optional_) If `true`, then given target is included in the output as the first element.
+* `target: ConstructorOrAbstractConstructor` - The target class.
+* `includeTarget: boolean = false` - (_optional_) If `true`, then given target is included in the output as the first element.
 
 ```js
 import { getAllParentsOfClass } from '@aedart/support/reflections';
 
-class A {}
+class A
+{}
 
-class B extends A {}
+class B extends A
+{}
 
-class C extends B {}
+class C extends B
+{}
 
 getAllParentsOfClass(C); // [ B, A ]
 getAllParentsOfClass(C, true); // [ C, B, A ]

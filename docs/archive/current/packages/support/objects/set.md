@@ -10,7 +10,7 @@ Set a value in object at given path.
 _Method is an alias for [Lodash `set`](https://lodash.com/docs/4.17.15#set)._
 
 ```js
-import { set } from "@aedart/support/objects";
+import { set } from '@aedart/support/objects';
 
 const target = {};
 

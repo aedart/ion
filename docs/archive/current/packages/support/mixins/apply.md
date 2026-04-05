@@ -9,16 +9,14 @@ sidebarDepth: 0
 To apply one or more mixins, use the `mix()` function and call `width()` with the mixins you wish to apply to a superclass.
 
 ```js
-import { mix } from "@aedart/support/mixins";
-import {
-    RectangleMixin,
-    DescMixin
-} from "@acme/mixins";
+import { DescMixin, RectangleMixin } from '@acme/mixins';
+import { mix } from '@aedart/support/mixins';
 
 class Box extends mix().with(
     RectangleMixin,
-    DescMixin
-) {
+    DescMixin,
+)
+{
     // ...remaining not shown...
 }
 ```
@@ -28,14 +26,16 @@ class Box extends mix().with(
 To extend a superclass and apply mixins onto it, pass the superclass as argument for the `mix()` function.
 
 ```js
-class Shape {
+class Shape
+{
     // ...not shown...
 }
 
 class Box extends mix(Shape).with(
     RectangleMixin,
-    DescMixin
-) {
+    DescMixin,
+)
+{
     // ...remaining not shown...
 }
 ```
@@ -49,8 +49,10 @@ class Box extends mix(class {}).with(
     MyMixinA,
     MyMixinB,
     MyMixinC,
-) {
+)
+{
     // ...
 }
 ```
+
 :::

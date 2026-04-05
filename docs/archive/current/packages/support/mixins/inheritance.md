@@ -9,30 +9,38 @@ sidebarDepth: 0
 To gain an overview of how inheritance works when applying mixins onto a superclass, consider the following example:
 
 ```js
-const MyMixin = Mixin((superclass) => class extends superclass {
-    constructor(...args) {
-        super(...args); // Invokes A's constructor
-    }
-    
-    // Overwrites A's foo() method
-    foo() {
-        return 'zam';
-    }
+const MyMixin = Mixin((superclass) =>
+    class extends superclass {
+        constructor(...args)
+        {
+            super(...args); // Invokes A's constructor
+        }
 
-    // Overwrites A's bar() method
-    bar() {
-        return super.bar(); // Invoke A's bar() method
+        // Overwrites A's foo() method
+        foo()
+        {
+            return 'zam';
+        }
+
+        // Overwrites A's bar() method
+        bar()
+        {
+            return super.bar(); // Invoke A's bar() method
+        }
     }
-});
+);
 
 // -------------------------------------------------------------------- //
 
-class A {
-    foo() {
+class A
+{
+    foo()
+    {
         return 'foo';
     }
-    
-    bar() {
+
+    bar()
+    {
         return 'bar';
     }
 }
@@ -40,14 +48,17 @@ class A {
 // -------------------------------------------------------------------- //
 
 class B extends mix(A).with(
-    MyMixin
-) {
-    constructor(...args) {
+    MyMixin,
+)
+{
+    constructor(...args)
+    {
         super(...args); // Invokes MyMixin's constructor
     }
 
     // Overwrite MyMixin's foo()
-    foo() {
+    foo()
+    {
         const msg = super.foo(); // Invoke MyMixin's bar() method
 
         return `<${msg}>`;

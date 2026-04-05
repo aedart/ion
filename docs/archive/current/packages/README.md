@@ -22,13 +22,11 @@ The "_available since x.y.z_" badge might also be displayed, if a package _or fe
 
 ## Not Released
 
-Sometimes, documentation might be available for a package that has **not yet been released**. 
+Sometimes, documentation might be available for a package that has **not yet been released**.
 Usually it is tagged with a <Badge type="warning" text="Not Released" vertical="middle" /> badge, _unless the package documentation is located in ["next" release"](../../next/README.md)._
 
 ## Not Published
 
 In rare situations, a package might only exist in the mono-repository and not published to npm's registry.
 Such a package is either experimental or internal, which means that it might not ever be published.
-Usually, it will be tagged with <Badge type="danger" text="Internal (not published)" vertical="middle" /><Badge type="danger" text="Experimental" vertical="middle" />, or similar badges, _if documentation is made available about the package!_ 
-
-
+Usually, it will be tagged with <Badge type="danger" text="Internal (not published)" vertical="middle" /><Badge type="danger" text="Experimental" vertical="middle" />, or similar badges, _if documentation is made available about the package!_

@@ -10,17 +10,18 @@ sidebarDepth: 0
 
 ## Using Concerns
 
-The [class decorator](https://github.com/tc39/proposal-decorators) `use()` is used to inject one or more concern classes into a target class. 
+The [class decorator](https://github.com/tc39/proposal-decorators) `use()` is used to inject one or more concern classes into a target class.
 
 ```js
-import { use } from "@aedart/support/concerns";
+import { use } from '@aedart/support/concerns';
 
 @use(
     ApiConnection,
     Serialization,
-    Collections
+    Collections,
 )
-class Flight {}
+class Flight
+{}
 ```
 
 When concern classes are injected, the target class is transformed and all concerns are made available inside a private `CONCERNS` property.
@@ -34,11 +35,13 @@ All concerns that are used by a parent class are automatically available (_inher
 @use(
     ApiConnection,
     Serialization,
-    Collections
+    Collections,
 )
-class ApiService {}
+class ApiService
+{}
 
-class Flight extends ApiService {} // Uses ApiConnection, Serialization, ...etc
+class Flight extends ApiService
+{} // Uses ApiConnection, Serialization, ...etc
 ```
 
 ::: warning
@@ -50,12 +53,14 @@ An `InjectionError` is thrown, if this is violated!
 @use(
     ApiConnection,
     Serialization,
-    Collections
+    Collections,
 )
-class ApiService {}
+class ApiService
+{}
 
 @use(Serialization) // InjectionError
-class Flight extends ApiService {}
+class Flight extends ApiService
+{}
 ```
 
 See also [Conflict Resolution](./conflictResolution.md) for additional details.
@@ -63,27 +68,27 @@ See also [Conflict Resolution](./conflictResolution.md) for additional details.
 
 ## Manual interaction
 
-When concerns are injected into a target, they are defined inside a "Concerns Container", which is available in the target instance via the `CONCERNS` symbol. 
+When concerns are injected into a target, they are defined inside a "Concerns Container", which is available in the target instance via the `CONCERNS` symbol.
 Should you require to perform more advanced interaction with a concern class instance, then you can obtain a concern instance via the container's `get()` method.
 It will automatically ensure to [boot](./booting.md) a concern, if not already booted.
 
 ```js
-import {
-    use,
-    CONCERNS,
-    AbstractConcern
-} from "@aedart/support/concerns";
+import { AbstractConcern, CONCERNS, use } from '@aedart/support/concerns';
 
-class Encryption extends AbstractConcern {
-    encrypt(value) { /* ...not shown... */ }
+class Encryption extends AbstractConcern
+{
+    encrypt(value)
+    {/* ...not shown... */}
 }
 
 @use(Encryption)
-class CookieStore {
-    constructor() {
+class CookieStore
+{
+    constructor()
+    {
         const container = this[CONCERNS];
         const value = container.get(Encryption).encrypt('Lorum lipsum');
-        
+
         // ...remaining not shown...
     }
 }
@@ -92,17 +97,19 @@ class CookieStore {
 You can achieve the same result by using the `getContainer()` utility method.
 
 ```js
-import { use, getContainer } from "@aedart/support/concerns";
+import { getContainer, use } from '@aedart/support/concerns';
 
 // ...Encryption concern not shown...
 
 @use(Encryption)
-class CookieStore {
-    constructor() {
+class CookieStore
+{
+    constructor()
+    {
         const value = getContainer(this)
             .get(Encryption)
             .encrypt('Lorum lipsum');
-        
+
         // ...remaining not shown...
     }
 }
@@ -118,7 +125,7 @@ Inside your target class, if you know that concerns are used (_if target is a "c
 then you can use the `CONCERNS` symbol to gain access to the container.
 
 ```js
-import { CONCERNS } from "@aedart/support/concerns";
+import { CONCERNS } from '@aedart/support/concerns';
 
 // Inside your target class...
 const container = this[CONCERNS];
@@ -129,7 +136,7 @@ const container = this[CONCERNS];
 `getContainer()` is essentially a just a wrapper for: `return this[CONCERNS]`.
 
 ```js
-import { getContainer } from "@aedart/support/concerns";
+import { getContainer } from '@aedart/support/concerns';
 
 // Inside your target class...
 const container = getContainer(this);
@@ -144,11 +151,12 @@ This might can be useful in situations when you might now know if the target is 
 in a child class or outside a target class.
 
 ```js
-import { getConcernsContainer } from "@aedart/support/concerns";
+import { getConcernsContainer } from '@aedart/support/concerns';
 
 // Inside your target class...
 const container = getConcernsContainer(this);
 ```
+
 :::
 
 ### Determine if target uses concerns
@@ -156,25 +164,25 @@ const container = getConcernsContainer(this);
 To determine if a target uses one or more concerns, use the `usesConcerns()` method.
 It accepts the following arguments:
 
-- `instance: object|Owner` - The target class instance.
-- `...concerns: ConcernConstructor[]` - Concern classes to test for.
+* `instance: object|Owner` - The target class instance.
+* `...concerns: ConcernConstructor[]` - Concern classes to test for.
 
 ```js
-import {
-    use,
-    AbstractConcern,
-    usesConcerns
-} from "@aedart/support/concerns";
+import { AbstractConcern, use, usesConcerns } from '@aedart/support/concerns';
 
-class A extends AbstractConcern {}
-class B extends AbstractConcern {}
-class C extends AbstractConcern {}
+class A extends AbstractConcern
+{}
+class B extends AbstractConcern
+{}
+class C extends AbstractConcern
+{}
 
 @use(
     A,
-    B
+    B,
 )
-class Game {}
+class Game
+{}
 
 const instance = new Game();
 

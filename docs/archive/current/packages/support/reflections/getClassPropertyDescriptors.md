@@ -10,17 +10,20 @@ Returns all property [`descriptors`](https://developer.mozilla.org/en-US/docs/We
 
 It accepts the following arguments:
 
-- `target: ConstructorOrAbstractConstructor` - The target class.
-- `recursive: boolean = false` - (_optional_) If `true`, then target's parent prototypes are traversed. Descriptors are merged, such that the top-most class' descriptors are returned.
+* `target: ConstructorOrAbstractConstructor` - The target class.
+* `recursive: boolean = false` - (_optional_) If `true`, then target's parent prototypes are traversed. Descriptors are merged, such that the top-most class' descriptors are returned.
 
 ```js
 import { getClassPropertyDescriptors } from '@aedart/support/reflections';
 
-class A {
+class A
+{
     set name(v) {}
     get name() {}
-    bar() {}
-    [MY_SYMBOL]() {}
+    bar()
+    {}
+    [MY_SYMBOL]()
+    {}
 }
 
 getClassPropertyDescriptors(A); // { bar: {...}, name: {...}, [MY_SYMBOL]: {...} }
@@ -31,14 +34,18 @@ When `recursive` is set to `true`, then all property descriptors are returned fr
 ```js
 import { getClassPropertyDescriptors } from '@aedart/support/reflections';
 
-class A {
+class A
+{
     set name(v) {}
     get name() {}
-    foo() {}
-    [MY_SYMBOL]() {}
+    foo()
+    {}
+    [MY_SYMBOL]()
+    {}
 }
 
-class B extends A {
+class B extends A
+{
     set bar(v) {}
     get bar() {}
 }

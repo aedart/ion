@@ -1,5 +1,5 @@
 ---
-title: Prerequisites 
+title: Prerequisites
 description: Prerequisites for using meta decorators.
 sidebarDepth: 0
 ---

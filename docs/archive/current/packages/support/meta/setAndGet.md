@@ -1,5 +1,5 @@
 ---
-title: Set & Get 
+title: Set & Get
 description: Defining and retrieving metadata.
 sidebarDepth: 0
 ---
@@ -25,10 +25,11 @@ import { meta } from '@aedart/support/meta';
 @meta('service_alias', 'locationSearcher')
 class Service
 {
-    @meta('name', 'Name of service') name;
-    
+    @meta('name', 'Name of service')
+    name;
+
     @meta('fetch.desc', 'Fetches resource via a gateway')
-    @meta('fetch.dependencies', [ 'my-gateway' ])
+    @meta('fetch.dependencies', ['my-gateway'])
     async fetch(gateway)
     {
         // ...implementation not shown...
@@ -41,7 +42,7 @@ class Service
 Use `getMeta()` or `getAllMeta()` to retrieve metadata.
 
 ```js
-import { getMeta, getAllMeta } from '@aedart/support/meta';
+import { getAllMeta, getMeta } from '@aedart/support/meta';
 
 const service = new Service();
 
@@ -55,6 +56,7 @@ const allMeta = getAllMeta(Service);
 ::: tip Metadata Availability
 Depending on the kind of element that is decorated, metadata might only **_become available_** for reading, **_after_** a new class instance has been instantiated.
 This is true for the following elements:
+
 * `method`
 * `getter`
 * `setter`
@@ -83,15 +85,16 @@ The callback **MUST** return an object that contains a `key` and a `value` prope
 ```js
 import { meta } from '@aedart/support/meta';
 
-class Service {
-
+class Service
+{
     @meta((target, context) => {
         return {
             key: context.name,
-            value: '...'
-        }
+            value: '...',
+        };
     })
-    delegateTo(gateway) {
+    delegateTo(gateway)
+    {
         // ...not shown...
     }
 }
@@ -104,19 +107,21 @@ Consider the following example:
 ```js
 import { meta } from '@aedart/support/meta';
 
-function delegateMeta() {
+function delegateMeta()
+{
     return meta((target, context) => {
         return {
             key: context.name,
-            value: '...'
-        }
+            value: '...',
+        };
     });
 }
 
-class Service {
-
+class Service
+{
     @delegateMeta()
-    delegateTo(gateway) {
+    delegateTo(gateway)
+    {
         // ...not shown...
     }
 }

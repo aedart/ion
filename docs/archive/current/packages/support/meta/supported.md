@@ -1,5 +1,5 @@
 ---
-title: Supported Elements 
+title: Supported Elements
 description: Supported elements by meta decorators.
 sidebarDepth: 0
 ---

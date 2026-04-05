@@ -10,16 +10,16 @@ Determine if given target object contains method.
 
 It accepts the following arguments:
 
-- `target: object` - The target.
-- `method: PropertyKey` - Name of the method to check for.
+* `target: object` - The target.
+* `method: PropertyKey` - Name of the method to check for.
 
 ```js
 import { hasMethod } from '@aedart/support/reflections';
 
 const a = {
-    foo: () => { /* ...not shown... */ },
-    bar: () => { /* ...not shown... */ },
-}
+    foo: () => {/* ...not shown... */},
+    bar: () => {/* ...not shown... */},
+};
 
 hasMethod(a, 'foo'); // true
 hasMethod(a, 'bar'); // true

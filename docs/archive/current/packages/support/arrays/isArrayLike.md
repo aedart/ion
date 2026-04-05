@@ -20,7 +20,8 @@ isArrayLike({ length: 0 }); // true
 isArrayLike(new Int8Array()); // true
 
 isArrayLike({}); // false
-isArrayLike(function() {}); // false
+isArrayLike(function()
+{}); // false
 isArrayLike(new Boolean(true)); // false
 isArrayLike(123); // false
 isArrayLike(new Number(123)); // false

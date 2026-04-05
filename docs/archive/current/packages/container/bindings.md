@@ -16,10 +16,10 @@ The `bind()` method is used to register bindings in the Service Container. It ac
 * `shared: boolean = false` - (_optional - see [Singletons](#singletons)_).
 
 ```js
-import { CookieStorage } from "@acme/storage";
+import { CookieStorage } from '@acme/storage';
 
 container.bind('storage', CookieStorage);
-``` 
+```
 
 When the binding is [resolved](./resolving.md) from the Service Container, the `concrete` value is returned. Either as a new class
 instance (_see [Constructors](#constructors)_), or the value returned from a callback (_see [Factory Callbacks](#factory-callbacks)_).
@@ -38,7 +38,7 @@ once. This means that the same object instance or value is returned, each time t
 Invoking the `singleton()` is the equivalent to invoking `bind()` with the `shared` argument set to `true`.
 
 ```js
-import { ApiClient } from "@acme/api";
+import { ApiClient } from '@acme/api';
 
 container.singleton('api_client', ApiClient);
 ```
@@ -56,7 +56,7 @@ You can also register existing object instances in the Service Container. This i
 Whenever the binding is requested resolved, the same instance is returned each time.
 
 ```js
-import { ApiClient } from "@acme/api";
+import { ApiClient } from '@acme/api';
 
 const client = new ApiClient();
 
@@ -86,8 +86,8 @@ export const STORAGE = Symbol('app_storage');
 ```
 
 ```js
-import { CookieStorage } from "@acme/storage";
-import { STORAGE } from "@acme/services";
+import { STORAGE } from '@acme/services';
+import { CookieStorage } from '@acme/storage';
 
 container.bind(STORAGE, CookieStorage);
 ```
@@ -108,7 +108,8 @@ When registering a binding using a class constructor as the `concrete` argument 
 instantiated and returned, when requested [resolved](./resolving.md).
 
 ```js
-class TextRecorder {}
+class TextRecorder
+{}
 
 container.bind('recorder', TextRecorder);
 
@@ -116,7 +117,7 @@ container.bind('recorder', TextRecorder);
 const recorder = container.make('recorder');
 
 console.log(recorder instanceof TextRecorder); // true
-``` 
+```
 
 ### Factory Callbacks
 
@@ -125,15 +126,17 @@ When requested resolved, the callback is invoked and the Service Container insta
 This allows you to perform other kinds of resolve logic.
 
 ```js
-class TextRecorder {
-    constructor(config) {
+class TextRecorder
+{
+    constructor(config)
+    {
         this.config = config;
     }
 }
 
 container.bind('recorder', (container) => {
     const config = container.make('my_recorder_config');
-    
+
     return new TextRecorder(config);
 });
 ```
@@ -153,8 +156,10 @@ const msg = container.make('my_message'); // Hi there...
 The factory callback is also provided with any arguments that are passed on to the [`make()` method](./resolving.md#the-make-method).
 
 ```js
-class User {
-    constructor(name) {
+class User
+{
+    constructor(name)
+    {
         this.name = name;
     }
 }

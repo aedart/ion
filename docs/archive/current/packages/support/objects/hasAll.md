@@ -11,7 +11,7 @@ Determine if all paths are properties of given object.
 _See also [`isset()`](./isset.md)._
 
 ```js
-import { hasAll } from "@aedart/support/objects";
+import { hasAll } from '@aedart/support/objects';
 
 const mySymbol = Symbol('my-symbol');
 const target = {
@@ -20,12 +20,12 @@ const target = {
         name: 'Sven',
         c: {
             age: 24,
-            [mySymbol]: true
-        }
+            [mySymbol]: true,
+        },
     },
     d: [
-        { name: 'Jane'},
-        { name: 'Ashley'},
+        { name: 'Jane' },
+        { name: 'Ashley' },
     ],
 };
 

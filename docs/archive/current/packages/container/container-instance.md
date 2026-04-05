@@ -9,7 +9,7 @@ The Service Container can be instantiated like any other regular class. This all
 isolation, without application-wide side effects.
 
 ```js
-import { Container } from "@aedart/container";
+import { Container } from '@aedart/container';
 
 const container = new Container();
 ```

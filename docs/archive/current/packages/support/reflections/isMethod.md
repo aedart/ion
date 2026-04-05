@@ -10,8 +10,8 @@ Determine if property (_name_) is a method in given target object.
 
 It accepts the following arguments:
 
-- `target: object` - The target.
-- `property: PropertyKey` - Name of property.
+* `target: object` - The target.
+* `property: PropertyKey` - Name of property.
 
 ```js
 import { isMethod } from '@aedart/support/reflections';

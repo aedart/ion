@@ -13,10 +13,12 @@ Captures a new stack trace and sets given Error's [`stack`](https://developer.mo
 The function accepts an `Error` as argument.
 
 ```js
-import { configureStackTrace } from "@aedart/support/exceptions";
+import { configureStackTrace } from '@aedart/support/exceptions';
 
-class MyError extends Error {
-    constructor(message, options) {
+class MyError extends Error
+{
+    constructor(message, options)
+    {
         super(message, options);
 
         configureStackTrace(this);

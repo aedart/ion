@@ -10,6 +10,7 @@ The `@aedart/container` package offers an adaptation of [Laravel's Service Conta
 (_originally licensed under [MIT](https://github.com/laravel/framework/blob/11.x/src/Illuminate/Container/LICENSE.md)_).
 
 The tools provided by this package give you a way to:
+
 * Manage class dependencies
 * Perform [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection)
 
@@ -31,8 +32,8 @@ To ensure that dependency injection can be performed, you must first bind the co
 Each binding requires a unique identifier, e.g. a string, symbol, number...etc.
 
 ```js
-import { Container } from "@aedart/container";
-import { ApiClient } from "@acme/api";
+import { ApiClient } from '@acme/api';
+import { Container } from '@aedart/container';
 
 const container = Container.getInstance();
 
@@ -69,8 +70,8 @@ When you want to resolve a component, with all of its dependencies injected into
 method.
 
 ```js
-import { Container } from "@aedart/container";
-import { BookService } from "@acme/app/services";
+import { BookService } from '@acme/app/services';
+import { Container } from '@aedart/container';
 
 const bookService = Container.getInstance().make(BookService);
 
@@ -80,4 +81,4 @@ console.log(bookService.apiClient); // ApiClient
 ### Onward
 
 The above shown example illustrates the most basic usage of the service container. Throughout the remaining of this
-package's documentation, more examples and use-cases are covered. 
+package's documentation, more examples and use-cases are covered.

@@ -12,12 +12,15 @@ In this context "cloneable" means that an object implements the `Cloneable` inte
 _See `@aedart/constracts/support/objects/Cloneable` for details._
 
 ```js
-import { isCloneable } from "@aedart/support/objects";
+import { isCloneable } from '@aedart/support/objects';
 
-class A {};
+class A
+{}
 
-class B {
-    clone() {
+class B
+{
+    clone()
+    {
         return new this();
     }
 }

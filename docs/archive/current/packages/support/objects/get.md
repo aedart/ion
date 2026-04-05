@@ -12,14 +12,14 @@ _Method is an alias for [Lodash `get`](https://lodash.com/docs/4.17.15#get)._
 _See also [`set()`](./set.md)._
 
 ```js
-import { get } from "@aedart/support/objects";
+import { get } from '@aedart/support/objects';
 
 const target = {
     a: 1234,
     b: {
         c: {
-            age: 24
-        }
+            age: 24,
+        },
     },
 };
 
@@ -36,8 +36,8 @@ const target = {
     a: 1234,
     b: {
         c: {
-            age: undefined
-        }
+            age: undefined,
+        },
     },
 };
 

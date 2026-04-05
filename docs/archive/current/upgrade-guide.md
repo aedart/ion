@@ -41,7 +41,7 @@ _More information available in the source code and `CHANGELOG.md`_
 ### Meta (`targetMeta()` and `inheritTargetMeta()`)
 
 The util functions `targetMeta()` and `inheritTargetMeta()` now throw a `MetaError` instead of previous `TypeError`.
-If you rely on `TypeError` as the type of exception being thrown in a try-catch statement, when decorating class members, then you should change it to `MetaError`. 
+If you rely on `TypeError` as the type of exception being thrown in a try-catch statement, when decorating class members, then you should change it to `MetaError`.
 
 ## From v0.6.x to v0.7.x
 
@@ -81,7 +81,7 @@ The `@aedart/vuepress-utils` has been upgraded to use vuepress `v2.0.0-rc.2`, me
         "@vuepress/core": "2.0.0-beta.61",
         "@vuepress/utils": "2.0.0-beta.61",
         "@vuepress/client": "2.0.0-beta.61"
-    }   
+    }
 }
 ```
 
@@ -91,7 +91,7 @@ The `@aedart/vuepress-utils` has been upgraded to use vuepress `v2.0.0-rc.2`, me
 {
     "devDependencies": {
         "@aedart/vuepress-utils": "^0.7.0"
-    }   
+    }
 }
 ```
 
@@ -111,23 +111,19 @@ If you are using these methods, then you need to upgrade or risk unexpected resu
 **_:x: Previously_**
 
 ```js
-import {
-    forgetAll,
-    hasAll,
-    hasAny
-} from "@aedart/support/objects";
+import { forgetAll, hasAll, hasAny } from '@aedart/support/objects';
 
-hasAny(target, [ 'a', 'b.c.age' ]);
-hasAll(target, [ 'a', 'b.c.age' ]);
-forgetAll(target, [ 'a', 'b.c.age' ]);
+hasAny(target, ['a', 'b.c.age']);
+hasAll(target, ['a', 'b.c.age']);
+forgetAll(target, ['a', 'b.c.age']);
 ```
 
 **_:heavy_check_mark: Now_**
 
 ```js
-hasAny(target, ...[ 'a', 'b.c.age' ]);
-hasAll(target, ...[ 'a', 'b.c.age' ]);
-forgetAll(target, ...[ 'a', 'b.c.age' ]);
+hasAny(target, ...['a', 'b.c.age']);
+hasAll(target, ...['a', 'b.c.age']);
+forgetAll(target, ...['a', 'b.c.age']);
 
 // ...Or
 hasAny(target, 'a', 'b.c.age');

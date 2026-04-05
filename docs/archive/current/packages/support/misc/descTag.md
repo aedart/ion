@@ -25,4 +25,3 @@ Object.prototype.toString.call(/* your value */);
 ```
 
 See [Mozilla's documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) for additional information.
-

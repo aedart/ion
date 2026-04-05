@@ -10,27 +10,29 @@ sidebarDepth: 0
 [`mixwith.js`](https://github.com/justinfagnani/mixwith.js) package (_originally licensed under [Apache License 2.0](https://github.com/justinfagnani/mixwith.js?tab=Apache-2.0-1-ov-file#readme)_).
 
 ```js
-import { mix, Mixin } from "@aedart/support/mixins";
+import { mix, Mixin } from '@aedart/support/mixins';
 
 // Define mixin
-const NameMixin = Mixin((superclass) => class extends superclass {
+const NameMixin = Mixin((superclass) =>
+    class extends superclass {
+        #name;
 
-    #name;
-    
-    set name(value) {
-        this.#name = value;
+        set name(value) {
+            this.#name = value;
+        }
+
+        get name() {
+            return this.#name;
+        }
     }
-    
-    get name() {
-        return this.#name;
-    }
-});
+);
 
 // Apply mixin...
 class Item extends mix().with(
-    NameMixin
-) {
-    // ...not shown...    
+    NameMixin,
+)
+{
+    // ...not shown...
 }
 
 // ...Later in your application

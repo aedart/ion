@@ -12,14 +12,14 @@ _Method is an alias for [Lodash `hasIn`](https://lodash.com/docs/4.17.15#hasIn).
 _See also [`isset()`](./isset.md)._
 
 ```js
-import { has } from "@aedart/support/objects";
+import { has } from '@aedart/support/objects';
 
 const target = {
     a: 1234,
     b: {
         c: {
-            age: 24
-        }
+            age: 24,
+        },
     },
 };
 

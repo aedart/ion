@@ -14,19 +14,22 @@ Determines if a target class _"looks like"_ the provided class "blueprint".
 
 `classLooksLike()` accepts the following arguments:
 
-- `target: object` - the target class object.
-- `blueprint: ClassBlueprint` - a blueprint that defines the expected members of a class (_see [Class Blueprint](#class-blueprint) for details._). 
+* `target: object` - the target class object.
+* `blueprint: ClassBlueprint` - a blueprint that defines the expected members of a class (_see [Class Blueprint](#class-blueprint) for details._).
 
 ```js
 import { classLooksLike } from '@aedart/support/reflections';
 
-class A {}
+class A
+{}
 
-class B {
-    foo() {}
+class B
+{
+    foo()
+    {}
 }
 
-const blueprint = { members: [ 'foo' ] };
+const blueprint = { members: ['foo'] };
 
 classLooksLike(A, blueprint); // false
 classLooksLike(B, blueprint); // true
@@ -35,29 +38,35 @@ classLooksLike(B, blueprint); // true
 ## Class Blueprint
 
 The class "blueprint" is an object that defines the expected members (_property keys_) of a target class.
-All defined members must exist in target class' prototype, before the `classLooksLike()` returns `true`. 
+All defined members must exist in target class' prototype, before the `classLooksLike()` returns `true`.
 
 You can specify either or both of the following properties in a class blueprint object:
 
-- `members: PropertyKey[]` - (_optional_) Properties or methods expected to exist in class' prototype.
-- `staticMembers: PropertyKey[]` - (_optional_) Properties or methods expected to exist in class as static members.
+* `members: PropertyKey[]` - (_optional_) Properties or methods expected to exist in class' prototype.
+* `staticMembers: PropertyKey[]` - (_optional_) Properties or methods expected to exist in class as static members.
 
 **Note:** _If you do not specify either `members` or `staticMembers`, then a `TypeError` is thrown._
 
 ```js
-class A {
-    foo() {}
+class A
+{
+    foo()
+    {}
 
-    bar() {}
+    bar()
+    {}
 }
 
-class B {
-    foo() {}
-    
-    static bar() {}
+class B
+{
+    foo()
+    {}
+
+    static bar()
+    {}
 }
 
-const blueprint = { members: [ 'foo' ], staticMembers: [ 'bar' ] };
+const blueprint = { members: ['foo'], staticMembers: ['bar'] };
 
 classLooksLike(A, blueprint); // false
 classLooksLike(B, blueprint); // true
@@ -69,15 +78,19 @@ classLooksLike(B, blueprint); // true
 and inherited members will automatically be included in the check.
 
 ```js
-class A {
-    foo() {}
+class A
+{
+    foo()
+    {}
 }
 
-class B extends A {
-    bar() {}
+class B extends A
+{
+    bar()
+    {}
 }
 
-const blueprint = { members: [ 'foo', 'bar' ]};
+const blueprint = { members: ['foo', 'bar'] };
 
 classLooksLike(A, blueprint); // false
 classLooksLike(B, blueprint); // true

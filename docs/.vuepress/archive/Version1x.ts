@@ -1,4 +1,4 @@
-import {PagesCollection} from "@aedart/vuepress-utils/navigation";
+import { PagesCollection } from '@aedart/vuepress-utils/navigation';
 
 /**
  * Version 1.x
@@ -15,6 +15,6 @@ export default PagesCollection.make('v1.x', '/v1x', [
             // 'security',
             // 'code-of-conduct',
             // 'origin',
-        ]
+        ],
     },
 ]);

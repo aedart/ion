@@ -11,7 +11,7 @@ The `@aedart/support/facades` package is an adaptation of [Laravel's Facades](ht
 underlying object instance, resolved from the [Service Container](../../container/README.md).
 
 ```js
-import { Container } from "@aedart/support/facades";
+import { Container } from '@aedart/support/facades';
 
 const service = Container.obtain().make('api_service');
 ```
@@ -24,8 +24,8 @@ Before you can make use of facades, you must ensure that the `Facade` abstractio
 This can be done via the static `setContainer()` method.
 
 ```js
-import { Container } from "@aedart/container";
-import { Facade } from "@aedart/support/facades";
+import { Container } from '@aedart/container';
+import { Facade } from '@aedart/support/facades';
 
 // Somewhere in your application's setup or boot logic...
 Facade.setContainer(Container.getInstance());
@@ -43,7 +43,7 @@ Facade.destroy();
 To define your own Facade, extend the abstract `Facade` class, and specify the target [binding identifier](../../container/bindings.md#identifiers).
 
 ```js
-import { Facade } from "@aedart/support/facades";
+import { Facade } from '@aedart/support/facades';
 
 export default class ApiFacade extends Facade
 {
@@ -58,14 +58,14 @@ If you are using TypeScript, then you can also specify the return type of the `o
 underlying resolved object's type, for the internal `type` property (_`type` property is not used for any other purpose_).
 
 ```ts
-import type { Identifier } from "@aedart/contracts/container";
-import { Facade } from "@aedart/support/facades";
-import type { AcmeApiClient } from "@acme/contracts/api";
+import type { AcmeApiClient } from '@acme/contracts/api';
+import type { Identifier } from '@aedart/contracts/container';
+import { Facade } from '@aedart/support/facades';
 
 export default class ApiFacade extends Facade
 {
     protected static type: AcmeApiClient;
-    
+
     public static getIdentifier(): Identifier
     {
         return 'api_client';
@@ -96,7 +96,7 @@ export default class LimitedApiFacade extends Facade
         const client = this.resolve(this.getIdentifier());
         client.error_response_thresshold = 3;
         client.ttl = 350;
-        
+
         return client;
     }
 }
@@ -112,14 +112,15 @@ When you need to test components that rely on Facades, you can register a "spy" 
 method `spy()`. Consider, for instance, that you have a users repository component that relies on a custom Api facade.
 
 ```js
-import { ApiFacade } from "@acme/facades";
+import { ApiFacade } from '@acme/facades';
 
-class UsersRepository {
-    
-    fetch() {
+class UsersRepository
+{
+    fetch()
+    {
         return ApiFacade.obtain().fetch('https://acme.com/api/users');
     }
-    
+
     // ...remaining not shown...
 }
 ```
@@ -138,27 +139,25 @@ ApiFacade.spy((container, identifier) => {
 });
 ```
 
-All subsequent calls to the facade's underlying object will be made to the registered "spy" object instead. 
+All subsequent calls to the facade's underlying object will be made to the registered "spy" object instead.
 
 The following example uses [Jasmine](https://jasmine.github.io/) as testing framework.
 However, the `spy()` method is not tied to any specific testing or object mocking framework. Feel free to use whatever
 testing tools or frameworks fits your purpose best.
 
 ```js
-import { ApiFacade } from "@acme/facades";
-import { UsersRepository } from "@app";
+import { ApiFacade } from '@acme/facades';
+import { UsersRepository } from '@app';
 
 // E.g. testing via Jasmine Framework...
 describe('@acme/api', () => {
-
     // Test setup not shown in this example...
-    
+
     afterEach(() => {
         Facade.destroy();
     });
-    
-    it('can obtain users', () => {
 
+    it('can obtain users', () => {
         let mocked = null;
         ApiFacade.spy((container, identifier) => {
             const apiClient = container.get(identifier);
@@ -177,7 +176,7 @@ describe('@acme/api', () => {
 
         const repo = new UsersRepository();
         const users = repo.fetch();
-        
+
         expect(users)
             .not
             .toBeUndefined();
@@ -191,4 +190,4 @@ describe('@acme/api', () => {
 ## Onward
 
 Please consider reading Laravel's ["When to Utilize Facades"](https://laravel.com/docs/11.x/facades#when-to-use-facades),
-to gain an idea of when using Facades can be good, and when not. 
+to gain an idea of when using Facades can be good, and when not.

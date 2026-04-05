@@ -12,36 +12,40 @@ target class.
 
 ```js
 container.when(ApiService)
-        .needs('storage')
-        .give(CookieStorage);
+    .needs('storage')
+    .give(CookieStorage);
 
 container.when(UsersRepository, BooksRepository)
-        .needs('api_client')
-        .give(() => {
-           return new AcmeApiClient(); 
-        });
+    .needs('api_client')
+    .give(() => {
+        return new AcmeApiClient();
+    });
 ```
 
-To illustrate the usefulness of contextual binding a bit further, consider the following example: 
+To illustrate the usefulness of contextual binding a bit further, consider the following example:
 
 ```js
 @dependency('storage')
-class A {
+class A
+{
     // ...not shown...
 }
 
 @dependency('storage')
-class B {
+class B
+{
     // ...not shown...
 }
 
 @dependency('storage')
-class C {
+class C
+{
     // ...not shown...
 }
 
 @dependency('storage')
-class D {
+class D
+{
     // ...not shown...
 }
 

@@ -34,8 +34,8 @@ You can also determine if multiple values differ from `undefined` and `null`.
 **Note**: _All given values must differ from `undefined` and `null`, before method returns `true`._
 
 ```js
-isset('foo', { name: 'Jane' }, [ 1, 2, 3 ]); // true
+isset('foo', { name: 'Jane' }, [1, 2, 3]); // true
 
-isset('foo', null, [ 1, 2, 3 ]); // false
+isset('foo', null, [1, 2, 3]); // false
 isset('foo', { name: 'Jane' }, undefined); // false
 ```

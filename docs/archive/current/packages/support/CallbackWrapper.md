@@ -9,7 +9,7 @@ sidebarDepth: 0
 The `CallbackWrapper` objects offers a convenient way to wrap a callable function.
 
 ```js
-import { CallbackWrapper } from "@aedart/support";
+import { CallbackWrapper } from '@aedart/support';
 
 const wrapped = CallbackWrapper.make(() => {
     return 'Hi there...';
@@ -35,7 +35,7 @@ wrapped.call(); // true
 
 ## Arguments
 
-There are several ways to specify arguments that must be applied for the wrapped callback, when `call()` is invoked.  
+There are several ways to specify arguments that must be applied for the wrapped callback, when `call()` is invoked.
 
 ### Via `make()`
 
@@ -43,9 +43,13 @@ The static `make()` method allows you to specify arguments right away.
 This is useful, if you already know the arguments.
 
 ```js
-const wrapped = CallbackWrapper.make((firstname, lastname) => {
-    return `Hi ${firstname} ${lastname}`;
-}, 'Timmy', 'Jackson');
+const wrapped = CallbackWrapper.make(
+    (firstname, lastname) => {
+        return `Hi ${firstname} ${lastname}`;
+    },
+    'Timmy',
+    'Jackson',
+);
 
 wrapped.call(); // Hi Timmy Jackson
 ```
@@ -75,7 +79,7 @@ const wrapped = CallbackWrapper.make((firstname, lastname) => {
     return `Hi ${firstname} ${lastname}`;
 });
 
-wrapped.arguments = [ 'Alpha', 'Zero' ];
+wrapped.arguments = ['Alpha', 'Zero'];
 wrapped
     .call(); // Hi Alpha Zero
 ```
@@ -85,14 +89,17 @@ wrapped
 Use `bind()` to specify the callback's [`this` value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 
 ```js
-class A {
-    sayHi(name) {
+class A
+{
+    sayHi(name)
+    {
         return `Hi ${name}`;
     }
 }
 const instance = new A();
 
-const wrapped = CallbackWrapper.make(function(name) {
+const wrapped = CallbackWrapper.make(function(name)
+{
     return this.sayHi(name);
 });
 
@@ -125,7 +132,8 @@ wrapped
 
 ```js
 // Callback Wrapper for normal function...
-const wrapped = CallbackWrapper.make(function () {
+const wrapped = CallbackWrapper.make(function()
+{
     // ...not shown ...
 });
 
@@ -133,6 +141,7 @@ wrapped
     .bind(myObject)
     .call();
 ```
+
 :::
 
 ## Misc.
@@ -140,7 +149,7 @@ wrapped
 If you need to determine if a value is a "callback wrapper" object, then you can use the `isCallbackWrapper()` util.
 
 ```js
-import { isCallbackWrapper, CallbackWrapper } from "@aedart/support";
+import { CallbackWrapper, isCallbackWrapper } from '@aedart/support';
 
 isCallbackWrapper(() => true); // false
 isCallbackWrapper(CallbackWrapper.make(() => true)); // true
@@ -153,14 +162,20 @@ isCallbackWrapper(CallbackWrapper.make(() => true)); // true
 ```js
 // Custom implementation of a callback wrapper
 const custom = {
-    'callback': function() { /* not shown */ },
+    'callback': function()
+    {/* not shown */},
     'binding': undefined,
     'arguments': [],
-    'with': function() { /* not shown */ },
-    'hasArguments': function() { /* not shown */ },
-    'bind': function() { /* not shown */ },
-    'hasBinding': function() { /* not shown */ },
-    'call': function() { /* not shown */ },
+    'with': function()
+    {/* not shown */},
+    'hasArguments': function()
+    {/* not shown */},
+    'bind': function()
+    {/* not shown */},
+    'hasBinding': function()
+    {/* not shown */},
+    'call': function()
+    {/* not shown */},
 };
 
 isCallbackWrapper(custom); // true

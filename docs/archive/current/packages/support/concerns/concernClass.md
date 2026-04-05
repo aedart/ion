@@ -15,16 +15,18 @@ This chapter shows how to create a new concern class.
 To create a new concern class, you can inherit from the `AbstractConcern` class.
 
 ```js
-import { AbstractConcern } from "@aedart/support/concerns";
+import { AbstractConcern } from '@aedart/support/concerns';
 
-class MyConcern extends AbstractConcern {
-    
-    get message() { /* ...not shown */ }
-    set message(message) { /* ...not shown */ }
-    
-    foo() { /* ...not shown */ }
-    
-    [MY_SYMBOL]() { /* ...not shown */ }
+class MyConcern extends AbstractConcern
+{
+    get message() {/* ...not shown */}
+    set message(message) {/* ...not shown */}
+
+    foo()
+    {/* ...not shown */}
+
+    [MY_SYMBOL]()
+    {/* ...not shown */}
 }
 ```
 
@@ -34,7 +36,7 @@ To configure which members should be made available for aliasing, see [Customise
 ### Private Members
 
 ::: warning Note
-Private methods and properties are **NEVER** "aliased" into a target class.    
+Private methods and properties are **NEVER** "aliased" into a target class.\
 :::
 
 ### Static Members
@@ -53,7 +55,8 @@ Some transpilers, like [Babel](https://babeljs.io/) and [TypeScript](https://www
 For instance:
 
 ```js
-class A {
+class A
+{
     foo = 'bar';
 }
 ```
@@ -61,23 +64,25 @@ class A {
 becomes like the following, after it has been transpiled:
 
 ```js
-class A {
-    constructor() {
+class A
+{
+    constructor()
+    {
         this.foo = 'bar';
     }
 }
 ```
 
-
 When this happens, properties cannot be "aliased". The concern mechanisms relies on the class' prototype for reading
 what properties are available. To overcome such an issue, you can use [getters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) and [setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set) instead.
 
 ```js
-class A {
+class A
+{
     #foo = 'bar';
-    
+
     get foo() {
-        return this.#foo
+        return this.#foo;
     }
 
     set foo(v) {
@@ -94,20 +99,23 @@ If you wish to customise what properties and methods _should_ be available for [
 target class, overwrite the static `PROVIDES` method.
 
 ```js
-import { AbstractConcern, PROVIDES } from "@aedart/support/concerns";
+import { AbstractConcern, PROVIDES } from '@aedart/support/concerns';
 
-class MyConcern extends AbstractConcern {
-    
-    get message() { /* ...not shown */ }
-    set message(message) { /* ...not shown */ }
-    foo() { /* ...not shown */ }
-    [MY_SYMBOL]() { /* ...not shown */ }
-    
-    static [PROVIDES]() {
+class MyConcern extends AbstractConcern
+{
+    get message() {/* ...not shown */}
+    set message(message) {/* ...not shown */}
+    foo()
+    {/* ...not shown */}
+    [MY_SYMBOL]()
+    {/* ...not shown */}
+
+    static [PROVIDES]()
+    {
         // Make "message" and "foo" available for aliasing...
         return [
             'message',
-            'foo'
+            'foo',
         ];
     }
 }
@@ -128,8 +136,10 @@ This allows you to create interaction between the target instance and your conce
 number of situations. For instance, you can use the `concernOwner` to create a [fluent design](https://en.wikipedia.org/wiki/Fluent_interface) of your utilities.
 
 ```js
-class ConcernsPeople extends AbstractConcern {
-    with(value) {
+class ConcernsPeople extends AbstractConcern
+{
+    with(value)
+    {
         // ...not shown here...
 
         return this.concernOwner;
@@ -137,8 +147,10 @@ class ConcernsPeople extends AbstractConcern {
 }
 
 @use(ConcernsPeople)
-class Invitation {
-    invite() { /* ...not shown here... */ }
+class Invitation
+{
+    invite()
+    {/* ...not shown here... */}
 }
 
 const party = new Invitation();
@@ -158,10 +170,12 @@ A concern's constructor is only given the target class instance as argument.
 _See [booting](./booting.md) for additional information._
 
 ```js
-class Recording extends AbstractConcern {
-    constructor(owner) {
+class Recording extends AbstractConcern
+{
+    constructor(owner)
+    {
         super(owner);
-        
+
         // ...perform your initialisation here...
     }
 }

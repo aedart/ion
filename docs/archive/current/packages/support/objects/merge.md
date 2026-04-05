@@ -14,7 +14,7 @@ Behind the scene, most value types are deep copied via [`structuredClone`](https
 **Example**
 
 ```js
-import { merge } from "@aedart/support/objects";
+import { merge } from '@aedart/support/objects';
 
 const person = {
     'name': 'Alice',
@@ -22,7 +22,7 @@ const person = {
 
 const address = {
     'address': {
-        'street': 'Somewhere Street 43'
+        'street': 'Somewhere Street 43',
     },
 };
 
@@ -46,17 +46,18 @@ The above shown example results in a new object that looks like this:
 
 Be default, the following value types are only [shallow copied](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy):
 
-- [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)
-- [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
+* [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)
+* [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 
 ```js
 const a = {
     'foo': null,
-    'bar': Symbol('my_symbol')
+    'bar': Symbol('my_symbol'),
 };
 
 const b = {
-    'foo': function() {},
+    'foo': function()
+    {},
 };
 
 const result = merge(a, b);
@@ -71,11 +72,11 @@ Property keys that are considered "unsafe", are never copied.
 
 ```js
 const a = {
-    'foo': 'bar'
+    'foo': 'bar',
 };
 const b = {
-    __proto__: { 'is_admin': true }
-}
+    __proto__: { 'is_admin': true },
+};
 
 const result = merge(a, b);
 
@@ -91,7 +92,7 @@ _See [`isUnsafeKey()`](../reflections/isKeyUnsafe.md) for additional details._
 
 ```js
 merge()
-    .using({ /** option: value */ })
+    .using({/** option: value */})
     .of(objA, objB, objC);
 ```
 
@@ -110,22 +111,22 @@ A `MergeError` is thrown, if the maximum depth is exceeded.
 ```js
 const a = {
     'person': {
-        'name': 'Una'
-    }
+        'name': 'Una',
+    },
 };
 
 const b = {
-    'person': {         // Level 0
-        'age': 24,      // Level 1
+    'person': { // Level 0
+        'age': 24, // Level 1
         'address': {
-            'street': 'Somewhere Str. 654' // Level 2
-        }
-    }
+            'street': 'Somewhere Str. 654', // Level 2
+        },
+    },
 };
 
 const result = merge()
     .using({
-        depth: 1
+        depth: 1,
     })
     .of(a, b); // MergeError - Maximum merge depth (1) has been exceeded
 ```
@@ -141,22 +142,22 @@ It accepts an array of property keys or a callback.
 ```js
 const a = {
     'person': {
-        'name': 'Ulrik'
-    }
+        'name': 'Ulrik',
+    },
 };
 
 const b = {
     'person': {
         'age': 36,
         'address': {
-            'street': 'Nowhere Str. 12'
-        }
-    }
+            'street': 'Nowhere Str. 12',
+        },
+    },
 };
 
 const result = merge()
     .using({
-        skip: [ 'age' ]
+        skip: ['age'],
     })
     .of(a, b);
 ```
@@ -183,32 +184,32 @@ When specifying a list of property keys, then the depth level in which the prope
 You can use a callback, if you need to handle more advanced skip logic.
 The callback accepts the the following arguments:
 
-- `key: PropertyKey` - The current property that is being processed.
-- `source: object` - The source object that contains the key.
-- `result: object` - The resulting object (_relative to the current depth that is being processed_).
+* `key: PropertyKey` - The current property that is being processed.
+* `source: object` - The source object that contains the key.
+* `result: object` - The resulting object (_relative to the current depth that is being processed_).
 
 The callback MUST return a boolean value; `true` if given key must be skipped, `false` otherwise.
 
 ```js
 const a = {
     'person': {
-        'name': 'Jane'
-    }
+        'name': 'Jane',
+    },
 };
 
 const b = {
     'person': {
         'name': 'James',
         'address': {
-            'street': 'Sunview Palace 88'
-        }
-    }
+            'street': 'Sunview Palace 88',
+        },
+    },
 };
 
 const b = {
     'person': {
         'name': 'White',
-    }
+    },
 };
 
 const result = merge()
@@ -216,8 +217,8 @@ const result = merge()
         skip: (key, source, result) => {
             return key === 'name'
                 && source[key] !== null
-                && !Reflect.has(result, key); 
-        }
+                && !Reflect.has(result, key);
+        },
     })
     .of(a, b);
 ```
@@ -249,7 +250,7 @@ merge(a, b); // { 'foo': undefined }
 
 merge()
     .using({ overwriteWithUndefined: false })
-    .of(a, b) // { 'foo': true }
+    .of(a, b); // { 'foo': true }
 ```
 
 ### `useCloneable`
@@ -261,15 +262,18 @@ rather than the source object itself.
 
 ```js
 const a = { 'foo': { 'name': 'John Doe' } };
-const b = { 'foo': {
-     'name': 'Jane Doe',
-     clone() {
-         return {
-             'name': 'Rick Doe',
-             'age': 26
-         }
-     }
-} };
+const b = {
+    'foo': {
+        'name': 'Jane Doe',
+        clone()
+        {
+            return {
+                'name': 'Rick Doe',
+                'age': 26,
+            };
+        },
+    },
+};
 
 merge(a, b); // { 'foo': { 'name': 'Rick Doe', 'age': 26 } }
 
@@ -280,13 +284,13 @@ merge()
 
 ### `mergeArrays`
 
-When enabled, arrays, [array-like](../arrays/isArrayLike.md), and [concat spreadable](../arrays/isConcatSpreadable.md) objects are merged.  
+When enabled, arrays, [array-like](../arrays/isArrayLike.md), and [concat spreadable](../arrays/isConcatSpreadable.md) objects are merged.
 
 **Note**: _By default, existing array values are NOT merged._
 
 ```js
-const a = { 'foo': [ 1, 2, 3 ] };
-const b = { 'foo': [ 4, 5, 6 ] };
+const a = { 'foo': [1, 2, 3] };
+const b = { 'foo': [4, 5, 6] };
 
 merge(a, b); // { 'foo': [ 4, 5, 6 ] }
 
@@ -305,15 +309,15 @@ _See [Array Merge Options](../arrays/merge.md#merge-options)._
 
 In situations when you need more advanced merge logic, you may specify a custom callback.
 
-The callback is _**responsible**_ for returning the value to be merged, from a given source object. 
+The callback is _**responsible**_ for returning the value to be merged, from a given source object.
 
 ```js
 const a = {
-    'a': 1
+    'a': 1,
 };
 
 const b = {
-    'b': 2
+    'b': 2,
 };
 
 const result = merge()
@@ -325,7 +329,7 @@ const result = merge()
             }
 
             return value;
-        }
+        },
     })
     .of(a, b); // { 'a': 1, 'b': 3 }
 ```
@@ -350,29 +354,29 @@ const result = merge()
 
 The merge callback is given the following arguments:
 
-- `target: MergeSourceInfo` - The source target information (_see below_).
-- `next: NextCallback` - Callback to invoke for merging nested objects (_next depth level_).
-- `options: Readonly<MergeOptions>` - The merge options to be applied.
+* `target: MergeSourceInfo` - The source target information (_see below_).
+* `next: NextCallback` - Callback to invoke for merging nested objects (_next depth level_).
+* `options: Readonly<MergeOptions>` - The merge options to be applied.
 
 **`target: MergeSourceInfo`**
 
 The source target information object contains the following properties:
 
-- `result: object` - The resulting object (_relative to object depth_)
-- `key: PropertyKey` - The target property key in source object to.
-- `value: any` - Value of the property in source object.
-- `source: object` - The source object that holds the property key and value.
-- `sourceIndex: number` - Source object's index (_relative to object depth_).
-- `depth: number` - The current recursion depth.
+* `result: object` - The resulting object (_relative to object depth_)
+* `key: PropertyKey` - The target property key in source object to.
+* `value: any` - Value of the property in source object.
+* `source: object` - The source object that holds the property key and value.
+* `sourceIndex: number` - Source object's index (_relative to object depth_).
+* `depth: number` - The current recursion depth.
 
 **`next: NextCallback`**
 
 The callback to perform the merging of nested objects.
 It accepts the following arguments:
 
-- `sources: object[]` - The nested objects to be merged.
-- `options: Readonly<MergeOptions>` - The merge options to be applied.
-- `nextDepth: number` - The next recursion depth number.
+* `sources: object[]` - The nested objects to be merged.
+* `options: Readonly<MergeOptions>` - The merge options to be applied.
+* `nextDepth: number` - The next recursion depth number.
 
 #### Onward
 

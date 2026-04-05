@@ -11,13 +11,14 @@ from target's prototype that matches given property key.
 
 It accepts the following arguments:
 
-- `target: ConstructorOrAbstractConstructor` - The target class.
-- `key: PropertyKey` - Name of the property.
+* `target: ConstructorOrAbstractConstructor` - The target class.
+* `key: PropertyKey` - Name of the property.
 
 ```js
 import { getClassPropertyDescriptor } from '@aedart/support/reflections';
 
-class A {
+class A
+{
     set name(v) {}
     get name() {}
 }
@@ -29,17 +30,19 @@ The above show example results in the given output:
 
 ```js
 const output = {
-    get: function () { /* ...Not shown... */ },
-    set: function (v) { /* ..Not shown... */ },
+    get: function()
+    {/* ...Not shown... */},
+    set: function(v)
+    {/* ..Not shown... */},
     enumerable: false,
-    configurable: true
+    configurable: true,
 };
 ```
 
 ::: tip Note
-`getClassPropertyDescriptor()` returns `undefined` if requested key does not exist in class' prototype. 
+`getClassPropertyDescriptor()` returns `undefined` if requested key does not exist in class' prototype.
 :::
 
 ::: warning Caution
-`getClassPropertyDescriptor()` throws `TypeError` if target does not have a `prototype` property. 
+`getClassPropertyDescriptor()` throws `TypeError` if target does not have a `prototype` property.
 :::

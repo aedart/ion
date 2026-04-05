@@ -16,21 +16,24 @@ different injected concern classes define the same property or method name. When
 is thrown.
 
 ```js
-class Label extends AbstractConcern {
-    get name() { /* ...not shown.. */ }
-    set name(v) { /* ...not shown.. */ }
+class Label extends AbstractConcern
+{
+    get name() {/* ...not shown.. */}
+    set name(v) {/* ...not shown.. */}
 }
 
-class Category extends AbstractConcern {
-    get name() { /* ...not shown.. */ }
-    set name(v) { /* ...not shown.. */ }
+class Category extends AbstractConcern
+{
+    get name() {/* ...not shown.. */}
+    set name(v) {/* ...not shown.. */}
 }
 
 @use(
     Label,
-    Category // AliasConflictError: Alias "name" for property ...
+    Category, // AliasConflictError: Alias "name" for property ...
 )
-class Battery {}
+class Battery
+{}
 ```
 
 ## Resolve Naming Conflicts
@@ -46,11 +49,12 @@ injecting a concern class, via an injection configuration object.
     {
         concern: Category,
         aliases: {
-            'name': 'category' // Alias Category's "name" property as "category"
-        }
-    }
+            'name': 'category', // Alias Category's "name" property as "category"
+        },
+    },
 )
-class Battery {}
+class Battery
+{}
 
 const instance = new Battery();
 instance.name = 'AAA';
@@ -58,24 +62,26 @@ instance.category = 'Rechargeable';
 ```
 
 The `aliases` option is key-value record, where;
-- key = property key in the concern class.
-- value = property key (_alias_) to define in the target class.
+
+* key = property key in the concern class.
+* value = property key (_alias_) to define in the target class.
 
 ## Prevent Aliases
 
-To prevent a concern class from defining any aliases inside a target class, set the `allowAliases` option to `false`. 
+To prevent a concern class from defining any aliases inside a target class, set the `allowAliases` option to `false`.
 
 ```js
-import { getConcernsContainer } from "@aedart/support/concerns";
+import { getConcernsContainer } from '@aedart/support/concerns';
 
 @use(
     Label,
     {
         concern: Category,
-        allowAliases: false // Category's "name" is NOT aliased in target
-    }
+        allowAliases: false, // Category's "name" is NOT aliased in target
+    },
 )
-class Battery {}
+class Battery
+{}
 
 const instance = new Battery();
 instance.name = 'AA';
@@ -88,16 +94,17 @@ getConcernsContainer(instance).get(Category).name = 'Rechargeable';
 
 You can also use a shorthand version to specify a concern injection configuration, via an array.
 The first array value must always be the concern class that must be injected.
-The second value can either be an `aliases` object, or boolean value for setting the `allowAliases` option. 
+The second value can either be an `aliases` object, or boolean value for setting the `allowAliases` option.
 
 ```js
 @use(
     Label,
     [Category, {
-        'name': 'category'
-    }]
+        'name': 'category',
+    }],
 )
-class Battery {}
+class Battery
+{}
 ```
 
 And to prevent a concern from defining aliases in a target:
@@ -105,7 +112,8 @@ And to prevent a concern from defining aliases in a target:
 ```js
 @use(
     Label,
-    [Category, false]
+    [Category, false],
 )
-class Battery {}
+class Battery
+{}
 ```

@@ -14,27 +14,25 @@ It uses [Luxon](https://moment.github.io/luxon/#/) to perform the formatting.
 In your [Config File](https://v2.vuepress.vuejs.org/guide/configuration.html#config-file), add the `lastUpdatedPlugin()`:
 
 ```ts
-import {defineUserConfig} from 'vuepress';
-import {lastUpdatedPlugin} from "@aedart/vuepress-utils/plugins";
+import { lastUpdatedPlugin } from '@aedart/vuepress-utils/plugins';
+import { defineUserConfig } from 'vuepress';
 
 export default defineUserConfig({
-    
     // ...other settings not shown...
-    
+
     plugins: [
-        
-        lastUpdatedPlugin()
-    ]
+        lastUpdatedPlugin(),
+    ],
 });
 ```
 
 ## Format
 
-Use the `format` argument to specify your desired datetime format. 
+Use the `format` argument to specify your desired datetime format.
 See [Luxon documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for available format tokens.
 
 ```ts
-lastUpdatedPlugin({ format: 'dd-MM-yyyy HH:mm:ss' })
+lastUpdatedPlugin({ format: 'dd-MM-yyyy HH:mm:ss' });
 ```
 
 ::: tip Note

@@ -9,17 +9,17 @@ sidebarDepth: 0
 Determine if a value is "callable" - a function that is not a [class constructor](./isClassConstructor.md).
 
 ```js
-import { isCallable } from "@aedart/support/reflections";
+import { isCallable } from '@aedart/support/reflections';
 
 isCallable(null); // false
 isCallable({}); // false
 isCallable([]); // false
 isCallable(class {}); // false
 
-isCallable(function() {}); // true
+isCallable(function()
+{}); // true
 isCallable(() => {}); // true
 isCallable(Array); // true
-
 ```
 
 **Acknowledgement**

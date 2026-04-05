@@ -22,6 +22,7 @@ Behind the scene, the `isKeyUnsafe()` function matches the given key against val
 which is defined in the `@aedart/contracts/support/objects` submodule;
 
 ```js
-import { DANGEROUS_PROPERTIES } from "@aedart/contracts/support/objects";
+import { DANGEROUS_PROPERTIES } from '@aedart/contracts/support/objects';
 ```
+
 :::

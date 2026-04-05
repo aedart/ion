@@ -19,7 +19,7 @@ _Please review the [`CHANGELOG.md`](https://github.com/aedart/ion/blob/main/CHAN
 ## Support Policy
 
 | Version | TypeScript | ECMA Script | Release            | Security Fixes Until   |
-|---------|------------|-------------|--------------------|------------------------|
+| ------- | ---------- | ----------- | ------------------ | ---------------------- |
 | `1.x`   | `5.0 - ?`  | _TBD_       | _TBD_              | _TBD_                  |
 | `0.x`*  | `5.0`      | `ES2022`    | _ongoing releases_ | _until `v1.x` release_ |
 
@@ -35,7 +35,7 @@ An adaptation of Laravel's Service Container that offers a way to with powerful 
 dependency injection.
 
 ```js
-import { Container } from "@aedart/container";
+import { Container } from '@aedart/container';
 
 container.bind('storage', () => {
     return new CloudService('s3');
@@ -47,13 +47,13 @@ const storage = container.make('storage');
 
 For additional examples, see the [Service Container documentation](./packages/container/README.md).
 
-### Facades  <Badge type="tip" text="Available since v0.11" />
+### Facades <Badge type="tip" text="Available since v0.11" />
 
 Adaptation of Laravel's Facade component. It acts as an interface or gateway to an underlying object that is resolved
 from the Service Container.
 
 ```js
-import { Facade } from "@aedart/support/facades";
+import { Facade } from '@aedart/support/facades';
 
 export default class ApiFacade extends Facade
 {
@@ -75,18 +75,21 @@ Intended as an alternative to mixins, the [Concerns](./packages/support/concerns
 way to overcome some of the limitations of single inheritance.
 
 ```js
-import { use, AbstractConcern } from "@aedart/support/concerns";
+import { AbstractConcern, use } from '@aedart/support/concerns';
 
 // A concern class...
-class Role extends AbstractConcern {
-    addRole(name) {
+class Role extends AbstractConcern
+{
+    addRole(name)
+    {
         /* ...not shown... */
     }
 }
 
 // Use concern in target class...
 @use(Role)
-class User {}
+class User
+{}
 
 // Later in your application...
 const user = new User();
@@ -99,7 +102,7 @@ user.addRole('supporter');
 Objects [merge](./packages/support/objects/merge.md) utility, using [deep copy](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy).
 
 ```js
-import { merge } from "@aedart/support/objects";
+import { merge } from '@aedart/support/objects';
 
 const a = {
     'name': 'Alin',
@@ -107,7 +110,7 @@ const a = {
 
 const b = {
     'address': {
-        'street': 'Northern Street 1'
+        'street': 'Northern Street 1',
     },
 };
 
@@ -119,23 +122,26 @@ const result = merge(a, b); // { 'name': 'Alin', 'address': { 'street': '...' } 
 Adaptation of Justin Fagnani's [`mixwith.js`](https://github.com/justinfagnani/mixwith.js).
 
 ```js
-import { mix, Mixin } from "@aedart/support/mixins";
+import { mix, Mixin } from '@aedart/support/mixins';
 
-const NameMixin = Mixin((superclass) => class extends superclass {
-    #name;
-    
-    set name(value) {
-        this.#name = value;
+const NameMixin = Mixin((superclass) =>
+    class extends superclass {
+        #name;
+
+        set name(value) {
+            this.#name = value;
+        }
+
+        get name() {
+            return this.#name;
+        }
     }
-    
-    get name() {
-        return this.#name;
-    }
-});
+);
 
 class Item extends mix().with(
-    NameMixin
-) {}
+    NameMixin,
+)
+{}
 
 // ...Later in your application
 const item = new Item();
@@ -152,12 +158,13 @@ Associate arbitrary metadata directly with the target element that is being deco
 _See [target meta decorator](./packages/support/meta/targetMeta.md) fro additional details._
 
 ```js
-import {targetMeta, getTargetMeta} from '@aedart/support/meta';
+import { getTargetMeta, targetMeta } from '@aedart/support/meta';
 
-class Service {
-
+class Service
+{
     @targetMeta('desc', 'Seaches for cities')
-    search() {
+    search()
+    {
         // ...not shown...
     }
 }
@@ -173,10 +180,11 @@ getTargetMeta(instance.search, 'desc'); // Seaches for cities
 The [meta decorator](./packages/support/meta/README.md) is able to associate arbitrary metadata with a class and its elements.
 
 ```js
-import {meta, getMeta} from '@aedart/support/meta';
+import { getMeta, meta } from '@aedart/support/meta';
 
 @meta('description', 'Able to search for locations')
-class Service {}
+class Service
+{}
 
 getMeta(Service, 'description'); // Able to search for locations
 ```

@@ -13,12 +13,12 @@ symbol [`Symbol.isConcatSpreadable`](https://developer.mozilla.org/en-US/docs/We
 import { isConcatSpreadable } from '@aedart/support/arrays';
 
 isConcatSpreadable(null); // false
-isConcatSpreadable([ 1, 2, 3 ]); // false
+isConcatSpreadable([1, 2, 3]); // false
 isConcatSpreadable({}); // false
 
 // -------------------------------------------------------------------------
 
-const arr = [ 1, 2, 3 ];
+const arr = [1, 2, 3];
 arr[Symbol.isConcatSpreadable] = true;
 isConcatSpreadable(arr); // true
 
@@ -33,14 +33,16 @@ const obj = {
     length: 3,
     0: 'a',
     1: 'b',
-    2: 'c'
+    2: 'c',
 };
 isConcatSpreadable(obj); // true
 
-// ------------------------------------------------------------------------- 
+// -------------------------------------------------------------------------
 
-class A {}
-class B {
+class A
+{}
+class B
+{
     [Symbol.isConcatSpreadable] = false;
 }
 isConcatSpreadable(new A()); // false

@@ -37,23 +37,23 @@ If the target that must be resolved is a class that has [dependencies defined](.
 then the `make()` method will automatically resolve them, and inject them into the target class.
 
 ```js
-import { dependencies } from "@aedart/support/container";
+import { dependencies } from '@aedart/support/container';
 
 @dependencies('storage')
 class TextRecorder
 {
     storage = undeinfed;
 
-    constructor(storage) {
+    constructor(storage)
+    {
         this.storage = storage;
     }
 }
 
 // Register binding in the Service Container
 container.singleton('storage', () => {
-   return new CookieStorage(); 
+    return new CookieStorage();
 });
-
 
 // ...Later in your application
 const recorder = container.make(TextRecorder);
@@ -65,7 +65,7 @@ console.log(recorder.storage); // CookieStorage
 You can also manually specify what arguments a class constructor or "factory" callback should receive, via the `args` argument.
 
 ```js
-const recorder = container.make(TextRecorder, [ new CloudStorage() ]);
+const recorder = container.make(TextRecorder, [new CloudStorage()]);
 console.log(recorder.storage); // CloudStorage
 ```
 
@@ -117,7 +117,8 @@ If the class method has any dependencies defined, then those will be resolved an
 class AudioPlayer
 {
     @dependencies('audio_processor', 'my_song')
-    play(processor, song) {
+    play(processor, song)
+    {
         // ...play logic not shown...
         return this;
     }
@@ -133,14 +134,14 @@ provided in the `args` array. Thus, the dependencies of the class method are ign
 ```js
 const player = container.call(
     [AudioPlayer, 'play'],
-    
     // Arguments passed on to "play" method.
     [
         new AudioProcessor(),
-        new FavouriteSong()
-    ]
+        new FavouriteSong(),
+    ],
 );
 ```
+
 :::
 
 ### Callback Wrapper
@@ -153,28 +154,33 @@ the underlying callback is invoked.
 Providing the `args` argument for `call()` will **overwrite** eventual arguments set in the callback wrapper!
 
 ```js
-import { CallbackWrapper } from "@aedart/support";
+import { CallbackWrapper } from '@aedart/support';
 
-const wrapped = CallbackWrapper.make((firstname, lastname) => {
-    return `Hi ${firstname} ${lastname}`;
-}, 'Brian', 'Jackson');
+const wrapped = CallbackWrapper.make(
+    (firstname, lastname) => {
+        return `Hi ${firstname} ${lastname}`;
+    },
+    'Brian',
+    'Jackson',
+);
 
-const result = container.call(wrapped, [ 'James', 'Brown' ]);
+const result = container.call(wrapped, ['James', 'Brown']);
 console.log(result); // Hi James Brown
 ```
+
 :::
 
 To define dependencies for a callback wrapper, you must use the wrapper's `set()` method and specify an array of target
-binding identifiers for the `DEPENDENCIES` symbol as key. 
+binding identifiers for the `DEPENDENCIES` symbol as key.
 
 ```js
-import { DEPENDENCIES } from "@aedart/contracts/container";
+import { DEPENDENCIES } from '@aedart/contracts/container';
 
 const wrapped = CallbackWrapper.make((apiClient) => {
     // ...fetch user logic not shown...
-    
+
     return promise;
-}).set(DEPENDENCIES, [ 'api_client' ]);
+}).set(DEPENDENCIES, ['api_client']);
 
 const promise = container.call(wrapped); // Api Client injected into callback...
 ```

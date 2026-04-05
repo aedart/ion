@@ -11,10 +11,10 @@ Determine if an object has a unique id.
 _See [`uniqueId`](./uniqueId.md) for additional details._
 
 ```js
-import { hasUniqueId } from "@aedart/support/objects";
+import { hasUniqueId } from '@aedart/support/objects';
 
 const target = {
-    name: 'Ursula'
+    name: 'Ursula',
 };
 
 console.log(hasUniqueId(target)); // false

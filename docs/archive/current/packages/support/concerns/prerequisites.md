@@ -1,5 +1,5 @@
 ---
-title: Prerequisites 
+title: Prerequisites
 description: Prerequisites for using concerns.
 sidebarDepth: 0
 ---

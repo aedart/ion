@@ -12,15 +12,15 @@ This method differs from [`has()`](./has.md), in that it only returns true if pr
 _See also [misc. `isset()`](../misc/isset.md)._
 
 ```js
-import { isset } from "@aedart/support/objects";
+import { isset } from '@aedart/support/objects';
 
 const target = {
     a: 1234,
     b: {
         name: undefined,
         c: {
-            age: null
-        }
+            age: null,
+        },
     },
 };
 

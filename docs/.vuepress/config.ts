@@ -1,15 +1,15 @@
-import {defineUserConfig, Page} from 'vuepress';
-import { defaultTheme } from "@vuepress/theme-default"
-import { webpackBundler } from "@vuepress/bundler-webpack"
-import {backToTopPlugin} from "@vuepress/plugin-back-to-top";
-import {searchPlugin} from "@vuepress/plugin-search";
-import {baseURL, prefixPath} from "@aedart/vuepress-utils";
-import {lastUpdatedPlugin} from "@aedart/vuepress-utils/plugins";
-import Archive from "./archive";
+import { baseURL, prefixPath } from '@aedart/vuepress-utils';
+import { lastUpdatedPlugin } from '@aedart/vuepress-utils/plugins';
+import { webpackBundler } from '@vuepress/bundler-webpack';
+import { backToTopPlugin } from '@vuepress/plugin-back-to-top';
+import { searchPlugin } from '@vuepress/plugin-search';
+import { defaultTheme } from '@vuepress/theme-default';
+import { defineUserConfig, Page } from 'vuepress';
+import Archive from './archive';
 
 /**
  * Base URL of site
- * 
+ *
  * @type {"/" | `/${string}/`}
  */
 const BASE_URL = baseURL('ion');
@@ -21,7 +21,7 @@ export default defineUserConfig({
     bundler: webpackBundler({
         // N/A
     }),
-    
+
     base: BASE_URL,
     dest: './.build',
     lang: 'en-GB',
@@ -30,9 +30,23 @@ export default defineUserConfig({
 
     head: [
         // Icon
-        ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: resolvePath('images/icon/apple-touch-icon.png') }],
-        ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: resolvePath('images/icon/favicon-32x32.png') }],
-        ['link', { rel: 'icon', type: 'image/png', sizes: '16x16', href: resolvePath('images/icon/favicon-16x16.png') }],
+        ['link', {
+            rel: 'apple-touch-icon',
+            sizes: '180x180',
+            href: resolvePath('images/icon/apple-touch-icon.png'),
+        }],
+        ['link', {
+            rel: 'icon',
+            type: 'image/png',
+            sizes: '32x32',
+            href: resolvePath('images/icon/favicon-32x32.png'),
+        }],
+        ['link', {
+            rel: 'icon',
+            type: 'image/png',
+            sizes: '16x16',
+            href: resolvePath('images/icon/favicon-16x16.png'),
+        }],
         ['link', { rel: 'manifest', href: resolvePath('site.webmanifest') }],
     ],
 
@@ -47,7 +61,7 @@ export default defineUserConfig({
 
         editLink: true,
         editLinkText: 'Edit page',
-        //editLinkPattern: ':repo/-/edit/:branch/:path',
+        // editLinkPattern: ':repo/-/edit/:branch/:path',
 
         docsRepo: 'https://github.com/aedart/ion',
         docsBranch: 'main',
@@ -62,11 +76,10 @@ export default defineUserConfig({
             { text: 'Changelog', link: 'https://github.com/aedart/ion/blob/main/CHANGELOG.md' },
         ],
 
-        sidebar: Archive.sidebarConfiguration()
+        sidebar: Archive.sidebarConfiguration(),
     }),
 
     plugins: [
-
         backToTopPlugin(),
 
         searchPlugin({
@@ -81,8 +94,8 @@ export default defineUserConfig({
             },
         }),
 
-        lastUpdatedPlugin()
-    ]
+        lastUpdatedPlugin(),
+    ],
 });
 
 /**
@@ -92,6 +105,7 @@ export default defineUserConfig({
  *
  * @returns {string}
  */
-function resolvePath(path: string) {
+function resolvePath(path: string)
+{
     return prefixPath(BASE_URL, path);
 }

@@ -21,5 +21,6 @@ isPrimitive(Symbol('my-symbol')); // true
 
 isPrimitive([1, 2, 3]); // false
 isPrimitive({ name: 'Rian' }); // false
-isPrimitive(function() {}); // false
+isPrimitive(function()
+{}); // false
 ```

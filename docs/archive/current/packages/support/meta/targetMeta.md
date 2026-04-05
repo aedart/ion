@@ -25,10 +25,14 @@ Unlike the [`meta()` decorator](./supported.md), `targetMeta()` only supports th
 The following shows how to define target meta for a class and retrieve it.
 
 ```js
-import { targetMeta, getTargetMeta } from '@aedart/support/meta';
+import { getTargetMeta, targetMeta } from '@aedart/support/meta';
 
-@targetMeta('description', { type: 'Search Service', alias: 'Location Sercher' })
-class LocationSearcherService {}
+@targetMeta('description', {
+    type: 'Search Service',
+    alias: 'Location Sercher',
+})
+class LocationSearcherService
+{}
 
 const instance = new LocationSearcherService();
 
@@ -41,12 +45,13 @@ getTargetMeta(instance, 'description')?.type; // Search Service
 The following shows how to define target meta for a class method and retrieve it.
 
 ```js
-import { targetMeta, getTargetMeta } from '@aedart/support/meta';
+import { getTargetMeta, targetMeta } from '@aedart/support/meta';
 
-class LocationSearcherService {
-
-    @targetMeta('dependencies', [ 'httpClient' ])    
-    search(apiClient) {}
+class LocationSearcherService
+{
+    @targetMeta('dependencies', ['httpClient'])
+    search(apiClient)
+    {}
 }
 
 const instance = new LocationSearcherService();
@@ -62,12 +67,14 @@ Target meta is automatically inherited by subclasses and can also be overwritten
 **Example: classes**
 
 ```js
-import {targetMeta, getTargetMeta} from '@aedart/support/meta';
+import { getTargetMeta, targetMeta } from '@aedart/support/meta';
 
 @meta('service_alias', 'locationSearcher')
-class Service {}
+class Service
+{}
 
-class CitySearcher extends Service {}
+class CitySearcher extends Service
+{}
 
 const instance = new CitySearcher();
 
@@ -78,24 +85,27 @@ getTargetMeta(instance, 'service_alias'); // locationSearcher
 **Example: methods**
 
 ```js
-import {targetMeta, getTargetMeta} from '@aedart/support/meta';
+import { getTargetMeta, targetMeta } from '@aedart/support/meta';
 
-class Service {
-
-    @targetMeta('dependencies', [ 'countrySearchApiClient' ])
-    search(apiClient) {
+class Service
+{
+    @targetMeta('dependencies', ['countrySearchApiClient'])
+    search(apiClient)
+    {
         // ...not shown...
     }
 }
 
-class CountrySearcher extends Service {
+class CountrySearcher extends Service
+{
     // ... not method overwrite here...
 }
 
-class CitySearcher extends Service {
-
-    @targetMeta('dependencies', [ 'citySearchApiClient' ])
-    search(apiClient) {
+class CitySearcher extends Service
+{
+    @targetMeta('dependencies', ['citySearchApiClient'])
+    search(apiClient)
+    {
         // ...not shown...
     }
 }
@@ -126,24 +136,27 @@ This makes it impossible to associate the overwritten static method with metadat
 **Example: inheritance for static methods**
 
 ```js
-import {targetMeta, getTargetMeta} from '@aedart/support/meta';
+import { getTargetMeta, targetMeta } from '@aedart/support/meta';
 
-class Service {
-
-    @targetMeta('dependencies', [ 'xmlClient' ])
-    static search(client) {
+class Service
+{
+    @targetMeta('dependencies', ['xmlClient'])
+    static search(client)
+    {
         // ...not shown...
     }
 }
 
-class CountrySearcher extends Service {
+class CountrySearcher extends Service
+{
     // ... not method overwrite here...
 }
 
-class CitySearcher extends Service {
-    
+class CitySearcher extends Service
+{
     // Overwite of static method - target meta is lost
-    static search(client) {}
+    static search(client)
+    {}
 }
 
 // ...later in your application...
@@ -157,27 +170,30 @@ To overcome the above shown issue, you can use the `inheritTargetMeta()` decorat
 
 ```js
 import {
-    targetMeta,
     getTargetMeta,
-    inheritTargetMeta
+    inheritTargetMeta,
+    targetMeta,
 } from '@aedart/support/meta';
 
-class Service {
-
-    @targetMeta('dependencies', [ 'xmlClient' ])
-    static search(client) {
+class Service
+{
+    @targetMeta('dependencies', ['xmlClient'])
+    static search(client)
+    {
         // ...not shown...
     }
 }
 
-class CountrySearcher extends Service {
+class CountrySearcher extends Service
+{
     // ... not method overwrite here...
 }
 
-class CitySearcher extends Service {
-    
+class CitySearcher extends Service
+{
     @inheritTargetMeta()
-    static search(client) {}
+    static search(client)
+    {}
 }
 
 // ...later in your application...

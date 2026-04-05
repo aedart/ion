@@ -10,15 +10,17 @@ Determine if target class is a subclass (_child class_) of given superclass (_pa
 
 It accepts the following arguments:
 
-- `target: object` - The target.
-- `superclass: ConstructorOrAbstractConstructor` - The superclass.
+* `target: object` - The target.
+* `superclass: ConstructorOrAbstractConstructor` - The superclass.
 
 ```js
 import { isSubclass } from '@aedart/support/reflections';
 
-class A {}
+class A
+{}
 
-class B extends A {}
+class B extends A
+{}
 
 isSubclass({}, A); // false
 isSubclass(A, A); // false

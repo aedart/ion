@@ -9,10 +9,10 @@ sidebarDepth: 0
 The `uniqueId()` is able to return a _"unique¹"_ reference identifier for any given object.
 
 ```js
-import { uniqueId, hasUniqueId } from "@aedart/support/objects";
+import { hasUniqueId, uniqueId } from '@aedart/support/objects';
 
 const target = {
-    name: 'Ursula'
+    name: 'Ursula',
 };
 
 console.log(uniqueId(target)); // 27

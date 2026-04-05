@@ -26,14 +26,14 @@ Possibly the easiest way to document your concern and target class that uses the
 You can describe an alias via [`@function`](https://jsdoc.app/tags-function) or [`@member`](https://jsdoc.app/tags-member) tag._
 
 ```js
-import { use, AbstractConcern } from "@aedart/support/concerns";
+import { AbstractConcern, use } from '@aedart/support/concerns';
 
 /**
  * @mixin
  * @extends AbstractConcern
  */
-class Shield extends AbstractConcern {
-
+class Shield extends AbstractConcern
+{
     /**
      * Returns the armor level
      *
@@ -50,7 +50,8 @@ class Shield extends AbstractConcern {
      *
      * @returns {number} Damage given to target
      */
-    throw(target) {
+    throw(target)
+    {
         // target ignored here...
         return 3;
     }
@@ -60,10 +61,10 @@ class Shield extends AbstractConcern {
  * @mixes Shield
  */
 @use([Shield, {
-    'throw': 'fight'
+    'throw': 'fight',
 }])
-class Monster {
-
+class Monster
+{
     /**
      * Alias for {@link Shield#throw}
      *
@@ -77,7 +78,8 @@ class Monster {
     /**
      * Do stuff...
      */
-    do() {
+    do()
+    {
         this.fight({});
     }
 }
@@ -92,10 +94,10 @@ Doing so allows you to immediately describe the "alias" name.
 Also, it is not possible to reuse existing JSDoc from your concern._
 
 ```js
-import { use, AbstractConcern } from "@aedart/support/concerns";
+import { AbstractConcern, use } from '@aedart/support/concerns';
 
-class Armor extends AbstractConcern {
-
+class Armor extends AbstractConcern
+{
     /**
      * Returns the armor level
      *
@@ -110,9 +112,10 @@ class Armor extends AbstractConcern {
  * @property {number} armor Returns the armor level
  */
 @use([Armor, {
-    'level': 'armor'
+    'level': 'armor',
 }])
-class Hero {}
+class Hero
+{}
 ```
 
 ## `@borrows`
@@ -120,24 +123,25 @@ class Hero {}
 The [`@borrows`](https://jsdoc.app/tags-borrows) tag does also offer a possible way to describe aliases.
 
 **Downside**: _You are still required to use [`@member`](https://jsdoc.app/tags-member) tag to describe the actual
-aliases inside your target class._ 
+aliases inside your target class._
 
 ```js
-import { use, AbstractConcern } from "@aedart/support/concerns";
+import { AbstractConcern, use } from '@aedart/support/concerns';
 
 /**
  * @extends AbstractConcern
  */
-class Spell extends AbstractConcern {
-    
+class Spell extends AbstractConcern
+{
     /**
      * Cast the spell
      *
      * @name cast
-     * 
+     *
      * @returns {number} Damage done
      */
-    cast() {
+    cast()
+    {
         return 7;
     }
 }
@@ -146,10 +150,10 @@ class Spell extends AbstractConcern {
  * @borrows Spell#cast as damage
  */
 @use([Spell, {
-    'cast': 'damage'
+    'cast': 'damage',
 }])
-class Mage {
-    
+class Mage
+{
     /**
      * @function damage
      * @return {number}
@@ -166,10 +170,10 @@ Lastly, you can use [`@member`](https://jsdoc.app/tags-member) to describe all a
 **Downside**: _This approach can be very cumbersome. Also, reuse of JSDoc is not possible._
 
 ```js
-import { use, AbstractConcern } from "@aedart/support/concerns";
+import { AbstractConcern, use } from '@aedart/support/concerns';
 
-class Sword extends AbstractConcern {
-
+class Sword extends AbstractConcern
+{
     /**
      * Returns amount of damage
      *
@@ -190,12 +194,11 @@ class Sword extends AbstractConcern {
     }
 }
 
-
 @use([Sword, {
-    'slash': 'damage'
+    'slash': 'damage',
 }])
-class Enemy {
-
+class Enemy
+{
     /**
      * @public
      * @member {number} damage  Alias for {@link Sword#slash}

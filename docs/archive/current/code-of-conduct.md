@@ -16,4 +16,3 @@ Chances are pretty good that you yourself are involved in one or many Open Sourc
 ## Consequences
 
 Participants can be subject to consequences, if the code of conduct is not upheld. Such consequences include, but not limited to, warnings, and banning from further participation.
-

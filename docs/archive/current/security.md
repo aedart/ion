@@ -20,13 +20,13 @@ If you have discovered a vulnerability, please send an **encrypted email** to Al
 Use the public PGP key listed below for encryption.
 Your email will be prioritised and addressed as quickly as possible.
 
-In addition, please make sure that the contents of your email contains appropriate information about the vulnerability. 
+In addition, please make sure that the contents of your email contains appropriate information about the vulnerability.
 E.g.:
 
 * Where the vulnerability is located
 * Why it is a vulnerability
 * Affected version(s)
-* (_How it can be resolved, if you have a possible solution_) 
+* (_How it can be resolved, if you have a possible solution_)
 
 ::: tip How to encrypt emails using PGP
 

@@ -10,19 +10,19 @@ Returns an Error's `message`, if an [`Error`](https://developer.mozilla.org/en-U
 instance is provided. Otherwise, a default message is returned.
 
 ```js
-import { getErrorMessage } from "@aedart/support/exceptions";
+import { getErrorMessage } from '@aedart/support/exceptions';
 
 try {
     throw new Error('Something went wrong!');
-} catch(e) {
-    const msg = getErrorMessage(e, 'unknown error'); // Something went wrong! 
+} catch (e) {
+    const msg = getErrorMessage(e, 'unknown error'); // Something went wrong!
 }
 
 // ---------------------------------------------------------------------------
 
 try {
     throw 'Something went wrong!';
-} catch(e) {
-    const msg = getErrorMessage(e, 'unknown error'); // unknown error 
+} catch (e) {
+    const msg = getErrorMessage(e, 'unknown error'); // unknown error
 }
 ```

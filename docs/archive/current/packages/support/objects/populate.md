@@ -33,20 +33,22 @@ The `target` object is mutated by this function.
 :::
 
 ```js
-import { populate } from "@aedart/support/objects";
+import { populate } from '@aedart/support/objects';
 
-class Person {
+class Person
+{
     name = null;
     age = null;
 
-    constructor(data) {
+    constructor(data)
+    {
         populate(this, data);
     }
 }
 
 const instance = new Person({ name: 'Janine', age: 36 });
-instance.name // Janine
-instance.age // 36
+instance.name; // Janine
+instance.age; // 36
 ```
 
 ## Limit keys to populate
@@ -55,20 +57,22 @@ By default, all keys (_`*`_) from the `source` object are attempted populated in
 You can limit what properties can be populated, by specifying what keys are allowed to be populated.
 
 ```js
-class Person {
+class Person
+{
     name = null;
     age = null;
     phone = null;
 
-    constructor(data) {
-        populate(this, data, [ 'name', 'age' ]);
+    constructor(data)
+    {
+        populate(this, data, ['name', 'age']);
     }
 }
 
 const instance = new Person({ name: 'Janine', age: 36, phone: '555 555 555' });
-instance.name // Janine
-instance.age // 36
-instance.phone // null
+instance.name; // Janine
+instance.age; // 36
+instance.phone; // null
 ```
 
 ## Source Keys Callback
@@ -78,10 +82,10 @@ If you need a more advanced way to determine what keys to populate, then you can
 ```js
 populate(target, source, (source, target) => {
     if (Reflect.has(source, 'phone') && Reflect.has(target, 'phone')) {
-        return [ 'name', 'age', 'phone' ];
+        return ['name', 'age', 'phone'];
     }
 
-    return [ 'name', 'age' ];
+    return ['name', 'age'];
 });
 ```
 
@@ -91,36 +95,40 @@ When the `safe` argument is set to `true` (_default behavior_), and a property k
 then a `TypeError` is thrown.
 
 ```js
-class Person {
+class Person
+{
     name = null;
     age = null;
 
-    constructor(data) {
-        populate(this, data, [ 'name', 'age', 'phone' ]);
+    constructor(data)
+    {
+        populate(this, data, ['name', 'age', 'phone']);
     }
 }
 
 const instance = new Person({
     name: 'Janine',
     age: 36,
-    phone: '555 555 555'
-}); // TypeError - phone does not exist in target 
+    phone: '555 555 555',
+}); // TypeError - phone does not exist in target
 ```
 
 However, if a requested key does not exist in the source object, then a `TypeError` is thrown regardless of the `safe` argument value.
 
 ```js
-class Person {
+class Person
+{
     name = null;
     age = null;
 
-    constructor(data) {
-        populate(this, data, [ 'name', 'age', 'phone' ], false);
+    constructor(data)
+    {
+        populate(this, data, ['name', 'age', 'phone'], false);
     }
 }
 
 const instance = new Person({
     name: 'Janine',
-    age: 36
-}); // TypeError - phone does not exist in source 
+    age: 36,
+}); // TypeError - phone does not exist in source
 ```

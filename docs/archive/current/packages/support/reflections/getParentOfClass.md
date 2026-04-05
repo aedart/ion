@@ -11,11 +11,14 @@ Returns the parent class of given target class, or `null` if class does not have
 ```js
 import { getParentOfClass } from '@aedart/support/reflections';
 
-class A {}
+class A
+{}
 
-class B extends A {}
+class B extends A
+{}
 
-class C extends B {}
+class C extends B
+{}
 
 getParentOfClass(A); // null
 getParentOfClass(B); // A

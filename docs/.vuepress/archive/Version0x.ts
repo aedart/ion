@@ -1,4 +1,4 @@
-import {PagesCollection} from "@aedart/vuepress-utils/navigation";
+import { PagesCollection } from '@aedart/vuepress-utils/navigation';
 
 /**
  * Version 0.x
@@ -15,7 +15,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
             'security',
             'code-of-conduct',
             'origin',
-        ]
+        ],
     },
     {
         text: 'Packages',
@@ -34,7 +34,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                     'packages/container/dependencies',
                     'packages/container/resolving',
                     'packages/container/contextual-bindings',
-                ]
+                ],
             },
             {
                 text: 'Contracts',
@@ -42,7 +42,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                 children: [
                     'packages/contracts/',
                     'packages/contracts/install',
-                ]
+                ],
             },
             {
                 text: 'Support',
@@ -62,7 +62,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/arrays/isSafeArrayLike',
                             'packages/support/arrays/isTypedArray',
                             'packages/support/arrays/merge',
-                        ]
+                        ],
                     },
                     {
                         text: 'Concerns',
@@ -78,7 +78,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/concerns/hooks',
                             'packages/support/concerns/edgeCases',
                             'packages/support/concerns/jsdoc',
-                        ]
+                        ],
                     },
                     {
                         text: 'Exceptions',
@@ -89,14 +89,14 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/exceptions/configureStackTrace',
                             'packages/support/exceptions/getErrorMessage',
                             'packages/support/exceptions/customErrors',
-                        ]
+                        ],
                     },
                     {
                         text: 'Facades',
                         collapsible: true,
                         children: [
                             'packages/support/facades/',
-                        ]
+                        ],
                     },
                     {
                         text: 'Meta',
@@ -110,7 +110,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/meta/outsideChanges',
                             'packages/support/meta/tc39',
                             'packages/support/meta/targetMeta',
-                        ]
+                        ],
                     },
                     {
                         text: 'Mixins',
@@ -122,7 +122,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/mixins/instanceof',
                             'packages/support/mixins/inheritance',
                             'packages/support/mixins/onward',
-                        ]
+                        ],
                     },
                     {
                         text: 'Object',
@@ -143,7 +143,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/objects/populate',
                             'packages/support/objects/set',
                             'packages/support/objects/uniqueId',
-                        ]
+                        ],
                     },
                     {
                         text: 'Reflections',
@@ -172,7 +172,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/reflections/isSubclass',
                             'packages/support/reflections/isSubclassOrLooksLike',
                             'packages/support/reflections/isWeakKind',
-                        ]
+                        ],
                     },
                     {
                         text: 'Misc',
@@ -187,10 +187,10 @@ export default PagesCollection.make('v0.x', '/v0x', [
                             'packages/support/misc/isset',
                             'packages/support/misc/mergeKeys',
                             'packages/support/misc/toWeakRef',
-                        ]
+                        ],
                     },
                     'packages/support/CallbackWrapper',
-                ]
+                ],
             },
             {
                 text: 'Vuepress Utils',
@@ -204,7 +204,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                         children: [
                             // 'packages/vuepress-utils/navigation', // No index page...
                             'packages/vuepress-utils/navigation/archive',
-                        ]
+                        ],
                     },
                     {
                         text: 'Plugins',
@@ -212,7 +212,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
                         children: [
                             // 'packages/vuepress-utils/plugins', // No index page...
                             'packages/vuepress-utils/plugins/last-updated',
-                        ]
+                        ],
                     },
                     {
                         text: 'Components',
@@ -220,11 +220,11 @@ export default PagesCollection.make('v0.x', '/v0x', [
                         children: [
                             // 'packages/vuepress-utils/components', // No index page...
                             'packages/vuepress-utils/components/version-disclaimer',
-                        ]
+                        ],
                     },
-                ]
+                ],
             },
-            
+
             // TEST Package... should not contain anything special..
             // {
             //     text: 'XYZ (Test package)',
@@ -233,7 +233,7 @@ export default PagesCollection.make('v0.x', '/v0x', [
             //         'packages/xyz/',
             //     ]
             // }
-            'packages/xyz/'
-        ]
-    }, 
+            'packages/xyz/',
+        ],
+    },
 ]);

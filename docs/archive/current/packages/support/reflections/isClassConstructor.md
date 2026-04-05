@@ -18,16 +18,18 @@ Use [`isConstructor()`](./isConstructor.md) if you wish to test for "constructab
 :::
 
 ```js
-import { isClassConstructor } from "@aedart/support/reflections";
+import { isClassConstructor } from '@aedart/support/reflections';
 
 isClassConstructor(null); // false
 isClassConstructor({}); // false
 isClassConstructor([]); // false
-isClassConstructor(function() {}); // false
+isClassConstructor(function()
+{}); // false
 isClassConstructor(() => {}); // false
 isClassConstructor(Array); // false
 
-class A {}
+class A
+{}
 isClassConstructor(A); // true
 isClassConstructor(class {}); // true
 ```

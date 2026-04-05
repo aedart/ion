@@ -9,4 +9,3 @@ sidebarDepth: 0
 The contracts package contains types, interfaces and unique identifiers.
 
 _More information available at a later point..._
-

@@ -9,16 +9,17 @@ sidebarDepth: 0
 Metadata is automatically inherited by subclasses.
 
 ```js
-import { meta, getMeta } from '@aedart/support/meta';
+import { getMeta, meta } from '@aedart/support/meta';
 
 @meta('service_alias', 'locationSearcher')
-class Service {}
+class Service
+{}
 
-class CitySearcher extends Service {}
+class CitySearcher extends Service
+{}
 
 getMeta(CitySearcher, 'service_alias'); // locationSearcher
 ```
-
 
 ## Overwrites
 
@@ -26,20 +27,22 @@ You can also overwrite the inherited metadata. The subclass that defines the met
 The parent class' metadata remains untouched.
 
 ```js
-import { meta, getMeta } from '@aedart/support/meta';
+import { getMeta, meta } from '@aedart/support/meta';
 
-class Service {
-    
+class Service
+{
     @meta('search.desc', 'Searches for countries')
-    search() {
+    search()
+    {
         // ...not shown...
     }
 }
 
-class CitySearcher extends Service {
-
+class CitySearcher extends Service
+{
     @meta('search.desc', 'Searches for cities')
-    search() {
+    search()
+    {
         // ...not shown...
     }
 }

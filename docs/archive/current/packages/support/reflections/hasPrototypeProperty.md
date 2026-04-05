@@ -18,7 +18,11 @@ hasPrototypeProperty({ prototype: null }); // false
 hasPrototypeProperty(() => true); // false
 
 hasPrototypeProperty(Object.create({ prototype: {} })); // true
-hasPrototypeProperty({ __proto__: function() {} }); // true
-hasPrototypeProperty(function() {}); // true
+hasPrototypeProperty({
+    __proto__: function()
+    {},
+}); // true
+hasPrototypeProperty(function()
+{}); // true
 hasPrototypeProperty(class {}); // true
 ```

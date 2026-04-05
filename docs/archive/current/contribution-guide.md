@@ -32,36 +32,24 @@ If you have an idea for a new feature or perhaps changing an existing, feel free
 Should you feel unsure whether your idea is good or not, then perhaps you could start a [discussion](https://github.com/aedart/ion/discussions).
 
 [//]: # (TODO: Code Style, etc... )
-
 [//]: # ()
 [//]: # (## Code Style)
-
 [//]: # ()
 [//]: # (On a general note, [PSR-12]&#40;https://www.php-fig.org/psr/psr-12/&#41; is used as code style guide.)
-
 [//]: # ()
 [//]: # (### PHPDoc)
-
 [//]: # ()
 [//]: # ([PHPDoc]&#40;https://www.phpdoc.org/&#41; us used to document source code, such as classes, interfaces, traits, methods...etc.)
-
 [//]: # (Please make sure that your contributed code is documented accordingly. )
-
 [//]: # ()
 [//]: # (### Easy Coding Standard)
-
 [//]: # ()
 [//]: # ([Easy Coding Standard]&#40;https://github.com/symplify/easy-coding-standard&#41; is configured in the project, which is automatically triggered on every push and pull request.)
-
 [//]: # (It ensures that [PSR-12]&#40;https://www.php-fig.org/psr/psr-12/&#41; is upheld.)
-
 [//]: # (To execute it locally, run the following command:)
-
 [//]: # ()
 [//]: # (```shell)
-
 [//]: # (composer run cs)
-
 [//]: # (```)
 
 ## Fork, code and send pull-request

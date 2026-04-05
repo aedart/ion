@@ -12,16 +12,18 @@ Configures a custom error by automatically setting the error's `name` property t
 
 `configureCustomError`() accepts the following arguments:
 
-* `error: Error`  - the custom error instance
+* `error: Error` - the custom error instance
 * `captureStackTrace: boolean = false` (_optional_) Captures and sets error's stack trace¹.
 
 ¹: _See [`configureStackTrace()`](./configureStackTrace.md) for details._
 
 ```js
-import { configureCustomError } from "@aedart/support/exceptions";
+import { configureCustomError } from '@aedart/support/exceptions';
 
-class MyError extends Error {
-    constructor(message, options) {
+class MyError extends Error
+{
+    constructor(message, options)
+    {
         super(message, options);
 
         configureCustomError(this);

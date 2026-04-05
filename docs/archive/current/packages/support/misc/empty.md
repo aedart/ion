@@ -33,12 +33,13 @@ empty(1); // false
 empty(1n); // false
 empty(-1); // false
 empty(Infinity); // false
-empty([ 1 ]); // false
+empty([1]); // false
 empty({ name: 'Jimmy' }); // false
 empty((new Set()).add('a')); // false
-empty((new Map).set('foo', 'bar')); // false
+empty((new Map()).set('foo', 'bar')); // false
 empty(new Date()); // false
-empty(function() {}); // false
+empty(function()
+{}); // false
 empty(Symbol('my-symbol')); // false
 
 let typedArr = new Int8Array(1);

@@ -13,13 +13,15 @@ sidebarDepth: 0
 The `AbstractClassError` is intended to be thrown whenever an abstract class is attempted instantiated directly.
 
 ```js
-import { AbstractClassError } from "@aedart/support/exceptions";
+import { AbstractClassError } from '@aedart/support/exceptions';
 
 /**
  * @abstract
  */
-class MyAbstractClass {
-    constructor() {
+class MyAbstractClass
+{
+    constructor()
+    {
         if (new.target === MyAbstractClass) {
             throw new AbstractClassError(MyAbstractClass);
         }
@@ -36,9 +38,10 @@ To be thrown whenever there is an error in the programming logic.
 _Inspired by PHP's [`LogicException`](https://www.php.net/manual/en/class.logicexception)_
 
 ```js
-import { LogicalError } from "@aedart/support/exceptions";
+import { LogicalError } from '@aedart/support/exceptions';
 
-function print(person) {
+function print(person)
+{
     if (printer === undefined) {
         throw new LogicalError('Printer is missing, unable to print people');
     }

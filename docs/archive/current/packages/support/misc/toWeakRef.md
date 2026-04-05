@@ -9,7 +9,7 @@ sidebarDepth: 0
 Wraps a target object into a [`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef), if not already instance of a weak reference.
 
 ```js
-import { toWeakRef } from "@aedart/support/misc";
+import { toWeakRef } from '@aedart/support/misc';
 
 const person = { name: 'Sine' };
 

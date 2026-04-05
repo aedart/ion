@@ -14,9 +14,9 @@ This function attempts to deep copy values, using [`structuredClone`](https://de
 ```js
 import { merge } from '@aedart/support/arrays';
 
-const a = [ 1, 2, 3 ];
-const b = [ 4, 5, 6 ];
-const c = [ 7, 8, 9 ];
+const a = [1, 2, 3];
+const b = [4, 5, 6];
+const c = [7, 8, 9];
 
 merge(a, b, c); // [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
 ```
@@ -34,7 +34,7 @@ const a = { foo: 'foo' };
 const b = { bar: 'bar' };
 const c = { ping: 'pong' };
 
-const result = merge([ a ], [ b, c ]);
+const result = merge([a], [b, c]);
 
 console.log(result[0] === a); // false
 console.log(result[1] === b); // false
@@ -46,8 +46,9 @@ console.log(result[2] === c); // false
 In situations when values cannot be copied via `structuredClone`, an `ArrayMergeError` is thrown.
 
 ```js
-const a = [ 1, 2, 3 ];
-const b = [ function() {} ]; // A function cannot be deep copied...
+const a = [1, 2, 3];
+const b = [function()
+{}]; // A function cannot be deep copied...
 
 merge(a, b); // ArrayMergeError
 ```
@@ -60,7 +61,7 @@ _See [merge options](#merge-options) for details on how to deal with functions._
 
 ```js
 merge()
-    .using({ /** option: value */ })
+    .using({/** option: value */})
     .of(arrayA, arrayB, arrayC);
 ```
 
@@ -81,7 +82,7 @@ const bar = () => false;
 
 merge()
     .using({ transferFunctions: true })
-    .of([ foo ], [ bar ]) // [ foo, bar ]
+    .of([foo], [bar]); // [ foo, bar ]
 ```
 
 ### `callback`
@@ -90,14 +91,14 @@ If you require more advanced duplication logic of the array values, then you can
 return the value in question.
 
 ```js
-const a = [ 1, 2 ];
-const b = [ 3, 4 ];
+const a = [1, 2];
+const b = [3, 4];
 
 const result = merge()
     .using({
         callback: (element, index, array, options) => {
             return element * 2;
-        }
+        },
     })
     .of(a, b); // [ 2, 4, 6, 8 ]
 ```

@@ -9,16 +9,16 @@ sidebarDepth: 0
 Determine if any paths are properties of given object.
 
 ```js
-import { hasAny } from "@aedart/support/objects";
+import { hasAny } from '@aedart/support/objects';
 
 const target = {
     a: 1234,
     b: {
         name: 'Sven',
         c: {
-            age: 24
-        }
-    }
+            age: 24,
+        },
+    },
 };
 
 const paths = [

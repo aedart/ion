@@ -10,24 +10,29 @@ When you defined your mixins using the [`Mixin()` decorator function](./newMixin
 Consider the following example:
 
 ```js
-// A regular mixin without "Mixin" decorator 
-const MixinA = (superclass) => class extends superclas {
-    // ...not shown...
-};
+// A regular mixin without "Mixin" decorator
+const MixinA = (superclass) =>
+    class extends superclas {
+        // ...not shown...
+    };
 
 // Mixin with "Mixin" decorator
-const MixinB = Mixin((superclass) => class extends superclass {
-    // ...not shown...
-});
+const MixinB = Mixin((superclass) =>
+    class extends superclass {
+        // ...not shown...
+    }
+);
 
 // -------------------------------------------------------------------- //
 
-class A {}
+class A
+{}
 
 class B extends mix(A).with(
     MixinA,
-    MixinB
-) {}
+    MixinB,
+)
+{}
 
 // -------------------------------------------------------------------- //
 

@@ -11,7 +11,7 @@ Most often, you would use this to display a custom message when outdated / unsup
 
 ```vue
 <VersionDisclaimer type="warning" label="Note">
-    You are viewing documentation for an unsupported version...
+  You are viewing documentation for an unsupported version...
 </VersionDisclaimer>
 ```
 
@@ -32,18 +32,18 @@ An optional label that is used as a prefix for the custom disclaim message.
 ## Extend Default Layout
 
 The following example assumes that you are using an [`Archive` component](../navigation/archive.md) to structure documentation.
-When doing so, you can display a custom message whenever "outdated" or "upcoming" documentation is being viewed. 
+When doing so, you can display a custom message whenever "outdated" or "upcoming" documentation is being viewed.
 
 To achieve this, you will need to create a [custom layout](https://v2.vuepress.vuejs.org/advanced/theme.html#create-a-theme) (_e.g. extend the default theme_).
 Create a new layout, e.g. in `.vuepress/layouts/Layout.vue`.
 
 ```vue
 <script setup lang="ts">
+import { isViewingNextRef, isViewingOtherRef } from '@aedart/vuepress-utils';
+import VersionDisclaimer from '@aedart/vuepress-utils/components/VersionDisclaimer.vue';
+import { usePageData } from '@vuepress/client';
 import ParentLayout from '@vuepress/theme-default/layouts/Layout.vue';
-import VersionDisclaimer from "@aedart/vuepress-utils/components/VersionDisclaimer.vue";
-import {usePageData} from "@vuepress/client";
-import {isViewingNextRef, isViewingOtherRef} from "@aedart/vuepress-utils";
-import archive from "../my_archive";
+import archive from '../my_archive';
 
 const page = usePageData();
 const showForNext = isViewingNextRef(page, archive);
@@ -53,15 +53,13 @@ const showForOther = isViewingOtherRef(page, archive);
 <template>
   <ParentLayout>
     <template #page-top>
-        
       <VersionDisclaimer v-if="showForNext">
         You are viewing documentation for next version...
       </VersionDisclaimer>
-        
+
       <VersionDisclaimer v-if="showForOther" type="danger" label="Oh oh">
         You are viewing old stuff...
       </VersionDisclaimer>
-
     </template>
   </ParentLayout>
 </template>
@@ -76,11 +74,11 @@ In your [Client Config File](https://v2.vuepress.vuejs.org/guide/configuration.h
 
 ```ts
 import { defineClientConfig } from '@vuepress/client';
-import Layout from "./layouts/Layout.vue";
+import Layout from './layouts/Layout.vue';
 
 export default defineClientConfig({
     layouts: {
-        Layout
-    }
+        Layout,
+    },
 });
 ```

@@ -12,14 +12,17 @@ Here, "populatable" means that an object implements the `Populatable` interface,
 _See `@aedart/constracts/support/objects/Populatable` for details._
 
 ```js
-import { isPopulatable } from "@aedart/support/objects";
+import { isPopulatable } from '@aedart/support/objects';
 
-class A {};
+class A
+{}
 
-class B {
-    populate(data) {
+class B
+{
+    populate(data)
+    {
         // ...not shown here...
-        
+
         return this;
     }
 }

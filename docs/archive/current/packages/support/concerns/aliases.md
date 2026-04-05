@@ -20,34 +20,36 @@ When injecting a concern into a target class, the concern's public properties an
 Consider the following example:
 
 ```js
-import { use, AbstractConcern } from "@aedart/support/concerns";
+import { AbstractConcern, use } from '@aedart/support/concerns';
 
-class Levels extends AbstractConcern {
-    get level() { /* ...not shown */ }
-    set level(value) { /* ...not shown */ }
-    clear() { /* ...not shown */ }
+class Levels extends AbstractConcern
+{
+    get level() {/* ...not shown */}
+    set level(value) {/* ...not shown */}
+    clear()
+    {/* ...not shown */}
 }
 
 @use(Levels)
-class Recorder {}
+class Recorder
+{}
 ```
 
 The aliasing mechanism will transform the target class into something that _**very roughly**_ corresponds to this:
 
 ```js
-import {
-    use,
-    CONCERNS,
-    AbstractConcern
-} from "@aedart/support/concerns";
+import { AbstractConcern, CONCERNS, use } from '@aedart/support/concerns';
 
-class Levels extends AbstractConcern {
-    get level() { /* ...not shown */ }
-    set level(value) { /* ...not shown */ }
-    clear(level) { /* ...not shown */ }
+class Levels extends AbstractConcern
+{
+    get level() {/* ...not shown */}
+    set level(value) {/* ...not shown */}
+    clear(level)
+    {/* ...not shown */}
 }
 
-class Recorder {
+class Recorder
+{
     // ...private concerns container not shown...
 
     // get level "alias"
@@ -61,7 +63,8 @@ class Recorder {
     }
 
     // method clear "alias"
-    clear(...args) {
+    clear(...args)
+    {
         return this[CONCERNS].get(Levels)['clear'](...args);
     }
 }
@@ -75,17 +78,18 @@ When a property or method from a concern already exists in the target class' pro
 defined. Said differently, the `use()` class decorator does **NOT** overwrite a target class' properties or methods.
 
 ```js
-class Label extends AbstractConcern {
-    get name() { /* ...not shown.. */ }
-    set name(v) { /* ...not shown.. */ }
+class Label extends AbstractConcern
+{
+    get name() {/* ...not shown.. */}
+    set name(v) {/* ...not shown.. */}
 }
 
 @use(Label) // Label's "name" property is NOT aliased
-class Battery {
-
+class Battery
+{
     // Battery's get/set "name" remains untouched by concern
-    get name() { /* ...not shown.. */ }
-    set name(v) { /* ...not shown.. */ }
+    get name() {/* ...not shown.. */}
+    set name(v) {/* ...not shown.. */}
 }
 ```
 

@@ -9,8 +9,8 @@ sidebarDepth: 0
 Determine if value is a "_class method reference_".
 A class method reference is an `array` with two values:
 
-- `0 = Constructor | object` Target class constructor or class instance
-- `1 = PropertyKey` Name of method (_property key in target_).
+* `0 = Constructor | object` Target class constructor or class instance
+* `1 = PropertyKey` Name of method (_property key in target_).
 
 ```js
 import { isClassMethodReference } from '@aedart/support/reflections';
