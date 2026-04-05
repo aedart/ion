@@ -16,6 +16,7 @@ This document serves as the persistent state and configuration guide for the **@
 
 ## 📐 Coding Standards & Style
 
+* **Communication**: Always English.
 * **Indentation**: **4-space** width (Spaces only).
 * **Brace Style (Allman)**: Opening brace `{` on a **new line** for functions, methods, and classes.
 * **Control Flow**: Opening brace `{` on the **same line** for `if`, `for`, `while`, `try/catch`.
