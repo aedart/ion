@@ -26,20 +26,20 @@
     "type": "module",
     "exports": {
         ".": {
-            "types": "./dist/vuepress-utils.d.ts",
-            "import": "./dist/vuepress-utils.js"
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
         },
         "./contracts": {
-            "types": "./dist/contracts.d.ts",
-            "import": "./dist/contracts.js"
+            "types": "./dist/contracts/index.d.ts",
+            "import": "./dist/contracts/index.js"
         },
         "./navigation": {
-            "types": "./dist/navigation.d.ts",
-            "import": "./dist/navigation.js"
+            "types": "./dist/navigation/index.d.ts",
+            "import": "./dist/navigation/index.js"
         },
         "./plugins": {
-            "types": "./dist/plugins.d.ts",
-            "import": "./dist/plugins.js"
+            "types": "./dist/plugins/index.d.ts",
+            "import": "./dist/plugins/index.js"
         },
         "./components/*": "./dist/components/*"
     },
