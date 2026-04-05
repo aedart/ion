@@ -21,7 +21,8 @@
         "pnpm": ">=9.0.0"
     },
     "dependencies": {
-        "@aedart/xyz": "workspace:*"
+        "@aedart/xyz": "workspace:*",
+        "@aedart/vuepress-utils": "workspace:*"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.4",
@@ -44,6 +45,7 @@
     "scripts": {
         "version:sync": "node scripts/check-versions.js",
         "version:tag": "node scripts/git-tag.js",
+        "fix:imports": "node scripts/fix-esm-imports.js",
         "build": "turbo run build",
         "test": "vitest run",
         "test:watch": "vitest",
