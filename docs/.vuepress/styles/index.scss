@@ -1,0 +1,318 @@
+// === colors ===
+:root {
+    // brand colors
+    --c-brand: #F09838;
+    --c-brand-light: #F0C738;
+    --c-brand-dark: #f08538;
+
+    // Other
+    --success: #157938;
+    
+    // colors.scss
+    --vp-c-white: #fff;
+    --vp-c-black: #000;
+    --vp-c-grey-text: #656869;
+    --vp-c-grey-hover: #e4e4e9;
+    --vp-c-grey-bg: #ebebef;
+    --vp-c-grey-soft: rgb(142 150 170 / 14%);
+    --vp-c-indigo-text: #3451b2;
+    --vp-c-indigo-hover: #3a5ccc;
+    --vp-c-indigo-bg: #5672cd;
+    --vp-c-indigo-soft: rgb(100 108 255 / 14%);
+    --vp-c-purple-text: #6f42c1;
+    --vp-c-purple-hover: #7e4cc9;
+    --vp-c-purple-bg: #8e5cd9;
+    --vp-c-purple-soft: rgb(159 122 234 / 14%);
+    --vp-c-blue-text: #2888a7;
+    --vp-c-blue-hover: #2d98ba;
+    --vp-c-blue-bg: #2fa1c5;
+    --vp-c-blue-soft: rgb(27 178 229 / 14%);
+    --vp-c-green-text: #18794e;
+    --vp-c-green-hover: #299764;
+    --vp-c-green-bg: #30a46c;
+    --vp-c-green-soft: rgb(16 185 129 / 14%);
+    --vp-c-yellow-text: #915930;
+    --vp-c-yellow-hover: #946300;
+    --vp-c-yellow-bg: #c28100;
+    --vp-c-yellow-soft: rgb(234 179 8 / 14%);
+    --vp-c-red-text: #b8272c;
+    --vp-c-red-hover: #d5393e;
+    --vp-c-red-bg: #e0575b;
+    --vp-c-red-soft: rgb(244 63 94 / 14%);
+    // END colors.scss
+    
+    // accent colors
+    --vp-c-accent: var(--c-brand);
+    --vp-c-accent-bg: var(--c-brand);
+    --vp-c-accent-hover: var(--c-brand-light);
+    --vp-c-accent-text: var(--vp-c-white);
+    --vp-c-accent-soft: rgb(16 185 129 / 14%);
+
+    // background colors
+    --vp-c-bg: #fff;
+    --vp-c-bg-alt: #f6f6f7;
+    --vp-c-bg-elv: #fff;
+
+    // text colors
+    --vp-c-text: #2c3e50;
+    --vp-c-text-mute: #3a5169;
+    --vp-c-text-subtle: #4e6e8e;
+
+    // border colors
+    --vp-c-gutter: #e2e2e3;
+    --vp-c-border: #eaecef;
+    --vp-c-border-hard: #dfe2e5;
+
+    // shadow colors
+    --vp-c-shadow: rgb(0 0 0 / 15%);
+
+    // control colors
+    --vp-c-control: rgb(142 150 170 / 10%);
+    --vp-c-control-hover: rgb(142 150 170 / 16%);
+    --vp-c-control-disabled: #eaeaea;
+
+    // layout colors
+    --vp-navbar-c-bg: var(--vp-c-bg);
+    --vp-sidebar-c-bg: var(--vp-c-bg);
+
+    // code group colors
+    --vp-c-code-tab-title: var(--code-c-text, rgb(255 255 255 / 90%));
+    --vp-c-code-tab-bg: var(--code-bg-color, var(--code-c-bg));
+    --vp-c-code-tab-active: var(--vp-c-accent);
+
+    // badge colors
+    --badge-c-tip-text: var(--vp-c-blue-text);
+    --badge-c-tip-bg: var(--vp-c-blue-soft);
+    --badge-c-warning-text: var(--vp-c-yellow-text);
+    --badge-c-warning-bg: var(--vp-c-yellow-soft);
+    --badge-c-danger-text: var(--vp-c-red-text);
+    --badge-c-danger-bg: var(--vp-c-red-soft);
+    --badge-c-important-text: var(--vp-c-purple-text);
+    --badge-c-important-bg: var(--vp-c-purple-soft);
+    --badge-c-info-text: var(--vp-c-indigo-text);
+    --badge-c-info-bg: var(--vp-c-indigo-soft);
+    --badge-c-note-text: var(--vp-c-grey-text);
+    --badge-c-note-bg: var(--vp-c-grey-soft);
+
+    // font vars
+    --font-family: -apple-system, 'BlinkMacSystemFont', 'Segoe UI', roboto, oxygen,
+    ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+    // layout vars
+    --navbar-height: 3.6rem;
+    --navbar-padding-v: 0.7rem;
+    --navbar-padding-h: 1.5rem;
+    --sidebar-width: 20rem;
+    --sidebar-width-mobile: calc(var(--sidebar-width) * 0.82);
+    --content-width: 740px;
+    --homepage-width: 960px;
+
+    // header offset
+    --header-offset: var(--navbar-height);
+
+    // transition vars
+    --vp-t-color: 0.3s ease;
+    --vp-t-transform: 0.3s ease;
+
+    // external-link-icon
+    --external-link-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z'/%3E%3C/svg%3E");
+    --external-link-c-icon: var(--vp-c-text-mute);
+}
+
+// ----------------------------------------------------------------------------------------------- //
+// Theme overwrites
+// ----------------------------------------------------------------------------------------------- //
+
+body {
+    color: var(--vp-c-text);
+}
+
+code {
+    color: var(--vp-c-text-subtle);
+}
+
+.vp-hero-action-button {
+    
+    &.primary {
+        &:hover {
+            border-color: var(--c-brand-dark);
+        }
+    }
+    
+    &:hover {
+        background-color: var(--c-brand-light);    
+    }
+}
+
+// ----------------------------------------------------------------------------------------------- //
+// Other Components
+// ----------------------------------------------------------------------------------------------- //
+
+// plugin-back-to-top
+.back-to-top {
+    --back-to-top-color: var(--c-brand);
+    --back-to-top-color-hover: var(--c-brand-light);
+}
+
+// plugin-docsearch
+.DocSearch {
+    --docsearch-primary-color: var(--c-brand);
+    --docsearch-text-color: var(--c-text);
+    --docsearch-highlight-color: var(--c-brand);
+    --docsearch-muted-color: var(--c-text-quote);
+    --docsearch-container-background: rgba(9, 10, 17, 0.8);
+    --docsearch-modal-background: var(--c-bg-light);
+    --docsearch-searchbox-background: var(--c-bg-lighter);
+    --docsearch-searchbox-focus-background: var(--c-bg);
+    --docsearch-searchbox-shadow: inset 0 0 0 2px var(--c-brand);
+    --docsearch-hit-color: var(--c-text-light);
+    --docsearch-hit-active-color: var(--c-bg);
+    --docsearch-hit-background: var(--c-bg);
+    --docsearch-hit-shadow: 0 1px 3px 0 var(--c-border-dark);
+    --docsearch-footer-background: var(--c-bg);
+}
+
+// plugin-external-link-icon
+.external-link-icon {
+    --external-link-icon-color: var(--c-text-quote);
+}
+
+// plugin-medium-zoom
+.medium-zoom-overlay {
+    --medium-zoom-bg-color: var(--c-bg);
+}
+
+// plugin-nprogress
+#nprogress {
+    --nprogress-color: var(--c-brand);
+}
+
+// plugin-pwa-popup
+.pwa-popup {
+    --pwa-popup-text-color: var(--c-text);
+    --pwa-popup-bg-color: var(--c-bg);
+    --pwa-popup-border-color: var(--c-brand);
+    --pwa-popup-shadow: 0 4px 16px var(--c-brand);
+    --pwa-popup-btn-text-color: var(--c-bg);
+    --pwa-popup-btn-bg-color: var(--c-brand);
+    --pwa-popup-btn-hover-bg-color: var(--c-brand-light);
+}
+
+// plugin-search
+.search-box {
+    --search-bg-color: var(--c-bg);
+    --search-accent-color: var(--c-brand);
+    --search-text-color: var(--c-text);
+    --search-border-color: var(--c-border);
+
+    --search-item-text-color: var(--c-text-lighter);
+    --search-item-focus-bg-color: var(--c-bg-light);
+
+    --search-input-width: 25rem;
+    --search-result-width: 45rem;
+
+    .suggestions {
+        .suggestion {
+            // Display the path after each search result
+            a::after {
+                content: "" attr(href) "";
+                display: block;
+                color: var(--c-text-lightest);
+                //background-color: var(--c-bg-lighter);
+                font-style: italic;
+                width: 100%;
+                padding: 2px;
+            }
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------------------------- //
+// Dark Mode
+// ----------------------------------------------------------------------------------------------- //
+
+[data-theme='dark'] {
+    // brand colors
+    --vp-c-accent: var(--c-brand);
+    --vp-c-accent-bg: var(--c-brand);
+    --vp-c-accent-hover: var(--c-brand-light);
+    --vp-c-accent-soft: rgb(16 185 129 / 16%);
+
+    // colors.scss
+    --vp-c-white: #000;
+    --vp-c-black: #fff;
+    --vp-c-grey-text: #939499;
+    --vp-c-grey-hover: #414853;
+    --vp-c-grey-bg: #32363f;
+    --vp-c-grey-soft: rgb(101 117 133 / 16%);
+    --vp-c-indigo-text: #a8b1ff;
+    --vp-c-indigo-hover: #5c73e7;
+    --vp-c-indigo-bg: #3e63dd;
+    --vp-c-indigo-soft: rgb(100 108 255 / 16%);
+    --vp-c-blue-text: #c9e8f2;
+    --vp-c-blue-hover: #a6d9ea;
+    --vp-c-blue-bg: #2785a3;
+    --vp-c-blue-soft: rgb(27 178 229 / 16%);
+    --vp-c-purple-text: #c8abfa;
+    --vp-c-purple-hover: #a879e6;
+    --vp-c-purple-bg: #8e5cd9;
+    --vp-c-purple-soft: rgb(159 122 234 / 16%);
+    --vp-c-green-text: #3dd68c;
+    --vp-c-green-hover: #30a46c;
+    --vp-c-green-bg: #298459;
+    --vp-c-green-soft: rgb(16 185 129 / 16%);
+    --vp-c-yellow-text: #f9b44e;
+    --vp-c-yellow-hover: #da8b17;
+    --vp-c-yellow-bg: #a46a0a;
+    --vp-c-yellow-soft: rgb(234 179 8 / 16%);
+    --vp-c-red-text: #f66f81;
+    --vp-c-red-hover: #f14158;
+    --vp-c-red-bg: #b62a3c;
+    --vp-c-red-soft: rgb(244 63 94 / 16%);
+    // END colors.scss
+
+    // background colors
+    --vp-c-bg: #22272e;
+    --vp-c-bg-alt: #161618;
+    --vp-c-bg-elv: #202127;
+
+    // text colors
+    --vp-c-text: rgb(235 235 245 / 86%);
+    --vp-c-text-mute: rgb(235 235 245 / 60%);
+    --vp-c-text-subtle: rgb(235 235 245 / 38%);
+
+    // border colors
+    --vp-c-gutter: #3e535a;
+    --vp-c-border: #3e4c5a;
+    --vp-c-border-hard: #34404c;
+
+    // shadow color
+    --vp-c-shadow: rgb(0 0 0 / 30%);
+
+    // control colors
+    --vp-c-control: rgb(101 117 133 / 12%);
+    --vp-c-control-hover: rgb(101 117 133 / 18%);
+    --vp-c-control-disabled: #363636;
+}
+
+[data-theme='dark'] code {
+    color: var(--vp-c-text-mute);
+}
+
+// ----------------------------------------------------------------------------------------------- //
+// Badges
+// ----------------------------------------------------------------------------------------------- //
+
+.vp-badge {
+    &.success {
+        color: var(--success);
+    }
+}
+
+[data-theme='dark'] {
+    .vp-badge {
+        &.success {
+            color: var(--vp-c-text);
+        }
+    }   
+}

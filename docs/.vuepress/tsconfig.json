@@ -1,0 +1,13 @@
+{
+  /* NOTE: This file is mostly to "trick" IDE to ignore certain import warning! */
+  "compilerOptions": {
+    "paths": {
+      "@aedart/vuepress-utils/*": [
+        "./../../packages/vuepress-utils/src/*"
+      ],
+      "@aedart/*": [
+        "./../../packages/*/src"
+      ]
+    }
+  },
+}
