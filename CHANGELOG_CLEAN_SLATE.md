@@ -16,6 +16,7 @@ Temporary changelog for feature branch.
 
 * Switched to use TypeScript `v6` and Node.js `v24`.
 * Now using pnpm, with turbo, vite, and vitest (_previously used rollup, karma.js, webpack and other_).
+* Upgraded to vuepress `^2.0.0-rc.28`, using vite as bundler.
 
 **Non-breaking Changes**
 
