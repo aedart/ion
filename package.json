@@ -34,10 +34,10 @@
         "@vitest/coverage-v8": "4.1.2",
         "@vuepress/bundler-vite": "^2.0.0-rc.28",
         "@vuepress/client": "^2.0.0-rc.28",
-        "@vuepress/theme-default": "^2.0.0-rc.128",
-        "@vuepress/utils": "^2.0.0-rc.28",
         "@vuepress/plugin-back-to-top": "^2.0.0-rc.128",
         "@vuepress/plugin-search": "^2.0.0-rc.128",
+        "@vuepress/theme-default": "^2.0.0-rc.128",
+        "@vuepress/utils": "^2.0.0-rc.28",
         "dprint": "^0.53.2",
         "eslint": "^9.10.0",
         "globals": "^15.15.0",
@@ -59,12 +59,10 @@
         "deps:propagate": "node scripts/propagate-deps.js",
         "deps:update": "pnpm deps:sync-peers && pnpm deps:propagate && pnpm install",
         "fix:imports": "node scripts/fix-esm-imports.js",
-
         "--- [ Development & Docs ] ---": "echo",
         "docs:dev": "vuepress dev docs",
         "docs:build": "vuepress build docs",
         "type-check": "turbo run type-check && tsc -p tsconfig.json --noEmit",
-
         "--- [ Quality Control (Lint/Format/Test) ] ---": "echo",
         "lint": "turbo run lint",
         "lint:fix": "eslint . --fix",
@@ -72,7 +70,6 @@
         "format:fix": "dprint fmt",
         "test": "vitest run",
         "test:watch": "vitest",
-
         "--- [ Build & Release ] ---": "echo",
         "build": "turbo run build",
         "version:sync": "node scripts/check-versions.js",
