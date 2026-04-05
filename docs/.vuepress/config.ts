@@ -1,6 +1,6 @@
 import { baseURL, prefixPath } from '@aedart/vuepress-utils';
 import { lastUpdatedPlugin } from '@aedart/vuepress-utils/plugins';
-import { webpackBundler } from '@vuepress/bundler-webpack';
+import { viteBundler } from '@vuepress/bundler-vite'
 import { backToTopPlugin } from '@vuepress/plugin-back-to-top';
 import { searchPlugin } from '@vuepress/plugin-search';
 import { defaultTheme } from '@vuepress/theme-default';
@@ -18,9 +18,7 @@ const BASE_URL = baseURL('ion');
  * Vuepress configuration for docs...
  */
 export default defineUserConfig({
-    bundler: webpackBundler({
-        // N/A
-    }),
+    bundler: viteBundler(),
 
     base: BASE_URL,
     dest: './.build',
@@ -90,7 +88,7 @@ export default defineUserConfig({
             },
 
             getExtraFields: (page: Page) => {
-                return [page.frontmatter.description];
+                return [page.frontmatter.description] as string[];
             },
         }),
 
@@ -105,7 +103,7 @@ export default defineUserConfig({
  *
  * @returns {string}
  */
-function resolvePath(path: string)
+function resolvePath(path: string): string
 {
     return prefixPath(BASE_URL, path);
 }
