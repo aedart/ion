@@ -4,8 +4,10 @@
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "paths": {
+            "@aedart/vuepress-utils": ["./packages/vuepress-utils/src/index.ts"],
+            "@aedart/vuepress-utils/*": ["./packages/vuepress-utils/src/*"],
             "@aedart/xyz": ["./packages/xyz/src/index.ts"],
-            "@aedart/xyz/utils": ["./packages/xyz/src/utils/index.ts"]
+            "@aedart/xyz/utils": ["./packages/xyz/src/utils/index.ts"],
         },
         "noEmit": true,
         "outDir": "dist",

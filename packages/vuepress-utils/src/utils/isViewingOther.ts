@@ -1,0 +1,49 @@
+import Archive from '../contracts/Archive.js';
+import type { PageDataRef } from '@vuepress/client';
+import { computed, ComputedRef } from 'vue';
+import { isViewingCurrent } from './isViewingCurrent.js';
+import { isViewingNext } from './isViewingNext.js';
+
+/**
+ * Determine if neither "current" nor "next" pages collection are being viewed
+ *
+ * @param {import('@vuepress/client').PageDataRef} page
+ * @param {Archive} archive
+ * @param {string[]} [exclude=[ '/' ]] Paths to exclude from result
+ *
+ * @returns {boolean}
+ */
+export function isViewingOther(
+    page: PageDataRef,
+    archive: Archive,
+    exclude: string[] = ['/'],
+): boolean
+{
+    const path = page.value.path;
+
+    return !exclude.includes(path)
+        && path !== archive.path + '/'
+        && !isViewingNext(page, archive)
+        && !isViewingCurrent(page, archive);
+}
+
+/**
+ * Returns a computed property that determines if neither "current" nor "next" pages
+ * collection are being viewed
+ *
+ * @param {import('@vuepress/client').PageDataRef} page
+ * @param {Archive} archive
+ * @param {string[]} [exclude=[ '/' ]] Paths to exclude from result
+ *
+ * @returns {import('vue').ComputedRef<boolean>}
+ */
+export function isViewingOtherRef(
+    page: PageDataRef,
+    archive: Archive,
+    exclude: string[] = ['/'],
+): ComputedRef<boolean>
+{
+    return computed(() => {
+        return isViewingOther(page, archive, exclude);
+    });
+}
