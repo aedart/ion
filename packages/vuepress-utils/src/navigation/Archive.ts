@@ -1,11 +1,11 @@
 import { prefixPath } from '@aedart/vuepress-utils';
-import { Archive as ArchiveContract, PagesCollection } from '../contracts/index.js';
 import type {
     NavbarGroupOptions,
     NavbarLinkOptions,
     NavGroup,
     SidebarOptions,
 } from '@vuepress/theme-default';
+import { Archive as ArchiveContract, PagesCollection } from '../contracts/index.js';
 
 /**
  * Archive

@@ -1,8 +1,3 @@
-import { prefixPath } from '../utils/prefixPath.js';
-import {
-    Archive,
-    PagesCollection as PagesCollectionContract,
-} from '../contracts/index.js';
 import type {
     NavbarLinkOptions,
     NavGroup,
@@ -11,6 +6,8 @@ import type {
     SidebarItemOptions,
     SidebarObjectOptions,
 } from '@vuepress/theme-default';
+import { Archive, PagesCollection as PagesCollectionContract } from '../contracts/index.js';
+import { prefixPath } from '../utils/prefixPath.js';
 
 /**
  * Pages Collection

@@ -1,6 +1,6 @@
-import Archive from '../contracts/Archive.js';
 import type { PageDataRef } from '@vuepress/client';
 import { computed, ComputedRef } from 'vue';
+import Archive from '../contracts/Archive.js';
 import { isViewingCurrent } from './isViewingCurrent.js';
 import { isViewingNext } from './isViewingNext.js';
 

@@ -1,6 +1,6 @@
 import { baseURL, prefixPath } from '@aedart/vuepress-utils';
 import { lastUpdatedPlugin } from '@aedart/vuepress-utils/plugins';
-import { viteBundler } from '@vuepress/bundler-vite'
+import { viteBundler } from '@vuepress/bundler-vite';
 import { backToTopPlugin } from '@vuepress/plugin-back-to-top';
 import { searchPlugin } from '@vuepress/plugin-search';
 import { defaultTheme } from '@vuepress/theme-default';

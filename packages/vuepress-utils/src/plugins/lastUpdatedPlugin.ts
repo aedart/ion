@@ -1,51 +1,60 @@
-import type { Page, Plugin } from 'vuepress';
-import { getDirname, path } from '@vuepress/utils';
-import type { DateTimeJSOptions } from 'luxon';
-
-const __dirname = getDirname(import.meta.url);
+import { DateTime } from 'luxon';
+import type { Page, PluginObject } from 'vuepress';
 
 /**
- * Last Updated Plugin Options
+ * Options for the Last Updated formatter
  */
-export interface lastUpdatedPluginOptions {
+export interface LastUpdatedOptions {
     /**
-     * Datetime format
-     *
-     * @see https://moment.github.io/luxon/#/formatting?id=table-of-tokens
+     * Luxon format string
      */
     format?: string;
-
-    /**
-     * Datetime Options
-     */
-    options?: DateTimeJSOptions;
 }
 
 /**
- * Formats the last updated timestamp according to given format
+ * Refactored Last Updated Plugin for VuePress 2 (Pure TypeScript)
  *
- * @param {string | undefined} [format='yyyy-MM-dd HH:mm:ss ZZZZ']
- * @param {import('luxon/src/datetime').DateTimeJSOptions | undefined} [options={}]
+ * This version updates page.date to encourage the theme to use the custom format.
  *
- * @returns {import('@vuepress/core').Plugin}
+ * @param {LastUpdatedOptions} options
+ *
+ * @returns {PluginObject}
  */
-export const lastUpdatedPlugin = ({
-    format = 'yyyy-MM-dd HH:mm:ss ZZZZ',
-    options = {},
-}: lastUpdatedPluginOptions = {}): Plugin => {
+export function lastUpdatedPlugin(options: LastUpdatedOptions = {}): PluginObject
+{
+    const { format = 'yyyy-MM-dd HH:mm:ss' } = options;
+
     return {
-        name: 'last-updated-plugin',
+        name: '@aedart/vuepress-utils/last-updated',
 
-        extendsPage: (page: Page) => {
-            page.data.lastUpdatedDateFormat = format;
-            page.data.lastUpdatedDateOptions = options;
-        },
+        /**
+         * Server-side hook to extend page data during the build/dev process.
+         *
+         * @param {Page} page
+         *
+         * @returns {void}
+         */
+        extendsPage(page: Page): void
+        {
+            // Extract the Git timestamp (requires @vuepress/plugin-git)
+            const updatedTime = (page.data as any).git?.updatedTime;
 
-        alias: {
-            '@theme/PageMeta.vue': path.resolve(
-                __dirname,
-                '../components/plugins/LastUpdatedPlugin.vue', // In "dist" directory
-            ),
+            if (updatedTime) {
+                const formatted = DateTime.fromMillis(updatedTime)
+                    .toFormat(format);
+
+                /**
+                 * We set page.date in addition to lastUpdated.
+                 * Themes often use page.date as the primary source for post/page timing.
+                 */
+                page.date = formatted;
+
+                // Fallback for themes specifically looking at the data object
+                page.data.lastUpdated = formatted;
+
+                // Also overwrite frontmatter to be safe
+                page.frontmatter.lastUpdated = formatted;
+            }
         },
     };
-};
+}

@@ -1,6 +1,6 @@
-import type Archive from '../contracts/Archive.js';
-import type { PageDataRef } from 'vuepress/client';
 import { computed, ComputedRef } from 'vue';
+import type { PageDataRef } from 'vuepress/client';
+import type Archive from '../contracts/Archive.js';
 
 /**
  * Determine if "current" pages collection is being viewed

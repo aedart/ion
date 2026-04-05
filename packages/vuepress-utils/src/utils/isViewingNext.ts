@@ -1,6 +1,6 @@
-import type Archive from '../contracts/Archive.js';
 import type { PageDataRef } from '@vuepress/client';
 import { computed, ComputedRef } from 'vue';
+import type Archive from '../contracts/Archive.js';
 
 /**
  * Determine if "next" pages collection is being viewed
