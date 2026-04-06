@@ -10,8 +10,14 @@ describe('@aedart/vuepress-utils/navigation', () => {
 
             const current = PagesCollection.make('Version 1', '/v1x');
             const next = PagesCollection.make('Version 2', '/v2x');
-
+            
             const archive = Archive.make(current, next);
+            
+            const name: string = 'My Archive';
+            const path: string = '/my-archive';
+            
+            archive.name = name;
+            archive.path = path;
 
             // ------------------------------------------------------------------------------ //
 
@@ -19,6 +25,12 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 .not
                 .toBeNull();
 
+            expect(archive.name, 'Invalid name')
+                .toBe(name);
+
+            expect(archive.path, 'Invalid path')
+                .toBe(path);
+            
             expect(archive.current, 'Incorrect "current" collection')
                 .toBe(current);
 
