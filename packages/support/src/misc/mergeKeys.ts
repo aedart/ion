@@ -1,36 +1,46 @@
 import type { Key } from "@aedart/contracts/support";
-import { isKey } from "./isKey.js";
+import { isPropertyKey } from "./isPropertyKey.js";
 
 /**
  * Merge multiple {@link Key}s into a single key
- * 
+ *
  * @param {...Key} keys
- * 
- * @return {Key} Merged key. Empty key if no arguments given.
- * 
+ *
+ * @returns {Key} Merged key. Empty key if no arguments given.
+ *
  * @throws {TypeError} If an argument is not a valid key
  */
 export function mergeKeys(...keys: Key[]): Key
 {
-    // Return empty key, when no keys given
-    if (arguments.length === 0) {
+    const totalArgs = keys.length;
+    if (totalArgs === 0) {
         return [];
     }
-    
-    const mapped = keys.map<Key>((key: Key, index: number) => {
-        let modifiedKey = key;
-        
-        if (!isKey(modifiedKey)) {
-            throw new TypeError(`mergeKeys(): Argument #${index} must be a valid "key", ${typeof key} given`);
+
+    const result: PropertyKey[] = [];
+
+    for (let i = 0; i < totalArgs; i++) {
+        const current = keys[i];
+
+        if (Array.isArray(current)) {
+            const subLength = current.length;
+            for (let j = 0; j < subLength; j++) {
+                const element = current[j];
+                
+                if (!isPropertyKey(element)) {
+                    throw new TypeError(`mergeKeys(): Argument #${i} contains an invalid property key at index ${j}`);
+                }
+                
+                result.push(element);
+            }
+        } else {
+            if (!isPropertyKey(current)) {
+                throw new TypeError(`mergeKeys(): Argument #${i} must be a valid "key", ${typeof current} given`);
+            }
+
+            result.push(current as PropertyKey);
         }
-        
-        if (!Array.isArray(modifiedKey)) {
-            modifiedKey = [ modifiedKey ] as Key;
-        }
-        
-        return modifiedKey;
-    });
-    
-    // @ts-expect-error This should be fine here. TS does not understand this merge...
-    return [].concat(...mapped) as Key;
+    }
+
+    return result;
 }
