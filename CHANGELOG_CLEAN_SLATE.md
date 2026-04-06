@@ -21,7 +21,7 @@ Temporary changelog for feature branch.
 
 **Non-breaking Changes**
 
-* Optimized performance of `isset()` (_support misc package_).
+* Optimized performance of `isset()` and `empty()` (_support misc package_).
 * The TypeScript source files are now also published, along with appropriate source maps.
 * dprint is now used for formatting.
 
