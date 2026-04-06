@@ -1,0 +1,47 @@
+{
+    "name": "@aedart/contracts",
+    "version": "0.14.0",
+    "description": "The Ion contracts package. Contains types, interfaces and unique identifiers",
+    "keywords": [
+        "Ion",
+        "Contracts",
+        "Interfaces",
+        "Types",
+        "Unique Identifiers"
+    ],
+    "author": "Alin Eugen Deac <aedart@gmail.com>",
+    "license": "BSD-3-Clause",
+    "homepage": "https://aedart.github.io/ion/",
+    "bugs": {
+        "url": "https://github.com/aedart/ion/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aedart/ion.git",
+        "directory": "packages/contracts"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "module",
+    "exports": {
+        ".": "./dist/index.js",
+        "./support": "./dist/support/index.js"
+    },
+    "files": [
+        "dist",
+        "src",
+        "NOTICE",
+        "README.md"
+    ],
+    "scripts": {
+        "copy-license": "cp ../../LICENSE ./LICENSE",
+        "build": "rm -f *.tsbuildinfo && tsc && node ../../scripts/add-banner.js",
+        "type-check": "tsc --noEmit"
+    },
+    "peerDependencies": {
+        "tslib": "^2.8.0"
+    },
+    "sideEffects": false
+}
