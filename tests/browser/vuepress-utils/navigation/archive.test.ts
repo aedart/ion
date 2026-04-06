@@ -1,21 +1,19 @@
 import { Archive, PagesCollection } from '@aedart/vuepress-utils/navigation';
-import { describe, test, expect } from "vitest";
-import {AutoLinkOptions, NavbarGroupOptions} from "@vuepress/theme-default";
+import { AutoLinkOptions, NavbarGroupOptions } from '@vuepress/theme-default';
+import { describe, expect, test } from 'vitest';
 
 describe('@aedart/vuepress-utils/navigation', () => {
-   
     describe('Archive', () => {
-
-        test('can create instance', function () {
-
+        test('can create instance', function()
+        {
             const current = PagesCollection.make('Version 1', '/v1x');
             const next = PagesCollection.make('Version 2', '/v2x');
-            
+
             const archive = Archive.make(current, next);
-            
+
             const name: string = 'My Archive';
             const path: string = '/my-archive';
-            
+
             archive.name = name;
             archive.path = path;
 
@@ -30,7 +28,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
 
             expect(archive.path, 'Invalid path')
                 .toBe(path);
-            
+
             expect(archive.current, 'Incorrect "current" collection')
                 .toBe(current);
 
@@ -38,7 +36,8 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 .toBe(next);
         });
 
-        test('can be exported as navigation item', function () {
+        test('can be exported as navigation item', function()
+        {
             const current = PagesCollection.make('Version 1', '/v1x');
             const next = PagesCollection.make('Version 2', '/v2x');
 
@@ -69,17 +68,20 @@ describe('@aedart/vuepress-utils/navigation', () => {
 
             result.children.forEach((child, index) => {
                 // Debug
-                //console.log(child);
+                // console.log(child);
 
                 expect(result.text.length, `Child at index ${index} is missing "text"`)
                     .toBeGreaterThan(0);
 
-                expect((result as AutoLinkOptions).link.length, `Child at index ${index} is missing "link"`)
+                expect(
+                    (result as AutoLinkOptions).link.length,
+                    `Child at index ${index} is missing "link"`,
+                )
                     .toBeGreaterThan(0);
             });
         });
 
-        test('can export sidebar configuration', function ()
+        test('can export sidebar configuration', function()
         {
             const current = PagesCollection.make('Version 1', '/v1x', [
                 {
@@ -87,7 +89,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
                     children: [
                         '',
                         'contribution-guide',
-                    ]
+                    ],
                 },
             ]);
             const next = PagesCollection.make('Version 2', '/v2x', [
@@ -96,7 +98,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
                     children: [
                         '',
                         'contribution-guide',
-                    ]
+                    ],
                 },
             ]);
 
@@ -110,7 +112,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
             let result = archive.sidebarConfiguration();
 
             // Debug
-            //console.log(result);
+            // console.log(result);
 
             expect(result, 'Invalid sidebar configuration')
                 .not
@@ -123,23 +125,21 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 expect(arr.length, `${link} appears to have no children`)
                     .toBeGreaterThan(0);
 
-                (arr as Record<PropertyKey, any>[]).forEach((child, index) =>
-                {
+                (arr as Record<PropertyKey, any>[]).forEach((child, index) => {
                     // Debug
-                    //console.log(child);
+                    // console.log(child);
 
                     // Ensure that all "children" of arr items are prefixed...
                     let children = child.children as string[];
-                    children.forEach((link) =>
-                    {
-
-                        expect(link.startsWith(archive.path), `${link} was not prefixed with archive path (${archive.path})`)
+                    children.forEach((link) => {
+                        expect(
+                            link.startsWith(archive.path),
+                            `${link} was not prefixed with archive path (${archive.path})`,
+                        )
                             .toBeTruthy();
                     });
                 });
             }
         });
-        
     });
-    
 });

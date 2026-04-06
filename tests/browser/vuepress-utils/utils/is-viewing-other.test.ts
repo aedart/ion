@@ -1,12 +1,10 @@
-import { isViewingOther } from "@aedart/vuepress-utils";
+import { isViewingOther } from '@aedart/vuepress-utils';
 import { Archive, PagesCollection } from '@aedart/vuepress-utils/navigation';
+import { describe, expect, test } from 'vitest';
 import type { PageDataRef } from 'vuepress/client';
-import { describe, test, expect } from "vitest";
 
 describe('@aedart/vuepress-utils/utils', () => {
-
     describe('isViewingOther', () => {
-
         test('can determine if next', () => {
             const current = PagesCollection.make('Version 1', '/v1x', [
                 {
@@ -36,16 +34,15 @@ describe('@aedart/vuepress-utils/utils', () => {
 
             const pageA = {
                 value: {
-                    path: '/archive/current/code-of-conduct'
-                }
+                    path: '/archive/current/code-of-conduct',
+                },
             } as PageDataRef;
 
             const pageB = {
                 value: {
-                    path: '/archive/v2/upgrade-guide'
-                }
+                    path: '/archive/v2/upgrade-guide',
+                },
             } as PageDataRef;
-
 
             const resultA = isViewingOther(pageA, archive);
             const resultB = isViewingOther(pageB, archive);

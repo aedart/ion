@@ -1,13 +1,11 @@
 import { Archive, PagesCollection } from '@aedart/vuepress-utils/navigation';
-import { describe, test, expect } from "vitest";
-import { SidebarGroupOptions } from "@vuepress/theme-default";
+import { SidebarGroupOptions } from '@vuepress/theme-default';
+import { describe, expect, test } from 'vitest';
 
 describe('@aedart/vuepress-utils/navigation', () => {
-    
     describe('Pages Collection', () => {
-
-        test('can create instance', function () {
-
+        test('can create instance', function()
+        {
             const name = 'Collection A';
             const path = '/collection-a';
             const collection = PagesCollection.make(name, path);
@@ -19,10 +17,10 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 .toBe(path);
         });
 
-        test('can get full path', function () {
-            
+        test('can get full path', function()
+        {
             const archiveMock = {
-                path: '/archive'
+                path: '/archive',
             } as Archive;
 
             const path = '/collection-a';
@@ -34,9 +32,10 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 .toBe(expected);
         });
 
-        test('can be exported as navigation item', function () {
+        test('can be exported as navigation item', function()
+        {
             const archiveMock = {
-                path: '/archive'
+                path: '/archive',
             } as Archive;
 
             const path = '/collection-a';
@@ -45,16 +44,17 @@ describe('@aedart/vuepress-utils/navigation', () => {
 
             const expected = {
                 text: collection.name,
-                link: archiveMock.path + path
+                link: archiveMock.path + path,
             };
             const result = collection.asNavigationItem();
             expect(result, 'Incorrect navigation item')
                 .toEqual(expected);
         });
 
-        test('can exported as sidebar config object ', function () {
+        test('can exported as sidebar config object ', function()
+        {
             const archiveMock = {
-                path: '/archive'
+                path: '/archive',
             } as Archive;
 
             const path = '/collection-a';
@@ -66,7 +66,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
                         'contribution-guide',
                         'security',
                         'code-of-conduct',
-                    ]
+                    ],
                 },
             ]);
             collection.archive = archiveMock;
@@ -74,13 +74,13 @@ describe('@aedart/vuepress-utils/navigation', () => {
             // ------------------------------------------------------------------------ //
 
             const result = collection.asSidebarObject();
-            //console.log(result);
+            // console.log(result);
 
             const fullPath = archiveMock.path + path;
             const hasFullPathKey = result.hasOwnProperty(fullPath);
             expect(hasFullPathKey, 'Full path key does not exist in sidebar config object')
                 .toBeTruthy();
-            
+
             const pages = result[fullPath] as SidebarGroupOptions[];
             expect(pages.length, 'No pages are exported')
                 .not
@@ -94,7 +94,6 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 expect(isPrefixed, `Page path at index ${index} is not prefixed: ${page}`)
                     .toBeTruthy();
             });
-        }); 
+        });
     });
-    
 });

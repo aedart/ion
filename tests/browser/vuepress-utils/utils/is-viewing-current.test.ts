@@ -1,12 +1,10 @@
-import { isViewingCurrent } from "@aedart/vuepress-utils";
+import { isViewingCurrent } from '@aedart/vuepress-utils';
 import { Archive, PagesCollection } from '@aedart/vuepress-utils/navigation';
+import { describe, expect, test } from 'vitest';
 import type { PageDataRef } from 'vuepress/client';
-import { describe, test, expect } from "vitest";
 
 describe('@aedart/vuepress-utils/utils', () => {
-
     describe('isViewingCurrent', () => {
-
         test('can determine if current', () => {
             const current = PagesCollection.make('Version 1', '/v1x', [
                 {
@@ -36,16 +34,15 @@ describe('@aedart/vuepress-utils/utils', () => {
 
             const pageA = {
                 value: {
-                    path: '/archive/current/code-of-conduct'
-                }
+                    path: '/archive/current/code-of-conduct',
+                },
             } as PageDataRef;
 
             const pageB = {
                 value: {
-                    path: '/archive/v2x/code-of-conduct'
-                }
+                    path: '/archive/v2x/code-of-conduct',
+                },
             } as PageDataRef;
-
 
             const resultA = isViewingCurrent(pageA, archive);
             const resultB = isViewingCurrent(pageB, archive);
@@ -54,7 +51,7 @@ describe('@aedart/vuepress-utils/utils', () => {
                 .toBeTruthy();
 
             expect(resultB, 'Should NOT be viewing curring')
-                .toBeFalsy(); 
+                .toBeFalsy();
         });
     });
 });

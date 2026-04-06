@@ -17,7 +17,7 @@ export default defineConfig({
                         'tests/node/**/*/*.test.ts',
                         'tests/node/**/*.test.ts',
                     ],
-                    //exclude: ['tests/browser/**/*.test.ts'],
+                    // exclude: ['tests/browser/**/*.test.ts'],
                 },
             },
             {
