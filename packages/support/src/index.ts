@@ -1,2 +1,6 @@
-// TODO
-export const hi: string = 'hi';
+/**
+ * Support identifier
+ *
+ * @type {Symbol}
+ */
+export const SUPPORT: unique symbol = Symbol('@aedart/support');
