@@ -13,8 +13,11 @@ export default defineConfig({
                 test: {
                     name: 'node-cli',
                     environment: 'node',
-                    include: ['tests/node/**/*.test.ts'],
-                    exclude: ['tests/browser/**/*.test.ts'],
+                    include: [
+                        'tests/node/**/*/*.test.ts',
+                        'tests/node/**/*.test.ts',
+                    ],
+                    //exclude: ['tests/browser/**/*.test.ts'],
                 },
             },
             {
@@ -26,7 +29,10 @@ export default defineConfig({
                         provider: playwright(),
                         instances: [{ browser: 'chromium' }, { browser: 'firefox' }],
                     },
-                    include: ['tests/browser/**/*.test.ts'],
+                    include: [
+                        'tests/browser/**/*/*.test.ts',
+                        'tests/browser/**/*.test.ts',
+                    ],
                 },
             },
         ],
