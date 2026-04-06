@@ -4,8 +4,7 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/vuepress-utils/navigation', () => {
     describe('Archive', () => {
-        test('can create instance', function()
-        {
+        test('can create instance', () => {
             const current = PagesCollection.make('Version 1', '/v1x');
             const next = PagesCollection.make('Version 2', '/v2x');
 
@@ -36,8 +35,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 .toBe(next);
         });
 
-        test('can be exported as navigation item', function()
-        {
+        test('can be exported as navigation item', () => {
             const current = PagesCollection.make('Version 1', '/v1x');
             const next = PagesCollection.make('Version 2', '/v2x');
 
@@ -81,8 +79,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
             });
         });
 
-        test('can export sidebar configuration', function()
-        {
+        test('can export sidebar configuration', () => {
             const current = PagesCollection.make('Version 1', '/v1x', [
                 {
                     text: 'Version 1.x',
