@@ -2,9 +2,9 @@ import { descTag } from "./descTag.js";
 
 /**
  * Determine if value is empty
- * 
+ *
  * @param {any} value
- * 
+ *
  * @returns {boolean}
  */
 export function empty(value: any): boolean
@@ -14,32 +14,30 @@ export function empty(value: any): boolean
     }
 
     switch (typeof value) {
+        case 'string':
         case 'boolean':
             return !value;
-            
+
         case 'number':
-            return value === 0 || isNaN(value);
-            
+            return value === 0 || Number.isNaN(value);
+
         case 'bigint':
             return value === 0n;
-            
-        case 'string':
-            return value.length === 0;
-            
+
         case 'object':
-            // Array or array like
+            // Handle Arrays, TypedArrays, and Arguments object via length property
             if (Array.isArray(value) || ArrayBuffer.isView(value) || descTag(value) === '[object Arguments]') {
-                return 'length' in value && value.length === 0;
+                return value.length === 0;
             }
 
-            // Map / Set
+            // Map / Set use .size
             if (value instanceof Map || value instanceof Set) {
-                return value.size === 0
+                return value.size === 0;
             }
 
-            // Native object
+            // Plain objects: Using Object.keys is generally fastest for checking own-enumerable properties
             return value.constructor === Object && Object.keys(value).length === 0;
-            
+
         default:
             return false;
     }
