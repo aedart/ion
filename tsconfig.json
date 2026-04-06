@@ -4,6 +4,10 @@
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "paths": {
+            "@aedart/contracts": ["./packages/contracts/src/index.ts"],
+            "@aedart/contracts/*": ["./packages/contracts/src/*"],
+            "@aedart/support": ["./packages/support/src/index.ts"],
+            "@aedart/support/*": ["./packages/support/src/*"],
             "@aedart/vuepress-utils": ["./packages/vuepress-utils/src/index.ts"],
             "@aedart/vuepress-utils/*": ["./packages/vuepress-utils/src/*"],
             "@aedart/xyz": ["./packages/xyz/src/index.ts"],
