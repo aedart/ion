@@ -21,8 +21,10 @@
         "pnpm": ">=9.0.0"
     },
     "dependencies": {
-        "@aedart/xyz": "workspace:*",
-        "@aedart/vuepress-utils": "workspace:*"
+        "@aedart/contracts": "workspace:*",
+        "@aedart/support": "workspace:*",
+        "@aedart/vuepress-utils": "workspace:*",
+        "@aedart/xyz": "workspace:*"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.4",
