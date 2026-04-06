@@ -41,7 +41,7 @@
         "type-check": "tsc --noEmit"
     },
     "peerDependencies": {
-        "tslib": "^2.8.0"
+        "tslib": "^2.8.1"
     },
     "sideEffects": false
 }

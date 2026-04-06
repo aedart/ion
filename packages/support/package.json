@@ -41,7 +41,7 @@
     },
     "peerDependencies": {
         "@aedart/contracts": "workspace:*",
-        "tslib": "^2.8.0"
+        "tslib": "^2.8.1"
     },
     "devDependencies": {
         "@aedart/contracts": "workspace:*"
