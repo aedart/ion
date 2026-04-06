@@ -1,11 +1,9 @@
-import { isKey } from "@aedart/support/misc";
+import { isKey } from '@aedart/support/misc';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/misc', () => {
-
     describe('isKey', () => {
-
-        test('can determine if value is a valid key',  () => {
+        test('can determine if value is a valid key', () => {
             const valid = [
                 0,
                 1,
@@ -13,8 +11,8 @@ describe('@aedart/support/misc', () => {
                 NaN,
                 'foo',
                 Symbol('my-symbol'),
-                [ 'a', 'b.c' ],
-                [ 'a', 'b.c', 12, Symbol('my-other-symbol') ],
+                ['a', 'b.c'],
+                ['a', 'b.c', 12, Symbol('my-other-symbol')],
             ];
 
             valid.forEach((value, index) => {
@@ -29,7 +27,7 @@ describe('@aedart/support/misc', () => {
                 true,
                 false,
                 null,
-                undefined
+                undefined,
             ];
 
             invalid.forEach((value, index) => {
@@ -37,7 +35,5 @@ describe('@aedart/support/misc', () => {
                     .toBeFalsy();
             });
         });
-
     });
-
 });

@@ -1,11 +1,9 @@
-import { isPrimitive } from "@aedart/support/misc";
+import { isPrimitive } from '@aedart/support/misc';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/misc', () => {
-
     describe('isPrimitive', () => {
-
-        test('can determine if value is a primitive',  () => {
+        test('can determine if value is a primitive', () => {
             const valid = [
                 null,
                 undefined,
@@ -18,7 +16,7 @@ describe('@aedart/support/misc', () => {
                 0n,
                 NaN,
                 'foo',
-                Symbol('my-symbol')
+                Symbol('my-symbol'),
             ];
 
             valid.forEach((value, index) => {
@@ -29,15 +27,16 @@ describe('@aedart/support/misc', () => {
             const invalid = [
                 [1, 2, 3],
                 () => false,
-                { name: 'John' }
+                { name: 'John' },
             ];
 
             invalid.forEach((value, index) => {
-                expect(isPrimitive(value), `Invalid value at index ${index} SHOULD NOT be a primitive`)
+                expect(
+                    isPrimitive(value),
+                    `Invalid value at index ${index} SHOULD NOT be a primitive`,
+                )
                     .toBeFalsy();
             });
         });
-
     });
-
 });

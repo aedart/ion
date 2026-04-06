@@ -1,4 +1,4 @@
-import { descTag } from "./descTag.js";
+import { descTag } from './descTag.js';
 
 /**
  * Determine if value is empty
@@ -26,7 +26,10 @@ export function empty(value: any): boolean
 
         case 'object':
             // Handle Arrays, TypedArrays, and Arguments object via length property
-            if (Array.isArray(value) || ArrayBuffer.isView(value) || descTag(value) === '[object Arguments]') {
+            if (
+                Array.isArray(value) || ArrayBuffer.isView(value)
+                || descTag(value) === '[object Arguments]'
+            ) {
                 return value.length === 0;
             }
 

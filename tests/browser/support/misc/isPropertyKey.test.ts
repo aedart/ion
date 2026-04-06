@@ -1,18 +1,16 @@
-import { isPropertyKey } from "@aedart/support/misc";
+import { isPropertyKey } from '@aedart/support/misc';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/misc', () => {
-
     describe('isPropertyKey', () => {
-
-        test('can determine if value is a property key',  () => {
+        test('can determine if value is a property key', () => {
             const valid = [
                 0,
                 1,
                 -1,
                 NaN,
                 'foo',
-                Symbol('my-symbol')
+                Symbol('my-symbol'),
             ];
 
             valid.forEach((value, index) => {
@@ -27,15 +25,16 @@ describe('@aedart/support/misc', () => {
                 true,
                 false,
                 null,
-                undefined
+                undefined,
             ];
 
             invalid.forEach((value, index) => {
-                expect(isPropertyKey(value), `Invalid value at index ${index} SHOULD NOT be a property key`)
+                expect(
+                    isPropertyKey(value),
+                    `Invalid value at index ${index} SHOULD NOT be a property key`,
+                )
                     .toBeFalsy();
             });
         });
-
     });
-
 });

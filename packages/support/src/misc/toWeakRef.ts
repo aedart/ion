@@ -9,7 +9,9 @@
  *
  * @returns {WeakRef<T> | undefined} Returns undefined if given target is undefined
  */
-export function toWeakRef<T extends WeakKey>(target: WeakRef<T> | T | undefined): WeakRef<T> | undefined
+export function toWeakRef<T extends WeakKey>(
+    target: WeakRef<T> | T | undefined,
+): WeakRef<T> | undefined
 {
     if (target === undefined || target === null) {
         return undefined;

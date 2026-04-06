@@ -1,11 +1,9 @@
-import { isset } from "@aedart/support/misc";
+import { isset } from '@aedart/support/misc';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/misc', () => {
-    
     describe('isset', () => {
-
-        test('can determine if value differs from undefined and null',  ()  => {
+        test('can determine if value differs from undefined and null', () => {
             const valid = [
                 'str',
                 '',
@@ -25,7 +23,7 @@ describe('@aedart/support/misc', () => {
 
             const invalid = [
                 undefined,
-                null
+                null,
             ];
 
             invalid.forEach((value, index) => {
@@ -34,8 +32,7 @@ describe('@aedart/support/misc', () => {
             });
         });
 
-        test('can determine if multiple values differ from undefined and null',  ()  => {
-
+        test('can determine if multiple values differ from undefined and null', () => {
             const valid = [
                 'str',
                 '',
@@ -54,13 +51,11 @@ describe('@aedart/support/misc', () => {
             const invalid = [
                 'abc', // valid
                 undefined, // invalid
-                null // invalid
+                null, // invalid
             ];
 
             expect(isset(...invalid), `Invalid values SHOULD NOT be set`)
                 .toBeFalsy();
         });
-        
     });
-    
 });

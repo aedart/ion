@@ -1,13 +1,13 @@
-import type { Key } from "@aedart/contracts/support";
-import { isPropertyKey } from "./isPropertyKey.js";
+import type { Key } from '@aedart/contracts/support';
+import { isPropertyKey } from './isPropertyKey.js';
 
 /**
  * Determine if given is a valid {@link Key}
- * 
+ *
  * @see {isPropertyKey}
- * 
+ *
  * @param {any} key
- * 
+ *
  * @returns {boolean}
  */
 export function isKey(key: any): boolean

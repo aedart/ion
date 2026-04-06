@@ -1,14 +1,12 @@
-import { toWeakRef } from "@aedart/support/misc";
+import { toWeakRef } from '@aedart/support/misc';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/misc', () => {
-
     describe('toWeakRef', () => {
-
         test('returns undefined when target is null or undefined', () => {
             const targets = [
                 null,
-                undefined
+                undefined,
             ];
 
             targets.forEach((target, index) => {
@@ -19,7 +17,6 @@ describe('@aedart/support/misc', () => {
         });
 
         test('returns weak reference when target already a weak reference', () => {
-
             const obj = { name: 'John' };
 
             const target = new WeakRef(obj);
@@ -29,7 +26,6 @@ describe('@aedart/support/misc', () => {
         });
 
         test('wraps target into weak reference', () => {
-
             const obj = { name: 'John' };
 
             const result = toWeakRef(obj);
@@ -41,5 +37,4 @@ describe('@aedart/support/misc', () => {
                 .toBe(obj);
         });
     });
-
 });

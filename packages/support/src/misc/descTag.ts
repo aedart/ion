@@ -1,11 +1,11 @@
 /**
  * Return the default string description of an object
- * 
+ *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
- * 
- * @param {any} value 
- * 
+ *
+ * @param {any} value
+ *
  * @returns {string}
  */
 export function descTag(value: any): string

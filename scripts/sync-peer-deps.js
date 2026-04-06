@@ -27,7 +27,12 @@ function syncDeps()
 
     const packagesDir = path.resolve(process.cwd(), 'packages');
     const packages = fs.readdirSync(packagesDir);
-    const depTypes = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
+    const depTypes = [
+        'dependencies',
+        'devDependencies',
+        'peerDependencies',
+        'optionalDependencies',
+    ];
 
     packages.forEach((pkg) => {
         const pkgPath = path.join(packagesDir, pkg, 'package.json');
@@ -63,8 +68,12 @@ function syncDeps()
 
     // 3. Sort all dependency blocks alphabetically
     if (rootJson.dependencies) rootJson.dependencies = sortObjectKeys(rootJson.dependencies);
-    if (rootJson.devDependencies) rootJson.devDependencies = sortObjectKeys(rootJson.devDependencies);
-    if (rootJson.optionalDependencies) rootJson.optionalDependencies = sortObjectKeys(rootJson.optionalDependencies);
+    if (rootJson.devDependencies) {
+        rootJson.devDependencies = sortObjectKeys(rootJson.devDependencies);
+    }
+    if (rootJson.optionalDependencies) {
+        rootJson.optionalDependencies = sortObjectKeys(rootJson.optionalDependencies);
+    }
 
     fs.writeFileSync(rootPath, JSON.stringify(rootJson, null, 4) + '\n');
     console.log('Successfully synchronized all external dependencies to root.');

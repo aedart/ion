@@ -3,10 +3,11 @@
  *
  * @param {any} [value] The first value to check.
  * @param {...any} [values] Additional values to check.
- * 
+ *
  * @returns {boolean}
  */
-export function isset(value?: any, ...values: any[]): boolean {
+export function isset(value?: any, ...values: any[]): boolean
+{
     // Fast Path: Named parameter access is faster than arguments object lookup
     if (value == null) {
         return false;

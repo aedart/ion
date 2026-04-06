@@ -1,12 +1,9 @@
-import { empty } from "@aedart/support/misc";
+import { empty } from '@aedart/support/misc';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/misc', () => {
-
     describe('empty', () => {
-
         test('can determine if value is empty', () => {
-
             const values = [
                 '',
                 false,
@@ -21,12 +18,12 @@ describe('@aedart/support/misc', () => {
                 new Set(),
                 new Map(),
                 new Int8Array(),
-                // new WeakMap(), // Has no way to determine size 
+                // new WeakMap(), // Has no way to determine size
                 // new WeakSet(), // Has no way to determine size
             ];
 
             for (const [index, value] of values.entries()) {
-                //console.log(index, value);
+                // console.log(index, value);
 
                 expect(empty(value), `Value at index ${index} should be empty`)
                     .toBeTruthy();
@@ -43,20 +40,21 @@ describe('@aedart/support/misc', () => {
                 true,
                 1,
                 1n,
-                [ 1 ],
+                [1],
                 -1,
                 Infinity,
                 { name: 'Jimmy' },
                 (new Set()).add('a'),
-                (new Map).set('foo', 'bar'),
+                (new Map()).set('foo', 'bar'),
                 typedArr,
                 new Date(),
-                function() {},
-                Symbol('symbol')
+                function()
+                {},
+                Symbol('symbol'),
             ];
 
             for (const [index, value] of values.entries()) {
-                //console.log(index, value);
+                // console.log(index, value);
 
                 expect(empty(value), `Value at index ${index} SHOULD NOT be empty`)
                     .toBeFalsy();
@@ -64,8 +62,8 @@ describe('@aedart/support/misc', () => {
         });
 
         test('can determine if "Arguments" is empty', () => {
-
-            const fn = function(...args : any[]) {
+            const fn = function(...args: any[])
+            {
                 return arguments;
             };
 
@@ -75,7 +73,5 @@ describe('@aedart/support/misc', () => {
             expect(empty(fn('a', 'b', 'c')), 'Method call with args. SHOULD NOT be empty')
                 .toBeFalsy();
         });
-
     });
-
 });
