@@ -12,19 +12,22 @@ import { isPropertyKey } from "./isPropertyKey.js";
  */
 export function isKey(key: any): boolean
 {
+    // Handle the most common case first: a single property key
     if (!Array.isArray(key)) {
-        key = [ key ];
+        return isPropertyKey(key);
     }
-    
-    if (key.length === 0) {
+
+    const length = key.length;
+    if (length === 0) {
         return false;
     }
-    
-    for (const entry of key) {
-        if (!isPropertyKey(entry)) {
+
+    // Use a standard for-loop for maximum performance in V8
+    for (let i = 0; i < length; i++) {
+        if (!isPropertyKey(key[i])) {
             return false;
         }
     }
-    
+
     return true;
 }
