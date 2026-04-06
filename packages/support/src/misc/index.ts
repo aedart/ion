@@ -4,3 +4,4 @@ export * from './isKey.js';
 export * from './isPrimitive.js';
 export * from './isPropertyKey.js';
 export * from './isset.js';
+export * from './mergeKeys.js';
