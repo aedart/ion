@@ -22,7 +22,7 @@ Temporary changelog for feature branch.
 **Non-breaking Changes**
 
 * Optimized performance of misc's `isset()`, `empty()`, `isPropertyKey()`, `isKey()`, `mergeKeys()` and `toWeakRef()` (_support package_).
-* Optimized performance of reflection's `hasPrototypeProperty()` and `getParentOfClass()` (_support package_).
+* Optimized performance of reflection's `hasPrototypeProperty()`, `getParentOfClass()` and `getAllParentsOfClass()` (_support package_).
 * The TypeScript source files are now also published, along with appropriate source maps.
 * dprint is now used for formatting.
 
