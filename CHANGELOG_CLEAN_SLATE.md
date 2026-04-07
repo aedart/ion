@@ -19,12 +19,13 @@ Temporary changelog for feature branch.
 * Now using pnpm, with turbo, vite, and vitest (_previously used rollup, karma.js, webpack and other_).
 * Upgraded to vuepress `^2.0.0-rc.28`, using vite as bundler.
 * Order of returned properties from `classOwnKeys()` changed, as a result of optimisation.
+* `classLooksLike()` now expects blueprint argument's `members` or `staticMembers` to contain at least one value.
 
 **Non-breaking Changes**
 
 * Optimized performance of arrays' `includeAll()` and `includesAny()` (_support package_).
 * Optimized performance of misc's `isset()`, `empty()`, `isPropertyKey()`, `isKey()`, `mergeKeys()` and `toWeakRef()` (_support package_).
-* Optimized performance of reflections' `hasPrototypeProperty()`, `getParentOfClass()`, `getAllParentsOfClass()` and `classOwnKeys()` (_support package_).
+* Optimized performance of reflections' `hasPrototypeProperty()`, `getParentOfClass()`, `getAllParentsOfClass()`, `classOwnKeys()` and `classLooksLike()` (_support package_).
 * The TypeScript source files are now also published, along with appropriate source maps.
 * dprint is now used for formatting.
 
