@@ -4,3 +4,5 @@
  * @type {Symbol}
  */
 export const CONTRACTS: unique symbol = Symbol('@aedart/contracts');
+
+export type * from './types.js';
