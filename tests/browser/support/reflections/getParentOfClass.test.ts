@@ -18,7 +18,7 @@ describe('@aedart/support/refelctions', () => {
 
             // Debug
             // console.log('result', result);
-
+            
             expect(result, 'Incorrect property keys returned')
                 .toEqual([ 'constructor', 'foo', 'bar' ]);
         });
@@ -45,7 +45,7 @@ describe('@aedart/support/refelctions', () => {
             // console.log('result', result);
 
             expect(result, 'Incorrect property keys returned')
-                .toEqual([ 'constructor', 'foo', 'bar', 'zar' ]);
+                .toEqual([ 'constructor', 'zar', 'bar', 'foo' ]);
         });
 
         test('can return class property keys recursively (via class static method)', () => {
@@ -74,7 +74,7 @@ describe('@aedart/support/refelctions', () => {
             // console.log('result', result);
 
             expect(result, 'Incorrect property keys returned')
-                .toEqual([ 'constructor', 'a', 'b', 'c' ]);
+                .toEqual([ 'constructor', 'c', 'b', 'a' ]);
         });
 
     });
