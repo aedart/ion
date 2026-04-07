@@ -24,9 +24,9 @@ export default tseslint.config(
         rules: {
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
             'no-console': 'warn',
-            // '@typescript-eslint/no-explicit-any': ['error', {
-            //     ignoreRestArgs: true // Allows ...args: any[]
-            // }]
+            '@typescript-eslint/no-explicit-any': ['error', {
+                ignoreRestArgs: true // Allows ...args: any[]
+            }]
         },
     },
     
