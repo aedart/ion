@@ -30,6 +30,10 @@
         "./misc": {
             "types": "./dist/misc/index.d.ts",
             "import": "./dist/misc/index.js"
+        },
+        "./reflections": {
+            "types": "./dist/reflections/index.d.ts",
+            "import": "./dist/reflections/index.js"
         }
     },
     "files": [

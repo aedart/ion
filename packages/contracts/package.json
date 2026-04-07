@@ -26,8 +26,18 @@
     },
     "type": "module",
     "exports": {
-        ".": "./dist/index.js",
-        "./support": "./dist/support/index.js"
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./support": {
+            "types": "./dist/support/index.d.ts",
+            "import": "./dist/support/index.js"
+        },
+        "./support/reflections": {
+            "types": "./dist/support/reflections/index.d.ts",
+            "import": "./dist/support/reflections/index.js"
+        }
     },
     "files": [
         "dist",
