@@ -6,6 +6,7 @@ Temporary changelog for feature branch.
 
 ### Added
 
+* `walkPrototype()` reflection util (_support package_).
 * `CONTEXT.md` (_AI context_).
 * `scripts/sync-peer-deps.js` and `scripts/propagate-deps.js` utils scripts for synchronising dependencies between root package.json and packages' dependencies.
 * `scripts/sync-assets.js` util for exporting assets, like `vue`, `scss`, `css`...etc.
