@@ -1,0 +1,36 @@
+import type { ConstructorLike } from "@aedart/contracts";
+import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty.js";
+import { getAllParentsOfClass } from "./getAllParentsOfClass.js";
+
+/**
+ * Returns property keys that are defined in target's prototype
+ * 
+ * @param {ConstructorLike} target
+ * @param {boolean} [recursive=false] If `true`, then target's parents are traversed and all
+ *                                    property keys are returned.
+ * 
+ * @returns {PropertyKey[]}
+ *
+ * @throws {TypeError} If target object does not have "prototype" property
+ */
+export function classOwnKeys(target: ConstructorLike, recursive: boolean = false): PropertyKey[]
+{
+    assertHasPrototypeProperty(target);
+    
+    if (!recursive) {
+        return Reflect.ownKeys(target.prototype);
+    }
+    
+    // Obtain target's parent classes...
+    const parents = getAllParentsOfClass(target, true).reverse();
+    
+    const ownKeys: Set<PropertyKey> = new Set();
+    for (const parent of parents) {
+        const keys: PropertyKey[] = Reflect.ownKeys(parent.prototype);
+        for (const key of keys) {
+            ownKeys.add(key);
+        }
+    }
+    
+    return Array.from(ownKeys);
+}

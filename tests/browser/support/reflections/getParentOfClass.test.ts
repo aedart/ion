@@ -1,43 +1,80 @@
-import { getParentOfClass } from "@aedart/support/reflections";
+import { classOwnKeys } from "@aedart/support/reflections";
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
-    describe('getParentOfClass', () => {
+    describe('classOwnKeys', () => {
 
-        test('fails when no arguments given', () => {
-            const callback = () => {
-                // @ts-expect-error No argument provided for testing purpose...
-                return getParentOfClass();
+        test('can return all class property keys', () => {
+
+            class A {
+                foo() {}
+
+                get bar() {}
             }
 
-            expect(callback)
-                .toThrow(TypeError);
-        });
+            // ----------------------------------------------------------------------- //
 
-        test('can return parent class', () => {
-
-            class A {}
-            class B extends A {}
-            class C extends B {}
-
-            const parentOfC = getParentOfClass(C);
-            const parentOfB = getParentOfClass(B);
-            const parentOfA = getParentOfClass(A);
+            const result = classOwnKeys(A);
 
             // Debug
-            // console.log('Parent of C', parentOfC);
-            // console.log('Parent of B', parentOfB);
-            // console.log('Parent of A', parentOfA);
+            // console.log('result', result);
 
-            expect(parentOfC, 'Incorrect parent of C')
-                .toEqual(B);
+            expect(result, 'Incorrect property keys returned')
+                .toEqual([ 'constructor', 'foo', 'bar' ]);
+        });
 
-            expect(parentOfB, 'Incorrect parent of B')
+        test('can return class property keys recursively', () => {
 
-                .toEqual(A);
+            class A {
+                foo() {}
+            }
 
-            expect(parentOfA, 'A should not have a parent')
-                .toBeNull()
+            class B extends A {
+                get bar() { return ''; }
+            }
+
+            class C extends B {
+                zar() {}
+            }
+
+            // ----------------------------------------------------------------------- //
+
+            const result = classOwnKeys(C, true);
+
+            // Debug
+            // console.log('result', result);
+
+            expect(result, 'Incorrect property keys returned')
+                .toEqual([ 'constructor', 'foo', 'bar', 'zar' ]);
+        });
+
+        test('can return class property keys recursively (via class static method)', () => {
+
+            class A {
+                a() {}
+            }
+
+            class B extends A {
+                get b() { return null; }
+            }
+
+            class C extends B {
+                c() {}
+
+                static keys() {
+                    return classOwnKeys(this, true);
+                }
+            }
+
+            // ----------------------------------------------------------------------- //
+
+            const result = C.keys();
+
+            // Debug
+            // console.log('result', result);
+
+            expect(result, 'Incorrect property keys returned')
+                .toEqual([ 'constructor', 'a', 'b', 'c' ]);
         });
 
     });
