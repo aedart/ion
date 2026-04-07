@@ -1,36 +1,37 @@
 import { ConstructorLike } from "@aedart/contracts";
 import { getParentOfClass } from "./getParentOfClass.js";
-import { isset } from "../misc/isset.js";
 
 /**
  * Returns all parent classes of given target
- * 
+ *
  * @see {getParentOfClass}
- * 
+ *
  * @param {ConstructorLike} target The target class.
  * @param {boolean} [includeTarget=false] If `true`, then given target is included in the output as the first element.
- * 
- * @returns {ConstructorLike[]} List of parent classes, ordered by the top-most parent class first.
+ *
+ * @returns {ConstructorLike[]} List of parent classes, ordered by the nearest parent first.
  *
  * @throws {TypeError}
  */
 export function getAllParentsOfClass(target: ConstructorLike, includeTarget: boolean = false): ConstructorLike[]
 {
-    if (!isset(target)) {
-        throw new TypeError('getAllParentsOfClass() expects a target class as argument, undefined given');
+    if (target === null || target === undefined)
+    {
+        throw new TypeError('getAllParentsOfClass() expects a target class as argument');
     }
-    
+
     const output: ConstructorLike[] = [];
-    if (includeTarget) {
-        output.push(target);
+    let current: ConstructorLike | null = target;
+
+    while (current !== null)
+    {
+        if (current !== target || includeTarget)
+        {
+            output.push(current);
+        }
+
+        current = getParentOfClass(current);
     }
-    
-    let parent: ConstructorLike | null = getParentOfClass(target);
-    while (parent !== null) {
-        output.push(parent);
-        
-        parent = getParentOfClass(parent);
-    }
-    
+
     return output;
 }
