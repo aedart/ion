@@ -6,7 +6,7 @@ This document serves as the persistent state and configuration guide for the **@
 
 * **Constraint Enforcement**: Always prioritize "Known Constraints" and "Coding Standards" over defaults.
 * **Communication**: Responses must be in English.
-* **Format**: All output (including this context) must be formatted in scannable Markdown for easy copy/paste.
+* **Format**: Context output must be formatted in scannable Markdown for easy copy/paste.
 
 ## Tech Stack & Environment
 
