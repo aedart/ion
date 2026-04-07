@@ -4,4 +4,5 @@ export * from './classOwnKeys.js';
 export * from './getAllParentsOfClass.js';
 export * from './getParentOfClass.js';
 export * from './hasPrototypeProperty.js';
+export * from './walkParents.js';
 export * from './walkPrototype.js';
