@@ -15,7 +15,7 @@ describe('@aedart/support/refelctions', () => {
                 .toThrow(TypeError);
         });
 
-        test('does not fail when members property is defined in blueprint', () => {
+        test('fail when empty members property is defined in blueprint', () => {
             class A {}
 
             const callback = () => {
@@ -23,11 +23,10 @@ describe('@aedart/support/refelctions', () => {
             }
 
             expect(callback)
-                .not
                 .toThrow(TypeError);
         });
 
-        test('does not fail when static members property is defined in blueprint', () => {
+        test('fail when empty static members property is defined in blueprint', () => {
             class A {}
 
             const callback = () => {
@@ -35,7 +34,6 @@ describe('@aedart/support/refelctions', () => {
             }
 
             expect(callback)
-                .not
                 .toThrow(TypeError);
         });
 
@@ -139,15 +137,16 @@ describe('@aedart/support/refelctions', () => {
                     expected: true,
                     name: 'B (inherited all members that exist)'
                 },
-                {
-                    target: B,
-                    blueprint: {
-                        staticMembers: [],
-                        members: []
-                    },
-                    expected: false,
-                    name: 'B (empty blueprint)'
-                },
+                // This will fail, since no members defined in blueprint!
+                // {
+                //     target: B,
+                //     blueprint: {
+                //         staticMembers: [],
+                //         members: []
+                //     },
+                //     expected: false,
+                //     name: 'B (empty blueprint)'
+                // },
             ];
 
             for (const entry of data) {
