@@ -33,13 +33,17 @@ This document serves as the persistent state and configuration guide for the **@
 * **Collection Threshold**: Use a threshold of **16** elements to switch between nested loops (O(n²)) and `Set`/`Map` lookups (O(n)) to balance CPU cache locality vs. allocation overhead.
 * **Generators**: Use `yield` for deep tree/prototype traversals to avoid massive array allocations when early exit is possible.
 
-## Technical Definitions
+## Technical Definitions & Utilities
 
 * **Constructors**: Use `Constructor<T = any> = new (...args: any[]) => T` for generic factory types.
-* **Reflection**:
-  * `getParentOfClass`: Returns nearest parent or `null` if `FUNCTION_PROTOTYPE` reached.
-  * `getAllParentsOfClass`: Returns array ordered by **nearest parent first**.
-  * `classOwnKeys`: Uses `Set` for deduplication during recursive prototype traversal.
+* **Reflection Core**:
+  * `walkParents`: Generator that yields parent classes; supports `includeTarget` flag.
+  * `walkPrototype`: Generator that yields all keys in the prototype chain level-by-level.
+  * `getParentOfClass`: Returns nearest parent or `null` using `walkParents().next()`.
+  * `getAllParentsOfClass`: Returns array of parents (nearest first); uses `walkParents` internally.
+  * `classOwnKeys`: Uses `walkPrototype` and a `Set` for deduplication during recursive traversal.
+  * `isMethod`: Fast check for function type via single property access; ignores getters unless they return a function.
+  * `classLooksLike`: Structural "Runtime Interface" check; uses `walkPrototype` with a collection threshold (16) for performance.
 
 ## Maintenance Scripts
 
