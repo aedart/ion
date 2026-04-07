@@ -4,11 +4,11 @@ import { getAllParentsOfClass } from "./getAllParentsOfClass.js";
 
 /**
  * Returns property keys that are defined in target's prototype
- * 
+ *
  * @param {ConstructorLike} target
  * @param {boolean} [recursive=false] If `true`, then target's parents are traversed and all
  *                                    property keys are returned.
- * 
+ *
  * @returns {PropertyKey[]}
  *
  * @throws {TypeError} If target object does not have "prototype" property
@@ -16,21 +16,26 @@ import { getAllParentsOfClass } from "./getAllParentsOfClass.js";
 export function classOwnKeys(target: ConstructorLike, recursive: boolean = false): PropertyKey[]
 {
     assertHasPrototypeProperty(target);
-    
-    if (!recursive) {
+
+    if (!recursive)
+    {
         return Reflect.ownKeys(target.prototype);
     }
-    
-    // Obtain target's parent classes...
-    const parents = getAllParentsOfClass(target, true).reverse();
-    
+
     const ownKeys: Set<PropertyKey> = new Set();
-    for (const parent of parents) {
-        const keys: PropertyKey[] = Reflect.ownKeys(parent.prototype);
-        for (const key of keys) {
-            ownKeys.add(key);
+    const parents = getAllParentsOfClass(target, true);
+    const parentsCount = parents.length;
+
+    for (let i = 0; i < parentsCount; i++)
+    {
+        const keys = Reflect.ownKeys(parents[i].prototype);
+        const keysCount = keys.length;
+
+        for (let j = 0; j < keysCount; j++)
+        {
+            ownKeys.add(keys[j]);
         }
     }
-    
+
     return Array.from(ownKeys);
 }
