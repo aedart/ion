@@ -2,6 +2,7 @@ export * from './assertHasPrototypeProperty.js';
 export * from './classLooksLike.js';
 export * from './classOwnKeys.js';
 export * from './getAllParentsOfClass.js';
+export * from './getClassPropertyDescriptor.js';
 export * from './getParentOfClass.js';
 export * from './hasPrototypeProperty.js';
 export * from './walkParents.js';
