@@ -13,10 +13,16 @@ describe('@aedart/support/ararys', () => {
                     name: 'A'
                 },
                 {
+                    arr: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                    values: [ 17, 10 ],
+                    expected: true,
+                    name: 'B'
+                },
+                {
                     arr: [ 1, 2, 3],
                     values: [ 1, 4 ],
                     expected: false,
-                    name: 'B'
+                    name: 'C'
                 },
             ];
 
@@ -38,10 +44,16 @@ describe('@aedart/support/ararys', () => {
                     name: 'A'
                 },
                 {
+                    arr: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                    values: [ 17, 12 ],
+                    expected: true,
+                    name: 'B'
+                },
+                {
                     arr: [ 1, 2, 3],
                     values: [ 4, 5 ],
                     expected: false,
-                    name: 'B'
+                    name: 'C'
                 },
             ];
 
