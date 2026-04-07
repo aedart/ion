@@ -1,11 +1,10 @@
 /**
  * Class Blueprint
  */
-export default interface ClassBlueprint
-{
+export default interface ClassBlueprint {
     /**
      * Properties or methods expected to exist in class as static members.
-     * 
+     *
      * @type {PropertyKey[]}
      */
     staticMembers?: PropertyKey[];

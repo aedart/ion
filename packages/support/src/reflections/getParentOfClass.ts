@@ -1,5 +1,5 @@
-import type { ConstructorLike } from "@aedart/contracts";
-import { walkParents } from "./walkParents.js";
+import type { ConstructorLike } from '@aedart/contracts';
+import { walkParents } from './walkParents.js';
 
 /**
  * Returns the nearest parent class or null if no parent exists.

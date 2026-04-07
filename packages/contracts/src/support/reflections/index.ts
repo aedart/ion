@@ -16,7 +16,5 @@ export const SUPPORT_REFLECTIONS: unique symbol = Symbol('@aedart/contracts/supp
  */
 export const TYPED_ARRAY_PROTOTYPE: object = Reflect.getPrototypeOf(Int8Array) as object;
 
-import ClassBlueprint from "./ClassBlueprint.js";
-export {
-    type ClassBlueprint
-}
+import ClassBlueprint from './ClassBlueprint.js';
+export { type ClassBlueprint };

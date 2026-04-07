@@ -1,6 +1,6 @@
-import type {ClassBlueprint} from "@aedart/contracts/support/reflections";
-import {hasPrototypeProperty} from "./hasPrototypeProperty.js";
-import { walkPrototype } from "./walkPrototype.js";
+import type { ClassBlueprint } from '@aedart/contracts/support/reflections';
+import { hasPrototypeProperty } from './hasPrototypeProperty.js';
+import { walkPrototype } from './walkPrototype.js';
 
 /**
  * Determine if target class looks like given blueprint.

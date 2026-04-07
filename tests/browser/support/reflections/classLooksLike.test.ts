@@ -1,57 +1,65 @@
-import {classLooksLike} from '@aedart/support/reflections';
+import { classLooksLike } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('classLooksLike', () => {
-
         test('fails if blueprint has no members or static members property defined', () => {
-            class A {}
+            class A
+            {}
 
             const callback = () => {
-                classLooksLike(A, { });
-            }
+                classLooksLike(A, {});
+            };
 
             expect(callback)
                 .toThrow(TypeError);
         });
 
         test('fail when empty members property is defined in blueprint', () => {
-            class A {}
+            class A
+            {}
 
             const callback = () => {
                 classLooksLike(A, { members: [] });
-            }
+            };
 
             expect(callback)
                 .toThrow(TypeError);
         });
 
         test('fail when empty static members property is defined in blueprint', () => {
-            class A {}
+            class A
+            {}
 
             const callback = () => {
                 classLooksLike(A, { staticMembers: [] });
-            }
+            };
 
             expect(callback)
                 .toThrow(TypeError);
         });
 
         test('can determine if class looks like blueprint', () => {
+            class A
+            {
+                foo()
+                {}
 
-            class A {
-                foo() {}
+                bar()
+                {}
 
-                bar() {}
-
-                static sayHi() {}
+                static sayHi()
+                {}
             }
 
-            class B extends A {
+            class B extends A
+            {
+                get zim() {
+                    return null;
+                }
 
-                get zim() { return null }
-
-                static goodBye() {}
+                static goodBye()
+                {}
             }
 
             // --------------------------------------------------------------------------------------- //
@@ -63,11 +71,11 @@ describe('@aedart/support/refelctions', () => {
                         members: [
                             'foo',
                             'bar',
-                            'zim' // does not exist in A
-                        ]
+                            'zim', // does not exist in A
+                        ],
                     },
                     expected: false,
-                    name: 'A (member that does not exist)'
+                    name: 'A (member that does not exist)',
                 },
                 {
                     target: A,
@@ -75,25 +83,25 @@ describe('@aedart/support/refelctions', () => {
                         members: [
                             'bar',
                             'foo',
-                        ]
+                        ],
                     },
                     expected: true,
-                    name: 'A (all members that exist)'
+                    name: 'A (all members that exist)',
                 },
                 {
                     target: A,
                     blueprint: {
                         staticMembers: [
                             'sayHi',
-                            'goodBye' // does not exist in A
+                            'goodBye', // does not exist in A
                         ],
                         members: [
                             'bar',
                             'foo',
-                        ]
+                        ],
                     },
                     expected: false,
-                    name: 'A (static member that does not exist)'
+                    name: 'A (static member that does not exist)',
                 },
                 {
                     target: B,
@@ -101,41 +109,41 @@ describe('@aedart/support/refelctions', () => {
                         members: [
                             'foo', // inherited
                             'bar', // inherited
-                            'zim'
-                        ]
+                            'zim',
+                        ],
                     },
                     expected: true,
-                    name: 'B (inherited members that exist)'
+                    name: 'B (inherited members that exist)',
                 },
                 {
                     target: B,
                     blueprint: {
                         staticMembers: [
                             'sayHi', // inherited
-                            'goodBye'
+                            'goodBye',
                         ],
                         members: [
                             // Should just be ignored
-                        ]
+                        ],
                     },
                     expected: true,
-                    name: 'B (inherited static members that exist)'
+                    name: 'B (inherited static members that exist)',
                 },
                 {
                     target: B,
                     blueprint: {
                         staticMembers: [
                             'sayHi', // inherited
-                            'goodBye'
+                            'goodBye',
                         ],
                         members: [
                             'foo', // inherited
                             'bar', // inherited
-                            'zim'
-                        ]
+                            'zim',
+                        ],
                     },
                     expected: true,
-                    name: 'B (inherited all members that exist)'
+                    name: 'B (inherited all members that exist)',
                 },
                 // This will fail, since no members defined in blueprint!
                 // {
@@ -150,10 +158,12 @@ describe('@aedart/support/refelctions', () => {
             ];
 
             for (const entry of data) {
-                expect(classLooksLike(entry.target, entry.blueprint), `${entry.name} was expected to ${entry.expected.toString()}`)
+                expect(
+                    classLooksLike(entry.target, entry.blueprint),
+                    `${entry.name} was expected to ${entry.expected.toString()}`,
+                )
                     .toBe(entry.expected);
             }
         });
-        
     });
 });

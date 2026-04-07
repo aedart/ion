@@ -1,5 +1,5 @@
-import type {ConstructorLike} from "@aedart/contracts";
-import {walkParents} from "./walkParents.js";
+import type { ConstructorLike } from '@aedart/contracts';
+import { walkParents } from './walkParents.js';
 
 /**
  * Returns all parent classes of given target.
@@ -13,7 +13,7 @@ import {walkParents} from "./walkParents.js";
  */
 export function getAllParentsOfClass(
     target: ConstructorLike,
-    includeTarget: boolean = false
+    includeTarget: boolean = false,
 ): ConstructorLike[]
 {
     const output: ConstructorLike[] = [];

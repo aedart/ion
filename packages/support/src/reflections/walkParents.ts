@@ -1,4 +1,4 @@
-import type {ConstructorLike} from "@aedart/contracts";
+import type { ConstructorLike } from '@aedart/contracts';
 
 /**
  * Traverses the inheritance chain and yields each parent class.
@@ -12,7 +12,7 @@ import type {ConstructorLike} from "@aedart/contracts";
  */
 export function* walkParents(
     target: ConstructorLike,
-    includeTarget: boolean = false
+    includeTarget: boolean = false,
 ): Generator<ConstructorLike>
 {
     if (target == null) {

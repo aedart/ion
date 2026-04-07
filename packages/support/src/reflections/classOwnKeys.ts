@@ -1,6 +1,6 @@
-import type {ConstructorLike} from '@aedart/contracts';
-import {assertHasPrototypeProperty} from './assertHasPrototypeProperty.js';
-import {walkPrototype} from "./walkPrototype.js";
+import type { ConstructorLike } from '@aedart/contracts';
+import { assertHasPrototypeProperty } from './assertHasPrototypeProperty.js';
+import { walkPrototype } from './walkPrototype.js';
 
 /**
  * Returns all keys from the target's prototype chain.
