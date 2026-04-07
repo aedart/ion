@@ -2,12 +2,12 @@
  * Constructor type
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export type Constructor<T = any> = new (...args: any[]) => T;
+export type Constructor<T = any> = new(...args: any[]) => T;
 
 /**
  * Abstract constructor type
  */
-export type AbstractConstructor<T = any> = abstract new (...args: any[]) => T;
+export type AbstractConstructor<T = any> = abstract new(...args: any[]) => T;
 
 /**
  * Constructor Like

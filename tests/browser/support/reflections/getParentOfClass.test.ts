@@ -1,15 +1,17 @@
-import { classOwnKeys } from "@aedart/support/reflections";
+import { classOwnKeys } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('classOwnKeys', () => {
-
         test('can return all class property keys', () => {
+            class A
+            {
+                foo()
+                {}
 
-            class A {
-                foo() {}
-
-                get bar() { return null; }
+                get bar() {
+                    return null;
+                }
             }
 
             // ----------------------------------------------------------------------- //
@@ -18,23 +20,29 @@ describe('@aedart/support/refelctions', () => {
 
             // Debug
             // console.log('result', result);
-            
+
             expect(result, 'Incorrect property keys returned')
-                .toEqual([ 'constructor', 'foo', 'bar' ]);
+                .toEqual(['constructor', 'foo', 'bar']);
         });
 
         test('can return class property keys recursively', () => {
-
-            class A {
-                foo() {}
+            class A
+            {
+                foo()
+                {}
             }
 
-            class B extends A {
-                get bar() { return ''; }
+            class B extends A
+            {
+                get bar() {
+                    return '';
+                }
             }
 
-            class C extends B {
-                zar() {}
+            class C extends B
+            {
+                zar()
+                {}
             }
 
             // ----------------------------------------------------------------------- //
@@ -45,23 +53,30 @@ describe('@aedart/support/refelctions', () => {
             // console.log('result', result);
 
             expect(result, 'Incorrect property keys returned')
-                .toEqual([ 'constructor', 'zar', 'bar', 'foo' ]);
+                .toEqual(['constructor', 'zar', 'bar', 'foo']);
         });
 
         test('can return class property keys recursively (via class static method)', () => {
-
-            class A {
-                a() {}
+            class A
+            {
+                a()
+                {}
             }
 
-            class B extends A {
-                get b() { return null; }
+            class B extends A
+            {
+                get b() {
+                    return null;
+                }
             }
 
-            class C extends B {
-                c() {}
+            class C extends B
+            {
+                c()
+                {}
 
-                static keys() {
+                static keys()
+                {
                     return classOwnKeys(this, true);
                 }
             }
@@ -74,8 +89,7 @@ describe('@aedart/support/refelctions', () => {
             // console.log('result', result);
 
             expect(result, 'Incorrect property keys returned')
-                .toEqual([ 'constructor', 'c', 'b', 'a' ]);
+                .toEqual(['constructor', 'c', 'b', 'a']);
         });
-
     });
 });

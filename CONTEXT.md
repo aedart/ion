@@ -37,9 +37,9 @@ This document serves as the persistent state and configuration guide for the **@
 
 * **Constructors**: Use `Constructor<T = any> = new (...args: any[]) => T` for generic factory types.
 * **Reflection**:
-    * `getParentOfClass`: Returns nearest parent or `null` if `FUNCTION_PROTOTYPE` reached.
-    * `getAllParentsOfClass`: Returns array ordered by **nearest parent first**.
-    * `classOwnKeys`: Uses `Set` for deduplication during recursive prototype traversal.
+  * `getParentOfClass`: Returns nearest parent or `null` if `FUNCTION_PROTOTYPE` reached.
+  * `getAllParentsOfClass`: Returns array ordered by **nearest parent first**.
+  * `classOwnKeys`: Uses `Set` for deduplication during recursive prototype traversal.
 
 ## Maintenance Scripts
 

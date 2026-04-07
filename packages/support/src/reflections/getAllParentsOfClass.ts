@@ -1,5 +1,5 @@
-import { ConstructorLike } from "@aedart/contracts";
-import { getParentOfClass } from "./getParentOfClass.js";
+import { ConstructorLike } from '@aedart/contracts';
+import { getParentOfClass } from './getParentOfClass.js';
 
 /**
  * Returns all parent classes of given target
@@ -13,20 +13,20 @@ import { getParentOfClass } from "./getParentOfClass.js";
  *
  * @throws {TypeError}
  */
-export function getAllParentsOfClass(target: ConstructorLike, includeTarget: boolean = false): ConstructorLike[]
+export function getAllParentsOfClass(
+    target: ConstructorLike,
+    includeTarget: boolean = false,
+): ConstructorLike[]
 {
-    if (target === null || target === undefined)
-    {
+    if (target === null || target === undefined) {
         throw new TypeError('getAllParentsOfClass() expects a target class as argument');
     }
 
     const output: ConstructorLike[] = [];
     let current: ConstructorLike | null = target;
 
-    while (current !== null)
-    {
-        if (current !== target || includeTarget)
-        {
+    while (current !== null) {
+        if (current !== target || includeTarget) {
             output.push(current);
         }
 

@@ -1,5 +1,5 @@
-import { ConstructorLike } from "@aedart/contracts";
-import { FUNCTION_PROTOTYPE } from "@aedart/contracts/support/reflections";
+import { ConstructorLike } from '@aedart/contracts';
+import { FUNCTION_PROTOTYPE } from '@aedart/contracts/support/reflections';
 
 /**
  * Returns the parent class of given target class
@@ -15,15 +15,13 @@ import { FUNCTION_PROTOTYPE } from "@aedart/contracts/support/reflections";
  */
 export function getParentOfClass(target: ConstructorLike): ConstructorLike | null
 {
-    if (target === null || target === undefined)
-    {
+    if (target === null || target === undefined) {
         throw new TypeError('getParentOfClass() expects a target class as argument');
     }
 
     const parent = Reflect.getPrototypeOf(target);
 
-    if (parent === null || parent === FUNCTION_PROTOTYPE)
-    {
+    if (parent === null || parent === FUNCTION_PROTOTYPE) {
         return null;
     }
 

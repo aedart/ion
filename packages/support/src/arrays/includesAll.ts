@@ -8,7 +8,7 @@
  */
 export function includesAll(
     arr: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    values: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    values: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
 ): boolean
 {
     const valuesCount = values.length;
@@ -49,7 +49,7 @@ export function includesAll(
     // where execution time grows exponentially with input size.
     const lookup = new Set(arr);
     for (let i = 0; i < valuesCount; i++) {
-        // Set.has() is O(1) on average, making this path significantly 
+        // Set.has() is O(1) on average, making this path significantly
         // faster for large datasets despite the initial allocation cost.
         if (!lookup.has(values[i])) {
             return false;

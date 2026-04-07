@@ -1,24 +1,25 @@
-import { getAllParentsOfClass } from "@aedart/support/reflections";
+import { getAllParentsOfClass } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('getAllParentsOfClass', () => {
-
         test('fails when no arguments given', () => {
             const callback = () => {
                 // @ts-expect-error No args provided for testing purposes
                 return getAllParentsOfClass();
-            }
+            };
 
             expect(callback)
                 .toThrow(TypeError);
         });
 
         test('returns all parent classes', () => {
-
-            class A {}
-            class B extends A {}
-            class C extends B {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
 
             const parents = getAllParentsOfClass(C);
 
@@ -36,10 +37,12 @@ describe('@aedart/support/refelctions', () => {
         });
 
         test('includes target in output', () => {
-
-            class A {}
-            class B extends A {}
-            class C extends B {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
 
             const parents = getAllParentsOfClass(C, true);
 
@@ -60,14 +63,13 @@ describe('@aedart/support/refelctions', () => {
         });
 
         test('returns empty array when target has no parents', () => {
-
-            class A {}
+            class A
+            {}
 
             const parents = getAllParentsOfClass(A);
 
             expect(parents.length, 'A should not have any parents')
                 .toEqual(0);
         });
-
     });
 });

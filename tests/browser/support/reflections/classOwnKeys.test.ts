@@ -1,24 +1,25 @@
-import { getParentOfClass } from "@aedart/support/reflections";
+import { getParentOfClass } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('getParentOfClass', () => {
-
         test('fails when no arguments given', () => {
             const callback = () => {
                 // @ts-expect-error No argument provided for testing purpose...
                 return getParentOfClass();
-            }
+            };
 
             expect(callback)
                 .toThrow(TypeError);
         });
 
         test('can return parent class', () => {
-
-            class A {}
-            class B extends A {}
-            class C extends B {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
 
             const parentOfC = getParentOfClass(C);
             const parentOfB = getParentOfClass(B);
@@ -33,12 +34,10 @@ describe('@aedart/support/refelctions', () => {
                 .toEqual(B);
 
             expect(parentOfB, 'Incorrect parent of B')
-
                 .toEqual(A);
 
             expect(parentOfA, 'A should not have a parent')
-                .toBeNull()
+                .toBeNull();
         });
-
     });
 });

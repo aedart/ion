@@ -7,7 +7,6 @@ export default tseslint.config(
     {
         ignores: ['**/dist/**', '**/node_modules/**', '**/coverage/**'],
     },
-    
     // 2. Base Configuration for all TypeScript files
     {
         files: ['**/*.ts'],
@@ -25,11 +24,10 @@ export default tseslint.config(
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
             'no-console': 'warn',
             '@typescript-eslint/no-explicit-any': ['error', {
-                ignoreRestArgs: true // Allows ...args: any[]
-            }]
+                ignoreRestArgs: true, // Allows ...args: any[]
+            }],
         },
     },
-    
     // 3. Browser-specific overrides for your centralized tests
     {
         files: ['tests/browser/**/*.test.ts'],
@@ -39,7 +37,6 @@ export default tseslint.config(
             },
         },
     },
-    
     // 4. Configuration for the ESLint file itself (JS)
     {
         files: ['eslint.config.js', 'vitest.config.ts'],

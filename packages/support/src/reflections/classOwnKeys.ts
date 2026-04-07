@@ -1,6 +1,6 @@
-import type { ConstructorLike } from "@aedart/contracts";
-import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty.js";
-import { getAllParentsOfClass } from "./getAllParentsOfClass.js";
+import type { ConstructorLike } from '@aedart/contracts';
+import { assertHasPrototypeProperty } from './assertHasPrototypeProperty.js';
+import { getAllParentsOfClass } from './getAllParentsOfClass.js';
 
 /**
  * Returns property keys that are defined in target's prototype
@@ -17,8 +17,7 @@ export function classOwnKeys(target: ConstructorLike, recursive: boolean = false
 {
     assertHasPrototypeProperty(target);
 
-    if (!recursive)
-    {
+    if (!recursive) {
         return Reflect.ownKeys(target.prototype);
     }
 
@@ -26,13 +25,11 @@ export function classOwnKeys(target: ConstructorLike, recursive: boolean = false
     const parents = getAllParentsOfClass(target, true);
     const parentsCount = parents.length;
 
-    for (let i = 0; i < parentsCount; i++)
-    {
+    for (let i = 0; i < parentsCount; i++) {
         const keys = Reflect.ownKeys(parents[i].prototype);
         const keysCount = keys.length;
 
-        for (let j = 0; j < keysCount; j++)
-        {
+        for (let j = 0; j < keysCount; j++) {
             ownKeys.add(keys[j]);
         }
     }

@@ -8,7 +8,7 @@
  */
 export function includesAny(
     arr: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    values: any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    values: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
 ): boolean
 {
     const valuesCount = values.length;

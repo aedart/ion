@@ -13,8 +13,7 @@
  */
 export function hasPrototypeProperty(target: object): boolean
 {
-    if (target === null)
-    {
+    if (target === null) {
         return false;
     }
 
