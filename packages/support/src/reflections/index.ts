@@ -1,4 +1,5 @@
 export * from './assertHasPrototypeProperty.js';
+export * from './classLooksLike.js';
 export * from './classOwnKeys.js';
 export * from './getAllParentsOfClass.js';
 export * from './getParentOfClass.js';
