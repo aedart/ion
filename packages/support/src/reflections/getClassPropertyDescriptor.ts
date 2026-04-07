@@ -1,11 +1,11 @@
-import type { ConstructorLike } from "@aedart/contracts";
-import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty.js";
+import type { ConstructorLike } from '@aedart/contracts';
+import { assertHasPrototypeProperty } from './assertHasPrototypeProperty.js';
 
 /**
  * Returns a {@link PropertyDescriptor} object, from target's prototype that matches given property key
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/getOwnPropertyDescriptor
- * 
+ *
  * @param {ConstructorLike} target Class that contains property in its prototype
  * @param {PropertyKey} key Name of the property
  *
@@ -14,12 +14,15 @@ import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty.js";
  *
  * @throws {TypeError} If target is not an object or has no prototype
  */
-export function getClassPropertyDescriptor(target: ConstructorLike, key: PropertyKey): PropertyDescriptor|undefined
+export function getClassPropertyDescriptor(
+    target: ConstructorLike,
+    key: PropertyKey,
+): PropertyDescriptor | undefined
 {
     assertHasPrototypeProperty(target);
 
     return Reflect.getOwnPropertyDescriptor(
         target.prototype,
-        key
+        key,
     );
 }

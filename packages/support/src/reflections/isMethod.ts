@@ -14,8 +14,8 @@ export function isMethod(target: object, property: PropertyKey): boolean
 
     // Capture the value once to avoid redundant lookups and reduce CPU overhead.
     //
-    // EDGE-CASE: This check will return true if the property is a "getter" that 
-    // returns a function. Strict verification would require Reflect.getOwnPropertyDescriptor, 
+    // EDGE-CASE: This check will return true if the property is a "getter" that
+    // returns a function. Strict verification would require Reflect.getOwnPropertyDescriptor,
     // but that incurs significant GC pressure due to object allocation.
     const value: unknown = (target as any)[property];
 

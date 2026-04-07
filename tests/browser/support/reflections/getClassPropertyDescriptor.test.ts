@@ -3,20 +3,20 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('getClassPropertyDescriptor', () => {
-
         test('fails when target has no prototype', () => {
             const callback = () => {
                 const obj = Object.create(null);
 
                 getClassPropertyDescriptor(obj, 'name');
-            }
+            };
 
             expect(callback, 'Should not be able to obtain anything from object without prototype')
                 .toThrow(TypeError);
         });
 
         test('returns undefined if property does not exist', () => {
-            class A {}
+            class A
+            {}
 
             const descriptor = getClassPropertyDescriptor(A, 'unknown_property');
             expect(descriptor)
@@ -24,20 +24,24 @@ describe('@aedart/support/refelctions', () => {
         });
 
         test('can get property descriptor from target prototype', () => {
-
             const MY_SYMBOL = Symbol('my_symbol');
 
-            class A {
+            class A
+            {
                 set name(v) {}
-                get name() { return null }
-                foo() {}
-                [MY_SYMBOL]() {}
+                get name() {
+                    return null;
+                }
+                foo()
+                {}
+                [MY_SYMBOL]()
+                {}
             }
 
             const properties = [
                 'name',
                 'foo',
-                MY_SYMBOL
+                MY_SYMBOL,
             ];
 
             for (const key of properties) {
@@ -46,19 +50,21 @@ describe('@aedart/support/refelctions', () => {
                 // Debug
                 // console.log(descriptor);
 
-                let k = (typeof key == "symbol")
+                let k = (typeof key == 'symbol')
                     ? key.toString()
-                    : key
+                    : key;
 
                 expect(descriptor, 'No descriptor returned for ' + k)
                     .not
-                    .toBeUndefined()
+                    .toBeUndefined();
             }
         });
 
         test('returns undefined if property is private', () => {
-            class A {
-                #foo() {}
+            class A
+            {
+                #foo()
+                {}
             }
 
             const a = getClassPropertyDescriptor(A, 'foo');
@@ -69,6 +75,5 @@ describe('@aedart/support/refelctions', () => {
             expect(b, 'Returned descriptor for "#foo"')
                 .toBeUndefined();
         });
-        
     });
 });
