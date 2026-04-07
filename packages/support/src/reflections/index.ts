@@ -5,5 +5,6 @@ export * from './getAllParentsOfClass.js';
 export * from './getClassPropertyDescriptor.js';
 export * from './getParentOfClass.js';
 export * from './hasPrototypeProperty.js';
+export * from './isMethod.js';
 export * from './walkParents.js';
 export * from './walkPrototype.js';
