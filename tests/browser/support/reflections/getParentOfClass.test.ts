@@ -9,7 +9,7 @@ describe('@aedart/support/refelctions', () => {
             class A {
                 foo() {}
 
-                get bar() {}
+                get bar() { return null; }
             }
 
             // ----------------------------------------------------------------------- //
