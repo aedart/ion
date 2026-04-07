@@ -20,7 +20,9 @@ tmp.js
 packages/*/.turbo
 
 # Test Specific
+.vitest-attachments/*
 coverage/*
+tests/output/*
 
 # Packages
 packages/*/dist/*

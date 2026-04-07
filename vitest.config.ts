@@ -27,6 +27,7 @@ export default defineConfig({
                         enabled: true,
                         headless: true,
                         provider: playwright(),
+                        screenshotDirectory: 'tests/output',
                         instances: [{ browser: 'chromium' }, { browser: 'firefox' }],
                     },
                     include: [
