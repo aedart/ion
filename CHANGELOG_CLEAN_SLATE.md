@@ -26,6 +26,10 @@ Temporary changelog for feature branch.
 * The TypeScript source files are now also published, along with appropriate source maps.
 * dprint is now used for formatting.
 
+### Fixed
+
+* Incorrect return type description for `getAllParentsOfClass()` (_support package_).
+
 ### Removed
 
 * `LastUpdatedPlugin.vue` (_no longer needed, the adapted `LastUpdatedPlugin.ts` does the job_).
