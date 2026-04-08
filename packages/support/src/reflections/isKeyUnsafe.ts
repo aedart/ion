@@ -11,5 +11,5 @@ import { DANGEROUS_PROPERTIES } from "@aedart/contracts/support/objects";
  */
 export function isKeyUnsafe(key: PropertyKey): boolean
 {
-    return DANGEROUS_PROPERTIES.includes(key);
+    return DANGEROUS_PROPERTIES.has(key);
 }

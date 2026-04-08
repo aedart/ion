@@ -6,7 +6,8 @@ describe('@aedart/support/refelctions', () => {
 
     const dataSet: Record<PropertyKey, any>[] = [
         { value: 'name', safe: true, name: 'name' },
-        { value: 'prototype', safe: true, name: 'prototype' },
+        { value: 'prototype', safe: false, name: 'prototype' },
+        { value: '__proto__', safe: false, name: '__proto__' },
     ];
 
     for (const key of DANGEROUS_PROPERTIES) {

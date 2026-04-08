@@ -6,16 +6,18 @@
 export const SUPPORT_OBJECTS: unique symbol = Symbol('@aedart/contracts/support/objects');
 
 /**
- * Properties that are considered dangerous and should be avoided when merging
- * objects or assigning properties.
+ * Properties that are considered dangerous
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf#description
  * @see https://cheatsheetseries.owasp.org/cheatsheets/Prototype_Pollution_Prevention_Cheat_Sheet.html
  * @see https://medium.com/@king.amit95/prototype-pollution-a-deeper-inspection-82a226796966
- *
- * @type {PropertyKey[]}
  */
-export const DANGEROUS_PROPERTIES: PropertyKey[] = [ '__proto__' ];
+export const DANGEROUS_PROPERTIES: Set<PropertyKey> = new Set([
+    '__proto__',
+    'constructor',
+    'prototype'
+]);
+
 
 import Cloneable from "./Cloneable.js";
 import Populatable from "./Populatable.js";
