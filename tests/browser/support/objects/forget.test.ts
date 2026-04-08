@@ -53,6 +53,14 @@ describe('@aedart/support/objects', () => {
 
     describe('forgetAll', () => {
 
+        test('does nothing when target is undefined', () => {
+            forgetAll(undefined);
+            
+            // NA - if no failure, then passes...
+            expect(true)
+                .toBeTruthy()
+        });
+        
         test('can "forget all" properties', function () {
 
             const sym = Symbol('foo');
