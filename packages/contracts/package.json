@@ -34,6 +34,10 @@
             "types": "./dist/support/index.d.ts",
             "import": "./dist/support/index.js"
         },
+        "./support/objects": {
+            "types": "./dist/support/objects/index.d.ts",
+            "import": "./dist/support/objects/index.js"
+        },
         "./support/reflections": {
             "types": "./dist/support/reflections/index.d.ts",
             "import": "./dist/support/reflections/index.js"
