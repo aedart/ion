@@ -21,6 +21,7 @@ Temporary changelog for feature branch.
 * Upgraded to vuepress `^2.0.0-rc.28`, using vite as bundler.
 * Order of returned properties from `classOwnKeys()` changed, as a result of optimisation.
 * `classLooksLike()` now expects blueprint argument's `members` or `staticMembers` to contain at least one value.
+* The `Cloneable` interface now defines a "clone" method using a unique symbol (`CLONE`) (_contracts package_).
 
 **Non-breaking Changes**
 
