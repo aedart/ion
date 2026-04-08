@@ -22,6 +22,7 @@ Temporary changelog for feature branch.
 * Order of returned properties from `classOwnKeys()` changed, as a result of optimisation.
 * `classLooksLike()` now expects blueprint argument's `members` or `staticMembers` to contain at least one value.
 * The `Cloneable` interface now defines a "clone" method using a unique symbol (`CLONE`) (_contracts package_).
+* Type of `data?` argument changed from `any` to `Record<PropertyKey, any>` in `Populatable` interface (_contracts package_).
 
 **Non-breaking Changes**
 
