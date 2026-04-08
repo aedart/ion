@@ -7,7 +7,7 @@ This document serves as the persistent state and configuration guide for the **@
 * **Constraint Enforcement**: Always prioritize "Known Constraints" and "Coding Standards" over defaults.
 * **Communication**: Responses must be in English.
 * **Format**: Context output must be formatted in scannable Markdown for easy copy/paste.
-* **Code Examples**: Do **NOT** include legal headers/banners in code snippets (this is handled automatically via `scripts/add-banner.js` during the build process).
+* **Code Examples**: Do **NOT** include legal headers/banners in code snippets.
 
 ## Tech Stack & Environment
 
@@ -25,35 +25,32 @@ This document serves as the persistent state and configuration guide for the **@
 * **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
 * **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
 * **ESM Resolution**: Relative imports must include explicit `.js` extensions.
-* **Type Portability**: Avoid JSDoc `@type` references to internal/ambient library types (e.g., Lodash internals) that cause TS2883 errors. Use `typeof` aliasing or explicit local interfaces.
+* **Type Portability**: Avoid JSDoc `@type` references to internal/ambient library types. Use `typeof` aliasing or explicit local interfaces.
 
 ## Performance Patterns (Strict)
 
 * **Looping**: Prefer index-based `for` loops with cached length over `for...of`, `forEach`, or `.every()/.some()`.
-* **GC Pressure**: Minimize object/array allocations in hot paths.
-* **Collection Threshold**: Use a threshold of **16** elements to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$) to balance CPU cache locality vs. allocation overhead.
-* **Generators**: Use `yield` for deep tree/prototype traversals to avoid massive array allocations when early exit is possible.
+* **GC Pressure**: Minimize object/array allocations in hot paths (avoid unnecessary `.filter()` or `.map()` when a single loop suffices).
+* **Collection Threshold**: Use a threshold of **16** elements to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$).
+* **Generators**: Use `yield` for deep tree/prototype traversals.
 
 ## Technical Definitions & Utilities
 
 ### Reflection & Prototypes (`@aedart/support/reflections`)
 
-* **`walkParents`**: Generator yielding parent classes; supports `includeTarget`.
-* **`walkPrototype`**: Generator yielding keys in the prototype chain level-by-level.
-* **`getParentOfClass`**: Returns nearest parent or `null`.
-* **`classOwnKeys`**: Uses `walkPrototype` and a `Set` for deduplication.
-* **`classLooksLike`**: Structural "Runtime Interface" check; applies the 16-element threshold.
+* **`walkParents` / `walkPrototype`**: Generators for chain traversal.
+* **`isKeyUnsafe`**: Checks against `DANGEROUS_PROPERTIES` (Set: `__proto__`, `constructor`, `prototype`).
+* **`hasAllMethods`**: Optimized index-loop check for multiple method existence.
 
 ### Objects Sub-Module (`@aedart/support/objects`)
 
-* **Encapsulation**: Use native JavaScript private fields (`#field`) to ensure runtime immutability of internal state.
-* **`ObjectId`**: Utility providing unique numeric IDs for objects via `WeakMap`.
-* **Lodash Aliases**: `get`, `set`, `has`, and `forget` (alias for `unset`) using `typeof` mapping.
-* **Optimized Utilities**: `hasAll`, `hasAny`, and `forgetAll` using length-cached index loops.
+* **`CLONE` Symbol**: `unique symbol` used for the `Cloneable` interface to avoid naming collisions.
+* **`populate`**: Shallow copies properties/descriptors from source to target; uses `Reflect.getOwnPropertyDescriptor` to support getters/setters and enforces `isKeySafe` checks.
+* **Encapsulation**: Use native JavaScript private fields (`#field`).
+* **Lodash Aliases**: `get`, `set`, `has`, and `forget` using `typeof` mapping.
 
 ## Maintenance Scripts
 
-* **deps:sync**: Syncs sub-package deps to root.
-* **deps:propagate**: Pushes root versions to packages.
+* **deps:sync / deps:propagate**: Dependency management.
 * **fix:imports**: Appends `.js` to relative imports.
 * **build**: `turbo run build`.
