@@ -9,3 +9,5 @@ import Cloneable from "./Cloneable.js";
 export {
     type Cloneable,
 }
+
+export { CLONE } from "./Cloneable.js";
