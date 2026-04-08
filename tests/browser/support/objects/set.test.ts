@@ -1,11 +1,10 @@
-import { set, get, has } from '@aedart/support/objects'
+import { get, has, set } from '@aedart/support/objects';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/objects', () => {
     describe('set', () => {
-
-        test('can set property', function () {
-
+        test('can set property', function()
+        {
             const target = {};
 
             const foo = Symbol('foo-symbol');
@@ -20,11 +19,11 @@ describe('@aedart/support/objects', () => {
                 { key: ['e', foo, 3], value: 'zim' },
             ];
 
-            values.forEach(({key, value}, index) => {
+            values.forEach(({ key, value }, index) => {
                 set(target, key, value);
 
                 expect(has(target, key), `Target does not contain key for values index ${index}`)
-                    .toBeTruthy()
+                    .toBeTruthy();
 
                 expect(get(target, key), `Incorrect value in target for values index ${index}`)
                     .toBe(value);

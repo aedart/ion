@@ -8,7 +8,5 @@ export * from './hasUniqueId.js';
 export * from './set.js';
 export * from './uniqueId.js';
 
-import ObjectId from "./ObjectId.js";
-export {
-    ObjectId
-}
+import ObjectId from './ObjectId.js';
+export { ObjectId };

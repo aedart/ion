@@ -1,5 +1,5 @@
-import {forget} from "./forget.js";
-import type {Key} from "@aedart/contracts/support";
+import type { Key } from '@aedart/contracts/support';
+import { forget } from './forget.js';
 
 /**
  * Remove all values in object that match given paths

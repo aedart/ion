@@ -2,10 +2,10 @@
  * Object ID
  *
  * Utility that is able to return a numeric ID for objects.
- * 
+ *
  * Source is heavily inspired by Nicolas Gehlert's blog post:
  * "Get object reference IDs in JavaScript/TypeScript" (September 28, 2022)
- * 
+ *
  * @see https://developapa.com/object-ids/
  * @see https://github.com/ngehlert/developapa/blob/master/content/blog/object-ids/index.md
  */

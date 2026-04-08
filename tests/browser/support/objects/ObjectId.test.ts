@@ -1,11 +1,9 @@
-import { uniqueId, hasUniqueId, ObjectId } from '@aedart/support/objects'
+import { hasUniqueId, ObjectId, uniqueId } from '@aedart/support/objects';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/objects', () => {
     describe('ObjectId', () => {
-
         test('can get unique id of object', () => {
-
             const objA = { name: 'Ulla' };
             const objB = { name: 'Olson' };
             const objC = objA;
@@ -41,11 +39,11 @@ describe('@aedart/support/objects', () => {
             expect(idC, 'Object C id was not generated')
                 .toBeTypeOf('number');
 
-            expect(idB, 'Object B\'s id matches Object A\'s id')
+            expect(idB, "Object B's id matches Object A's id")
                 .not
                 .toEqual(idA);
 
-            expect(idC, 'Object C\'s (ref. to Object A) should have same ID as Object A')
+            expect(idC, "Object C's (ref. to Object A) should have same ID as Object A")
                 .toEqual(idA);
 
             // ---------------------------------------------------------- //
@@ -55,7 +53,7 @@ describe('@aedart/support/objects', () => {
                 .toBeTruthy();
 
             expect(hasUniqueId(objB), 'Object B should have ID')
-                .toBeTruthy()
+                .toBeTruthy();
 
             expect(hasUniqueId(objC), 'Object C should have ID')
                 .toBeTruthy();

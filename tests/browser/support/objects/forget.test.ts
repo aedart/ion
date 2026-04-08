@@ -1,30 +1,29 @@
-import { has, forget, forgetAll } from '@aedart/support/objects'
+import { forget, forgetAll, has } from '@aedart/support/objects';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/objects', () => {
     describe('forget', () => {
-
-        test('can "forget" property', function () {
-
+        test('can "forget" property', function()
+        {
             const sym = Symbol('foo');
             const target = {
                 a: 1234,
                 b: {
                     name: 'Sven',
                     c: {
-                        age: 24
-                    }
+                        age: 24,
+                    },
                 },
                 d: [
-                    {name: 'Jane'},
-                    {name: 'Ashley'},
+                    { name: 'Jane' },
+                    { name: 'Ashley' },
                 ],
                 [sym]: true,
                 e: {
                     nested: {
                         [sym]: 'foo',
-                    }
-                }
+                    },
+                },
             };
 
             const paths = [
@@ -36,7 +35,7 @@ describe('@aedart/support/objects', () => {
                 'd[1].name',
                 'd',
                 sym,
-                ['e', 'nested', sym]
+                ['e', 'nested', sym],
             ];
 
             paths.forEach((path, index) => {
@@ -52,35 +51,34 @@ describe('@aedart/support/objects', () => {
     });
 
     describe('forgetAll', () => {
-
         test('does nothing when target is undefined', () => {
             forgetAll(undefined);
-            
+
             // NA - if no failure, then passes...
             expect(true)
-                .toBeTruthy()
+                .toBeTruthy();
         });
-        
-        test('can "forget all" properties', function () {
 
+        test('can "forget all" properties', function()
+        {
             const sym = Symbol('foo');
             const target = {
                 a: 'bar',
                 b: {
                     c: {
-                        name: 'Helga'
-                    }
+                        name: 'Helga',
+                    },
                 },
                 d: [
-                    {age: 27},
-                    {age: 19},
+                    { age: 27 },
+                    { age: 19 },
                 ],
                 [sym]: false,
                 e: {
                     nested: {
                         [sym]: 'foo',
-                    }
-                }
+                    },
+                },
             };
 
             const paths = [
@@ -92,7 +90,7 @@ describe('@aedart/support/objects', () => {
                 'd[1].name',
                 'd',
                 sym,
-                ['e', 'nested', sym]
+                ['e', 'nested', sym],
             ];
 
             forgetAll(target, ...paths);
@@ -102,5 +100,5 @@ describe('@aedart/support/objects', () => {
                     .toBeFalsy();
             });
         });
-    });    
+    });
 });

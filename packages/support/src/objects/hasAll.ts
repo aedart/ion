@@ -1,5 +1,5 @@
-import {has} from './has.js';
-import type {Key} from "@aedart/contracts/support";
+import type { Key } from '@aedart/contracts/support';
+import { has } from './has.js';
 
 /**
  * Determine if all paths are properties of given object
