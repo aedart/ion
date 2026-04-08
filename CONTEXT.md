@@ -36,7 +36,7 @@ This document serves as the persistent state and configuration guide for the **@
 
 ## Technical Definitions & Utilities
 
-### Reflection & Prototypes
+### Reflection & Prototypes (`@aedart/support/reflections`)
 
 * **`walkParents`**: Generator yielding parent classes; supports `includeTarget`.
 * **`walkPrototype`**: Generator yielding keys in the prototype chain level-by-level.
