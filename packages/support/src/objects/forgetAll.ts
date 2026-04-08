@@ -9,9 +9,14 @@ import type {Key} from "@aedart/contracts/support";
  * @param {T} object Target object
  * @param {...Key} paths Property path(s)
  */
-export function forgetAll<T>(object: T, ...paths: (Key)[]): void
+export function forgetAll<T>(object: T, ...paths: Key[]): void
 {
-    for (const path of paths) {
-        forget(object, path);
+    const len = paths.length;
+    if (object === undefined || len === 0) {
+        return;
+    }
+
+    for (let i = 0; i < len; i++) {
+        forget(object, paths[i]);
     }
 }
