@@ -27,3 +27,5 @@ export {
 }
 
 export { CLONE } from "./Cloneable.js";
+
+export * from './types.js';
