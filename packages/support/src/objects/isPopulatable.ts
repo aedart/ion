@@ -1,4 +1,4 @@
-import { hasMethod } from "@aedart/support/reflections";
+import { isMethod } from "../reflections/isMethod.js";
 
 /**
  * Determine if target is populatable
@@ -12,5 +12,5 @@ import { hasMethod } from "@aedart/support/reflections";
  */
 export function isPopulatable(target: object): boolean
 {
-    return hasMethod(target, 'populate');
+    return isMethod(target, 'populate');
 }
