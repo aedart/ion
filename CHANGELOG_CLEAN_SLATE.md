@@ -27,7 +27,8 @@ Temporary changelog for feature branch.
 * Optimized performance of arrays' `includeAll()` and `includesAny()` (_support package_).
 * Optimized performance of misc's `isset()`, `empty()`, `isPropertyKey()`, `isKey()`, `mergeKeys()` and `toWeakRef()` (_support package_).
 * Optimized performance of reflections' `hasPrototypeProperty()`, `getParentOfClass()`, `getAllParentsOfClass()`, `classOwnKeys()` and `isMethod()` (_support package_).
-* Optimized performance of objects' `hasAll()`, `hasAny()`, `forgetAll()` (_support package_).
+* Optimized performance of objects' `hasAll()`, `hasAny()`, `forgetAll()` and `ObjectId` (_support package_).
+* `ObjectId` properties are now set to be private.
 * The TypeScript source files are now also published, along with appropriate source maps.
 * dprint is now used for formatting.
 
