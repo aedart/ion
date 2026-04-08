@@ -1,4 +1,4 @@
-import {isMethod} from "./isMethod.js";
+import { isMethod } from './isMethod.js';
 
 /**
  * Determine if given target object contains method

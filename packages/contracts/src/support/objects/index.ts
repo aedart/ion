@@ -15,17 +15,13 @@ export const SUPPORT_OBJECTS: unique symbol = Symbol('@aedart/contracts/support/
 export const DANGEROUS_PROPERTIES: Set<PropertyKey> = new Set([
     '__proto__',
     'constructor',
-    'prototype'
+    'prototype',
 ]);
 
+import Cloneable from './Cloneable.js';
+import Populatable from './Populatable.js';
+export { type Cloneable, type Populatable };
 
-import Cloneable from "./Cloneable.js";
-import Populatable from "./Populatable.js";
-export {
-    type Cloneable,
-    type Populatable,
-}
-
-export { CLONE } from "./Cloneable.js";
+export { CLONE } from './Cloneable.js';
 
 export * from './types.js';

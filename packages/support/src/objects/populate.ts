@@ -1,5 +1,5 @@
-import {isKeySafe} from "../reflections/isKeySafe.js";
-import type {SourceKeysCallback} from "@aedart/contracts/support/objects";
+import type { SourceKeysCallback } from '@aedart/contracts/support/objects';
+import { isKeySafe } from '../reflections/isKeySafe.js';
 
 /**
  * Populate target object with the properties from source object
@@ -29,12 +29,12 @@ import type {SourceKeysCallback} from "@aedart/contracts/support/objects";
  */
 export function populate<
     TargetObj extends object = object,
-    SourceObj extends object = object
+    SourceObj extends object = object,
 >(
     target: TargetObj,
     source: SourceObj,
     keys: PropertyKey | PropertyKey[] | SourceKeysCallback = '*',
-    safe: boolean = true
+    safe: boolean = true,
 ): TargetObj
 {
     let resolvedKeys: PropertyKey | PropertyKey[];

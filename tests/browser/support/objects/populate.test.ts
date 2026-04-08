@@ -3,21 +3,21 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/objects', () => {
     describe('populate()', () => {
-
         test('populates all source properties into target', () => {
-
-            class A {
+            class A
+            {
                 name = null;
                 age = null;
 
-                constructor(data: object) {
+                constructor(data: object)
+                {
                     populate(this, data);
                 }
             }
 
             const data = {
                 name: 'Ally',
-                age: 28
+                age: 28,
             };
 
             // --------------------------------------------------------------------------- //
@@ -32,19 +32,20 @@ describe('@aedart/support/objects', () => {
         });
 
         test('populates selected source properties into target', () => {
-
-            class A {
+            class A
+            {
                 name = null;
                 age = null;
 
-                constructor(data: object) {
+                constructor(data: object)
+                {
                     populate(this, data, 'name');
                 }
             }
 
             const data = {
                 name: 'Ally',
-                age: 28
+                age: 28,
             };
 
             // --------------------------------------------------------------------------- //
@@ -59,24 +60,25 @@ describe('@aedart/support/objects', () => {
         });
 
         test('can select source keys via callback', () => {
-
             const a = {
                 name: null,
                 age: null,
             };
 
             const b = {
-                name: 'John Doe', age: 29
-            }
+                name: 'John Doe',
+                age: 29,
+            };
 
             const c = {
-                name: 'Gwen', age: 42
+                name: 'Gwen',
+                age: 42,
             };
 
             // --------------------------------------------------------------------------- //
 
             const callback = (source: object) => {
-                const keys = [ 'name' ];
+                const keys = ['name'];
 
                 // @ts-ignore
                 if (Reflect.has(source, 'age') && source.age < 40) {
@@ -84,7 +86,7 @@ describe('@aedart/support/objects', () => {
                 }
 
                 return keys;
-            }
+            };
 
             // Populate with b...
             const result = populate(a, b, callback);
@@ -100,18 +102,17 @@ describe('@aedart/support/objects', () => {
         });
 
         test('prevents prototype pollution', () => {
-
             const A = {
                 name: null,
                 age: null,
-            }
+            };
 
             const data = {
                 __proto__: {
-                    admin: true
+                    admin: true,
                 },
                 name: 'Ally',
-                age: 28
+                age: 28,
             };
 
             // --------------------------------------------------------------------------- //
@@ -121,7 +122,7 @@ describe('@aedart/support/objects', () => {
             const result = populate(A, data, [
                 'name',
                 'age',
-                '__proto__' // Attempt to trick populate...
+                '__proto__', // Attempt to trick populate...
             ]);
 
             // Debug
@@ -140,12 +141,13 @@ describe('@aedart/support/objects', () => {
         });
 
         test('fails if key does not exist in target', () => {
-
-            class A {
+            class A
+            {
                 name = null;
                 age = null;
 
-                constructor(data: object) {
+                constructor(data: object)
+                {
                     populate(this, data);
                 }
             }
@@ -153,26 +155,27 @@ describe('@aedart/support/objects', () => {
             const data = {
                 name: 'Sweeney',
                 age: 36,
-                title: 'Gardner'
+                title: 'Gardner',
             };
 
             // --------------------------------------------------------------------------- //
 
             const callback = () => {
                 return new A(data);
-            }
+            };
 
             expect(callback)
                 .toThrow(TypeError);
         });
 
         test('can inject properties that target does not have, when "safe" mode disabled', () => {
-
-            class A {
+            class A
+            {
                 name = null;
                 age = null;
 
-                constructor(data: object) {
+                constructor(data: object)
+                {
                     populate(this, data, '*', false);
                 }
             }
@@ -180,7 +183,7 @@ describe('@aedart/support/objects', () => {
             const data = {
                 name: 'Sweeney',
                 age: 36,
-                title: 'Gardner'
+                title: 'Gardner',
             };
 
             // --------------------------------------------------------------------------- //

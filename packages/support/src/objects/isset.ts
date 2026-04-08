@@ -1,6 +1,6 @@
-import {isset as _isset} from "../misc/isset.js";
-import {get} from "./get.js";
-import type {Key} from "@aedart/contracts/support";
+import type { Key } from '@aedart/contracts/support';
+import { isset as _isset } from '../misc/isset.js';
+import { get } from './get.js';
 
 /**
  * Determine if properties at given paths are declared, and their values are not undefined or null

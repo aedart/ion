@@ -5,5 +5,5 @@
  */
 export type SourceKeysCallback<
     SourceObj extends object = object,
-    TargetObj extends object = object
-> = (source: SourceObj, target: TargetObj) => PropertyKey|PropertyKey[];
+    TargetObj extends object = object,
+> = (source: SourceObj, target: TargetObj) => PropertyKey | PropertyKey[];

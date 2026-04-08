@@ -1,80 +1,78 @@
-import { hasMethod, hasAllMethods } from '@aedart/support/reflections';
+import { hasAllMethods, hasMethod } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('hasAllMethods()', () => {
-
         test('can determine if target has methods', () => {
-
             const data = [
                 {
                     value: null,
-                    methods: [ 'foo', 'bar' ],
+                    methods: ['foo', 'bar'],
                     expected: false,
-                    name: 'NULL'
+                    name: 'NULL',
                 },
                 {
                     value: [],
-                    methods: [ 'foo', 'bar' ],
+                    methods: ['foo', 'bar'],
                     expected: false,
-                    name: 'Array'
+                    name: 'Array',
                 },
                 {
                     value: {},
-                    methods: [ 'foo', 'bar' ],
+                    methods: ['foo', 'bar'],
                     expected: false,
-                    name: 'Object (empty)'
+                    name: 'Object (empty)',
                 },
                 {
                     value: {
                         foo: () => true,
                     },
-                    methods: [ 'foo', 'bar' ],
+                    methods: ['foo', 'bar'],
                     expected: false,
-                    name: 'Object (with some methods)'
+                    name: 'Object (with some methods)',
                 },
                 {
                     value: {
                         foo: () => true,
                         bar: () => true,
                     },
-                    methods: [ 'foo', 'bar' ],
+                    methods: ['foo', 'bar'],
                     expected: true,
-                    name: 'Object (with all methods)'
+                    name: 'Object (with all methods)',
                 },
             ];
 
             for (const entry of data) {
                 // @ts-ignore
-                expect(hasAllMethods(entry.value, ...entry.methods), `${entry.name} was expected to ${entry.expected.toString()}`)
+                expect(
+                    hasAllMethods(entry.value, ...entry.methods),
+                    `${entry.name} was expected to ${entry.expected.toString()}`,
+                )
                     .toBe(entry.expected);
             }
-
         });
     });
 
     describe('hasMethod()', () => {
-
         test('can determine if target has method', () => {
-
             const data = [
                 {
                     value: null,
                     method: 'foo',
                     expected: false,
-                    name: 'NULL'
+                    name: 'NULL',
                 },
                 {
                     value: [],
                     method: 'foo',
                     expected: false,
-                    name: 'Array'
+                    name: 'Array',
                 },
                 {
                     value: {},
                     method: 'foo',
                     expected: false,
-                    name: 'Object (empty)'
+                    name: 'Object (empty)',
                 },
                 {
                     value: {
@@ -82,7 +80,7 @@ describe('@aedart/support/refelctions', () => {
                     },
                     method: 'bar',
                     expected: false,
-                    name: 'Object (with some methods)'
+                    name: 'Object (with some methods)',
                 },
                 {
                     value: {
@@ -91,16 +89,18 @@ describe('@aedart/support/refelctions', () => {
                     },
                     method: 'bar',
                     expected: true,
-                    name: 'Object (with all methods)'
+                    name: 'Object (with all methods)',
                 },
             ];
 
             for (const entry of data) {
                 // @ts-ignore
-                expect(hasMethod(entry.value, entry.method), `${entry.name} was expected to ${entry.expected.toString()}`)
+                expect(
+                    hasMethod(entry.value, entry.method),
+                    `${entry.name} was expected to ${entry.expected.toString()}`,
+                )
                     .toBe(entry.expected);
             }
-
         });
     });
 });

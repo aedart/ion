@@ -1,5 +1,5 @@
-import {isset} from "../misc/isset.js";
-import {isMethod} from "./isMethod.js";
+import { isset } from '../misc/isset.js';
+import { isMethod } from './isMethod.js';
 
 /**
  * Determine if given target object contains all given methods

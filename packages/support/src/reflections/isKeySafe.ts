@@ -1,10 +1,10 @@
-import {isKeyUnsafe} from "./isKeyUnsafe.js";
+import { isKeyUnsafe } from './isKeyUnsafe.js';
 
 /**
  * Opposite of {@link isKeyUnsafe}
- * 
+ *
  * @param {PropertyKey} key
- * 
+ *
  * @returns {boolean}
  */
 export function isKeySafe(key: PropertyKey): boolean
