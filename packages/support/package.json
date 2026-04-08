@@ -35,6 +35,10 @@
             "types": "./dist/misc/index.d.ts",
             "import": "./dist/misc/index.js"
         },
+        "./objects": {
+            "types": "./dist/objects/index.d.ts",
+            "import": "./dist/objects/index.js"
+        },
         "./reflections": {
             "types": "./dist/reflections/index.d.ts",
             "import": "./dist/reflections/index.js"
@@ -53,6 +57,7 @@
     },
     "peerDependencies": {
         "@aedart/contracts": "workspace:*",
+        "lodash-es": "^4.18.1",
         "tslib": "^2.8.1"
     },
     "devDependencies": {
