@@ -1,8 +1,8 @@
-import { hasAllMethods } from "./hasAllMethods.js";
+import {isMethod} from "./isMethod.js";
 
 /**
  * Determine if given target object contains method
- * 
+ *
  * @param {object} target
  * @param {PropertyKey} method
  *
@@ -10,5 +10,5 @@ import { hasAllMethods } from "./hasAllMethods.js";
  */
 export function hasMethod(target: object, method: PropertyKey): boolean
 {
-    return hasAllMethods(target, method);
+    return isMethod(target, method);
 }
