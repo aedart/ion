@@ -6,6 +6,7 @@ export * from './hasAll.js';
 export * from './hasAny.js';
 export * from './hasUniqueId.js';
 export * from './isCloneable.js';
+export * from './isPopulatable.js';
 export * from './set.js';
 export * from './uniqueId.js';
 
