@@ -23,6 +23,7 @@ Temporary changelog for feature branch.
 * `classLooksLike()` now expects blueprint argument's `members` or `staticMembers` to contain at least one value.
 * The `Cloneable` interface now defines a "clone" method using a unique symbol (`CLONE`) (_contracts package_).
 * Type of `data?` argument changed from `any` to `Record<PropertyKey, any>` in `Populatable` interface (_contracts package_).
+* `DANGEROUS_PROPERTIES` refactored to be a Set, containing `__proto__`, `constructor` and `prototype`. `isKeySafe()` and `isKeyUnsafe()` are affected by this change. (_contracts and support package_).
 
 **Non-breaking Changes**
 
