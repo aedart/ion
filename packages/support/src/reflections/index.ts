@@ -7,6 +7,8 @@ export * from './getParentOfClass.js';
 export * from './hasAllMethods.js';
 export * from './hasMethod.js';
 export * from './hasPrototypeProperty.js';
+export * from './isKeySafe.js';
+export * from './isKeyUnsafe.js';
 export * from './isMethod.js';
 export * from './walkParents.js';
 export * from './walkPrototype.js';
