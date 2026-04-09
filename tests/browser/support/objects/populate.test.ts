@@ -80,7 +80,7 @@ describe('@aedart/support/objects', () => {
             const callback = (source: object) => {
                 const keys = ['name'];
 
-                // @ts-ignore
+                // @ts-expect-error Ignore arg. type for testing purposes
                 if (Reflect.has(source, 'age') && source.age < 40) {
                     keys.push('age');
                 }
@@ -193,7 +193,7 @@ describe('@aedart/support/objects', () => {
             expect(Reflect.has(result, 'title'), 'Property "title" not populated')
                 .toBeTruthy();
 
-            // @ts-ignore
+            // @ts-expect-error Ignoring args. for testing purposes.
             expect(result.title, 'Property "title" not populated correctly')
                 .toBe(data.title);
         });
