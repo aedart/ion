@@ -39,7 +39,8 @@ This document serves as the persistent state and configuration guide for the **@
 ### Reflection & Prototypes (`@aedart/support/reflections`)
 
 * **`walkParents` / `walkPrototype`**: Generators for chain traversal.
-* **`isKeyUnsafe`**: Checks against `DANGEROUS_PROPERTIES` (Set: `__proto__`, `constructor`, `prototype`).
+* **`isKeyUnsafe`**: Hardened $O(1)$ check against an internal frozen, null-prototype map containing `__proto__`, `constructor`, and `prototype`. Implemented with computed keys to ensure `__proto__` is a data property.
+* **`isKeySafe`**: Logical negation of `isKeyUnsafe`.
 * **`hasAllMethods`**: Optimized index-loop check for multiple method existence.
 
 ### Objects Sub-Module (`@aedart/support/objects`)
