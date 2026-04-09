@@ -8,7 +8,8 @@ describe('@aedart/support/objects', () => {
         test('can determine if is populatable', () => {
             class A implements Populatable
             {
-                populate(data?: Record<PropertyKey, any>): this
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                populate(data?: Record<PropertyKey, object>): this
                 {
                     return this;
                 }
@@ -37,8 +38,8 @@ describe('@aedart/support/objects', () => {
             ];
 
             for (const data of dataSet) {
-                // @ts-ignore
                 expect(
+                    // @ts-expect-error Ignoring argument type for testing purposes
                     isPopulatable(data.value),
                     `${data.name} was expected to ${data.expected.toString()}`,
                 )
