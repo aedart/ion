@@ -12,18 +12,17 @@ describe('@aedart/support/refelctions', () => {
 
     describe('DANGEROUS_PROPERTIES', () => {
         test('cannot change predefined property', () => {
-           expect(Object.isFrozen(DANGEROUS_PROPERTIES), 'DANGEROUS_PROPERTIES should be frozen')
-               .toBeTruthy(); 
+            expect(Object.isFrozen(DANGEROUS_PROPERTIES), 'DANGEROUS_PROPERTIES should be frozen')
+                .toBeTruthy();
         });
-    })
-    
+    });
+
     describe('isKeySafe()', () => {
         test('can determine if key is safe', () => {
             for (const data of dataSet) {
                 expect(
                     // @ts-expect-error Ignoring argument type for testing purposes
                     isKeySafe(data.value),
-
                     // @ts-expect-error Ignoring argument type for testing purposes
                     `${data.name} was expected to ${data.safe.toString()}`,
                 )
@@ -38,7 +37,6 @@ describe('@aedart/support/refelctions', () => {
                 expect(
                     // @ts-expect-error Ignoring argument type for testing purposes
                     isKeyUnsafe(data.value),
-
                     // @ts-expect-error Ignoring argument type for testing purposes
                     `${data.name} was expected to ${data.safe.toString()}`,
                 )

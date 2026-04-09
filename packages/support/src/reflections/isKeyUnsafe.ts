@@ -1,4 +1,4 @@
-import {DANGEROUS_PROPERTIES} from '@aedart/contracts/support/objects';
+import { DANGEROUS_PROPERTIES } from '@aedart/contracts/support/objects';
 
 /**
  * Determine if property key is unsafe

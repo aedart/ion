@@ -16,8 +16,8 @@ export const DANGEROUS_PROPERTIES: Record<PropertyKey, boolean> = Object.freeze(
     Object.assign(Object.create(null), {
         ['__proto__']: true,
         ['constructor']: true,
-        ['prototype']: true
-    })
+        ['prototype']: true,
+    }),
 );
 
 import Cloneable from './Cloneable.js';
