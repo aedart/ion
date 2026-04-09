@@ -1,4 +1,4 @@
-import { DANGEROUS_PROPERTIES } from '@aedart/contracts/support/objects';
+import {DANGEROUS_PROPERTIES} from '@aedart/contracts/support/objects';
 
 /**
  * Determine if property key is unsafe
@@ -11,5 +11,5 @@ import { DANGEROUS_PROPERTIES } from '@aedart/contracts/support/objects';
  */
 export function isKeyUnsafe(key: PropertyKey): boolean
 {
-    return DANGEROUS_PROPERTIES.has(key);
+    return DANGEROUS_PROPERTIES[key] === true;
 }

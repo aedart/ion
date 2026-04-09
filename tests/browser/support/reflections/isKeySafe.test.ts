@@ -7,20 +7,16 @@ describe('@aedart/support/refelctions', () => {
         { value: 'name', safe: true, name: 'name' },
         { value: 'prototype', safe: false, name: 'prototype' },
         { value: '__proto__', safe: false, name: '__proto__' },
+        { value: 'constructor', safe: false, name: 'constructor' },
     ];
 
-    for (const key of DANGEROUS_PROPERTIES) {
-        dataSet.push(
-            {
-                value: key,
-                safe: false,
-                name: typeof key == 'symbol'
-                    ? key.description
-                    : key,
-            },
-        );
-    }
-
+    describe('DANGEROUS_PROPERTIES', () => {
+        test('cannot change predefined property', () => {
+           expect(Object.isFrozen(DANGEROUS_PROPERTIES), 'DANGEROUS_PROPERTIES should be frozen')
+               .toBeTruthy(); 
+        });
+    })
+    
     describe('isKeySafe()', () => {
         test('can determine if key is safe', () => {
             for (const data of dataSet) {
