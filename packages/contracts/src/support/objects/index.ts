@@ -14,9 +14,9 @@ export const SUPPORT_OBJECTS: unique symbol = Symbol('@aedart/contracts/support/
  */
 export const DANGEROUS_PROPERTIES: Record<PropertyKey, boolean> = Object.freeze(
     Object.assign(Object.create(null), {
-        '__proto__': true,
-        'constructor': true,
-        'prototype': true
+        ['__proto__']: true,
+        ['constructor']: true,
+        ['prototype']: true
     })
 );
 
