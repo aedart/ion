@@ -3,7 +3,7 @@ import { isKeySafe, isKeyUnsafe } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
-    const dataSet: Record<PropertyKey, any>[] = [
+    const dataSet: Record<PropertyKey, unknown>[] = [
         { value: 'name', safe: true, name: 'name' },
         { value: 'prototype', safe: false, name: 'prototype' },
         { value: '__proto__', safe: false, name: '__proto__' },
@@ -25,7 +25,10 @@ describe('@aedart/support/refelctions', () => {
         test('can determine if key is safe', () => {
             for (const data of dataSet) {
                 expect(
+                    // @ts-expect-error Ignoring argument type for testing purposes
                     isKeySafe(data.value),
+
+                    // @ts-expect-error Ignoring argument type for testing purposes
                     `${data.name} was expected to ${data.safe.toString()}`,
                 )
                     .toBe(data.safe);
@@ -37,7 +40,10 @@ describe('@aedart/support/refelctions', () => {
         test('can determine if key is unsafe', () => {
             for (const data of dataSet) {
                 expect(
+                    // @ts-expect-error Ignoring argument type for testing purposes
                     isKeyUnsafe(data.value),
+
+                    // @ts-expect-error Ignoring argument type for testing purposes
                     `${data.name} was expected to ${data.safe.toString()}`,
                 )
                     .toBe(!data.safe);
