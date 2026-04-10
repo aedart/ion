@@ -1,4 +1,4 @@
-import type { Wildcard } from "../types.js";
+import type { Wildcard } from '../types.js';
 
 /**
  * Allowed property keys

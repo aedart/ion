@@ -155,7 +155,7 @@ describe('@aedart/support/objects', () => {
             const data = {
                 name: 'Sweeney',
                 age: 36,
-                
+
                 // Title does not exist in A, should just be ignored
                 title: 'Gardner',
             };
@@ -163,7 +163,7 @@ describe('@aedart/support/objects', () => {
             // --------------------------------------------------------------------------- //
 
             const a = new A(data);
-            
+
             expect(Reflect.has(a, 'title'))
                 .toBeFalsy();
         });
@@ -182,7 +182,7 @@ describe('@aedart/support/objects', () => {
 
                         // Title does not exist - should cause failure, despite being allowed!
                         // (when in safe mode!)
-                        'title'
+                        'title',
                     ]);
                 }
             }
@@ -204,7 +204,7 @@ describe('@aedart/support/objects', () => {
             expect(callback)
                 .toThrow(TypeError);
         });
-        
+
         test('can inject properties that target does not have, when "safe" mode disabled', () => {
             class A
             {

@@ -1,5 +1,5 @@
-import type {AllowedKeys, AllowedKeysCallback} from '@aedart/contracts/support/objects';
-import {isKeySafe} from '../reflections/isKeySafe.js';
+import type { AllowedKeys, AllowedKeysCallback } from '@aedart/contracts/support/objects';
+import { isKeySafe } from '../reflections/isKeySafe.js';
 
 /**
  * Populate target object with the properties from source object
