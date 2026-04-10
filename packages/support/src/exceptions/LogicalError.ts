@@ -1,5 +1,5 @@
 import type { Throwable } from "@aedart/contracts/support/exceptions";
-import { configureCustomError } from "./configureCustomError.js";
+import BaseError from "./BaseError.js";
 
 /**
  * Logical Error
@@ -8,7 +8,7 @@ import { configureCustomError } from "./configureCustomError.js";
  * 
  * This error is inspired by PHP's [`LogicException`]{@link https://www.php.net/manual/en/class.logicexception}
  */
-export default class LogicalError extends Error implements Throwable
+export default class LogicalError extends BaseError implements Throwable
 {
     /**
      * Create a new logical error instance
@@ -18,7 +18,5 @@ export default class LogicalError extends Error implements Throwable
      */
     constructor(message?: string, options?: ErrorOptions) {
         super(message, options);
-
-        configureCustomError(this);
     }
 }

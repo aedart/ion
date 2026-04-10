@@ -1,7 +1,6 @@
 import type { AbstractConstructor } from "@aedart/contracts";
 import LogicalError from "./LogicalError.js";
 import { getNameOrDesc } from "../reflections/getNameOrDesc.js";
-import { configureCustomError } from "./configureCustomError.js";
 
 /**
  * Abstract Class Error
@@ -25,8 +24,6 @@ export default class AbstractClassError extends LogicalError
      */
     constructor(target: AbstractConstructor, options?: ErrorOptions) {
         super(`Unable to create new instance of abstract class ${getNameOrDesc(target)}`, options || { cause: { target: target } });
-
-        configureCustomError(this);
 
         this.target = target;
     }
