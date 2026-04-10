@@ -1,3 +1,5 @@
+import { LOOKUP_THRESHOLD } from "./index.js";
+
 /**
  * Determine if array includes all given values
  *
@@ -24,7 +26,7 @@ export function includesAll(
     // a new Set and calculating hashes exceeds the cost of a nested loop.
     // Nested loops benefit from CPU cache locality and avoid GC pressure.
     // V8 (Chrome / Edge / Node.js) typically have a threshold between 16 and 32.
-    if (arrCount < 16) {
+    if (arrCount < LOOKUP_THRESHOLD) {
         for (let i = 0; i < valuesCount; i++) {
             let found = false;
             for (let j = 0; j < arrCount; j++) {

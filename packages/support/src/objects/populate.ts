@@ -1,5 +1,6 @@
 import type { AllowedKeys, AllowedKeysCallback } from '@aedart/contracts/support/objects';
 import { isKeySafe } from '../reflections/isKeySafe.js';
+import { LOOKUP_THRESHOLD } from "../arrays/index.js";
 
 /**
  * Populate target object with the properties from source object
@@ -57,7 +58,9 @@ export function populate<
         }
 
         // Apply Collection Threshold (16) per Performance Patterns
-        allowedCollection = resolved.length > 16 ? new Set(resolved) : resolved;
+        allowedCollection = resolved.length > LOOKUP_THRESHOLD
+            ? new Set(resolved)
+            : resolved;
     }
 
     // 2. High-performance index-based loop (No .filter() to avoid GC pressure)

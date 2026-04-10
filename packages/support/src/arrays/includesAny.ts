@@ -1,3 +1,5 @@
+import { LOOKUP_THRESHOLD } from "./index.js";
+
 /**
  * Determine if array includes any (_some_) of the given values
  *
@@ -24,7 +26,7 @@ export function includesAny(
     // of Set creation. We prioritize iterating over the smaller of the two
     // arrays as the outer loop to minimize checks.
     // V8 (Chrome / Edge / Node.js) typically have a threshold between 16 and 32.
-    if (arrCount < 16) {
+    if (arrCount < LOOKUP_THRESHOLD) {
         for (let i = 0; i < valuesCount; i++) {
             const search = values[i];
             for (let j = 0; j < arrCount; j++) {

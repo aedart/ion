@@ -1,4 +1,5 @@
 import type { ClassBlueprint } from '@aedart/contracts/support/reflections';
+import { LOOKUP_THRESHOLD } from "../arrays/index.js";
 import { hasPrototypeProperty } from './hasPrototypeProperty.js';
 import { walkPrototype } from './walkPrototype.js';
 
@@ -49,7 +50,7 @@ export function classLooksLike(target: object, blueprint: ClassBlueprint): boole
         const list = members as PropertyKey[];
 
         // Use Set for lookups if above threshold (16) to balance allocation overhead
-        if (numMembers > 16) {
+        if (numMembers > LOOKUP_THRESHOLD) {
             const remaining = new Set(list);
             for (const key of walkPrototype(proto)) {
                 remaining.delete(key);
