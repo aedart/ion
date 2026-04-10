@@ -30,29 +30,32 @@ This document serves as the persistent state and configuration guide for the **@
 ## Performance Patterns (Strict)
 
 * **Looping**: Prefer index-based `for` loops with cached length over `for...of`, `forEach`, or `.every()/.some()`.
-* **GC Pressure**: Minimize object/array allocations in hot paths (avoid unnecessary `.filter()` or `.map()` when a single loop suffices).
-* **Collection Threshold**: Use a threshold of **16** elements to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$).
-* **Generators**: Use `yield` for deep tree/prototype traversals.
+* **GC Pressure**: Minimize object/array allocations in hot paths. Avoid unnecessary `.filter()` or `.map()` when a single loop suffices.
+* **Collection Threshold**: Use `LOOKUP_THRESHOLD` (16) to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$).
+* **Generators**: Use `yield` for deep tree/prototype traversals to keep memory footprint $O(1)$.
 
 ## Technical Definitions & Utilities
+
+### Arrays & Collections (`@aedart/support/arrays`)
+
+* **`LOOKUP_THRESHOLD`**: Centralized constant (16) used to balance GC pressure vs. lookup complexity in V8.
 
 ### Reflection & Prototypes (`@aedart/support/reflections`)
 
 * **`walkParents` / `walkPrototype`**: Generators for chain traversal.
-* **`isKeyUnsafe`**: Hardened $O(1)$ check against an internal frozen, null-prototype map containing `__proto__`, `constructor`, and `prototype`.
-* **`isKeySafe`**: Logical negation of `isKeyUnsafe`.
-* **`hasAllMethods`**: Optimized index-loop check for multiple method existence.
+* **`getConstructorName`**: Optimized retrieval using optional chaining and nullish coalescing.
+* **`getNameOrDesc`**: Lazy-evaluated utility that prioritizes constructor names over description tags.
+* **`isKeyUnsafe`**: Hardened $O(1)$ check against internal frozen map (`__proto__`, `constructor`, `prototype`).
+
+### Exceptions (`@aedart/support/exceptions`)
+
+* **`BaseError`**: Abstract base class that automates `this.name` assignment and optimized `Error.captureStackTrace` for V8 environments. All custom exceptions MUST inherit from this.
 
 ### Objects Sub-Module (`@aedart/support/objects`)
 
-* **`populate`**: Optimized utility for shallow copying properties/descriptors from source to target.
-  * **Logic**: Uses a single-pass index loop to minimize GC pressure.
-  * **Filtering**: Supports `Wildcard`, `PropertyKey[]`, and `AllowedKeysCallback`.
-  * **Scaling**: Switches to `Set` lookups if the allowed key count exceeds **16**.
-  * **Security**: Enforces `isKeySafe` checks and validates `Reflect.defineProperty` success.
-* **`CLONE` Symbol**: `unique symbol` used for the `Cloneable` interface to avoid naming collisions.
+* **`populate`**: Optimized shallow copy utility using index loops and `LOOKUP_THRESHOLD` scaling.
+* **`CLONE` Symbol**: `unique symbol` for `Cloneable` interface.
 * **Encapsulation**: Use native JavaScript private fields (`#field`).
-* **Lodash Aliases**: `get`, `set`, `has`, and `forget` using `typeof` mapping.
 
 ## Maintenance Scripts
 
