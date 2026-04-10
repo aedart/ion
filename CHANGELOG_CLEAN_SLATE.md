@@ -8,6 +8,7 @@ Temporary changelog for feature branch.
 
 * `Wildcard` type alias (_contracts package_).
 * `walkPrototype()` and `walkParents` reflection utils (_support package_).
+* Abstract `BaseError` (_support package_).
 * Array `LOOKUP_THRESHOLD` const, the maximum number of elements in a collection before switching from nested loops (_support package_)
 * `CONTEXT.md` (_AI context_).
 * `scripts/sync-peer-deps.js` and `scripts/propagate-deps.js` utils scripts for synchronising dependencies between root package.json and packages' dependencies.
@@ -21,6 +22,7 @@ Temporary changelog for feature branch.
 * Switched to use TypeScript `v6` and Node.js `v24`.
 * Now using pnpm, with turbo, vite, and vitest (_previously used rollup, karma.js, webpack and other_).
 * Upgraded to vuepress `^2.0.0-rc.28`, using vite as bundler.
+* Custom exceptions now inherit from new `BaseError`.
 * Order of returned properties from `classOwnKeys()` changed, as a result of optimisation.
 * `classLooksLike()` now expects blueprint argument's `members` or `staticMembers` to contain at least one value.
 * The `Cloneable` interface now defines a "clone" method using a unique symbol (`CLONE`) (_contracts package_).
@@ -33,7 +35,7 @@ Temporary changelog for feature branch.
 
 * Optimized performance of arrays' `includeAll()` and `includesAny()` (_support package_).
 * Optimized performance of misc's `isset()`, `empty()`, `isPropertyKey()`, `isKey()`, `mergeKeys()` and `toWeakRef()` (_support package_).
-* Optimized performance of reflections' `hasPrototypeProperty()`, `getParentOfClass()`, `getAllParentsOfClass()`, `classOwnKeys()`, `isMethod()`, `hasMethod()` and `hasAllMethods()` (_support package_).
+* Optimized performance of reflections' `hasPrototypeProperty()`, `getParentOfClass()`, `getAllParentsOfClass()`, `classOwnKeys()`, `isMethod()`, `hasMethod()`, `hasAllMethods()`, `getConstructorName()` and `getNameOrDesc()` (_support package_).
 * Optimized performance of objects' `hasAll()`, `hasAny()`, `forgetAll()`, `ObjectId`, `isset()` and `populate()` (_support package_).
 * `ObjectId` properties are now set to be private.
 * The TypeScript source files are now also published, along with appropriate source maps.
@@ -46,4 +48,5 @@ Temporary changelog for feature branch.
 ### Removed
 
 * `FUNCTION_PROTOTYPE` const in `contracts/src/support/reflections` (_no longer used_).
+* `configureStackTrace()` and `configureCustomError()`, replaced by new `BaseError` abstraction (_support package_).
 * `LastUpdatedPlugin.vue` (_no longer needed, the adapted `LastUpdatedPlugin.ts` does the job_).
