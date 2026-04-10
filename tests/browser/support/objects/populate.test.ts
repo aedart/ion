@@ -31,7 +31,7 @@ describe('@aedart/support/objects', () => {
                 .toBe(data.age);
         });
 
-        test('populates selected source properties into target', () => {
+        test('populates allowed properties into target', () => {
             class A
             {
                 name = null;
@@ -59,7 +59,7 @@ describe('@aedart/support/objects', () => {
                 .toBeNull();
         });
 
-        test('can select source keys via callback', () => {
+        test('can select keys via callback', () => {
             const a = {
                 name: null,
                 age: null,
@@ -77,7 +77,7 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------------- //
 
-            const callback = (source: object) => {
+            const callback = (target: object, source: object) => {
                 const keys = ['name'];
 
                 // @ts-expect-error Ignore arg. type for testing purposes
@@ -140,7 +140,7 @@ describe('@aedart/support/objects', () => {
                 .toBe(data.age);
         });
 
-        test('fails if key does not exist in target', () => {
+        test('ignores source property if does not exist in target', () => {
             class A
             {
                 name = null;
@@ -155,6 +155,43 @@ describe('@aedart/support/objects', () => {
             const data = {
                 name: 'Sweeney',
                 age: 36,
+                
+                // Title does not exist in A, should just be ignored
+                title: 'Gardner',
+            };
+
+            // --------------------------------------------------------------------------- //
+
+            const a = new A(data);
+            
+            expect(Reflect.has(a, 'title'))
+                .toBeFalsy();
+        });
+
+        test('fails property if does not exist in target', () => {
+            class A
+            {
+                name = null;
+                age = null;
+
+                constructor(data: object)
+                {
+                    populate(this, data, [
+                        'name',
+                        'age',
+
+                        // Title does not exist - should cause failure, despite being allowed!
+                        // (when in safe mode!)
+                        'title'
+                    ]);
+                }
+            }
+
+            const data = {
+                name: 'Sweeney',
+                age: 36,
+
+                // Title does not exist - should cause failure...
                 title: 'Gardner',
             };
 
@@ -167,7 +204,7 @@ describe('@aedart/support/objects', () => {
             expect(callback)
                 .toThrow(TypeError);
         });
-
+        
         test('can inject properties that target does not have, when "safe" mode disabled', () => {
             class A
             {

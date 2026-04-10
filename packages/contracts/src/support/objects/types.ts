@@ -1,9 +1,16 @@
+import type { Wildcard } from "../types.js";
+
 /**
- * Callback that returns properties to be selected from the source object.
- * The target is the object intended to have source properties merged or assigned
- * into.
+ * Allowed property keys
  */
-export type SourceKeysCallback<
-    SourceObj extends object = object,
+export type AllowedKeys = PropertyKey | PropertyKey[] | Wildcard | AllowedKeysCallback;
+
+/**
+ * Callback that returns a list of properties that are "allowed" to be processed.
+ * The callback is given a target and a source object, which can be used to
+ * produce complex properties select logic, if needed.
+ */
+export type AllowedKeysCallback<
     TargetObj extends object = object,
-> = (source: SourceObj, target: TargetObj) => PropertyKey | PropertyKey[];
+    SourceObj extends object = object,
+> = (target: TargetObj, source: SourceObj) => PropertyKey[];
