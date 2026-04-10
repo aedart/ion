@@ -4,6 +4,7 @@ export * from './classOwnKeys.js';
 export * from './getAllParentsOfClass.js';
 export * from './getClassPropertyDescriptor.js';
 export * from './getConstructorName.js';
+export * from './getNameOrDesc.js';
 export * from './getParentOfClass.js';
 export * from './hasAllMethods.js';
 export * from './hasMethod.js';
