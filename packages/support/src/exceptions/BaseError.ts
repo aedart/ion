@@ -1,17 +1,17 @@
-import type {Throwable} from "@aedart/contracts/support/exceptions";
+import type { Throwable } from '@aedart/contracts/support/exceptions';
 
 /**
  * Base Error
  *
  * Provides standardized configuration for all custom exceptions in the monorepo.
- * 
+ *
  * @abstract
  */
 export default abstract class BaseError extends Error implements Throwable
 {
     /**
      * Create a new error instance
-     * 
+     *
      * @param {string} [message]
      * @param {ErrorOptions} [options]
      */

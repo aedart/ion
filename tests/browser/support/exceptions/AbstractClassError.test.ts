@@ -1,20 +1,18 @@
-import { AbstractClassError, LogicalError } from "@aedart/support/exceptions";
+import { AbstractClassError, LogicalError } from '@aedart/support/exceptions';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/exceptions', () => {
-
     describe('AbstractClassError', () => {
-
         test('can throw new Abstract Class Error', () => {
-
-            class A {}
+            class A
+            {}
             let wasThrown = false;
 
             try {
                 throw new AbstractClassError(A);
             } catch (err: unknown) {
                 const error = err as AbstractClassError;
-                
+
                 // Debug
                 // console.log(error.toString(), error.cause, error.stack);
 
@@ -25,7 +23,7 @@ describe('@aedart/support/exceptions', () => {
 
                 expect(error, 'Should be instance of AbstractClassError')
                     .toBeInstanceOf(AbstractClassError);
-                
+
                 expect(error, 'Should also be instance of LogicalError')
                     .toBeInstanceOf(LogicalError);
 
@@ -40,12 +38,10 @@ describe('@aedart/support/exceptions', () => {
         test('can capture via expect', () => {
             const callback = () => {
                 throw new AbstractClassError(class {});
-            }
+            };
 
             expect(callback)
                 .toThrow(AbstractClassError);
         });
-
     });
-
 });

@@ -1,10 +1,6 @@
-import BaseError from "./BaseError.js";
-import AbstractClassError from "./AbstractClassError.js";
-import LogicalError from "./LogicalError.js";
-export {
-    BaseError,
-    AbstractClassError,
-    LogicalError
-}
+import AbstractClassError from './AbstractClassError.js';
+import BaseError from './BaseError.js';
+import LogicalError from './LogicalError.js';
+export { AbstractClassError, BaseError, LogicalError };
 
 export * from './getErrorMessage.js';

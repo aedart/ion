@@ -8,7 +8,7 @@
  */
 export function getErrorMessage(
     error: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    defaultMessage: string = 'unknown reason'
+    defaultMessage: string = 'unknown reason',
 ): string
 {
     return (typeof error == 'object' && error instanceof Error && Reflect.has(error, 'message'))

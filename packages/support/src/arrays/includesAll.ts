@@ -1,4 +1,4 @@
-import { LOOKUP_THRESHOLD } from "./index.js";
+import { LOOKUP_THRESHOLD } from './index.js';
 
 /**
  * Determine if array includes all given values

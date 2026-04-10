@@ -1,5 +1,5 @@
 import type { ClassBlueprint } from '@aedart/contracts/support/reflections';
-import { LOOKUP_THRESHOLD } from "../arrays/index.js";
+import { LOOKUP_THRESHOLD } from '../arrays/index.js';
 import { hasPrototypeProperty } from './hasPrototypeProperty.js';
 import { walkPrototype } from './walkPrototype.js';
 

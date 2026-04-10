@@ -1,4 +1,4 @@
-import type {ConstructorLike} from "@aedart/contracts";
+import type { ConstructorLike } from '@aedart/contracts';
 
 /**
  * Returns target class' constructor name, if available
@@ -8,7 +8,10 @@ import type {ConstructorLike} from "@aedart/contracts";
  *
  * @return {string|null} Constructor name, or default value
  */
-export function getConstructorName(target: ConstructorLike, defaultValue: string | null = null): string | null
+export function getConstructorName(
+    target: ConstructorLike,
+    defaultValue: string | null = null,
+): string | null
 {
     // Direct access via optional chaining is the fastest path in Node 24 V8.
     const name: string | undefined = target?.name ?? target?.prototype?.constructor?.name;

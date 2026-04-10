@@ -1,20 +1,19 @@
-import ArrayMergeOptions from "./ArrayMergeOptions.js";
-import { ArrayMergeCallback } from "./types.js";
+import ArrayMergeOptions from './ArrayMergeOptions.js';
+import { ArrayMergeCallback } from './types.js';
 
 /**
  * Array Merger
  *
  * Able to merge (deep merge) multiple source arrays into a single new array.
  */
-export default interface ArrayMerger
-{
+export default interface ArrayMerger {
     /**
      * Use the following merge options or callback
-     * 
+     *
      * @param {ArrayMergeCallback | ArrayMergeOptions} [options]
-     * 
+     *
      * @return {this}
-     * 
+     *
      * @throws {ArrayMergeException}
      */
     using(options?: ArrayMergeCallback | ArrayMergeOptions): this;
@@ -31,7 +30,7 @@ export default interface ArrayMerger
      * @throws {ArrayMergeException}
      */
     of<
-        SourceA extends any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        SourceA extends any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
     >(a: SourceA): SourceA;
 
     /**
@@ -122,7 +121,13 @@ export default interface ArrayMerger
         SourceC extends any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
         SourceD extends any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
         SourceE extends any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    >(a: SourceA, b: SourceB, c: SourceC, d: SourceD, e: SourceE): SourceA & SourceB & SourceC & SourceD & SourceE;
+    >(
+        a: SourceA,
+        b: SourceB,
+        c: SourceC,
+        d: SourceD,
+        e: SourceE,
+    ): SourceA & SourceB & SourceC & SourceD & SourceE;
 
     /**
      * Returns a merger of given source arrays
@@ -152,15 +157,22 @@ export default interface ArrayMerger
         SourceD extends any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
         SourceE extends any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
         SourceF extends any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    >(a: SourceA, b: SourceB, c: SourceC, d: SourceD, e: SourceE, f: SourceF): SourceA & SourceB & SourceC & SourceD & SourceE & SourceF;
-    
+    >(
+        a: SourceA,
+        b: SourceB,
+        c: SourceC,
+        d: SourceD,
+        e: SourceE,
+        f: SourceF,
+    ): SourceA & SourceB & SourceC & SourceD & SourceE & SourceF;
+
     /**
      * Returns a merger of given source arrays
-     * 
+     *
      * @param {...any[]} sources
-     * 
+     *
      * @return {any[]}
-     * 
+     *
      * @throws {ArrayMergeException}
      */
     of(...sources: any[]): any[]; /* eslint-disable-line @typescript-eslint/no-explicit-any */

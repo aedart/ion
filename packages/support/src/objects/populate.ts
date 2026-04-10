@@ -1,6 +1,6 @@
 import type { AllowedKeys, AllowedKeysCallback } from '@aedart/contracts/support/objects';
+import { LOOKUP_THRESHOLD } from '../arrays/index.js';
 import { isKeySafe } from '../reflections/isKeySafe.js';
-import { LOOKUP_THRESHOLD } from "../arrays/index.js";
 
 /**
  * Populate target object with the properties from source object

@@ -3,9 +3,9 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('getNameOrDesc()', () => {
-
         test('can obtain class constructor name', () => {
-            class ApiService {}
+            class ApiService
+            {}
 
             const result = getNameOrDesc(ApiService);
 

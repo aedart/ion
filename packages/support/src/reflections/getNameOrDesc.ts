@@ -1,6 +1,6 @@
-import type {ConstructorLike} from "@aedart/contracts";
-import {descTag} from "../misc/descTag.js";
-import {getConstructorName} from "./getConstructorName.js";
+import type { ConstructorLike } from '@aedart/contracts';
+import { descTag } from '../misc/descTag.js';
+import { getConstructorName } from './getConstructorName.js';
 
 /**
  * Return target class' constructor name or default to target's description tag if unavailable

@@ -3,9 +3,9 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('getConstructorName()', () => {
-
         test('can obtain class constructor name', () => {
-            class Box {}
+            class Box
+            {}
 
             const result = getConstructorName(Box);
 
@@ -35,7 +35,7 @@ describe('@aedart/support/refelctions', () => {
             // console.log(result);
 
             expect(result)
-                .toBe(defaultValue)
+                .toBe(defaultValue);
         });
     });
 });
