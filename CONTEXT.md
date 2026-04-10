@@ -39,14 +39,18 @@ This document serves as the persistent state and configuration guide for the **@
 ### Reflection & Prototypes (`@aedart/support/reflections`)
 
 * **`walkParents` / `walkPrototype`**: Generators for chain traversal.
-* **`isKeyUnsafe`**: Hardened $O(1)$ check against an internal frozen, null-prototype map containing `__proto__`, `constructor`, and `prototype`. Implemented with computed keys to ensure `__proto__` is a data property.
+* **`isKeyUnsafe`**: Hardened $O(1)$ check against an internal frozen, null-prototype map containing `__proto__`, `constructor`, and `prototype`.
 * **`isKeySafe`**: Logical negation of `isKeyUnsafe`.
 * **`hasAllMethods`**: Optimized index-loop check for multiple method existence.
 
 ### Objects Sub-Module (`@aedart/support/objects`)
 
+* **`populate`**: Optimized utility for shallow copying properties/descriptors from source to target.
+  * **Logic**: Uses a single-pass index loop to minimize GC pressure.
+  * **Filtering**: Supports `Wildcard`, `PropertyKey[]`, and `AllowedKeysCallback`.
+  * **Scaling**: Switches to `Set` lookups if the allowed key count exceeds **16**.
+  * **Security**: Enforces `isKeySafe` checks and validates `Reflect.defineProperty` success.
 * **`CLONE` Symbol**: `unique symbol` used for the `Cloneable` interface to avoid naming collisions.
-* **`populate`**: Shallow copies properties/descriptors from source to target; uses `Reflect.getOwnPropertyDescriptor` to support getters/setters and enforces `isKeySafe` checks.
 * **Encapsulation**: Use native JavaScript private fields (`#field`).
 * **Lodash Aliases**: `get`, `set`, `has`, and `forget` using `typeof` mapping.
 
