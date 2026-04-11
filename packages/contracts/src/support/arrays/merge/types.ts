@@ -31,8 +31,17 @@ export type ArrayMergeCallback = (
 ) => any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
 /**
- * Helper type to intersect array types from a tuple
+ * Intersect Arrays
+ *
+ * Recursive type that intersects a tuple of array types into a single
+ * intersected array type.
+ *
+ * @template T - Tuple of array types
  */
 export type IntersectArrays<T extends any[][]> = T extends [infer Head, ...infer Tail]
-    ? Head & (Tail extends any[][] ? IntersectArrays<Tail> : unknown)
-    : unknown;
+    ? Tail extends any[][]
+        ? Tail['length'] extends 0
+            ? Head
+            : Head & IntersectArrays<Tail>
+        : Head
+    : any[];
