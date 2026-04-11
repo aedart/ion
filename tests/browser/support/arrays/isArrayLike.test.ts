@@ -3,9 +3,7 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/ararys', () => {
     describe('isArrayLike()', () => {
-
         test('can determine if is array-like', () => {
-
             const dataSet = [
                 { value: [], expected: true, name: 'Array' },
                 { value: 'abc', expected: true, name: 'string' },
@@ -25,7 +23,12 @@ describe('@aedart/support/ararys', () => {
                 { value: {}, expected: false, name: 'Object (without length property)' },
                 { value: new Map(), expected: false, name: 'Map' },
                 { value: new Set(), expected: false, name: 'Set' },
-                { value: function() {}, expected: false, name: 'Function' },
+                {
+                    value: function()
+                    {},
+                    expected: false,
+                    name: 'Function',
+                },
                 { value: new Date(), expected: false, name: 'Date' },
                 { value: new ArrayBuffer(2), expected: false, name: 'ArrayBuffer' },
                 { value: new DataView(new ArrayBuffer(2)), expected: false, name: 'DataView' },
@@ -33,13 +36,15 @@ describe('@aedart/support/ararys', () => {
             ];
 
             for (const data of dataSet) {
-                expect(isArrayLike(data.value), `${data.name} was expected to ${data.expected.toString()}`)
+                expect(
+                    isArrayLike(data.value),
+                    `${data.name} was expected to ${data.expected.toString()}`,
+                )
                     .toBe(data.expected);
             }
         });
 
         test('can determine if is "safe" array-like', () => {
-
             const dataSet = [
                 { value: [], expected: true, name: 'Array' },
                 { value: { length: 0 }, expected: true, name: 'Object (with length property)' },
@@ -57,7 +62,12 @@ describe('@aedart/support/ararys', () => {
                 { value: {}, expected: false, name: 'Object (without length property)' },
                 { value: new Map(), expected: false, name: 'Map' },
                 { value: new Set(), expected: false, name: 'Set' },
-                { value: function() {}, expected: false, name: 'Function' },
+                {
+                    value: function()
+                    {},
+                    expected: false,
+                    name: 'Function',
+                },
                 { value: new Date(), expected: false, name: 'Date' },
                 { value: new ArrayBuffer(2), expected: false, name: 'ArrayBuffer' },
                 { value: new DataView(new ArrayBuffer(2)), expected: false, name: 'DataView' },
@@ -65,7 +75,10 @@ describe('@aedart/support/ararys', () => {
             ];
 
             for (const data of dataSet) {
-                expect(isSafeArrayLike(data.value), `${data.name} was expected to ${data.expected.toString()}`)
+                expect(
+                    isSafeArrayLike(data.value),
+                    `${data.name} was expected to ${data.expected.toString()}`,
+                )
                     .toBe(data.expected);
             }
         });

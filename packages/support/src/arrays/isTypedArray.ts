@@ -1,4 +1,4 @@
-import {TYPED_ARRAY_PROTOTYPE} from "@aedart/contracts/support/reflections";
+import { TYPED_ARRAY_PROTOTYPE } from '@aedart/contracts/support/reflections';
 
 /**
  * Determine if given target is an instance of a `TypedArray`

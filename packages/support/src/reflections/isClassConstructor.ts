@@ -2,7 +2,7 @@
  * Determine if given argument is a class constructor.
  *
  * @param {unknown} value The value to check.
- * 
+ *
  * @returns {boolean}
  */
 export function isClassConstructor(value: unknown): boolean

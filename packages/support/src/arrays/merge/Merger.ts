@@ -1,12 +1,12 @@
 import type {
-    ArrayMerger,
-    ArrayMergeOptions,
     ArrayMergeCallback,
-    IntersectArrays
-} from "@aedart/contracts/support/arrays";
+    ArrayMergeOptions,
+    ArrayMerger,
+    IntersectArrays,
+} from '@aedart/contracts/support/arrays';
+import { getErrorMessage } from '../../exceptions/getErrorMessage.js';
+import ArrayMergeError from '../exceptions/ArrayMergeError.js';
 import DefaultArrayMergeOptions from './DefaultArrayMergeOptions.js';
-import {getErrorMessage} from "../../exceptions/getErrorMessage.js";
-import ArrayMergeError from "../exceptions/ArrayMergeError.js";
 
 /**
  * Array Merger
@@ -15,25 +15,26 @@ export default class Merger implements ArrayMerger
 {
     /**
      * Merge options to be applied
-     * 
+     *
      * @type {Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>}
-     * 
+     *
      * @protected
      */
     protected _options!: Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>;
 
     /**
      * Create new Array Merger instance
-     * 
+     *
      * @param {ArrayMergeCallback | ArrayMergeOptions} [options]
      */
-    public constructor(options?: ArrayMergeCallback | ArrayMergeOptions) {
+    public constructor(options?: ArrayMergeCallback | ArrayMergeOptions)
+    {
         // @ ts-expect-error Need to init options, however they are resolved via "using".
         // this._options = null;
-        
+
         this.using(options);
     }
-    
+
     /**
      * Use the following merge options
      *
@@ -46,20 +47,19 @@ export default class Merger implements ArrayMerger
     using(options?: ArrayMergeCallback | ArrayMergeOptions): this
     {
         this._options = this.resolveOptions(options);
-        
+
         return this;
     }
 
     /**
      * Merge options to be applied
-     * 
+     *
      * @type {Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>}
      */
-    public get options(): Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>
-    {
+    public get options(): Readonly<DefaultArrayMergeOptions | ArrayMergeOptions> {
         return this._options;
     }
-    
+
     /**
      * Returns a merger of given source arrays
      *
@@ -92,7 +92,12 @@ export default class Merger implements ArrayMerger
 
                 for (let j = 0; j < currentSourceLength; j++) {
                     // Pass currentSource as the 'array' context per ArrayMergeCallback spec
-                    result[resultIndex] = (callback as ArrayMergeCallback)(currentSource[j], j, currentSource, options);
+                    result[resultIndex] = (callback as ArrayMergeCallback)(
+                        currentSource[j],
+                        j,
+                        currentSource,
+                        options,
+                    );
                     resultIndex++;
                 }
             }
@@ -100,21 +105,23 @@ export default class Merger implements ArrayMerger
             return result as IntersectArrays<T>;
         } catch (e) {
             throw new ArrayMergeError(`Unable to merge arrays: ${getErrorMessage(e)}`, {
-                cause: {previous: e, sources}
+                cause: { previous: e, sources },
             });
         }
     }
 
     /**
      * Resolves options
-     * 
+     *
      * @param {ArrayMergeCallback | ArrayMergeOptions} options
-     * 
+     *
      * @return {Readonly<ArrayMergeOptions>}
-     * 
+     *
      * @protected
      */
-    protected resolveOptions(options?: ArrayMergeCallback| ArrayMergeOptions): Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>
+    protected resolveOptions(
+        options?: ArrayMergeCallback | ArrayMergeOptions,
+    ): Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>
     {
         return DefaultArrayMergeOptions.from(options);
     }

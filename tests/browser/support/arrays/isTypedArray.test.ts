@@ -3,7 +3,6 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/ararys', () => {
     describe('isTypedArray()', () => {
-
         test('can determine if object is Typed Array', () => {
             const dataSet = [
                 { value: undefined, expected: false, name: 'Undefined' },
@@ -29,7 +28,10 @@ describe('@aedart/support/ararys', () => {
 
             for (const data of dataSet) {
                 // @ts-expect-error ignore value for testing purposes
-                expect(isTypedArray(data.value), `${data.name} was expected to ${data.expected.toString()}`)
+                expect(
+                    isTypedArray(data.value),
+                    `${data.name} was expected to ${data.expected.toString()}`,
+                )
                     .toBe(data.expected);
             }
         });

@@ -1,4 +1,2 @@
-import ArrayMergeError from "./ArrayMergeError.js";
-export {
-    ArrayMergeError
-}
+import ArrayMergeError from './ArrayMergeError.js';
+export { ArrayMergeError };

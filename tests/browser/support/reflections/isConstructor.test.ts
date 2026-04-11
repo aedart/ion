@@ -3,20 +3,20 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('isConstructor()', () => {
-
         test('can determine if is constructor', () => {
-
             const classWithConstructor = class {
-                constructor() {
+                constructor()
+                {
                     throw new TypeError('Actual constructor invoked in class!');
                 }
-            }
+            };
 
             const classWithStaticMethod = class {
-                static foo() {
+                static foo()
+                {
                     throw new TypeError('Static method is invoked in class!');
                 }
-            }
+            };
 
             const data = [
                 { value: undefined, expected: false, name: 'undefined' },
@@ -26,7 +26,12 @@ describe('@aedart/support/refelctions', () => {
                 { value: [], expected: false, name: 'array' },
                 { value: () => {}, expected: false, name: 'function (arrow)' },
 
-                { value: function() {}, expected: true, name: 'function' },
+                {
+                    value: function()
+                    {},
+                    expected: true,
+                    name: 'function',
+                },
                 { value: Array, expected: true, name: 'Array (object)' },
                 { value: String, expected: true, name: 'String (object)' },
                 { value: Number, expected: true, name: 'Number (object)' },
@@ -44,12 +49,10 @@ describe('@aedart/support/refelctions', () => {
             ];
 
             data.forEach((entry, index) => {
-
                 const result = isConstructor(entry.value);
                 expect(result, `${entry.name} was expected to be ${entry.expected}`)
                     .toBe(entry.expected);
             });
         });
-
     });
 });

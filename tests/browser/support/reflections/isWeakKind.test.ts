@@ -3,20 +3,20 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('isWeakKind()', () => {
-
         test('can determine if is of weak kind', () => {
-
             const classWithConstructor = class {
-                constructor() {
+                constructor()
+                {
                     throw new TypeError('Actual constructor invoked in class!');
                 }
-            }
+            };
 
             const classWithStaticMethod = class {
-                static foo() {
+                static foo()
+                {
                     throw new TypeError('Static method is invoked in class!');
                 }
-            }
+            };
 
             const data = [
                 { value: undefined, expected: false, name: 'undefined' },
@@ -26,7 +26,12 @@ describe('@aedart/support/refelctions', () => {
                 { value: [], expected: false, name: 'array' },
                 { value: () => {}, expected: false, name: 'function (arrow)' },
 
-                { value: function() {}, expected: false, name: 'function' },
+                {
+                    value: function()
+                    {},
+                    expected: false,
+                    name: 'function',
+                },
                 { value: Array, expected: false, name: 'Array (object)' },
                 { value: String, expected: false, name: 'String (object)' },
                 { value: Number, expected: false, name: 'Number (object)' },
@@ -34,7 +39,7 @@ describe('@aedart/support/refelctions', () => {
                 { value: RegExp, expected: false, name: 'RegExp (object)' },
                 { value: Map, expected: false, name: 'Map (object)' },
                 { value: Set, expected: false, name: 'Set (object)' },
-                
+
                 { value: classWithConstructor, expected: false, name: 'class' },
                 { value: class {}, expected: false, name: 'class (anonymous)' },
                 { value: classWithStaticMethod.foo, expected: false, name: 'static class method' },
@@ -45,13 +50,11 @@ describe('@aedart/support/refelctions', () => {
             ];
 
             data.forEach((entry, index) => {
-
                 // @ts-expect-error Ignore value for testing purposes...
                 const result = isWeakKind(entry.value);
                 expect(result, `${entry.name} was expected to be ${entry.expected}`)
                     .toBe(entry.expected);
             });
         });
-
     });
 });

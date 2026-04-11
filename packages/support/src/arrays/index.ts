@@ -26,5 +26,5 @@ export * from './isSafeArrayLike.js';
 export * from './isTypedArray.js';
 export * from './merge.js';
 
-export * from './merge/index.js';
 export * from './exceptions/index.js';
+export * from './merge/index.js';

@@ -39,9 +39,7 @@ export type ArrayMergeCallback = (
  * @template T - Tuple of array types
  */
 export type IntersectArrays<T extends any[][]> = T extends [infer Head, ...infer Tail]
-    ? Tail extends any[][]
-        ? Tail['length'] extends 0
-            ? Head
-            : Head & IntersectArrays<Tail>
-        : Head
+    ? Tail extends any[][] ? Tail['length'] extends 0 ? Head
+        : Head & IntersectArrays<Tail>
+    : Head
     : any[];

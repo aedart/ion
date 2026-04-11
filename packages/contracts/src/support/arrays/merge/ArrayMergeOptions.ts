@@ -31,7 +31,7 @@ export default interface ArrayMergeOptions {
      *
      * **When `true`**: _The merge operation will attempt to use the `CLONE` symbol
      * for deep cloning, if available on the element._
-     * 
+     *
      * @see Cloneable
      */
     clone?: boolean;

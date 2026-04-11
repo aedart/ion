@@ -6,8 +6,7 @@
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable
  */
-export default interface ConcatSpreadable<T> extends ArrayLike<T>
-{
+export default interface ConcatSpreadable<T> extends ArrayLike<T> {
     /**
      * Optional override for spreading behavior.
      *

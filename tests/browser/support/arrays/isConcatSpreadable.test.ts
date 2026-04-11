@@ -3,17 +3,17 @@ import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/ararys', () => {
     describe('isConcatSpreadable()', () => {
-
         test('can determine if object contains Symbol.isConcatSpreadable', () => {
+            const concatSpreadableArr: any[] = [1, 2, 3];
 
-            const concatSpreadableArr: any[] = [ 1, 2, 3 ];
-            
             // @ts-expect-error Setting Symbol.isConcatSpreadable for testing purposes
             concatSpreadableArr[Symbol.isConcatSpreadable] = true;
 
-            class A {}
+            class A
+            {}
 
-            class B {
+            class B
+            {
                 [Symbol.isConcatSpreadable] = false;
             }
 
@@ -21,38 +21,42 @@ describe('@aedart/support/ararys', () => {
                 { value: null, expected: false, name: 'Null' },
 
                 // Now this is funny... an array does Symbol.isConcatSpreadable !
-                { value: [ 1, 2, 3 ], expected: false, name: 'Array' },
+                { value: [1, 2, 3], expected: false, name: 'Array' },
 
-                { value: concatSpreadableArr, expected: true, name: 'Array with Symbol.isConcatSpreadable' },
+                {
+                    value: concatSpreadableArr,
+                    expected: true,
+                    name: 'Array with Symbol.isConcatSpreadable',
+                },
                 {
                     value: {
                         0: 'a',
                         1: 'b',
-                        2: 'c'
+                        2: 'c',
                     },
                     expected: false,
-                    name: 'Object without Symbol.isConcatSpreadable'
+                    name: 'Object without Symbol.isConcatSpreadable',
                 },
                 {
                     value: {
                         [Symbol.isConcatSpreadable]: true,
-                        //length: 3, // NOTE: length should be implemented when Symbol.isConcatSpreadable set to true!
+                        // length: 3, // NOTE: length should be implemented when Symbol.isConcatSpreadable set to true!
                         0: 'a',
                         1: 'b',
-                        2: 'c'
+                        2: 'c',
                     },
                     expected: true,
-                    name: 'Object with Symbol.isConcatSpreadable'
+                    name: 'Object with Symbol.isConcatSpreadable',
                 },
                 {
                     value: new A(),
                     expected: false,
-                    name: 'Class instance without Symbol.isConcatSpreadable'
+                    name: 'Class instance without Symbol.isConcatSpreadable',
                 },
                 {
                     value: new B(),
                     expected: true,
-                    name: 'Class instance with Symbol.isConcatSpreadable'
+                    name: 'Class instance with Symbol.isConcatSpreadable',
                 },
             ];
 

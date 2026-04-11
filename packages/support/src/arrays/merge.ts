@@ -1,5 +1,5 @@
-import type {ArrayMerger, IntersectArrays} from "@aedart/contracts/support/arrays";
-import Merger from "./merge/Merger.js";
+import type { ArrayMerger, IntersectArrays } from '@aedart/contracts/support/arrays';
+import Merger from './merge/Merger.js';
 
 /**
  * Merge two or more arrays, or return a new Array Merger instance.
@@ -12,8 +12,7 @@ import Merger from "./merge/Merger.js";
  *
  * @throws {ArrayMergeException}
  */
-export function merge<T extends any[][]>(...sources: T): T['length'] extends 0
-    ? ArrayMerger
+export function merge<T extends any[][]>(...sources: T): T['length'] extends 0 ? ArrayMerger
     : IntersectArrays<T>;
 export function merge(...sources: any[]): ArrayMerger | any[]
 {

@@ -1,8 +1,5 @@
-import Merger from './Merger.js';
 import DefaultArrayMergeOptions from './DefaultArrayMergeOptions.js';
-export {
-    Merger,
-    DefaultArrayMergeOptions
-}
+import Merger from './Merger.js';
+export { DefaultArrayMergeOptions, Merger };
 
 export * from './defaultArrayMergeCallback.js';

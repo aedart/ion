@@ -1,4 +1,4 @@
-import type {ConstructorLike} from "@aedart/contracts";
+import type { ConstructorLike } from '@aedart/contracts';
 
 /**
  * Determine if target class is a subclass (_child class_) of given superclass (_parent class_)

@@ -1,5 +1,5 @@
-import type { ArrayMergeException } from "@aedart/contracts/support/arrays";
-import BaseError from "../../exceptions/BaseError.js";
+import type { ArrayMergeException } from '@aedart/contracts/support/arrays';
+import BaseError from '../../exceptions/BaseError.js';
 
 /**
  * Array Merge Error

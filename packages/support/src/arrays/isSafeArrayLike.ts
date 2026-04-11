@@ -9,7 +9,7 @@ import { isTypedArray } from './isTypedArray.js';
  *  - not a string.
  *  - not instance of a {@link String} object.
  *  - not a [Typed Array]{@link isTypedArray} object.
- * 
+ *
  * @param {any} value
  *
  * @return {boolean}
