@@ -3,13 +3,11 @@
  * 
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable
  * 
- * @param {object} target
+ * @param {object|null} target
  * 
  * @return {boolean}
  */
-export function isConcatSpreadable(target: object): boolean
+export function isConcatSpreadable(target: object | null): boolean
 {
-    return typeof target == 'object'
-        && target !== null
-        && Reflect.has(target, Symbol.isConcatSpreadable);
+    return target !== null && Symbol.isConcatSpreadable in target;
 }
