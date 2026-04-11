@@ -34,7 +34,7 @@ Temporary changelog for feature branch.
 
 **Non-breaking Changes**
 
-* Optimized performance of arrays' `includeAll()` and `includesAny()` (_support package_).
+* Optimized performance of arrays' `includeAll()`, `includesAny()`, `isTypedArray()`, `isSafeArrayLike()` and `isConcatSpreadable()` (_support package_).
 * Optimized performance of misc's `isset()`, `empty()`, `isPropertyKey()`, `isKey()`, `mergeKeys()` and `toWeakRef()` (_support package_).
 * Optimized performance of reflections utilities (_support package_).
 * Optimized performance of objects' `hasAll()`, `hasAny()`, `forgetAll()`, `ObjectId`, `isset()` and `populate()` (_support package_).
@@ -45,6 +45,7 @@ Temporary changelog for feature branch.
 ### Fixed
 
 * Incorrect return type description for `getAllParentsOfClass()` (_support package_).
+* Incorrect `TYPED_ARRAY_PROTOTYPE`, changed from `Reflect.getPrototypeOf(Int8Array)` to `Reflect.getPrototypeOf(Int8Array.prototype)` (_contracts package_).
 
 ### Removed
 
