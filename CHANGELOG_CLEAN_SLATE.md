@@ -31,6 +31,7 @@ Temporary changelog for feature branch.
 * `DANGEROUS_PROPERTIES` refactored to be a frozen object, containing `__proto__`, `constructor` and `prototype`. `isKeySafe()` and `isKeyUnsafe()` are affected by this change. (_contracts and support package_).
 * Replaced `SourceKeysCallback` with new `AllowedKeysCallback` type alias, in `@aedart/contracts/support/objects` submodule.
 * Refactored `populate()` to accept a list of "allowed" properties, with respect for "safe" mode (_support package_).
+* `ConcatSpreadable` interface changed to include numeric indexer to ensure type safety for the elements being spread (_contracts package_).
 
 **Non-breaking Changes**
 
