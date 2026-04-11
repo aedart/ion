@@ -24,5 +24,7 @@ export * from './isArrayLike.js';
 export * from './isConcatSpreadable.js';
 export * from './isSafeArrayLike.js';
 export * from './isTypedArray.js';
+export * from './merge.js';
 
+export * from './merge/index.js';
 export * from './exceptions/index.js';
