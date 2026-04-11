@@ -29,9 +29,6 @@ export default class Merger implements ArrayMerger
      */
     public constructor(options?: ArrayMergeCallback | ArrayMergeOptions)
     {
-        // @ ts-expect-error Need to init options, however they are resolved via "using".
-        // this._options = null;
-
         this.using(options);
     }
 
