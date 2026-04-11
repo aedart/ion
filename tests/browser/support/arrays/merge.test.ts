@@ -138,9 +138,19 @@ describe('@aedart/support/ararys', () => {
             
             expect(result[0].msg, 'first element')
                 .toBe('@foo@');
+            expect(result[0], 'first element is a wrong instance')
+                .toBeInstanceOf(MyClonableClass);
+            expect(result[0], 'foo was not cloned')
+                .not
+                .toBe(foo);
 
             expect(result[1].msg, 'second element')
                 .toBe('@bar@');
+            expect(result[0], 'second element is a wrong instance')
+                .toBeInstanceOf(MyClonableClass);
+            expect(result[1], 'bar was not cloned')
+                .not
+                .toBe(bar);
         })
     });
 });
