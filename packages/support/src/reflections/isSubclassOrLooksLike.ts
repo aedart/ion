@@ -1,0 +1,27 @@
+import type { ConstructorLike } from "@aedart/contracts";
+import type { ClassBlueprint } from "@aedart/contracts/support/reflections";
+import { isSubclass } from "./isSubclass.js";
+import { classLooksLike } from "./classLooksLike.js";
+
+/**
+ * Determine if target class is a subclass of given superclass, or if it looks like given blueprint
+ *
+ * **Note**: _Method is an alias for `isSubclass(target, superclass) || classLooksLike(target, blueprint)`._
+ * 
+ * @see isSubclass
+ * @see classLooksLike
+ * 
+ * @param {object} target
+ * @param {ConstructorLike} superclass
+ * @param {ClassBlueprint} blueprint
+ * 
+ * @throws {TypeError}
+ */
+export function isSubclassOrLooksLike(
+    target: object,
+    superclass: ConstructorLike,
+    blueprint: ClassBlueprint
+): boolean
+{
+    return isSubclass(target, superclass) || classLooksLike(target, blueprint);
+}
