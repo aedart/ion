@@ -57,7 +57,6 @@ describe('@aedart/support/ararys', () => {
             ];
 
             for (const data of dataSet) {
-                // @ts-expect-error Ignore value type here, for testing purposes
                 const result = isConcatSpreadable(data.value);
 
                 // Debug
