@@ -10,6 +10,7 @@ export * from './hasAllMethods.js';
 export * from './hasMethod.js';
 export * from './hasPrototypeProperty.js';
 export * from './isBoundFunction.js';
+export * from './isCallable.js';
 export * from './isClassConstructor.js';
 export * from './isConstructor.js';
 export * from './isKeySafe.js';
