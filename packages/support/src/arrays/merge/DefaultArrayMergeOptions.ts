@@ -56,8 +56,6 @@ export default class DefaultArrayMergeOptions implements ArrayMergeOptions
      */
     public static from(options?: ArrayMergeCallback | ArrayMergeOptions): Readonly<DefaultArrayMergeOptions|ArrayMergeOptions>
     {
-        const resolved = new this(options);
-        
-        return Object.freeze(resolved);
+        return Object.freeze(new this(options));
     }
 }

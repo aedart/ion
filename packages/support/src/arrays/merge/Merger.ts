@@ -19,7 +19,7 @@ export default class Merger implements ArrayMerger
      * 
      * @protected
      */
-    protected _options: Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>;
+    protected _options!: Readonly<DefaultArrayMergeOptions | ArrayMergeOptions>;
 
     /**
      * Create new Array Merger instance
@@ -27,8 +27,8 @@ export default class Merger implements ArrayMerger
      * @param {ArrayMergeCallback | ArrayMergeOptions} [options]
      */
     public constructor(options?: ArrayMergeCallback | ArrayMergeOptions) {
-        // @ts-expect-error Need to init options, however they are resolved via "using".
-        this._options = null;
+        // @ ts-expect-error Need to init options, however they are resolved via "using".
+        // this._options = null;
         
         this.using(options);
     }
@@ -71,24 +71,35 @@ export default class Merger implements ArrayMerger
     public of(...sources: any[]): any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
     {
         try {
-            const options = this.options;
-            const callback = (options.callback as ArrayMergeCallback).bind(this);
+            const options = this._options;
+            const callback = options.callback;
 
-            // Array.concat only performs shallow copies of the array values, which might
-            // fine in some situations. However, this version must ensure to perform a
-            // deep copy of the values...
-            
-            return [].concat(...sources).map((element, index, array) => {
-                return callback(element, index, array, options);
-            });
-        } catch (e) {
-            const reason = getErrorMessage(e);
+            // 1. Calculate total length first to pre-allocate array (V8 optimization)
+            let totalLength = 0;
+            const sourcesLength = sources.length;
+            for (let i = 0; i < sourcesLength; i++) {
+                totalLength += sources[i].length;
+            }
 
-            throw new ArrayMergeError('Unable to merge arrays: ' + reason, {
-                cause: {
-                    previous: e,
-                    sources: sources
+            const result = new Array(totalLength);
+            let resultIndex = 0;
+
+            // 2. Single pass merge using nested index loops
+            for (let i = 0; i < sourcesLength; i++) {
+                const currentSource = sources[i];
+                const currentSourceLength = currentSource.length;
+
+                for (let j = 0; j < currentSourceLength; j++) {
+                    // Pass currentSource as the 'array' context per ArrayMergeCallback spec
+                    result[resultIndex] = (callback as ArrayMergeCallback)(currentSource[j], j, currentSource, options);
+                    resultIndex++;
                 }
+            }
+
+            return result;
+        } catch (e) {
+            throw new ArrayMergeError(`Unable to merge arrays: ${getErrorMessage(e)}`, {
+                cause: {previous: e, sources}
             });
         }
     }
