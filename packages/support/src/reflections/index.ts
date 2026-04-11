@@ -16,5 +16,6 @@ export * from './isConstructor.js';
 export * from './isKeySafe.js';
 export * from './isKeyUnsafe.js';
 export * from './isMethod.js';
+export * from './isSubclass.js';
 export * from './walkParents.js';
 export * from './walkPrototype.js';
