@@ -36,7 +36,7 @@ Temporary changelog for feature branch.
 
 * Optimized performance of arrays' `includeAll()` and `includesAny()` (_support package_).
 * Optimized performance of misc's `isset()`, `empty()`, `isPropertyKey()`, `isKey()`, `mergeKeys()` and `toWeakRef()` (_support package_).
-* Optimized performance of reflections' `hasPrototypeProperty()`, `getParentOfClass()`, `getAllParentsOfClass()`, `classOwnKeys()`, `isMethod()`, `hasMethod()`, `hasAllMethods()`, `getConstructorName()` and `getNameOrDesc()` (_support package_).
+* Optimized performance of reflections utilities (_support package_).
 * Optimized performance of objects' `hasAll()`, `hasAny()`, `forgetAll()`, `ObjectId`, `isset()` and `populate()` (_support package_).
 * `ObjectId` properties are now set to be private.
 * The TypeScript source files are now also published, along with appropriate source maps.
