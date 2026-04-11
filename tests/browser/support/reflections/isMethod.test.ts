@@ -56,8 +56,8 @@ describe('@aedart/support/refelctions', () => {
             ];
 
             for (const entry of data) {
-                // @ts-expect-error For testing purposes, isMethod's target can be anything here...
                 expect(
+                    // @ts-expect-error For testing purposes, isMethod's target can be anything here...
                     isMethod(entry.target, entry.property),
                     `${entry.name} was expected to ${entry.expected.toString()}`,
                 )
