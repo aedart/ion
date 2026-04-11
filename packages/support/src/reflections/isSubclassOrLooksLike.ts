@@ -23,5 +23,9 @@ export function isSubclassOrLooksLike(
     blueprint: ClassBlueprint
 ): boolean
 {
+    if (target === null || typeof target !== 'function' && typeof target !== 'object') {
+        throw new TypeError('Target must be an object or constructor');
+    }
+    
     return isSubclass(target, superclass) || classLooksLike(target, blueprint);
 }

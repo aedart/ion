@@ -56,5 +56,16 @@ describe('@aedart/support/refelctions', () => {
                     .toBe(entry.expected);
             }
         });
+        
+        test('fails if target is invalid', () => {
+            
+            const callback = function() {
+                // @ts-expect-error Null target for testing purposes
+                isSubclassOrLooksLike(null, {}, {});
+            }
+            
+            expect(callback)
+                .toThrow(TypeError);
+        })
     });
 });
