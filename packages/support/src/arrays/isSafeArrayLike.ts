@@ -10,16 +10,17 @@ import { isTypedArray } from './isTypedArray.js';
  *  - not instance of a {@link String} object.
  *  - not a [Typed Array]{@link isTypedArray} object.
  * 
- * @param {object} value
+ * @param {any} value
  *
  * @return {boolean}
  */
-export function isSafeArrayLike(
-    value: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
-): boolean
+export function isSafeArrayLike(value: any): boolean
 {
-    return typeof value != 'string'
+    // 1. Cheapest checks first: exclude string primitives and boxed String objects.
+    // 2. Perform isArrayLike to ensure it has a valid length property.
+    // 3. Finally, exclude Typed Arrays.
+    return typeof value !== 'string'
         && !(value instanceof String)
-        && !isTypedArray(value)
-        && isArrayLike(value);
+        && isArrayLike(value)
+        && !isTypedArray(value);
 }
