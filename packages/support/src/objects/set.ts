@@ -1,5 +1,3 @@
-/** @aedart/support - MIT, Copyright (c) 2023-present Alin Eugen Deac <aedart@gmail.com> */
-
 import { set as _set } from 'lodash-es';
 
 /**
