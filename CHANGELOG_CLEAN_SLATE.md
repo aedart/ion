@@ -9,7 +9,8 @@ Temporary changelog for feature branch.
 * `Wildcard` type alias (_contracts package_).
 * `walkPrototype()` and `walkParents` reflection utils (_support package_).
 * Abstract `BaseError` (_support package_).
-* Array `LOOKUP_THRESHOLD` const, the maximum number of elements in a collection before switching from nested loops (_support package_)
+* Array `LOOKUP_THRESHOLD` const, the maximum number of elements in a collection before switching from nested loops (_support package_).
+* `isBoundFunction()` (_support package_).
 * `CONTEXT.md` (_AI context_).
 * `scripts/sync-peer-deps.js` and `scripts/propagate-deps.js` utils scripts for synchronising dependencies between root package.json and packages' dependencies.
 * `scripts/sync-assets.js` util for exporting assets, like `vue`, `scss`, `css`...etc.
