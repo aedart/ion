@@ -21,5 +21,6 @@ export const LOOKUP_THRESHOLD: number = 16;
 export * from './includesAll.js';
 export * from './includesAny.js';
 export * from './isArrayLike.js';
+export * from './isConcatSpreadable.js';
 export * from './isSafeArrayLike.js';
 export * from './isTypedArray.js';
