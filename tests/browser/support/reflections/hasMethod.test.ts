@@ -43,8 +43,8 @@ describe('@aedart/support/refelctions', () => {
             ];
 
             for (const entry of data) {
-                // @ts-ignore
                 expect(
+                    // @ts-ignore
                     hasAllMethods(entry.value, ...entry.methods),
                     `${entry.name} was expected to ${entry.expected.toString()}`,
                 )
@@ -94,8 +94,8 @@ describe('@aedart/support/refelctions', () => {
             ];
 
             for (const entry of data) {
-                // @ts-ignore
                 expect(
+                    // @ts-ignore
                     hasMethod(entry.value, entry.method),
                     `${entry.name} was expected to ${entry.expected.toString()}`,
                 )
