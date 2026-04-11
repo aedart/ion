@@ -35,10 +35,11 @@ Temporary changelog for feature branch.
 
 **Non-breaking Changes**
 
-* Optimized performance of arrays' `includeAll()`, `includesAny()`, `isTypedArray()`, `isSafeArrayLike()` and `isConcatSpreadable()` (_support package_).
+* Optimized performance of arrays' `includeAll()`, `includesAny()`, `isTypedArray()`, `isSafeArrayLike()`, `isConcatSpreadable()` and `merge()` (_support package_).
 * Optimized performance of misc's `isset()`, `empty()`, `isPropertyKey()`, `isKey()`, `mergeKeys()` and `toWeakRef()` (_support package_).
 * Optimized performance of reflections utilities (_support package_).
 * Optimized performance of objects' `hasAll()`, `hasAny()`, `forgetAll()`, `ObjectId`, `isset()` and `populate()` (_support package_).
+* Improved typing of array `merge()` to work with any amount of arrays (_support package_).
 * `ObjectId` properties are now set to be private.
 * The TypeScript source files are now also published, along with appropriate source maps.
 * dprint is now used for formatting.
