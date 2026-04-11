@@ -18,5 +18,6 @@ export * from './isKeyUnsafe.js';
 export * from './isMethod.js';
 export * from './isSubclass.js';
 export * from './isSubclassOrLooksLike.js';
+export * from './isWeakKind.js';
 export * from './walkParents.js';
 export * from './walkPrototype.js';
