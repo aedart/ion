@@ -1,7 +1,8 @@
 import type {
     ArrayMerger,
     ArrayMergeOptions,
-    ArrayMergeCallback
+    ArrayMergeCallback,
+    IntersectArrays
 } from "@aedart/contracts/support/arrays";
 import DefaultArrayMergeOptions from './DefaultArrayMergeOptions.js';
 import {getErrorMessage} from "../../exceptions/getErrorMessage.js";
@@ -68,7 +69,7 @@ export default class Merger implements ArrayMerger
      *
      * @throws {ArrayMergeException}
      */
-    public of(...sources: any[]): any[] /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    public of<T extends any[][]>(...sources: T): IntersectArrays<T>
     {
         try {
             const options = this._options;
@@ -96,7 +97,7 @@ export default class Merger implements ArrayMerger
                 }
             }
 
-            return result;
+            return result as IntersectArrays<T>;
         } catch (e) {
             throw new ArrayMergeError(`Unable to merge arrays: ${getErrorMessage(e)}`, {
                 cause: {previous: e, sources}

@@ -23,5 +23,5 @@ export function merge(...sources: any[]): ArrayMerger | any[]
         return merger;
     }
 
-    return merger.of(...sources);
+    return merger.of(...sources) as any[];
 }
