@@ -29,3 +29,10 @@ export type ArrayMergeCallback = (
      */
     options: Readonly<ArrayMergeOptions>,
 ) => any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+
+/**
+ * Helper type to intersect array types from a tuple
+ */
+export type IntersectArrays<T extends any[][]> = T extends [infer Head, ...infer Tail]
+    ? Head & (Tail extends any[][] ? IntersectArrays<Tail> : unknown)
+    : unknown;
