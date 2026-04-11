@@ -24,3 +24,5 @@ export * from './isArrayLike.js';
 export * from './isConcatSpreadable.js';
 export * from './isSafeArrayLike.js';
 export * from './isTypedArray.js';
+
+export * from './exceptions/index.js';
