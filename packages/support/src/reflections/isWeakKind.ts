@@ -1,15 +1,18 @@
 /**
  * Determine if object of a "weak" kind, e.g. `WeakRef`, `WeakMap` or `WeakSet`
  *
- * @param {object} value
+ * @param {object|null} value
  *
  * @return {boolean}
  */
-export function isWeakKind(value: object): boolean
+export function isWeakKind(value: object | null): boolean
 {
-    return value !== undefined && (
-        value instanceof WeakRef
+    // Fast-exit for null, which is technically an 'object' in JS
+    if (value === null) {
+        return false;
+    }
+
+    return value instanceof WeakRef
         || value instanceof WeakMap
-        || value instanceof WeakSet
-    );
+        || value instanceof WeakSet;
 }
