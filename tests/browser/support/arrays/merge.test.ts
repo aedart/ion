@@ -1,3 +1,4 @@
+import { Cloneable, CLONE } from '@aedart/contracts/support/objects';
 import { merge, ArrayMergeError, Merger } from '@aedart/support/arrays';
 import { describe, expect, test } from 'vitest';
 
@@ -107,5 +108,39 @@ describe('@aedart/support/ararys', () => {
             expect(result)
                 .toEqual([ 2, 4, 6, 8, 10, 12 ]);
         });
+        
+        test('can use CLONE, when enabled', () => {
+            
+            class MyClonableClass implements Cloneable
+            {
+                msg = 'n/a';
+                
+                constructor(foo: string)
+                {
+                    this.msg = foo;
+                }
+                
+                [CLONE](): this
+                {
+                    return new (this.constructor as any)(`@${this.msg}@`);
+                }
+            }
+            
+            const foo = new MyClonableClass('foo');
+            const bar = new MyClonableClass('bar')
+            
+            const a = [ foo ];
+            const b = [ bar ];
+            
+            const result = merge()
+                .using({ clone: true })
+                .of(a, b);
+            
+            expect(result[0].msg, 'first element')
+                .toBe('@foo@');
+
+            expect(result[1].msg, 'second element')
+                .toBe('@bar@');
+        })
     });
 });

@@ -29,6 +29,16 @@ export default class DefaultArrayMergeOptions implements ArrayMergeOptions
      * callback is used._
      */
     callback: ArrayMergeCallback;
+
+    /**
+     * Use CLONE symbol
+     *
+     * **When `true`**: _The merge operation will attempt to use the `CLONE` symbol
+     * for deep cloning, if available on the element._
+     *
+     * @see Cloneable
+     */
+    clone: boolean = false;
     
     /**
      * Create new default merge options from given options
