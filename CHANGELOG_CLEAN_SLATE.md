@@ -32,6 +32,7 @@ Temporary changelog for feature branch.
 * Replaced `SourceKeysCallback` with new `AllowedKeysCallback` type alias, in `@aedart/contracts/support/objects` submodule.
 * Refactored `populate()` to accept a list of "allowed" properties, with respect for "safe" mode (_support package_).
 * `ConcatSpreadable` interface changed to include numeric indexer to ensure type safety for the elements being spread (_contracts package_).
+* `useCloneable` option has been renamed to `clone`, in `MergeOptions` (_contracts and support packages_)
 
 **Non-breaking Changes**
 
