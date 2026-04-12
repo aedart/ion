@@ -71,7 +71,7 @@ export default interface MergeOptions
 
     /**
      * Flag, if source object is [`Cloneable`]{@link import('@aedart/contracts/support/objects').Cloneable}, then the
-     * resulting object from the `clone()` method is used.
+     * resulting object from the clone method is used.
      *
      * **When `true` (_default behaviour_)**: _If source object is cloneable then the resulting object from `clone()`
      * method is used. Its properties are then iterated by the merge function._
@@ -83,7 +83,7 @@ export default interface MergeOptions
      * const a = { 'foo': { 'name': 'John Doe' } };
      * const b = { 'foo': {
      *      'name': 'Jane Doe',
-     *      clone() {
+     *      [CLONE]() {
      *          return {
      *              'name': 'Rick Doe',
      *              'age': 26
@@ -93,14 +93,14 @@ export default interface MergeOptions
      *
      * merge(a, b); // { 'foo': { 'name': 'Rick Doe', 'age': 26 } }
      * 
-     * merge().using({ useCloneable: false }).of(a, b); // { 'foo': { 'name': 'Jane Doe', clone() {...} } }
+     * merge().using({ clone: false }).of(a, b); // { 'foo': { 'name': 'Jane Doe', clone() {...} } }
      * ```
      * 
      * @see [`Cloneable`]{@link import('@aedart/contracts/support/objects').Cloneable}
      * 
      * @type {boolean}
      */
-    useCloneable?: boolean;
+    clone?: boolean;
     
     /**
      * Flag, whether to merge array, array-like, and [concat spreadable]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable}

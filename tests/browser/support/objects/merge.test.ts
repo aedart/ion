@@ -863,7 +863,7 @@ describe('@aedart/support/objects', () => {
 
             const result = merge()
                 .using({
-                    useCloneable: false
+                    clone: false
                 })
                 .of(a, b);
 

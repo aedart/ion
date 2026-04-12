@@ -186,7 +186,7 @@ export default class Merger implements ObjectsMerger
     protected resolveSourceObject(source: object, options: MergeOptions): object
     {
         let output: object = source;
-        if (options.useCloneable && isCloneable(source)) {
+        if (options.clone && isCloneable(source)) {
             output = this.cloneSource(source as Cloneable);
         }
         

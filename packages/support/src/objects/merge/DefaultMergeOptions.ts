@@ -108,7 +108,7 @@ export default class DefaultMergeOptions implements MergeOptions
      *
      * @type {boolean}
      */
-    useCloneable: boolean = true;
+    clone: boolean = true;
 
     /**
      * Flag, whether to merge array, array-like, and [concat spreadable]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable}
