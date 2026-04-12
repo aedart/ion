@@ -40,28 +40,26 @@ This document serves as the persistent state and configuration guide for the **@
 * **`isSubclass`**: Optimized $O(1)$ prototype check; returns `false` if target equals superclass.
 * **`isTypedArray`**: Uses `TYPED_ARRAY_PROTOTYPE.isPrototypeOf(target)` for V8-optimized instance checking.
 * **`isWeakKind`**: Fast-exit $O(1)$ check for `WeakRef`, `WeakMap`, and `WeakSet`.
-* **`isConcatSpreadable`**: Uses the `in` operator for high-performance symbol detection in the prototype chain.
+* **`isKeyUnsafe`**: Validates against prototype pollution keys (`__proto__`, `constructor`, `prototype`).
+* **`isConcatSpreadable`**: Returns `true` only if `Symbol.isConcatSpreadable` is explicitly `true`.
 * **`TYPED_ARRAY_PROTOTYPE`**: Resolved via `Reflect.getPrototypeOf(Int8Array.prototype)`.
 
 ### Arrays & Collections (`@aedart/support/arrays`)
 
 * **`IntersectArrays<T>`**: Variadic recursive type for intersecting multiple array types into a single type.
 * **`isSafeArrayLike`**: Validates array-like properties while excluding strings, boxed strings, and TypedArrays.
-* **`Merger`**: Performance-optimized deep merger using single-pass index loops and `structuredClone`.
-* **`CLONE` Support**: Default merge callback prioritizes the `CLONE` symbol override before falling back to `structuredClone`.
+* **`Merger` (Array)**: Optimized deep merger using `structuredClone` and symbol-based clone support.
 
 ### Objects Sub-Module (`@aedart/support/objects`)
 
+* **`Merger`**: Deep merger supporting `mergeArrays`, custom `depth` limits, and safety checks.
+* **`merge()`**: Hybrid utility/factory. Supports direct calls with variadic intersection return types and `.using()` configuration.
 * **`CLONE` Symbol**: `unique symbol` for `Cloneable` interface.
+* **`canCloneUsingStructuredClone`**: Optimized utility using `instanceof` with a guarded loop and `isPrototypeOf` for typed arrays.
 * **`populate`**: Optimized shallow copy utility using index loops and `LOOKUP_THRESHOLD` scaling.
 * **Encapsulation**: Use native JavaScript private fields (`#field`).
 
 ### Exceptions (`@aedart/support/exceptions`)
 
-* **`BaseError`**: Abstract base class that automates `this.name` assignment and optimized `Error.captureStackTrace` for V8. All custom exceptions (e.g., `ArrayMergeError`) MUST inherit from this.
-
-## Maintenance Scripts
-
-* **deps:sync / deps:propagate**: Dependency management.
-* **fix:imports**: Appends `.js` to relative imports.
-* **build**: `turbo run build`.
+* **`BaseError`**: Abstract base class automating `this.name` and V8 stack capture.
+* **`MergeError` / `ArrayMergeError`**: Specialized exceptions inheriting from `BaseError`.
