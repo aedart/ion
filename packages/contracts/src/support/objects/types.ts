@@ -8,7 +8,7 @@ export type AllowedKeys = PropertyKey | PropertyKey[] | Wildcard | AllowedKeysCa
 /**
  * Callback that returns a list of properties that are "allowed" to be processed.
  * The callback is given a target and a source object, which can be used to
- * produce complex properties select logic, if needed.
+ * produce complex selection of properties logic, if needed.
  */
 export type AllowedKeysCallback<
     TargetObj extends object = object,
