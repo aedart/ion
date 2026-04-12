@@ -1,18 +1,12 @@
-import {
-    merge,
-    Merger,
-    MergeError
-} from "@aedart/support/objects";
+import { CLONE } from '@aedart/contracts/support/objects';
 import { ArrayMergeError } from '@aedart/support/arrays';
-import { CLONE } from "@aedart/contracts/support/objects";
-import { isKeyUnsafe } from "@aedart/support/reflections";
+import { merge, MergeError, Merger } from '@aedart/support/objects';
+import { isKeyUnsafe } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/objects', () => {
     describe('merge', () => {
-
         test('returns object merger instance when no arguments given', () => {
-
             const result = merge();
 
             expect(result)
@@ -20,7 +14,6 @@ describe('@aedart/support/objects', () => {
         });
 
         test('can merge primitive values', () => {
-
             const MY_SYMBOL_A = Symbol('a');
             const MY_SYMBOL_B = Symbol('b');
 
@@ -32,7 +25,7 @@ describe('@aedart/support/objects', () => {
                 'boolean': true,
                 'undefined': undefined, // Redundant...
                 'symbol': MY_SYMBOL_A,
-                'null': null,  // Redundant...
+                'null': null, // Redundant...
             };
             const b = {
                 'string': 'there',
@@ -50,11 +43,10 @@ describe('@aedart/support/objects', () => {
             const result = merge(a, b);
 
             // Debug
-            //console.log('result', result);
+            // console.log('result', result);
 
             const keys = Reflect.ownKeys(result);
             expect(keys.length, 'Incorrect amount of keys merged')
-
                 .toBe(Reflect.ownKeys(b).length);
 
             for (const key of keys) {
@@ -69,10 +61,10 @@ describe('@aedart/support/objects', () => {
 
         test('overwrites existing values with undefined be default', () => {
             const a = {
-                'foo': 'bar'
+                'foo': 'bar',
             };
             const b = {
-                'foo': undefined
+                'foo': undefined,
             };
 
             // --------------------------------------------------------------------- //
@@ -80,7 +72,7 @@ describe('@aedart/support/objects', () => {
             const result = merge(a, b);
 
             // Debug
-            //console.log('result', result);
+            // console.log('result', result);
 
             expect(result['foo'], 'Value should be undefined')
                 .toBeUndefined();
@@ -88,10 +80,10 @@ describe('@aedart/support/objects', () => {
 
         test('can avoid overwriting existing values with undefined', () => {
             const a = {
-                'foo': 'bar'
+                'foo': 'bar',
             };
             const b = {
-                'foo': undefined
+                'foo': undefined,
             };
 
             // --------------------------------------------------------------------- //
@@ -104,15 +96,15 @@ describe('@aedart/support/objects', () => {
             // console.log('result', result);
 
             expect(result['foo'], 'Value should NOT be undefined')
-                .toBe(a['foo'])
+                .toBe(a['foo']);
         });
 
         test('can apply custom merge callback', () => {
             const a = {
-                'a': 1
+                'a': 1,
             };
             const b = {
-                'b': 2
+                'b': 2,
             };
 
             // --------------------------------------------------------------------- //
@@ -143,14 +135,14 @@ describe('@aedart/support/objects', () => {
 
         test('skips dangerous keys', () => {
             const a = {
-                'foo': 'bar'
+                'foo': 'bar',
             };
             const b = {
-                prototype: { 'bar': true }
+                prototype: { 'bar': true },
             };
             const c = {
-                __proto__: { 'zar': false }
-            }
+                __proto__: { 'zar': false },
+            };
 
             // --------------------------------------------------------------------- //
 
@@ -167,17 +159,17 @@ describe('@aedart/support/objects', () => {
 
         test('can skip custom provided keys', () => {
             const a = {
-                'foo': 'bar'
+                'foo': 'bar',
             };
             const b = {
                 'bar': 'foo',
-                __proto__: { 'admin': true }
+                __proto__: { 'admin': true },
             };
 
             // --------------------------------------------------------------------- //
 
             const result = merge()
-                .using({ skip: [ 'foo' ] })
+                .using({ skip: ['foo'] })
                 .of(a, b);
 
             // Debug
@@ -197,11 +189,11 @@ describe('@aedart/support/objects', () => {
 
         test('can skip keys via callback', () => {
             const a = {
-                'foo': 'bar'
+                'foo': 'bar',
             };
             const b = {
                 'bar': 'foo',
-                'ab': 'ba'
+                'ab': 'ba',
             };
 
             // --------------------------------------------------------------------- //
@@ -210,7 +202,7 @@ describe('@aedart/support/objects', () => {
                 .using({
                     skip: (key, source) => {
                         return key === 'ab' && Reflect.has(source, key);
-                    }
+                    },
                 })
                 .of(a, b);
 
@@ -218,7 +210,6 @@ describe('@aedart/support/objects', () => {
             // console.log('result', result);
 
             expect(Reflect.has(result, 'foo'), 'Incorrect key (foo) skipped')
-
                 .toBeTruthy();
             expect(Reflect.has(result, 'bar'), 'Incorrect key (bar) skipped')
                 .toBeTruthy();
@@ -228,14 +219,13 @@ describe('@aedart/support/objects', () => {
         });
 
         test('can merge values of symbol keys', () => {
-
             const MY_SYMBOL_KEY = Symbol('a');
 
             const a = {
-                [MY_SYMBOL_KEY]: true
+                [MY_SYMBOL_KEY]: true,
             };
             const b = {
-                [MY_SYMBOL_KEY]: 'Wee'
+                [MY_SYMBOL_KEY]: 'Wee',
             };
 
             // --------------------------------------------------------------------- //
@@ -243,7 +233,7 @@ describe('@aedart/support/objects', () => {
             const result = merge(a, b);
 
             // Debug
-            //console.log('result', result);
+            // console.log('result', result);
 
             const keys = Reflect.ownKeys(result);
             expect(keys.length, 'Incorrect amount of keys merged')
@@ -259,12 +249,11 @@ describe('@aedart/support/objects', () => {
         });
 
         test('overwrites array properties by default', () => {
-
             const a = {
-                'arr': [ 1, 2, 3 ]
+                'arr': [1, 2, 3],
             };
             const b = {
-                'arr': [ 4, 5, 6 ]
+                'arr': [4, 5, 6],
             };
 
             // --------------------------------------------------------------------- //
@@ -278,24 +267,26 @@ describe('@aedart/support/objects', () => {
             expect(JSON.stringify(result), 'Array value not overwritten by default')
                 .toBe(expected);
 
-            expect(result['arr'] === b['arr'], 'Array property is not copied (structured copy was expected)')
+            expect(
+                result['arr'] === b['arr'],
+                'Array property is not copied (structured copy was expected)',
+            )
                 .toBeFalsy();
         });
 
         test('can merge array values', () => {
-
             const a = {
-                'arr': [ 1, 2, 3 ]
+                'arr': [1, 2, 3],
             };
             const b = {
-                'arr': [ 4, 5, 6 ]
+                'arr': [4, 5, 6],
             };
 
             // --------------------------------------------------------------------- //
 
             const result = merge()
                 .using({
-                    mergeArrays: true
+                    mergeArrays: true,
                 })
                 .of(a, b);
 
@@ -303,25 +294,25 @@ describe('@aedart/support/objects', () => {
             // console.log('result', result);
 
             const expected = JSON.stringify({
-                'arr': [ ...a['arr'], ...b['arr'] ]
+                'arr': [...a['arr'], ...b['arr']],
             });
             expect(JSON.stringify(result), 'Array value not merged')
                 .toBe(expected);
         });
 
         test('fails when array values contain none-cloneable values', () => {
-
             const callback = () => {
                 const a = {
-                    'arr': [ 1, 2, 3 ]
+                    'arr': [1, 2, 3],
                 };
                 const b = {
-                    'arr': [ function() {} ]
+                    'arr': [function()
+                    {}],
                 };
 
                 return merge(a, b);
-            }
-            
+            };
+
             // --------------------------------------------------------------------- //
 
             expect(callback)
@@ -330,10 +321,9 @@ describe('@aedart/support/objects', () => {
 
         // TODO: ...
         test('can merge concat spreadable object values', () => {
-
             const a = {
-                'a': [ 1, 2, 3 ],
-                'b': [ 'foo' ],
+                'a': [1, 2, 3],
+                'b': ['foo'],
                 'c': {
                     [Symbol.isConcatSpreadable]: true,
                     length: 1,
@@ -346,7 +336,7 @@ describe('@aedart/support/objects', () => {
                     length: 3,
                     0: 'a',
                     1: 'b',
-                    2: 'c'
+                    2: 'c',
                 },
                 'b': {
                     [Symbol.isConcatSpreadable]: false,
@@ -354,14 +344,14 @@ describe('@aedart/support/objects', () => {
                     0: 'bar',
                     1: 'zar',
                 },
-                'c': [ 'foo' ]
+                'c': ['foo'],
             };
 
             // --------------------------------------------------------------------- //
 
             const result = merge()
                 .using({
-                    mergeArrays: true
+                    mergeArrays: true,
                 })
                 .of(a, b);
 
@@ -369,19 +359,21 @@ describe('@aedart/support/objects', () => {
             // console.log('result', result);
 
             expect(result.a, 'a) Array was not merged correctly with concat spreadable set to true')
-                .toEqual([ 1, 2, 3, 'a', 'b', 'c' ]);
+                .toEqual([1, 2, 3, 'a', 'b', 'c']);
 
-            expect(result.b, 'b) Array was not merged correctly with concat spreadable set to false')
-                .toEqual(['foo', 'bar', 'zar'])
+            expect(
+                result.b,
+                'b) Array was not merged correctly with concat spreadable set to false',
+            )
+                .toEqual(['foo', 'bar', 'zar']);
 
             expect(result.c, 'c) Merged failed on top of object with concat spreadable set to true')
-                .toEqual([ 'bar', 'foo' ]);
+                .toEqual(['bar', 'foo']);
         });
 
         test('does not merge array-like objects by default', () => {
-
             const a = {
-                'a': [ 1, 2, 3 ],
+                'a': [1, 2, 3],
                 'b': {
                     length: 2,
                     0: 'a',
@@ -391,8 +383,8 @@ describe('@aedart/support/objects', () => {
                     length: 1,
                     0: 'foo',
                 },
-                'd': [ 3, 4, 5 ],
-                'e': [ 6, 7, 8 ],
+                'd': [3, 4, 5],
+                'e': [6, 7, 8],
             };
             const b = {
                 'a': {
@@ -400,13 +392,13 @@ describe('@aedart/support/objects', () => {
                     0: 'a',
                     1: 'b',
                 },
-                'b': [ 'foo' ],
+                'b': ['foo'],
                 'c': {
                     length: 2,
                     1: 'bar',
                 },
                 'd': new String('foo'),
-                'e': new Int8Array(2)
+                'e': new Int8Array(2),
             };
 
             // --------------------------------------------------------------------- //
@@ -416,26 +408,40 @@ describe('@aedart/support/objects', () => {
             // Debug
             // console.log('result', result);
 
-            expect(JSON.stringify(result.a), 'a) failed to overwrite existing value with array-like object')
+            expect(
+                JSON.stringify(result.a),
+                'a) failed to overwrite existing value with array-like object',
+            )
                 .toBe(JSON.stringify({ 0: 'a', 1: 'b', length: 2 }));
 
-            expect(JSON.stringify(result.b), 'b) failed to overwrite existing array-like value with array')
-                .toBe(JSON.stringify([ 'foo' ]));
+            expect(
+                JSON.stringify(result.b),
+                'b) failed to overwrite existing array-like value with array',
+            )
+                .toBe(JSON.stringify(['foo']));
 
-            expect(JSON.stringify(result.c), 'c) failed to merge existing array-like value with array-like object')
+            expect(
+                JSON.stringify(result.c),
+                'c) failed to merge existing array-like value with array-like object',
+            )
                 .toBe(JSON.stringify({ 0: 'foo', 1: 'bar', length: 2 }));
 
-            expect(result.d, 'd) String object should not be considered array-like (in this context)')
+            expect(
+                result.d,
+                'd) String object should not be considered array-like (in this context)',
+            )
                 .toBeInstanceOf(String);
 
-            expect(result.e, 'e) Typed Array object should not be considered array-like (in this context)')
+            expect(
+                result.e,
+                'e) Typed Array object should not be considered array-like (in this context)',
+            )
                 .toBeInstanceOf(Int8Array);
         });
-        
-        test('can merge array-like objects', () => {
 
+        test('can merge array-like objects', () => {
             const a = {
-                'a': [ 1, 2, 3 ],
+                'a': [1, 2, 3],
                 'b': {
                     // NOTE: Object is not concat spreadable, so entire object should be expected!
                     length: 2,
@@ -446,8 +452,8 @@ describe('@aedart/support/objects', () => {
                     length: 1,
                     0: 'foo',
                 },
-                'd': [ 3, 4, 5 ],
-                'e': [ 6, 7, 8 ],
+                'd': [3, 4, 5],
+                'e': [6, 7, 8],
             };
             const b = {
                 'a': {
@@ -456,39 +462,45 @@ describe('@aedart/support/objects', () => {
                     0: 'a',
                     1: 'b',
                 },
-                'b': [ 'foo' ],
+                'b': ['foo'],
                 'c': {
                     length: 2,
                     1: 'bar',
                 },
                 'd': new String('foo'),
-                'e': new Int8Array(2)
+                'e': new Int8Array(2),
             };
 
             // --------------------------------------------------------------------- //
 
             const result = merge()
                 .using({
-                    mergeArrays: true
+                    mergeArrays: true,
                 })
                 .of(a, b);
 
             // Debug
-            //console.log('result', result);
+            // console.log('result', result);
 
             expect(result.a, 'a) should have merged existing array with array-like object')
-                .toEqual([ 1, 2, 3, 'a', 'b' ])
+                .toEqual([1, 2, 3, 'a', 'b']);
 
             expect(result.b, 'b) should have merged array-like object with an array')
-                .toEqual([ 'a', 'b', 'foo' ]);
+                .toEqual(['a', 'b', 'foo']);
 
             expect(result.c, 'c) failed to merge array-like value with array-like object')
                 .toEqual({ 0: 'foo', 1: 'bar', length: 2 });
 
-            expect(result.d, 'd) String object should not be considered array-like (in this context)')
+            expect(
+                result.d,
+                'd) String object should not be considered array-like (in this context)',
+            )
                 .toBeInstanceOf(String);
 
-            expect(result.e, 'e) Typed Array object should not be considered array-like (in this context)')
+            expect(
+                result.e,
+                'e) Typed Array object should not be considered array-like (in this context)',
+            )
                 .toBeInstanceOf(Int8Array);
         });
 
@@ -497,14 +509,15 @@ describe('@aedart/support/objects', () => {
                 'foo': null,
             };
             const b = {
-                'foo': function() {}
+                'foo': function()
+                {},
             };
 
             // --------------------------------------------------------------------- //
 
             const result = merge()
                 .using({
-                    mergeArrays: true
+                    mergeArrays: true,
                 })
                 .of(a, b);
 
@@ -512,33 +525,33 @@ describe('@aedart/support/objects', () => {
                 .toBeTruthy();
 
             expect(result['foo'], 'Function not referenced in result')
-                .toBe(b['foo'])
+                .toBe(b['foo']);
         });
 
         test('can merge nested objects', () => {
             const a = {
                 'foo': null,
                 'bar': {
-                    'name': 'Risk'
-                }
+                    'name': 'Risk',
+                },
             };
             const b = {
                 'foo': {
-                    'name': 'John'
+                    'name': 'John',
                 },
                 'bar': {
                     'age': 31,
                     'address': {
-                        'street': 'Somewhere Str. 654'
-                    }
-                }
+                        'street': 'Somewhere Str. 654',
+                    },
+                },
             };
 
             // --------------------------------------------------------------------- //
 
             const result = merge()
                 .using({
-                    mergeArrays: true
+                    mergeArrays: true,
                 })
                 .of(a, b);
 
@@ -547,28 +560,27 @@ describe('@aedart/support/objects', () => {
 
             const expected = JSON.stringify({
                 'foo': {
-                    'name': 'John'
+                    'name': 'John',
                 },
                 'bar': {
                     'name': 'Risk',
                     'age': 31,
                     'address': {
-                        'street': 'Somewhere Str. 654'
-                    }
-                }
+                        'street': 'Somewhere Str. 654',
+                    },
+                },
             });
 
             expect(JSON.stringify(result), 'Incorrect merge of nested objects')
-                .toBe(expected)
+                .toBe(expected);
         });
 
         test('fails when invalid maximum depth option provided', () => {
-
             const a = {
                 'foo': 'bar',
             };
             const b = {
-                'foo': true
+                'foo': true,
             };
 
             // --------------------------------------------------------------------- //
@@ -576,10 +588,10 @@ describe('@aedart/support/objects', () => {
             const callback = () => {
                 return merge()
                     .using({
-                        depth: -1
+                        depth: -1,
                     })
                     .of(a, b);
-            }
+            };
 
             // --------------------------------------------------------------------- //
 
@@ -588,19 +600,18 @@ describe('@aedart/support/objects', () => {
         });
 
         test('fails when maximum depth has been exceeded', () => {
-
             const a = {
                 'person': {
-                    'name': 'Risk'
-                }
+                    'name': 'Risk',
+                },
             };
             const b = {
                 'person': {
                     'age': 31,
                     'address': {
-                        'street': 'Somewhere Str. 654' // This depth level should cause failure...
-                    }
-                }
+                        'street': 'Somewhere Str. 654', // This depth level should cause failure...
+                    },
+                },
             };
 
             // --------------------------------------------------------------------- //
@@ -608,10 +619,10 @@ describe('@aedart/support/objects', () => {
             const callback = () => {
                 return merge()
                     .using({
-                        depth: 1
+                        depth: 1,
                     })
                     .of(a, b);
-            }
+            };
 
             // --------------------------------------------------------------------- //
 
@@ -620,7 +631,6 @@ describe('@aedart/support/objects', () => {
         });
 
         test('fails when attempting to merge with depth set to zero', () => {
-
             const a = {
                 'foo': false,
             };
@@ -633,10 +643,10 @@ describe('@aedart/support/objects', () => {
             const callback = () => {
                 return merge()
                     .using({
-                        depth: 0
+                        depth: 0,
                     })
                     .of(a, b);
-            }
+            };
 
             // --------------------------------------------------------------------- //
 
@@ -645,7 +655,6 @@ describe('@aedart/support/objects', () => {
         });
 
         test('can clones objects of native kind', () => {
-
             const now = new Date();
 
             const dataSet = [
@@ -655,7 +664,7 @@ describe('@aedart/support/objects', () => {
                     expectedInstanceOf: ArrayBuffer,
                     match: (cloned: ArrayBuffer) => {
                         return cloned.maxByteLength === 8;
-                    }
+                    },
                 },
                 {
                     name: 'Boolean',
@@ -663,7 +672,7 @@ describe('@aedart/support/objects', () => {
                     expectedInstanceOf: Boolean,
                     match: (cloned: object) => {
                         return cloned.valueOf() === true;
-                    }
+                    },
                 },
                 {
                     name: 'DataView',
@@ -671,7 +680,7 @@ describe('@aedart/support/objects', () => {
                     expectedInstanceOf: DataView,
                     match: (cloned: DataView) => {
                         return cloned.buffer.byteLength === 16;
-                    }
+                    },
                 },
                 {
                     name: 'Date',
@@ -679,7 +688,7 @@ describe('@aedart/support/objects', () => {
                     expectedInstanceOf: Date,
                     match: (cloned: object) => {
                         return cloned.valueOf() === now.valueOf(); // milliseconds for since the epoch for date
-                    }
+                    },
                 },
                 {
                     name: 'Error',
@@ -687,21 +696,23 @@ describe('@aedart/support/objects', () => {
                     expectedInstanceOf: Error,
                     match: (cloned: Error) => {
                         return cloned.message === 'foo';
-                    }
+                    },
                 },
                 {
                     name: 'Map',
-                    source: { value: new Map([
-                            [ 'a', 1 ],
-                            [ 'b', 2 ],
-                            [ 'c', 3 ],
-                        ]) },
+                    source: {
+                        value: new Map([
+                            ['a', 1],
+                            ['b', 2],
+                            ['c', 3],
+                        ]),
+                    },
                     expectedInstanceOf: Map,
                     match: (cloned: Map<string, number>) => {
                         return cloned.has('a') && cloned.get('a') === 1
                             && cloned.has('b') && cloned.get('b') === 2
-                            && cloned.has('c') && cloned.get('c') === 3
-                    }
+                            && cloned.has('c') && cloned.get('c') === 3;
+                    },
                 },
                 {
                     name: 'Number',
@@ -709,25 +720,25 @@ describe('@aedart/support/objects', () => {
                     expectedInstanceOf: Number,
                     match: (cloned: Number) => {
                         return cloned.valueOf() === 42;
-                    }
+                    },
                 },
                 {
                     name: 'RegEx',
-                    source: { value: new RegExp("bar", "g") },
+                    source: { value: new RegExp('bar', 'g') },
                     expectedInstanceOf: RegExp,
                     match: (cloned: RegExp) => {
-                        return cloned.toString() === '/bar/g'
-                    }
+                        return cloned.toString() === '/bar/g';
+                    },
                 },
                 {
                     name: 'Set',
-                    source: { value: new Set([ 1, 2, 3 ]) },
+                    source: { value: new Set([1, 2, 3]) },
                     expectedInstanceOf: Set,
                     match: (cloned: Set<number>) => {
                         return cloned.has(1)
                             && cloned.has(2)
                             && cloned.has(3);
-                    }
+                    },
                 },
                 {
                     name: 'String',
@@ -735,7 +746,7 @@ describe('@aedart/support/objects', () => {
                     expectedInstanceOf: String,
                     match: (cloned: String) => {
                         return cloned.valueOf() === 'John Doe';
-                    }
+                    },
                 },
                 {
                     name: 'TypedArray',
@@ -743,7 +754,7 @@ describe('@aedart/support/objects', () => {
                     expectedInstanceOf: Int16Array,
                     match: (cloned: Int16Array) => {
                         return cloned.byteLength === 16;
-                    }
+                    },
                 },
             ];
 
@@ -754,13 +765,22 @@ describe('@aedart/support/objects', () => {
 
                 const result = merge(target, entry.source);
 
-                expect(Reflect.has(result, 'value'),`No value property in result for ${entry.name}`)
+                expect(
+                    Reflect.has(result, 'value'),
+                    `No value property in result for ${entry.name}`,
+                )
                     .toBeTruthy();
 
-                expect(result.value instanceof entry.expectedInstanceOf, `Invalid instanceof for ${entry.name}`)
+                expect(
+                    result.value instanceof entry.expectedInstanceOf,
+                    `Invalid instanceof for ${entry.name}`,
+                )
                     .toBeTruthy();
 
-                expect(result.value === entry.source.value, `Shallow copy was made for ${entry.name}`)
+                expect(
+                    result.value === entry.source.value,
+                    `Shallow copy was made for ${entry.name}`,
+                )
                     .toBeFalsy();
 
                 // @ts-expect-error Ignore type of value for testing purposes
@@ -770,17 +790,17 @@ describe('@aedart/support/objects', () => {
         });
 
         test('does not clone objects of "Weak Reference" kind', () => {
-
-            class A {}
+            class A
+            {}
 
             const a = {};
             const b = {
-                'a' : new WeakRef(new A()),
-                'b' : new WeakMap([
-                    [ new A(), 'foo' ]
+                'a': new WeakRef(new A()),
+                'b': new WeakMap([
+                    [new A(), 'foo'],
                 ]),
-                'c' : new WeakSet([ new A() ])
-            }
+                'c': new WeakSet([new A()]),
+            };
 
             // --------------------------------------------------------------------- //
 
@@ -799,13 +819,12 @@ describe('@aedart/support/objects', () => {
                 .toBeTruthy();
         });
 
-        test('favours cloneable object\'s clone() method', () => {
-
+        test("favours cloneable object's clone() method", () => {
             const a = {
                 a: {
                     name: 'John',
-                    age: 42
-                }
+                    age: 42,
+                },
             };
 
             const b = {
@@ -814,10 +833,10 @@ describe('@aedart/support/objects', () => {
 
                     [CLONE]: () => {
                         return {
-                            name: 'Rick'
-                        }
-                    }
-                }
+                            name: 'Rick',
+                        };
+                    },
+                },
             };
 
             // --------------------------------------------------------------------- //
@@ -830,15 +849,14 @@ describe('@aedart/support/objects', () => {
             expect(result.a.name, 'Clone method not favoured')
                 .toBe('Rick');
             expect(result.a.age, 'Other properties are not merged in correctly')
-                .toBe(42)
+                .toBe(42);
         });
 
         test('can disable cloneable behaviour', () => {
-
             const a = {
                 a: {
                     name: 'John',
-                }
+                },
             };
 
             const b = {
@@ -846,17 +864,17 @@ describe('@aedart/support/objects', () => {
                     name: 'Jim',
                     [CLONE]: () => {
                         return {
-                            name: 'Rick'
-                        }
-                    }
-                }
+                            name: 'Rick',
+                        };
+                    },
+                },
             };
 
             // --------------------------------------------------------------------- //
 
             const result = merge()
                 .using({
-                    clone: false
+                    clone: false,
                 })
                 .of(a, b);
 
@@ -868,11 +886,10 @@ describe('@aedart/support/objects', () => {
         });
 
         test('fails when cloneable source returns invalid value', () => {
-
             const a = {
                 a: {
                     name: 'John',
-                }
+                },
             };
 
             const b = {
@@ -880,15 +897,15 @@ describe('@aedart/support/objects', () => {
                     name: 'Jim',
                     [CLONE]: () => {
                         return undefined; // Should cause error
-                    }
-                }
+                    },
+                },
             };
 
             // --------------------------------------------------------------------- //
 
             const callback = () => {
                 return merge(a, b);
-            }
+            };
 
             expect(callback)
                 .toThrow(MergeError);

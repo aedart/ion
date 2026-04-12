@@ -1,57 +1,53 @@
-import type {
-    MergeCallback,
-    SkipKeyCallback
-} from "./types.js";
-import type ArrayMergeOptions from "../../arrays/merge/ArrayMergeOptions.js";
+import type ArrayMergeOptions from '../../arrays/merge/ArrayMergeOptions.js';
+import type { MergeCallback, SkipKeyCallback } from './types.js';
 
 /**
  * Merge Options
  */
-export default interface MergeOptions
-{
+export default interface MergeOptions {
     /**
      * The maximum merge depth
-     * 
+     *
      * **Note**: _Value must be greater than or equal zero._
-     * 
+     *
      * **Note**: _Defaults to [DEFAULT_MAX_MERGE_DEPTH]{@link import('@aedart/contracts/support/objects').DEFAULT_MAX_MERGE_DEPTH}
      * when not specified._
-     * 
+     *
      * @type {number}
      */
     depth?: number;
-    
+
     /**
      * Property Keys that must not be merged.
-     * 
+     *
      * **Note**: [DANGEROUS_PROPERTIES]{@link import('@aedart/contracts/support/objects').DANGEROUS_PROPERTIES}
      * are always skipped, regardless of specified keys._
-     * 
+     *
      * **Callback**: _A callback can be specified to determine if a given key,
      * in a source object should be skipped._
-     * 
+     *
      * **Example:**
      * ```js
      * const a = { 'foo': true };
      * const b = { 'bar': true, 'zar': true };
      *
      * merge().using({ skip: [ 'zar' ] }).of(a, b); // { 'foo': true, 'bar': true }
-     * 
+     *
      * merge().using({ skip: (key, source) => {
      *      return key === 'bar' && Reflect.has(source, key);
      * } }).of(a, b); // { 'foo': true, 'zar': true }
      * ```
-     * 
+     *
      * @type {PropertyKey[] | SkipKeyCallback}
      */
     skip?: PropertyKey[] | SkipKeyCallback;
 
     /**
      * Flag, overwrite property values with `undefined`.
-     * 
+     *
      * **When `true` (_default behaviour_)**: _If an existing property value is not `undefined`, it will be overwritten
      * with new value, even if the new value is `undefined`._
-     * 
+     *
      * **When `false`**: _If an existing property value is not `undefined`, it will NOT be overwritten
      * with new value, if the new value is `undefined`._
      *
@@ -64,7 +60,7 @@ export default interface MergeOptions
      *
      * merge().using({ overwriteWithUndefined: false }).of(a, b) // { 'foo': true }
      * ```
-     * 
+     *
      * @type {boolean}
      */
     overwriteWithUndefined?: boolean;
@@ -92,16 +88,16 @@ export default interface MergeOptions
      * } };
      *
      * merge(a, b); // { 'foo': { 'name': 'Rick Doe', 'age': 26 } }
-     * 
+     *
      * merge().using({ clone: false }).of(a, b); // { 'foo': { 'name': 'Jane Doe', clone() {...} } }
      * ```
-     * 
+     *
      * @see [`Cloneable`]{@link import('@aedart/contracts/support/objects').Cloneable}
-     * 
+     *
      * @type {boolean}
      */
     clone?: boolean;
-    
+
     /**
      * Flag, whether to merge array, array-like, and [concat spreadable]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable}
      * properties or not.
@@ -118,30 +114,30 @@ export default interface MergeOptions
      * merge(a, b); // { 'foo': [ 4, 5, 6 ] }
      * merge().using({ mergeArrays: true }).of(a, b); // { 'foo': [ 1, 2, 3, 4, 5, 6 ] }
      * ```
-     * 
+     *
      * **Note**: _`String()` (object) and [Typed Arrays]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray}
      * are not merged, even though they are considered to be "array-like" (they offer a `length` property).
      * You need to manually handle these, via a custom [callback]{@link MergeCallback}, if such value types must be merged._
-     * 
+     *
      * @see [merge (array)]{@link import('@aedart/support/arrays').merge}
-     * 
+     *
      * @type {boolean}
      */
     mergeArrays?: boolean;
 
     /**
      * Merge Options for arrays
-     * 
+     *
      * @type {ArrayMergeOptions}
      */
     arrayMergeOptions?: ArrayMergeOptions;
-    
+
     /**
      * The merge callback that must be applied
-     * 
+     *
      * **Note**: _When no callback is provided, then the merge function's default
      * callback is used._
-     * 
+     *
      * @type {MergeCallback}
      */
     callback?: MergeCallback;

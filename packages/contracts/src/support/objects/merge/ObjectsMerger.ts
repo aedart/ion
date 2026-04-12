@@ -1,13 +1,12 @@
-import type { MergeCallback } from "./types.js";
-import type MergeOptions from "./MergeOptions.js";
+import type MergeOptions from './MergeOptions.js';
+import type { MergeCallback } from './types.js';
 
 /**
  * Objects Merger
  *
  * Able to merge (deep merge) multiple source objects into a single new object.
  */
-export default interface ObjectsMerger
-{
+export default interface ObjectsMerger {
     /**
      * Use the following merge options or merge callback
      *
@@ -24,9 +23,9 @@ export default interface ObjectsMerger
      *
      * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
      * of all given sources._
-     * 
+     *
      * @template SourceA extends object
-     * 
+     *
      * @param {SourceA} a
      *
      * @returns {SourceA}
@@ -34,9 +33,9 @@ export default interface ObjectsMerger
      * @throws {MergeException}
      */
     of<
-        SourceA extends object
+        SourceA extends object,
     >(a: SourceA): SourceA;
-    
+
     /**
      * Returns a merger of given source objects
      *
@@ -45,7 +44,7 @@ export default interface ObjectsMerger
      *
      * @template SourceA extends object
      * @template SourceB extends object
-     * 
+     *
      * @param {SourceA} a
      * @param {SourceB} b
      *
@@ -67,7 +66,7 @@ export default interface ObjectsMerger
      * @template SourceA extends object
      * @template SourceB extends object
      * @template SourceC extends object
-     * 
+     *
      * @param {SourceA} a
      * @param {SourceB} b
      * @param {SourceC} c
@@ -92,7 +91,7 @@ export default interface ObjectsMerger
      * @template SourceB extends object
      * @template SourceC extends object
      * @template SourceD extends object
-     * 
+     *
      * @param {SourceA} a
      * @param {SourceB} b
      * @param {SourceC} c
@@ -137,7 +136,13 @@ export default interface ObjectsMerger
         SourceC extends object,
         SourceD extends object,
         SourceE extends object,
-    >(a: SourceA, b: SourceB, c: SourceC, d: SourceD, e: SourceE): SourceA & SourceB & SourceC & SourceD & SourceE;
+    >(
+        a: SourceA,
+        b: SourceB,
+        c: SourceC,
+        d: SourceD,
+        e: SourceE,
+    ): SourceA & SourceB & SourceC & SourceD & SourceE;
 
     /**
      * Returns a merger of given source objects
@@ -170,11 +175,18 @@ export default interface ObjectsMerger
         SourceD extends object,
         SourceE extends object,
         SourceF extends object,
-    >(a: SourceA, b: SourceB, c: SourceC, d: SourceD, e: SourceE, f: SourceF): SourceA & SourceB & SourceC & SourceD & SourceE & SourceF;
-    
+    >(
+        a: SourceA,
+        b: SourceB,
+        c: SourceC,
+        d: SourceD,
+        e: SourceE,
+        f: SourceF,
+    ): SourceA & SourceB & SourceC & SourceD & SourceE & SourceF;
+
     /**
      * Returns a merger of given source objects
-     * 
+     *
      * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
      * of all given sources._
      *

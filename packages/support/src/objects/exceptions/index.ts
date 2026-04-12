@@ -1,4 +1,2 @@
-import MergeError from "./MergeError.js";
-export {
-    MergeError
-}
+import MergeError from './MergeError.js';
+export { MergeError };

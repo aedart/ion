@@ -1,9 +1,5 @@
-import type {
-    MergeCallback,
-    MergeOptions,
-    ObjectsMerger
-} from "@aedart/contracts/support/objects";
-import Merger from "./merge/Merger.js";
+import type { MergeCallback, MergeOptions, ObjectsMerger } from '@aedart/contracts/support/objects';
+import Merger from './merge/Merger.js';
 
 /**
  * Returns a new Objects Merger instance
@@ -43,7 +39,10 @@ export function merge<SourceA extends object>(a: SourceA): SourceA;
  *
  * @returns {SourceA & SourceB}
  */
-export function merge<SourceA extends object, SourceB extends object>(a: SourceA, b: SourceB): SourceA & SourceB;
+export function merge<SourceA extends object, SourceB extends object>(
+    a: SourceA,
+    b: SourceB,
+): SourceA & SourceB;
 
 /**
  * Returns a merger of given source objects
@@ -58,7 +57,11 @@ export function merge<SourceA extends object, SourceB extends object>(a: SourceA
  *
  * @returns {SourceA & SourceB & SourceC}
  */
-export function merge<SourceA extends object, SourceB extends object, SourceC extends object>(a: SourceA, b: SourceB, c: SourceC): SourceA & SourceB & SourceC;
+export function merge<SourceA extends object, SourceB extends object, SourceC extends object>(
+    a: SourceA,
+    b: SourceB,
+    c: SourceC,
+): SourceA & SourceB & SourceC;
 
 /**
  * Returns a merger of given source objects
@@ -80,18 +83,24 @@ export function merge(a: object, b: object, ...sources: object[]): object;
  *
  * @returns {ObjectsMerger | object}
  */
-export function merge(a?: object | MergeCallback | MergeOptions, b?: object, ...sources: object[]): ObjectsMerger | object
+export function merge(
+    a?: object | MergeCallback | MergeOptions,
+    b?: object,
+    ...sources: object[]
+): ObjectsMerger | object
 {
     // Factory call: merge()
-    if (arguments.length === 0)
-    {
+    if (arguments.length === 0) {
         return new Merger();
     }
 
     // Configuration call: merge(options)
     // Note: We detect options if 'a' is a function or an object that isn't a plain "data" object.
-    if (arguments.length === 1 && (typeof a === 'function' || (typeof a === 'object' && a !== null && !Reflect.has(a, 'constructor'))))
-    {
+    if (
+        arguments.length === 1
+        && (typeof a === 'function'
+            || (typeof a === 'object' && a !== null && !Reflect.has(a, 'constructor')))
+    ) {
         return new Merger(a as MergeCallback | MergeOptions);
     }
 

@@ -1,5 +1,5 @@
-import type {Constructor} from "@aedart/contracts";
-import {TYPED_ARRAY_PROTOTYPE} from "@aedart/contracts/support/reflections";
+import type { Constructor } from '@aedart/contracts';
+import { TYPED_ARRAY_PROTOTYPE } from '@aedart/contracts/support/reflections';
 
 /**
  * Determine if an object value can be cloned via `structuredClone()`
@@ -15,8 +15,7 @@ import {TYPED_ARRAY_PROTOTYPE} from "@aedart/contracts/support/reflections";
 export function canCloneUsingStructuredClone(value: object): boolean
 {
     // 1. Handle Typed Arrays separately using prototype checking (V8-optimized)
-    if (TYPED_ARRAY_PROTOTYPE && TYPED_ARRAY_PROTOTYPE.isPrototypeOf(value))
-    {
+    if (TYPED_ARRAY_PROTOTYPE && TYPED_ARRAY_PROTOTYPE.isPrototypeOf(value)) {
         return true;
     }
 
@@ -31,16 +30,14 @@ export function canCloneUsingStructuredClone(value: object): boolean
         Number,
         RegExp,
         Set,
-        String
+        String,
     ];
 
     // Performance: Standard index-based loop with cached length
-    for (let i = 0, len = constructors.length; i < len; i++)
-    {
+    for (let i = 0, len = constructors.length; i < len; i++) {
         const candidate = constructors[i];
 
-        if (value instanceof (candidate as Constructor))
-        {
+        if (value instanceof (candidate as Constructor)) {
             return true;
         }
     }

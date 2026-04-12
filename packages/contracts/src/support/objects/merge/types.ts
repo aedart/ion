@@ -9,27 +9,24 @@ import type MergeSourceInfo from './MergeSourceInfo.js';
  * @type {function}
  */
 export type NextCallback = (
-
     /**
      * The nested objects to be merged
      *
      * @type {object[]}
      */
     sources: object[],
-
     /**
      * The merge options to be applied
      *
      * @type {Readonly<MergeOptions>}
      */
     options: Readonly<MergeOptions>,
-
     /**
      * The next recursion depth number
      *
      * @type {number}
      */
-    nextDepth: number
+    nextDepth: number,
 ) => any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
 /**
@@ -43,27 +40,24 @@ export type NextCallback = (
  * ([keys to be skipped]{@link MergeOptions.skip} and [depth]{@link MergeOptions.depth} excluded)_
  */
 export type MergeCallback = (
-
     /**
      * Source target information
      *
      * @type {MergeSourceInfo}
      */
     target: MergeSourceInfo,
-
     /**
      * Callback to invoke for merging nested objects
      *
      * @type {function}
      */
     next: NextCallback,
-
     /**
      * The merge options to be applied
      *
      * @type {Readonly<MergeOptions>}
      */
-    options: Readonly<MergeOptions>
+    options: Readonly<MergeOptions>,
 ) => any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
 
 /**

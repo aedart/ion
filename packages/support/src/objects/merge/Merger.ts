@@ -1,12 +1,12 @@
 import type {
     MergeCallback,
     MergeOptions,
-    ObjectsMerger,
     MergeSourceInfo,
-    NextCallback
-} from "@aedart/contracts/support/objects";
-import DefaultMergeOptions from "./DefaultMergeOptions.js";
-import {isKeyUnsafe} from "../../reflections/isKeyUnsafe.js";
+    NextCallback,
+    ObjectsMerger,
+} from '@aedart/contracts/support/objects';
+import { isKeyUnsafe } from '../../reflections/isKeyUnsafe.js';
+import DefaultMergeOptions from './DefaultMergeOptions.js';
 
 /**
  * Merger
@@ -54,7 +54,7 @@ export default class Merger implements ObjectsMerger
         return this.merge(
             [Object.create(null), ...sources],
             this.#options,
-            0
+            0,
         );
     }
 
@@ -70,7 +70,7 @@ export default class Merger implements ObjectsMerger
     protected merge(
         sources: object[],
         options: Readonly<MergeOptions>,
-        depth: number
+        depth: number,
     ): object
     {
         const totalSources: number = sources.length;
@@ -96,7 +96,7 @@ export default class Merger implements ObjectsMerger
         source: object,
         sourceIndex: number,
         options: Readonly<MergeOptions>,
-        depth: number
+        depth: number,
     ): void
     {
         const keys: PropertyKey[] = Reflect.ownKeys(source);
@@ -121,11 +121,10 @@ export default class Merger implements ObjectsMerger
                 value,
                 source,
                 sourceIndex,
-                depth
+                depth,
             };
 
-            const next: NextCallback = (nestedSources, nestedOptions, nextDepth) =>
-            {
+            const next: NextCallback = (nestedSources, nestedOptions, nextDepth) => {
                 return this.merge(nestedSources, nestedOptions, nextDepth);
             };
 

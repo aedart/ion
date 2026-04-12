@@ -21,7 +21,7 @@ describe('@aedart/support/ararys', () => {
             {
                 [Symbol.isConcatSpreadable] = true;
             }
-            
+
             const dataSet = [
                 { value: null, expected: false, name: 'Null' },
 

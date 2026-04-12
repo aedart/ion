@@ -1,14 +1,14 @@
+import type { ArrayMergeOptions } from '@aedart/contracts/support/arrays';
 import type {
     MergeCallback,
     MergeOptions,
-    SkipKeyCallback
-} from "@aedart/contracts/support/objects";
-import type {ArrayMergeOptions} from "@aedart/contracts/support/arrays";
-import {DEFAULT_MAX_MERGE_DEPTH} from "@aedart/contracts/support/objects";
-import MergeError from "../exceptions/MergeError.js";
-import {defaultMergeCallback} from "./defaultMergeCallback.js";
-import {makeSkipCallback} from "./makeSkipCallback.js";
-import {populate} from "../populate.js";
+    SkipKeyCallback,
+} from '@aedart/contracts/support/objects';
+import { DEFAULT_MAX_MERGE_DEPTH } from '@aedart/contracts/support/objects';
+import MergeError from '../exceptions/MergeError.js';
+import { populate } from '../populate.js';
+import { defaultMergeCallback } from './defaultMergeCallback.js';
+import { makeSkipCallback } from './makeSkipCallback.js';
 
 /**
  * Default Merge Options
@@ -143,7 +143,7 @@ export default class DefaultMergeOptions implements MergeOptions
      * @type {ArrayMergeOptions}
      */
     arrayMergeOptions: ArrayMergeOptions = {};
-    
+
     /**
      * The merge callback that must be applied
      *
@@ -167,7 +167,7 @@ export default class DefaultMergeOptions implements MergeOptions
 
         if (this.depth < 0) {
             throw new MergeError('Invalid maximum "depth" merge option value', {
-                cause: {options: this}
+                cause: { options: this },
             });
         }
 

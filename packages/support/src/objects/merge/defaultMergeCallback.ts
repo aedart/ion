@@ -3,47 +3,40 @@ import {
     MergeOptions,
     MergeSourceInfo,
     NextCallback,
-} from "@aedart/contracts/support/objects";
-import {
-    DEFAULT_MAX_MERGE_DEPTH,
-    CLONE
-} from "@aedart/contracts/support/objects";
-import {
-    isConcatSpreadable,
-    isSafeArrayLike,
-    merge as mergeArrays
-} from "../../arrays/index.js";
-import {canCloneUsingStructuredClone} from './canCloneUsingStructuredClone.js';
-import {isCloneable} from "../isCloneable.js";
+} from '@aedart/contracts/support/objects';
+import { CLONE, DEFAULT_MAX_MERGE_DEPTH } from '@aedart/contracts/support/objects';
+import { isConcatSpreadable, isSafeArrayLike, merge as mergeArrays } from '../../arrays/index.js';
+import { descTag } from '../../misc/descTag.js';
+import { isWeakKind } from '../../reflections/isWeakKind.js';
 import MergeError from '../exceptions/MergeError.js';
-import {isWeakKind} from "../../reflections/isWeakKind.js";
-import {descTag} from "../../misc/descTag.js";
+import { isCloneable } from '../isCloneable.js';
+import { canCloneUsingStructuredClone } from './canCloneUsingStructuredClone.js';
 
 /**
  * The default merge callback
  *
  * @type {MergeCallback}
  */
-export const defaultMergeCallback: MergeCallback = function (
+export const defaultMergeCallback: MergeCallback = function(
     target: MergeSourceInfo,
     next: NextCallback,
-    options: Readonly<MergeOptions>
+    options: Readonly<MergeOptions>,
 ): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
-    let {value} = target;
+    let { value } = target;
     const {
         result,
         key,
         source,
         sourceIndex,
-        depth
+        depth,
     } = target;
 
     // 1. Depth Enforcement
     const maxDepth = options.depth ?? DEFAULT_MAX_MERGE_DEPTH;
     if (depth >= maxDepth) {
         throw new MergeError(`Maximum merge depth (${maxDepth}) exceeded at key "${String(key)}"`, {
-            cause: {target, options}
+            cause: { target, options },
         });
     }
 
@@ -53,7 +46,8 @@ export const defaultMergeCallback: MergeCallback = function (
     const existingValue: any = result[key];
 
     // 2. Cloneable Support
-    if (options.clone !== false
+    if (
+        options.clone !== false
         && value !== null
         && typeof value === 'object'
         && isCloneable(value)
@@ -61,13 +55,16 @@ export const defaultMergeCallback: MergeCallback = function (
         const clone = (value as any)[CLONE]();
 
         if (clone === null || typeof clone !== 'object') {
-            throw new MergeError(`Expected clone() method to return object, ${descTag(clone)} was returned`, {
-                cause: {
-                    key,
-                    source: value,
-                    clone: clone,
-                }
-            });
+            throw new MergeError(
+                `Expected clone() method to return object, ${descTag(clone)} was returned`,
+                {
+                    cause: {
+                        key,
+                        source: value,
+                        clone: clone,
+                    },
+                },
+            );
         }
 
         value = clone;
@@ -79,7 +76,8 @@ export const defaultMergeCallback: MergeCallback = function (
         // -------------------------------------------------------------------------------------------------------- //
         // Primitives
         case 'undefined':
-            if (value === undefined
+            if (
+                value === undefined
                 && options.overwriteWithUndefined === false
                 && hasExisting
                 && existingValue !== undefined
@@ -105,11 +103,13 @@ export const defaultMergeCallback: MergeCallback = function (
             }
 
             // 1. Arrays, and array-like...
-            const isArray: boolean = Array.isArray(value); /* eslint-disable-line no-case-declarations */
+            const isArray: boolean = Array.isArray(
+                value,
+            ); /* eslint-disable-line no-case-declarations */
             if (isArray || isConcatSpreadable(value) || isSafeArrayLike(value)) {
-
                 // If required to merge with existing value, if one exists...
-                if (options.mergeArrays === true
+                if (
+                    options.mergeArrays === true
                     && hasExisting
                     && (isArray || Array.isArray(existingValue))
                 ) {
@@ -148,7 +148,8 @@ export const defaultMergeCallback: MergeCallback = function (
             }
 
             // 5. Basic Objects / Deep Recursion
-            if (hasExisting
+            if (
+                hasExisting
                 && existingValue !== null
                 && typeof existingValue === 'object'
                 && !Array.isArray(existingValue)
@@ -159,15 +160,20 @@ export const defaultMergeCallback: MergeCallback = function (
             return next([Object.create(null), value], options, depth + 1);
 
         default:
-            throw new MergeError(`Unable to merge value of type ${type} (${descTag(value)}) at source index ${sourceIndex}`, {
-                cause: {
-                    key,
-                    value,
-                    source,
-                    sourceIndex,
-                    depth,
-                    options
-                }
-            });
+            throw new MergeError(
+                `Unable to merge value of type ${type} (${
+                    descTag(value)
+                }) at source index ${sourceIndex}`,
+                {
+                    cause: {
+                        key,
+                        value,
+                        source,
+                        sourceIndex,
+                        depth,
+                        options,
+                    },
+                },
+            );
     }
 };

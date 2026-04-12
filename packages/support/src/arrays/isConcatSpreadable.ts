@@ -9,5 +9,6 @@
  */
 export function isConcatSpreadable(target: object | null): boolean
 {
-    return target !== null && Symbol.isConcatSpreadable in target && target[Symbol.isConcatSpreadable] === true;
+    return target !== null && Symbol.isConcatSpreadable in target
+        && target[Symbol.isConcatSpreadable] === true;
 }
