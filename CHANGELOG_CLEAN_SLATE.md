@@ -34,6 +34,7 @@ Temporary changelog for feature branch.
 * `ConcatSpreadable` interface changed to include numeric indexer to ensure type safety for the elements being spread (_contracts package_).
 * `useCloneable` option has been renamed to `clone`, in `MergeOptions` (_contracts and support packages_)
 * `isConcatSpreadable()` now only returns true if `Symbol.isConcatSpreadable` is present and set to `true`.
+* Object `merge()` behaviour changed to correctly deal with concat-spreadable objects and arrays (_support package_).
 
 **Non-breaking Changes**
 
