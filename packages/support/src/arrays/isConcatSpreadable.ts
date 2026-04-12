@@ -1,5 +1,5 @@
 /**
- * Determine if target object contains the well-known symbol {@link Symbol.isConcatSpreadable}
+ * Determine if target object contains the well-known symbol {@link Symbol.isConcatSpreadable} and is set to `true`
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable
  *
@@ -9,5 +9,5 @@
  */
 export function isConcatSpreadable(target: object | null): boolean
 {
-    return target !== null && Symbol.isConcatSpreadable in target;
+    return target !== null && Symbol.isConcatSpreadable in target && target[Symbol.isConcatSpreadable] === true;
 }

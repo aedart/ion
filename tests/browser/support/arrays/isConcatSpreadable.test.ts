@@ -17,6 +17,11 @@ describe('@aedart/support/ararys', () => {
                 [Symbol.isConcatSpreadable] = false;
             }
 
+            class C
+            {
+                [Symbol.isConcatSpreadable] = true;
+            }
+            
             const dataSet = [
                 { value: null, expected: false, name: 'Null' },
 
@@ -55,8 +60,13 @@ describe('@aedart/support/ararys', () => {
                 },
                 {
                     value: new B(),
+                    expected: false,
+                    name: 'Class instance with Symbol.isConcatSpreadable (set to false)',
+                },
+                {
+                    value: new C(),
                     expected: true,
-                    name: 'Class instance with Symbol.isConcatSpreadable',
+                    name: 'Class instance with Symbol.isConcatSpreadable (set to true)',
                 },
             ];
 
