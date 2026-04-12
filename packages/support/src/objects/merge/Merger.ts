@@ -1,288 +1,137 @@
 import type {
-    Cloneable,
     MergeCallback,
     MergeOptions,
+    ObjectsMerger,
     MergeSourceInfo,
-    NextCallback,
-    SkipKeyCallback,
-    ObjectsMerger
+    NextCallback
 } from "@aedart/contracts/support/objects";
-import { CLONE } from "@aedart/contracts/support/objects";
 import DefaultMergeOptions from "./DefaultMergeOptions.js";
-import MergeError from "../exceptions/MergeError.js";
-import { getErrorMessage } from "../../exceptions/getErrorMessage.js";
-import { isCloneable } from "../isCloneable.js";
-import { descTag } from "../../misc/descTag.js";
-import { isKeyUnsafe } from "../../reflections/isKeyUnsafe.js";
+import {isKeyUnsafe} from "../../reflections/isKeyUnsafe.js";
 
 /**
- * Objects Merger
- * 
+ * Merger
+ *
  * @see ObjectsMerger
  */
 export default class Merger implements ObjectsMerger
 {
     /**
      * The merge options to be applied
-     * 
-     * @type {Readonly<DefaultMergeOptions | MergeOptions>}
-     * 
-     * @protected
-     */
-    protected _options: Readonly<DefaultMergeOptions | MergeOptions>;
-
-    /**
-     * Callback to perform the merging of nested objects.
-     * 
-     * @type {NextCallback}
-     * 
-     * @protected
-     * @readonly
-     */
-    protected readonly _next: NextCallback;
-    
-    /**
-     * Create a new objects merger instance
-     * 
-     * @param {MergeCallback | MergeOptions} [options]
      *
-     * @throws {MergeError}
+     * @type {Readonly<DefaultMergeOptions>}
      */
-    public constructor(options?: MergeCallback | MergeOptions) {
-        // @ts-expect-error Need to init options, however they are resolved via "using".
-        this._options = null;
-        this._next = this.merge;
-        
-        this.using(options);
-    }
+    readonly #options: Readonly<DefaultMergeOptions>;
 
     /**
-     * Returns the merge options that are to be applied
-     * 
-     * @return {Readonly<DefaultMergeOptions | MergeOptions>}
-     */
-    get options(): Readonly<DefaultMergeOptions | MergeOptions>
-    {
-        return this._options;
-    }
-
-    /**
-     * Returns the "next" callback that performs merging of nested objects.
-     */
-    get nextCallback(): NextCallback
-    {
-        return this._next;
-    }
-    
-    /**
-     * Use the following merge options or merge callback
+     * Creates a new Merger instance
      *
      * @param {MergeCallback | MergeOptions} [options]
-     * 
-     * @return {this}
-     *
-     * @throws {MergeError}
+     */
+    constructor(options?: MergeCallback | MergeOptions)
+    {
+        this.#options = DefaultMergeOptions.from(options);
+    }
+
+    /**
+     * @inheritDoc
      */
     public using(options?: MergeCallback | MergeOptions): this
     {
-        this._options = this.resolveOptions(options);
-        
-        return this;
-    }
-    
-    public of(...sources: object[]): object
-    {
-        try {
-            return this.nextCallback(sources, this.options, 0);
-        } catch (error) {
-            if (error instanceof MergeError) {
-                // @ts-expect-error Error SHOULD have a cause object set - support by all browsers now!
-                error.cause.sources = sources;
-                // @ts-expect-error Error SHOULD have a cause object set - support by all browsers now!
-                error.cause.options = this.options;
-
-                throw error;
-            }
-
-            const reason: string = getErrorMessage(error);
-            throw new MergeError(`Unable to merge objects: ${reason}`, {
-                cause: {
-                    previous: error,
-                    sources: sources,
-                    options: this.options
-                }
-            });
-        }
+        return new (this.constructor as any)(options);
     }
 
     /**
-     * Merge given source objects into a single object
-     * 
+     * @inheritDoc
+     */
+    public of(...sources: object[]): any
+    {
+        const totalSources: number = sources.length;
+        if (totalSources === 0) {
+            return Object.create(null);
+        }
+
+        // Ensure we don't mutate the first source by merging into a fresh object
+        return this.merge(
+            [Object.create(null), ...sources],
+            this.#options,
+            0
+        );
+    }
+
+    /**
+     * Perform deep merge of given sources
+     *
      * @param {object[]} sources
      * @param {Readonly<MergeOptions>} options
-     * @param {number} [depth] Current recursion depth
-     * 
-     * @return {object}
-     * 
-     * @throws {MergeError}
+     * @param {number} depth
+     *
+     * @returns {object}
      */
-    public merge(sources: object[], options: Readonly<MergeOptions>, depth: number = 0): object
+    protected merge(
+        sources: object[],
+        options: Readonly<MergeOptions>,
+        depth: number
+    ): object
     {
-        // Abort if maximum depth has been reached
-        this.assertMaxDepthNotExceeded(depth, sources, options);
-        
-        // Resolve callbacks to apply
-        const nextCallback: NextCallback = this.nextCallback.bind(this);
-        const skipCallback: SkipKeyCallback = (options.skip as SkipKeyCallback).bind(this);
-        const mergeCallback: MergeCallback = (options.callback as MergeCallback).bind(this);
-        
-        // Loop through the sources and merge them into a single object
-        return sources.reduce((result: object, source: object, index: number) => {
-            // Abort if source is invalid...
-            this.assertSourceObject(source, index, depth);
+        const totalSources: number = sources.length;
+        const result: object = sources[0];
 
-            // If allowed and source implements "Cloneable" interface, favour "clone()" method's resulting object.
-            const resolved: object = this.resolveSourceObject(source, options);
-
-            // Loop through all the source's properties, including symbols
-            const keys: PropertyKey[] = Reflect.ownKeys(resolved);
-            for (const key of keys){
-                // Skip key if needed ...
-                if (isKeyUnsafe(key) || skipCallback(key, resolved, result)) {
-                    continue;
-                }
-                
-                // Resolve the value via callback and set it in resulting object.
-                // @ts-expect-error Safe to set the value in result object!
-                result[key] = mergeCallback(
-                    {
-                        result,
-                        key,
-                        // @ts-expect-error Value can be of any type
-                        value: resolved[key],
-                        source: resolved,
-                        sourceIndex: index,
-                        depth: depth,
-                    } as MergeSourceInfo,
-                    nextCallback,
-                    options
-                );
+        for (let i = 1; i < totalSources; i++) {
+            const source: object = sources[i];
+            if (source === null || typeof source !== 'object') {
+                continue;
             }
 
-            return result;
-        }, Object.create(null));
-    }
-
-    /**
-     * Resolves the source object
-     * 
-     * @param {object} source
-     * @param {MergeOptions} options
-     * 
-     * @protected
-     * 
-     * @return {object}
-     */
-    protected resolveSourceObject(source: object, options: MergeOptions): object
-    {
-        let output: object = source;
-        if (options.clone && isCloneable(source)) {
-            output = this.cloneSource(source as Cloneable);
+            this.mergeSource(result, source, i, options, depth);
         }
-        
-        return output;
-    }
-    
-    /**
-     * Invokes the "clone()" method on given cloneable object
-     * 
-     * @param {Cloneable} source
-     * 
-     * @protected
-     * 
-     * @return {object}
-     * 
-     * @return {MergeError} If unable to
-     */
-    protected cloneSource(source: Cloneable): object
-    {
-        const clone: object = source[CLONE]();
-    
-        // Abort if resulting value from "clone()" is not a valid value...
-        if (!clone || typeof clone != 'object' || Array.isArray(clone)) {
-            throw new MergeError(`Expected clone() method to return object for source, ${descTag(clone)} was returned`, {
-                cause: {
-                    source: source,
-                    clone: clone,
-                }
-            });
-        }
-    
-        return clone;
+
+        return result;
     }
 
     /**
-     * Resolves provided merge options
-     * 
-     * @param {MergeCallback | MergeOptions} [options]
-     * 
-     * @protected
-     * 
-     * @return {Readonly<DefaultMergeOptions | MergeOptions>}
-     * 
-     * @throws {MergeError}
+     * Merge properties from source into result
      */
-    protected resolveOptions(options?: MergeCallback | MergeOptions): Readonly<DefaultMergeOptions | MergeOptions>
+    protected mergeSource(
+        result: object,
+        source: object,
+        sourceIndex: number,
+        options: Readonly<MergeOptions>,
+        depth: number
+    ): void
     {
-        return DefaultMergeOptions.from(options);
-    }
+        const keys: PropertyKey[] = Reflect.ownKeys(source);
+        const totalKeys: number = keys.length;
 
-    /**
-     * Assert that current recursion depth has now exceeded the maximum depth
-     *
-     * @param {number} currentDepth
-     * @param {object[]} sources
-     * @param {MergeOptions} [options] Defaults to this Merger's options when none given
-     *
-     * @protected
-     *
-     * @throws {MergeError}
-     */
-    protected assertMaxDepthNotExceeded(currentDepth: number, sources: object[], options?: MergeOptions): void
-    {
-        const max: number | undefined = options?.depth || this.options.depth;
+        for (let j = 0; j < totalKeys; j++) {
+            const key: PropertyKey = keys[j];
 
-        if (max && currentDepth > max) {
-            throw new MergeError(`Maximum merge depth (${max}) has been exceeded`, {
-                cause: {
-                    source: sources,
-                    depth: currentDepth
-                }
-            });
-        }
-    }
+            // Use the reflection utility to check for unsafe keys (prototype pollution)
+            if (isKeyUnsafe(key)) {
+                continue;
+            }
 
-    /**
-     * Assert given source is a valid object
-     *
-     * @param {unknown} source
-     * @param {number} index
-     * @param {number} currentDepth
-     *
-     * @protected
-     *
-     * @throws {MergeError}
-     */
-    protected assertSourceObject(source: unknown, index: number, currentDepth: number): void
-    {
-        if (!source || typeof source != 'object' || Array.isArray(source)) {
-            throw new MergeError(`Unable to merge source of invalid type "${descTag(source)}" (source index: ${index})`, {
-                cause: {
-                    source: source,
-                    index: index,
-                    depth: currentDepth
-                }
-            });
+            if (typeof options.skip === 'function' && options.skip(key, source, result)) {
+                continue;
+            }
+
+            const value: any = Reflect.get(source, key);
+            const target: MergeSourceInfo = {
+                result,
+                key,
+                value,
+                source,
+                sourceIndex,
+                depth
+            };
+
+            const next: NextCallback = (nestedSources, nestedOptions, nextDepth) =>
+            {
+                return this.merge(nestedSources, nestedOptions, nextDepth);
+            };
+
+            const mergedValue: any = options.callback!(target, next, options);
+
+            Reflect.set(result, key, mergedValue);
         }
     }
 }

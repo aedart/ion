@@ -1,36 +1,39 @@
-import type { ObjectsMerger } from "@aedart/contracts/support/objects";
+import type {
+    MergeCallback,
+    MergeOptions,
+    ObjectsMerger
+} from "@aedart/contracts/support/objects";
 import Merger from "./merge/Merger.js";
 
 /**
- * Returns a new Object Merger instance
- * 
- * @return {ObjectsMerger}
+ * Returns a new Objects Merger instance
+ *
+ * @returns {ObjectsMerger}
  */
 export function merge(): ObjectsMerger;
 
 /**
- * Returns a merger of given source objects
+ * Returns a new Objects Merger using the following options or callback
  *
- * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
- * of all given sources._
+ * @param {MergeCallback | MergeOptions} options
+ *
+ * @returns {ObjectsMerger}
+ */
+export function merge(options: MergeCallback | MergeOptions): ObjectsMerger;
+
+/**
+ * Returns a merger of given source objects
  *
  * @template SourceA extends object
  *
  * @param {SourceA} a
  *
  * @returns {SourceA}
- *
- * @throws {MergeError}
  */
-export function merge<
-    SourceA extends object
->(a: SourceA): SourceA;
+export function merge<SourceA extends object>(a: SourceA): SourceA;
 
 /**
  * Returns a merger of given source objects
- *
- * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
- * of all given sources._
  *
  * @template SourceA extends object
  * @template SourceB extends object
@@ -39,19 +42,11 @@ export function merge<
  * @param {SourceB} b
  *
  * @returns {SourceA & SourceB}
- *
- * @throws {MergeError}
  */
-export function merge<
-    SourceA extends object,
-    SourceB extends object,
->(a: SourceA, b: SourceB): SourceA & SourceB;
+export function merge<SourceA extends object, SourceB extends object>(a: SourceA, b: SourceB): SourceA & SourceB;
 
 /**
  * Returns a merger of given source objects
- *
- * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
- * of all given sources._
  *
  * @template SourceA extends object
  * @template SourceB extends object
@@ -62,124 +57,44 @@ export function merge<
  * @param {SourceC} c
  *
  * @returns {SourceA & SourceB & SourceC}
- *
- * @throws {MergeError}
  */
-export function merge<
-    SourceA extends object,
-    SourceB extends object,
-    SourceC extends object,
->(a: SourceA, b: SourceB, c: SourceC): SourceA & SourceB & SourceC;
+export function merge<SourceA extends object, SourceB extends object, SourceC extends object>(a: SourceA, b: SourceB, c: SourceC): SourceA & SourceB & SourceC;
 
 /**
  * Returns a merger of given source objects
  *
- * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
- * of all given sources._
+ * @param {object} a
+ * @param {object} b
+ * @param {...object} sources
  *
- * @template SourceA extends object
- * @template SourceB extends object
- * @template SourceC extends object
- * @template SourceD extends object
- *
- * @param {SourceA} a
- * @param {SourceB} b
- * @param {SourceC} c
- * @param {SourceD} d
- *
- * @returns {SourceA & SourceB & SourceC & SourceD}
- *
- * @throws {MergeError}
+ * @returns {object}
  */
-export function merge<
-    SourceA extends object,
-    SourceB extends object,
-    SourceC extends object,
-    SourceD extends object,
->(a: SourceA, b: SourceB, c: SourceC, d: SourceD): SourceA & SourceB & SourceC & SourceD;
+export function merge(a: object, b: object, ...sources: object[]): object;
 
 /**
- * Returns a merger of given source objects
+ * Returns a new Objects Merger instance or merges given sources
  *
- * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
- * of all given sources._
+ * @param {object | MergeCallback | MergeOptions} [a]
+ * @param {object} [b]
+ * @param {...object} [sources]
  *
- * @template SourceA extends object
- * @template SourceB extends object
- * @template SourceC extends object
- * @template SourceD extends object
- * @template SourceE extends object
- *
- * @param {SourceA} a
- * @param {SourceB} b
- * @param {SourceC} c
- * @param {SourceD} d
- * @param {SourceE} e
- *
- * @returns {SourceA & SourceB & SourceC & SourceD & SourceE}
- *
- * @throws {MergeError}
+ * @returns {ObjectsMerger | object}
  */
-export function merge<
-    SourceA extends object,
-    SourceB extends object,
-    SourceC extends object,
-    SourceD extends object,
-    SourceE extends object,
->(a: SourceA, b: SourceB, c: SourceC, d: SourceD, e: SourceE): SourceA & SourceB & SourceC & SourceD & SourceE;
-
-/**
- * Returns a merger of given source objects
- *
- * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
- * of all given sources._
- *
- * @template SourceA extends object
- * @template SourceB extends object
- * @template SourceC extends object
- * @template SourceD extends object
- * @template SourceE extends object
- * @template SourceF extends object
- *
- * @param {SourceA} a
- * @param {SourceB} b
- * @param {SourceC} c
- * @param {SourceD} d
- * @param {SourceE} e
- * @param {SourceF} f
- *
- * @returns {SourceA & SourceB & SourceC & SourceD & SourceE & SourceF}
- *
- * @throws {MergeError}
- */
-export function merge<
-    SourceA extends object,
-    SourceB extends object,
-    SourceC extends object,
-    SourceD extends object,
-    SourceE extends object,
-    SourceF extends object,
->(a: SourceA, b: SourceB, c: SourceC, d: SourceD, e: SourceE, f: SourceF): SourceA & SourceB & SourceC & SourceD & SourceE & SourceF;
-
-/**
- * Returns a merger of given source objects
- *
- * **Note**: _This method is responsible for returning [deep copy]{@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy}
- * of all given sources._
- * 
- * @param {....object} [sources]
- * 
- * @return {ObjectsMerger|object}
- * 
- * @throws {MergeError} 
- */
-export function merge(...sources: object[])
+export function merge(a?: object | MergeCallback | MergeOptions, b?: object, ...sources: object[]): ObjectsMerger | object
 {
-    const merger: ObjectsMerger = new Merger();
-    
-    if (sources.length == 0) {
-        return merger;
+    // Factory call: merge()
+    if (arguments.length === 0)
+    {
+        return new Merger();
     }
-    
-    return merger.of(...sources);
+
+    // Configuration call: merge(options)
+    // Note: We detect options if 'a' is a function or an object that isn't a plain "data" object.
+    if (arguments.length === 1 && (typeof a === 'function' || (typeof a === 'object' && a !== null && !Reflect.has(a, 'constructor'))))
+    {
+        return new Merger(a as MergeCallback | MergeOptions);
+    }
+
+    // Direct merge call: merge(a, b, ...)
+    return (new Merger()).of(...(arguments as unknown as object[]));
 }

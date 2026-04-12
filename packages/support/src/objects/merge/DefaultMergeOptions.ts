@@ -3,16 +3,16 @@ import type {
     MergeOptions,
     SkipKeyCallback
 } from "@aedart/contracts/support/objects";
-import type { ArrayMergeOptions } from "@aedart/contracts/support/arrays";
-import { DEFAULT_MAX_MERGE_DEPTH } from "@aedart/contracts/support/objects";
+import type {ArrayMergeOptions} from "@aedart/contracts/support/arrays";
+import {DEFAULT_MAX_MERGE_DEPTH} from "@aedart/contracts/support/objects";
 import MergeError from "../exceptions/MergeError.js";
-import { defaultMergeCallback } from "./defaultMergeCallback.js";
-import { makeSkipCallback } from "./makeSkipCallback.js";
-import { populate } from "../populate.js";
+import {defaultMergeCallback} from "./defaultMergeCallback.js";
+import {makeSkipCallback} from "./makeSkipCallback.js";
+import {populate} from "../populate.js";
 
 /**
  * Default Merge Options
- * 
+ *
  * @see MergeOptions
  */
 export default class DefaultMergeOptions implements MergeOptions
@@ -159,46 +159,40 @@ export default class DefaultMergeOptions implements MergeOptions
      *
      * @param {MergeCallback | MergeOptions} [options]
      */
-    public constructor(options?: MergeCallback | MergeOptions) {
-        // Merge provided options, if any given
-        if (options && typeof options == 'object') {
+    public constructor(options?: MergeCallback | MergeOptions)
+    {
+        if (options !== undefined && options !== null && typeof options === 'object') {
             populate(this, options);
         }
 
-        // Abort in case of invalid maximum depth - other options can also be asserted, but they are less important.
-        // The Browser / Node.js Engine will throw an error in case that they maximum recursion level is reached!
         if (this.depth < 0) {
             throw new MergeError('Invalid maximum "depth" merge option value', {
-                cause: {
-                    options: this
-                }
+                cause: {options: this}
             });
         }
 
-        // Resolve merge callback
-        this.callback = (options && typeof options == 'function')
+        // Resolve merge callback: prioritize function argument, then options property, then default.
+        this.callback = (typeof options === 'function')
             ? options
-            : defaultMergeCallback
-        
-        // Resolve skip callback
-        if (typeof this.skip != 'function') {
+            : (options as MergeOptions)?.callback ?? defaultMergeCallback;
+
+        // Resolve skip callback: ensure it is always a function to avoid type-checking during merge loops.
+        if (typeof this.skip !== 'function') {
             this.skip = makeSkipCallback(this.skip as PropertyKey[]);
         }
     }
-    
+
     /**
      * Create new default merge options from given options
      *
      * @param {MergeCallback | MergeOptions} [options]
-     * 
-     * @return {DefaultMergeOptions}
-     * 
+     *
+     * @return {Readonly<DefaultMergeOptions>}
+     *
      * @throws {MergeError}
      */
     public static from(options?: MergeCallback | MergeOptions): Readonly<DefaultMergeOptions>
     {
-        const resoled = new this(options);
-        
-        return Object.freeze(resoled) as Readonly<DefaultMergeOptions>;
+        return Object.freeze(new this(options));
     }
 }

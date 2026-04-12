@@ -1,44 +1,84 @@
-import { MergeCallback, MergeOptions, MergeSourceInfo, NextCallback } from "@aedart/contracts/support/objects";
-import { isConcatSpreadable, isSafeArrayLike, merge as mergeArrays } from "../../arrays/index.js";
-import { canCloneUsingStructuredClone } from './canCloneUsingStructuredClone.js'
-import MergeError from '../exceptions/MergeError.js'
-import { isWeakKind } from "../../reflections/isWeakKind.js";
-import { descTag } from "../../misc/descTag.js";
+import {
+    MergeCallback,
+    MergeOptions,
+    MergeSourceInfo,
+    NextCallback,
+} from "@aedart/contracts/support/objects";
+import {
+    DEFAULT_MAX_MERGE_DEPTH,
+    CLONE
+} from "@aedart/contracts/support/objects";
+import {
+    isConcatSpreadable,
+    isSafeArrayLike,
+    merge as mergeArrays
+} from "../../arrays/index.js";
+import {canCloneUsingStructuredClone} from './canCloneUsingStructuredClone.js';
+import {isCloneable} from "../isCloneable.js";
+import MergeError from '../exceptions/MergeError.js';
+import {isWeakKind} from "../../reflections/isWeakKind.js";
+import {descTag} from "../../misc/descTag.js";
 
 /**
  * The default merge callback
- * 
+ *
  * @type {MergeCallback}
  */
-export const defaultMergeCallback: MergeCallback = function(target: MergeSourceInfo, next: NextCallback, options: Readonly<MergeOptions>): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+export const defaultMergeCallback: MergeCallback = function (
+    target: MergeSourceInfo,
+    next: NextCallback,
+    options: Readonly<MergeOptions>
+): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 {
+    let {value} = target;
     const {
         result,
         key,
-        value,
         source,
         sourceIndex,
         depth
     } = target;
 
-    // Determine if result contains key
+    // 1. Depth Enforcement
+    const maxDepth = options.depth ?? DEFAULT_MAX_MERGE_DEPTH;
+    if (depth >= maxDepth) {
+        throw new MergeError(`Maximum merge depth (${maxDepth}) exceeded at key "${String(key)}"`, {
+            cause: {target, options}
+        });
+    }
+
     const hasExisting: boolean = Reflect.has(result, key);
 
-    // The existing value, if any
     // @ts-expect-error Existing value can be of any type here...
-    const existingValue: any /* eslint-disable-line @typescript-eslint/no-explicit-any */ = result[key];
+    const existingValue: any = result[key];
 
-    // Determine the type and resolve value based on it... 
+    // 2. Cloneable Support
+    if (options.clone !== false
+        && value !== null
+        && typeof value === 'object'
+        && isCloneable(value)
+    ) {
+        const clone = (value as any)[CLONE]();
+
+        if (clone === null || typeof clone !== 'object') {
+            throw new MergeError(`Expected clone() method to return object, ${descTag(clone)} was returned`, {
+                cause: {
+                    key,
+                    source: value,
+                    clone: clone,
+                }
+            });
+        }
+
+        value = clone;
+    }
+
     const type: string = typeof value;
 
     switch (type) {
-
         // -------------------------------------------------------------------------------------------------------- //
         // Primitives
-        // @see https://developer.mozilla.org/en-US/docs/Glossary/Primitive
-
         case 'undefined':
-            // Do not overwrite existing value with `undefined`, if options do not allow it...
             if (value === undefined
                 && options.overwriteWithUndefined === false
                 && hasExisting
@@ -54,25 +94,18 @@ export const defaultMergeCallback: MergeCallback = function(target: MergeSourceI
         case 'bigint':
         case 'boolean':
         case 'symbol':
-            return value;
-
-        // -------------------------------------------------------------------------------------------------------- //
-        // Functions
-
         case 'function':
             return value;
 
         // -------------------------------------------------------------------------------------------------------- //
         // Null, Arrays and Objects
         case 'object':
-            // Null (primitive) - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             if (value === null) {
                 return value;
             }
 
-            // Arrays - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // 1. Arrays, and array-like...
             const isArray: boolean = Array.isArray(value); /* eslint-disable-line no-case-declarations */
-
             if (isArray || isConcatSpreadable(value) || isSafeArrayLike(value)) {
 
                 // If required to merge with existing value, if one exists...
@@ -97,42 +130,43 @@ export const defaultMergeCallback: MergeCallback = function(target: MergeSourceI
                 // will deal with them.
             }
 
-            // Objects (of "native" kind) - - - - - - - - - - - - - - - - - - - - - - - -
-            // Clone the object of a "native" kind value, if supported.
+            // 2. Standard Array handling (when mergeArrays is false)
+            if (isArray) {
+                return mergeArrays()
+                    .using(options.arrayMergeOptions)
+                    .of(value);
+            }
+
+            // 3. Cloneable / Native kinds
             if (canCloneUsingStructuredClone(value)) {
                 return structuredClone(value);
             }
 
-            // Objects (WeakRef, WeakMap and WeakSet) - - - - - - - - - - - - - - - - - -
-            // "Weak Reference" kind of objects cannot, nor should they, be cloned. 
+            // 4. Weak References
             if (isWeakKind(value)) {
                 return value;
             }
 
-            // Objects (basic)- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // Merge with existing, if existing value is not null...
+            // 5. Basic Objects / Deep Recursion
             if (hasExisting
-                && typeof existingValue == 'object'
                 && existingValue !== null
-                && !(Array.isArray(existingValue))
+                && typeof existingValue === 'object'
+                && !Array.isArray(existingValue)
             ) {
-                return next([ existingValue, value ], options, depth + 1);
+                return next([existingValue, value], options, depth + 1);
             }
 
-            // Otherwise, create a new object and merge it.
-            return next([ Object.create(null), value ], options, depth + 1);
+            return next([Object.create(null), value], options, depth + 1);
 
-        // -------------------------------------------------------------------------------------------------------- //
-        // If for some reason this point is reached, it means that we are unable to merge "something".
         default:
             throw new MergeError(`Unable to merge value of type ${type} (${descTag(value)}) at source index ${sourceIndex}`, {
                 cause: {
-                    key: key,
-                    value: value,
-                    source: source,
-                    sourceIndex: sourceIndex,
-                    depth: depth,
-                    options: options
+                    key,
+                    value,
+                    source,
+                    sourceIndex,
+                    depth,
+                    options
                 }
             });
     }

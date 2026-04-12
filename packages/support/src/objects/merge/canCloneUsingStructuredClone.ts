@@ -1,10 +1,10 @@
-import type { Constructor } from "@aedart/contracts";
-import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
+import type {Constructor} from "@aedart/contracts";
+import {TYPED_ARRAY_PROTOTYPE} from "@aedart/contracts/support/reflections";
 
 /**
  * Determine if an object value can be cloned via `structuredClone()`
  *
- * @see https://developer.mozilla.org/en-US/docs/Web/API/structuredClone
+ * @see https://mozilla.org
  *
  * @internal
  *
@@ -14,8 +14,14 @@ import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
  */
 export function canCloneUsingStructuredClone(value: object): boolean
 {
-    const supported = [
-        // Array, // Handled by array, with evt. array value merges
+    // 1. Handle Typed Arrays separately using prototype checking (V8-optimized)
+    if (TYPED_ARRAY_PROTOTYPE && TYPED_ARRAY_PROTOTYPE.isPrototypeOf(value))
+    {
+        return true;
+    }
+
+    // 2. List of standard constructors that support structured cloning
+    const constructors = [
         ArrayBuffer,
         Boolean,
         DataView,
@@ -23,16 +29,18 @@ export function canCloneUsingStructuredClone(value: object): boolean
         Error,
         Map,
         Number,
-        // Object, // Handled by "basic" objects merging...
-        // (Primitive Types), // Also handled elsewhere...
         RegExp,
         Set,
-        String,
-        TYPED_ARRAY_PROTOTYPE
+        String
     ];
 
-    for (const constructor of supported) {
-        if (value instanceof (constructor as Constructor)) {
+    // Performance: Standard index-based loop with cached length
+    for (let i = 0, len = constructors.length; i < len; i++)
+    {
+        const candidate = constructors[i];
+
+        if (value instanceof (candidate as Constructor))
+        {
             return true;
         }
     }
