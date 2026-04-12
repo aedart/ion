@@ -1,9 +1,9 @@
-import { TYPED_ARRAY_PROTOTYPE } from "@aedart/contracts/support/reflections";
 import {
     merge,
     Merger,
     MergeError
 } from "@aedart/support/objects";
+import { ArrayMergeError } from '@aedart/support/arrays';
 import { CLONE } from "@aedart/contracts/support/objects";
 import { isKeyUnsafe } from "@aedart/support/reflections";
 import { describe, expect, test } from 'vitest';
@@ -321,15 +321,15 @@ describe('@aedart/support/objects', () => {
 
                 return merge(a, b);
             }
-
+            
             // --------------------------------------------------------------------- //
 
             expect(callback)
-                .toThrow(MergeError);
+                .toThrow(ArrayMergeError);
         });
 
         // TODO: ...
-        test.skip('can merge concat spreadable object values', () => {
+        test('can merge concat spreadable object values', () => {
 
             const a = {
                 'a': [ 1, 2, 3 ],
@@ -371,15 +371,14 @@ describe('@aedart/support/objects', () => {
             expect(result.a, 'a) Array was not merged correctly with concat spreadable set to true')
                 .toEqual([ 1, 2, 3, 'a', 'b', 'c' ]);
 
-            expect(JSON.stringify(result.b), 'b) Array was not merged correctly with concat spreadable set to false')
-                .toBe(JSON.stringify([ 'foo', b['b'] ]));
+            expect(result.b, 'b) Array was not merged correctly with concat spreadable set to false')
+                .toEqual(['foo', 'bar', 'zar'])
 
             expect(result.c, 'c) Merged failed on top of object with concat spreadable set to true')
                 .toEqual([ 'bar', 'foo' ]);
         });
 
-        // TODO: ...
-        test.skip('does not merge array-like objects by default', () => {
+        test('does not merge array-like objects by default', () => {
 
             const a = {
                 'a': [ 1, 2, 3 ],
@@ -432,9 +431,8 @@ describe('@aedart/support/objects', () => {
             expect(result.e, 'e) Typed Array object should not be considered array-like (in this context)')
                 .toBeInstanceOf(Int8Array);
         });
-
-        // TODO: ...
-        test.skip('can merge array-like objects', () => {
+        
+        test('can merge array-like objects', () => {
 
             const a = {
                 'a': [ 1, 2, 3 ],
@@ -476,16 +474,16 @@ describe('@aedart/support/objects', () => {
                 .of(a, b);
 
             // Debug
-            // console.log('result', result);
+            //console.log('result', result);
 
-            expect(JSON.stringify(result.a), 'a) should have merged existing array with array-like object')
-                .toBe(JSON.stringify([1, 2, 3, {0: 'a', 1: 'b', length: 2}]));
+            expect(result.a, 'a) should have merged existing array with array-like object')
+                .toEqual([ 1, 2, 3, 'a', 'b' ])
 
-            expect(JSON.stringify(result.b), 'b) should have merged array-like object with an array')
-                .toBe(JSON.stringify([{0: 'a', 1: 'b', length: 2}, 'foo']));
+            expect(result.b, 'b) should have merged array-like object with an array')
+                .toEqual([ 'a', 'b', 'foo' ]);
 
-            expect(JSON.stringify(result.c), 'c) failed to merge array-like value with array-like object')
-                .toBe(JSON.stringify({0: 'foo', 1: 'bar', length: 2}));
+            expect(result.c, 'c) failed to merge array-like value with array-like object')
+                .toEqual({ 0: 'foo', 1: 'bar', length: 2 });
 
             expect(result.d, 'd) String object should not be considered array-like (in this context)')
                 .toBeInstanceOf(String);
@@ -517,8 +515,7 @@ describe('@aedart/support/objects', () => {
                 .toBe(b['foo'])
         });
 
-        // TODO: ...
-        test.skip('can merge nested objects', () => {
+        test('can merge nested objects', () => {
             const a = {
                 'foo': null,
                 'bar': {
@@ -622,7 +619,7 @@ describe('@aedart/support/objects', () => {
                 .toThrow(MergeError);
         });
 
-        test('can merge with maximum depth set to zero', () => {
+        test('fails when attempting to merge with depth set to zero', () => {
 
             const a = {
                 'foo': false,
@@ -633,21 +630,21 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge()
-                .using({
-                    depth: 0
-                })
-                .of(a, b);
+            const callback = () => {
+                return merge()
+                    .using({
+                        depth: 0
+                    })
+                    .of(a, b);
+            }
 
             // --------------------------------------------------------------------- //
 
-            const processed = Reflect.has(result, 'foo') && result['foo'] === true; 
-            expect(processed, 'Failed to merge with maximum depth option set to zero')
-                .toBeTruthy();
+            expect(callback)
+                .toThrow(MergeError);
         });
 
-        // TODO: ...
-        test.skip('can clones objects of native kind', () => {
+        test('can clones objects of native kind', () => {
 
             const now = new Date();
 
@@ -743,7 +740,7 @@ describe('@aedart/support/objects', () => {
                 {
                     name: 'TypedArray',
                     source: { value: new Int16Array(new ArrayBuffer(16)) },
-                    expectedInstanceOf: TYPED_ARRAY_PROTOTYPE,
+                    expectedInstanceOf: Int16Array,
                     match: (cloned: Int16Array) => {
                         return cloned.byteLength === 16;
                     }
@@ -760,7 +757,6 @@ describe('@aedart/support/objects', () => {
                 expect(Reflect.has(result, 'value'),`No value property in result for ${entry.name}`)
                     .toBeTruthy();
 
-                // @ts-expect-error Ignore "expectedInstanceOf", for testing purposes
                 expect(result.value instanceof entry.expectedInstanceOf, `Invalid instanceof for ${entry.name}`)
                     .toBeTruthy();
 
@@ -773,8 +769,7 @@ describe('@aedart/support/objects', () => {
             }
         });
 
-        // TODO: ...
-        test.skip('does not clone objects of "Weak Reference" kind', () => {
+        test('does not clone objects of "Weak Reference" kind', () => {
 
             class A {}
 
@@ -804,8 +799,7 @@ describe('@aedart/support/objects', () => {
                 .toBeTruthy();
         });
 
-        // TODO: ...
-        test.skip('favours cloneable object\'s clone() method', () => {
+        test('favours cloneable object\'s clone() method', () => {
 
             const a = {
                 a: {
@@ -839,8 +833,7 @@ describe('@aedart/support/objects', () => {
                 .toBe(42)
         });
 
-        // TODO: ...
-        test.skip('can disable cloneable behaviour', () => {
+        test('can disable cloneable behaviour', () => {
 
             const a = {
                 a: {
@@ -885,8 +878,8 @@ describe('@aedart/support/objects', () => {
             const b = {
                 a: {
                     name: 'Jim',
-                    clone: () => {
-                        return null; // Should cause error
+                    [CLONE]: () => {
+                        return undefined; // Should cause error
                     }
                 }
             };
