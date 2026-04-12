@@ -33,6 +33,7 @@ Temporary changelog for feature branch.
 * Refactored `populate()` to accept a list of "allowed" properties, with respect for "safe" mode (_support package_).
 * `ConcatSpreadable` interface changed to include numeric indexer to ensure type safety for the elements being spread (_contracts package_).
 * `useCloneable` option has been renamed to `clone`, in `MergeOptions` (_contracts and support packages_)
+* `isConcatSpreadable()` now only returns true if `Symbol.isConcatSpreadable` is present and set to `true`.
 
 **Non-breaking Changes**
 
