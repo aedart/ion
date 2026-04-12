@@ -26,4 +26,5 @@ export { type Cloneable, type Populatable };
 
 export { CLONE } from './Cloneable.js';
 
+export * from './merge/index.js';
 export * from './types.js';
