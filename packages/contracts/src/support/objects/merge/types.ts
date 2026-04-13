@@ -49,7 +49,7 @@ export type MergeCallback = (
     /**
      * Callback to invoke for merging nested objects
      *
-     * @type {function}
+     * @type {NextCallback}
      */
     next: NextCallback,
     /**
