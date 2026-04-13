@@ -819,7 +819,41 @@ describe('@aedart/support/objects', () => {
                 .toBeTruthy();
         });
 
-        test("favours cloneable object's clone() method", () => {
+        test('clone options is disabled by default', () => {
+            const a = {
+                a: {
+                    name: 'John',
+                },
+            };
+
+            const b = {
+                a: {
+                    name: 'Jim',
+                    
+                    // If `clone` option is set to true, then the `name` property
+                    // would be ignored - this [CLONE]() would simply be called
+                    // and the `name` property will be set to "Rick"!
+                    // BUT - that is NOT what we want as a default behaviour by merge().
+                    [CLONE]: () => {
+                        return {
+                            name: 'Rick',
+                        };
+                    },
+                },
+            };
+
+            // --------------------------------------------------------------------- //
+
+            const result = merge(a, b);
+
+            // Debug
+            // console.log('result', result);
+
+            expect(result.a.name, 'Clone was not disabled')
+                .toBe('Jim');
+        });
+        
+        test("can clone objects via [CLONE]() method", () => {
             const a = {
                 a: {
                     name: 'John',
@@ -841,48 +875,17 @@ describe('@aedart/support/objects', () => {
 
             // --------------------------------------------------------------------- //
 
-            const result = merge(a, b);
-
-            // Debug
-            // console.log('result', result);
-
-            expect(result.a.name, 'Clone method not favoured')
-                .toBe('Rick');
-            expect(result.a.age, 'Other properties are not merged in correctly')
-                .toBe(42);
-        });
-
-        test('can disable cloneable behaviour', () => {
-            const a = {
-                a: {
-                    name: 'John',
-                },
-            };
-
-            const b = {
-                a: {
-                    name: 'Jim',
-                    [CLONE]: () => {
-                        return {
-                            name: 'Rick',
-                        };
-                    },
-                },
-            };
-
-            // --------------------------------------------------------------------- //
-
             const result = merge()
-                .using({
-                    clone: false,
-                })
+                .using({ clone: true })
                 .of(a, b);
 
             // Debug
             // console.log('result', result);
 
-            expect(result.a.name, 'Clone was not disabled')
-                .toBe('Jim');
+            expect(result.a.name, 'Clone method not applied')
+                .toBe('Rick');
+            expect(result.a.age, 'Other properties are not merged in correctly')
+                .toBe(42);
         });
 
         test('fails when cloneable source returns invalid value', () => {
@@ -904,7 +907,9 @@ describe('@aedart/support/objects', () => {
             // --------------------------------------------------------------------- //
 
             const callback = () => {
-                return merge(a, b);
+                return merge()
+                    .using({ clone: true })
+                    .of(a, b);
             };
 
             expect(callback)

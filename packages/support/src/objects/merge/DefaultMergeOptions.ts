@@ -35,7 +35,7 @@ export default class DefaultMergeOptions implements MergeOptions
     /**
      * @inheritdoc
      */
-    clone: boolean = true;
+    clone: boolean = false;
 
     /**
      * @inheritdoc
