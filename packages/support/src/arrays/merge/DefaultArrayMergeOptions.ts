@@ -8,32 +8,17 @@ import { defaultArrayMergeCallback } from './defaultArrayMergeCallback.js';
 export default class DefaultArrayMergeOptions implements ArrayMergeOptions
 {
     /**
-     * Transfer functions
-     *
-     * **When `true`**: _functions are transferred into resulting array._
-     *
-     * **When `false` (_default behaviour_)**: _The merge operation will fail when a function
-     * is encountered (functions are not cloneable by default)._
-     *
-     * @type {boolean}
+     * @inheritdoc
      */
     transferFunctions: boolean = false;
 
     /**
-     * Merge callback to be applied
-     *
-     * **Note**: _When no callback is provided, then the merge function's default
-     * callback is used._
+     * @inheritdoc
      */
     callback: ArrayMergeCallback;
 
     /**
-     * Use CLONE symbol
-     *
-     * **When `true`**: _The merge operation will attempt to use the `CLONE` symbol
-     * for deep cloning, if available on the element._
-     *
-     * @see Cloneable
+     * @inheritdoc
      */
     clone: boolean = false;
 
