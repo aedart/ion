@@ -7,8 +7,8 @@ import {
     ObjectsMerger,
 } from '@aedart/contracts/support/objects';
 import { isKeyUnsafe } from '../../reflections/isKeyUnsafe.js';
+import MergeError from '../exceptions/MergeError.js';
 import DefaultMergeOptions from './DefaultMergeOptions.js';
-import MergeError from "../exceptions/MergeError.js";
 
 /**
  * Merger
@@ -68,7 +68,7 @@ export default class Merger implements ObjectsMerger
      * @param {number} depth
      *
      * @returns {object}
-     * 
+     *
      * @throws {MergeError}
      */
     protected merge(
@@ -98,15 +98,15 @@ export default class Merger implements ObjectsMerger
 
     /**
      * Merge the given source into the resulting object
-     * 
+     *
      * @param {object} result
      * @param {object} source
      * @param {number} sourceIndex
      * @param {Readonly<MergeOptions>} options
      * @param {number} depth
-     * 
+     *
      * @throws {MergeError}
-     * 
+     *
      * @protected
      */
     protected mergeSource(
@@ -149,11 +149,14 @@ export default class Merger implements ObjectsMerger
 
             // Depth Enforcement
             if (depth >= maxDepth) {
-                throw new MergeError(`Maximum merge depth (${maxDepth}) exceeded at key "${String(key)}"`, {
-                    cause: { target, options },
-                });
+                throw new MergeError(
+                    `Maximum merge depth (${maxDepth}) exceeded at key "${String(key)}"`,
+                    {
+                        cause: { target, options },
+                    },
+                );
             }
-            
+
             const mergedValue: any = options.callback!(target, next, options);
 
             Reflect.set(result, key, mergedValue);

@@ -829,7 +829,7 @@ describe('@aedart/support/objects', () => {
             const b = {
                 a: {
                     name: 'Jim',
-                    
+
                     // If `clone` option is set to true, then the `name` property
                     // would be ignored - this [CLONE]() would simply be called
                     // and the `name` property will be set to "Rick"!
@@ -852,8 +852,8 @@ describe('@aedart/support/objects', () => {
             expect(result.a.name, 'Clone was not disabled')
                 .toBe('Jim');
         });
-        
-        test("can clone objects via [CLONE]() method", () => {
+
+        test('can clone objects via [CLONE]() method', () => {
             const a = {
                 a: {
                     name: 'John',
