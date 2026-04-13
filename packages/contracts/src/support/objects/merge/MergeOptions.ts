@@ -69,10 +69,10 @@ export default interface MergeOptions {
      * Flag, if source object is [`Cloneable`]{@link import('@aedart/contracts/support/objects').Cloneable}, then the
      * resulting object from the clone method is used.
      *
-     * **When `true` (_default behaviour_)**: _If source object is cloneable then the resulting object from clone
+     * **When `true`**: _If source object is cloneable then the resulting object from clone
      * method is used. Its properties are then iterated by the merge function._
      *
-     * **When `false`**: _Cloneable objects are treated like any other objects, the clone method is ignored._
+     * **When `false` (_default behaviour_)**: _Cloneable objects are treated like any other objects, the clone method is ignored._
      *
      * **Example:**
      * ```js
