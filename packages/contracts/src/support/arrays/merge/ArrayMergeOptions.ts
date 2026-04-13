@@ -33,6 +33,7 @@ export default interface ArrayMergeOptions {
      * for deep cloning, if available on the element._
      *
      * @see Cloneable
+     * @see MergeOptions.clone
      */
     clone?: boolean;
 }
