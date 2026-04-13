@@ -4,7 +4,7 @@ import {
     MergeSourceInfo,
     NextCallback,
 } from '@aedart/contracts/support/objects';
-import { CLONE, DEFAULT_MAX_MERGE_DEPTH } from '@aedart/contracts/support/objects';
+import { CLONE } from '@aedart/contracts/support/objects';
 import { isConcatSpreadable, isSafeArrayLike, merge as mergeArrays } from '../../arrays/index.js';
 import { descTag } from '../../misc/descTag.js';
 import { isWeakKind } from '../../reflections/isWeakKind.js';
@@ -32,20 +32,12 @@ export const defaultMergeCallback: MergeCallback = function(
         depth,
     } = target;
 
-    // 1. Depth Enforcement
-    const maxDepth = options.depth ?? DEFAULT_MAX_MERGE_DEPTH;
-    if (depth >= maxDepth) {
-        throw new MergeError(`Maximum merge depth (${maxDepth}) exceeded at key "${String(key)}"`, {
-            cause: { target, options },
-        });
-    }
-
     const hasExisting: boolean = Reflect.has(result, key);
 
     // @ts-expect-error Existing value can be of any type here...
     const existingValue: any = result[key];
 
-    // 2. Cloneable Support
+    // Cloneable Support
     if (
         options.clone !== false
         && value !== null

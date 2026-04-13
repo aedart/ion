@@ -1,4 +1,5 @@
-import type {
+import {
+    DEFAULT_MAX_MERGE_DEPTH,
     MergeCallback,
     MergeOptions,
     MergeSourceInfo,
@@ -7,6 +8,7 @@ import type {
 } from '@aedart/contracts/support/objects';
 import { isKeyUnsafe } from '../../reflections/isKeyUnsafe.js';
 import DefaultMergeOptions from './DefaultMergeOptions.js';
+import MergeError from "../exceptions/MergeError.js";
 
 /**
  * Merger
@@ -66,6 +68,8 @@ export default class Merger implements ObjectsMerger
      * @param {number} depth
      *
      * @returns {object}
+     * 
+     * @throws {MergeError}
      */
     protected merge(
         sources: object[],
@@ -91,6 +95,20 @@ export default class Merger implements ObjectsMerger
     /**
      * Merge properties from source into result
      */
+
+    /**
+     * Merge the given source into the resulting object
+     * 
+     * @param {object} result
+     * @param {object} source
+     * @param {number} sourceIndex
+     * @param {Readonly<MergeOptions>} options
+     * @param {number} depth
+     * 
+     * @throws {MergeError}
+     * 
+     * @protected
+     */
     protected mergeSource(
         result: object,
         source: object,
@@ -101,6 +119,7 @@ export default class Merger implements ObjectsMerger
     {
         const keys: PropertyKey[] = Reflect.ownKeys(source);
         const totalKeys: number = keys.length;
+        const maxDepth = options.depth ?? DEFAULT_MAX_MERGE_DEPTH;
 
         for (let j = 0; j < totalKeys; j++) {
             const key: PropertyKey = keys[j];
@@ -128,6 +147,13 @@ export default class Merger implements ObjectsMerger
                 return this.merge(nestedSources, nestedOptions, nextDepth);
             };
 
+            // Depth Enforcement
+            if (depth >= maxDepth) {
+                throw new MergeError(`Maximum merge depth (${maxDepth}) exceeded at key "${String(key)}"`, {
+                    cause: { target, options },
+                });
+            }
+            
             const mergedValue: any = options.callback!(target, next, options);
 
             Reflect.set(result, key, mergedValue);
