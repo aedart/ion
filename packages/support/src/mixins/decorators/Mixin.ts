@@ -5,6 +5,8 @@ import { HasInstance } from "./HasInstance.js";
 import { DeDupe } from "./DeDupe.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Decorates given mixin to add deduplication, application caching, and instance of support
  * 
  * @param {MixinFunction} mixin

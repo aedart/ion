@@ -3,6 +3,8 @@ import { CACHED_APPLICATIONS } from "@aedart/contracts/support/mixins";
 import { wrap } from "../wrap.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Decorates given mixin such that it caches its applications.
  * 
  * Method ensures that when mixin is applied multiple times to the same

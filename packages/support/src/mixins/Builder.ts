@@ -2,6 +2,8 @@ import type { Constructor } from "@aedart/contracts";
 import type { MixinFunction } from "@aedart/contracts/support/mixins";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Mixin Builder
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends#mix-ins

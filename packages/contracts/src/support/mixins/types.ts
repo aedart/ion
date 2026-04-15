@@ -1,6 +1,8 @@
 import type { Constructor } from "../../types.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * A function that returns an abstract subclass ("Mix-in") of its argument 
  * 
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends#mix-ins

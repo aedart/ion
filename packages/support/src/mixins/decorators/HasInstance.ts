@@ -2,6 +2,8 @@ import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { hasMixin } from "../hasMixin.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Adds {@link Symbol.hasInstance} to mixin, if not already in mixin
  * 
  * @param {MixinFunction} mixin

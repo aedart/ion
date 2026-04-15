@@ -3,6 +3,8 @@ import { APPLIED_MIXIN } from "@aedart/contracts/support/mixins";
 import { unwrap } from "./unwrap.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Determine if object is a prototype created by the application of
  * `mixin` to a superclass.
  * 

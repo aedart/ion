@@ -2,11 +2,13 @@ import type { Constructor } from "@aedart/contracts";
 import Builder from "./Builder.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Mix superclass with one or more abstract subclasses ("Mixins")
  *
  * **example**:
  * ```ts
- * const BoxMixin = <T extends AbstractConstructor>(superclass: T) => class extends superclass {
+ * const BoxMixin = <T extends Constructor>(superclass: T) => class extends superclass {
  *      // ...not shown...
  * }
  *

@@ -2,6 +2,8 @@ import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { WRAPPED_MIXIN } from "@aedart/contracts/support/mixins";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Unwrap the given wrapped mixin
  *
  * @param {MixinFunction} wrapped A wrapped mixin produced by the {@link import('@aedart/support/mixins').wrap} function

@@ -3,6 +3,8 @@ import { wrap } from "../wrap.js";
 import { hasMixin } from "../hasMixin.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Decorates mixin such that it is only applied if not already on the superclass'
  * prototype chain.
  *

@@ -3,6 +3,8 @@ import { wrap } from "../wrap.js";
 import { apply } from "../apply.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Decorates given mixin such that it can be used by {@link import('@aedart/support/mixins').isApplicationOf},
  * {@link import('@aedart/support/mixins').hasMixin} and other mixin utility methods
  * 

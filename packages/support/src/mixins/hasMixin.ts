@@ -2,6 +2,8 @@ import type { MixinFunction } from "@aedart/contracts/support/mixins";
 import { isApplicationOf } from "./isApplicationOf.js";
 
 /**
+ * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
+ * 
  * Determine if given target has an application of given `mixin` on its prototype
  * chain.
  * 
