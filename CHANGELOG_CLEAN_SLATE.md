@@ -57,3 +57,8 @@ Temporary changelog for feature branch.
 * `FUNCTION_PROTOTYPE` const in `contracts/src/support/reflections` (_no longer used_).
 * `configureStackTrace()` and `configureCustomError()`, replaced by new `BaseError` abstraction (_support package_).
 * `LastUpdatedPlugin.vue` (_no longer needed, the adapted `LastUpdatedPlugin.ts` does the job_).
+
+### Deprecated
+
+* `@aedart/contracts/support/mixins`
+* `@aedart/support/mixins`
