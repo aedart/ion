@@ -1,10 +1,8 @@
-import Builder from "./Builder.js";
-export {
-    Builder
-};
+import Builder from './Builder.js';
+export { Builder };
 
-export * from './decorators/index.js';
 export * from './apply.js';
+export * from './decorators/index.js';
 export * from './hasMixin.js';
 export * from './isApplicationOf.js';
 export * from './mix.js';

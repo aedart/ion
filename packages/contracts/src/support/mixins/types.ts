@@ -1,13 +1,13 @@
-import type { Constructor } from "../../types.js";
+import type { Constructor } from '../../types.js';
 
 /**
  * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
- * 
- * A function that returns an abstract subclass ("Mix-in") of its argument 
- * 
+ *
+ * A function that returns an abstract subclass ("Mix-in") of its argument
+ *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends#mix-ins
  * @see https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
- * 
+ *
  * @example:
  * ```ts
  * const BoxMixin = <T extends Constructor>(superclass: T) => class extends superclass {
@@ -17,5 +17,5 @@ import type { Constructor } from "../../types.js";
  */
 export type MixinFunction<
     SuperClass extends Constructor = Constructor,
-    AbstractSubclass extends Constructor = Constructor
+    AbstractSubclass extends Constructor = Constructor,
 > = (superclass: SuperClass) => AbstractSubclass & SuperClass;

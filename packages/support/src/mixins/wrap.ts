@@ -1,9 +1,9 @@
-import type { MixinFunction } from "@aedart/contracts/support/mixins";
-import { WRAPPED_MIXIN } from "@aedart/contracts/support/mixins";
+import type { MixinFunction } from '@aedart/contracts/support/mixins';
+import { WRAPPED_MIXIN } from '@aedart/contracts/support/mixins';
 
 /**
  * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
- * 
+ *
  * Setup given mixin to be wrapped by given `wrapper` and allow
  * it to be unwrapped at a later point.
  *
@@ -16,7 +16,7 @@ export function wrap(mixin: MixinFunction, wrapper: MixinFunction): MixinFunctio
 {
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
-    
+
     Reflect.setPrototypeOf(wrapper, mixin);
 
     if (!Reflect.has(mixin, WRAPPED_MIXIN)) {

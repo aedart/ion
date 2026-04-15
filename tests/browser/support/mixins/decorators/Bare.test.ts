@@ -1,48 +1,52 @@
-import { Bare, hasMixin } from "@aedart/support/mixins";
+import { Bare, hasMixin } from '@aedart/support/mixins';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/mixins', () => {
     describe('decorators', () => {
-
         describe('Bare', () => {
-
             test('mixin is on prototype chain', () => {
+                const MyMixin = Bare((superclass) => class extends superclass {});
 
-                const MyMixin = Bare((superclass) => class extends superclass {});    
-                
-                class A extends MyMixin(class {}) {}
-                
+                class A extends MyMixin(class {})
+                {}
+
                 // -------------------------------------------------------------------------- //
-                
+
                 const instance = new A();
-                
+
                 const result = hasMixin(instance, MyMixin);
                 expect(result)
                     .toBeTruthy();
             });
 
             test('can invoke methods from mixin, superclass and subclass', () => {
-
-                const MyMixin = Bare((superclass) => class extends superclass {
-                    foo() {
-                        return 'foo';
+                const MyMixin = Bare((superclass) =>
+                    class extends superclass {
+                        foo()
+                        {
+                            return 'foo';
+                        }
                     }
-                });
-                
-                class A {
-                    bar() {
+                );
+
+                class A
+                {
+                    bar()
+                    {
                         return 'bar';
                     }
                 }
-                
-                class B extends MyMixin(A) {
-                    fin() {
-                        return 'fin'
+
+                class B extends MyMixin(A)
+                {
+                    fin()
+                    {
+                        return 'fin';
                     }
                 }
 
                 // -------------------------------------------------------------------------- //
-                
+
                 const instance = new B();
 
                 expect(instance.foo(), 'mixin defined method not invoked')
@@ -56,24 +60,29 @@ describe('@aedart/support/mixins', () => {
             });
 
             test('mixin methods overwrite superclass methods', () => {
-
                 // For better or worse, this is one of the edge cases that can really create a mess.
                 // Whenever a mixin is applied, and it has the same name as a parent class that it is
-                // applied on, the mixin will overwrite it... 
-                
-                const MyMixin = Bare((superclass) => class extends superclass {
-                    foo() {
-                        return 'bar';
-                    }
-                });
+                // applied on, the mixin will overwrite it...
 
-                class A {
-                    foo() {
+                const MyMixin = Bare((superclass) =>
+                    class extends superclass {
+                        foo()
+                        {
+                            return 'bar';
+                        }
+                    }
+                );
+
+                class A
+                {
+                    foo()
+                    {
                         return 'foo';
                     }
                 }
 
-                class B extends MyMixin(A) {}
+                class B extends MyMixin(A)
+                {}
 
                 // -------------------------------------------------------------------------- //
 
@@ -84,21 +93,27 @@ describe('@aedart/support/mixins', () => {
             });
 
             test('subclass methods overwrite mixin methods', () => {
-                
-                const MyMixin = Bare((superclass) => class extends superclass {
-                    foo() {
-                        return 'bar';
+                const MyMixin = Bare((superclass) =>
+                    class extends superclass {
+                        foo()
+                        {
+                            return 'bar';
+                        }
                     }
-                });
+                );
 
-                class A {
-                    foo() {
+                class A
+                {
+                    foo()
+                    {
                         return 'foo';
                     }
                 }
 
-                class B extends MyMixin(A) {
-                    foo() {
+                class B extends MyMixin(A)
+                {
+                    foo()
+                    {
                         return 'zim';
                     }
                 }
@@ -112,17 +127,20 @@ describe('@aedart/support/mixins', () => {
             });
 
             test('subclass methods overwrite superclass methods', () => {
-
                 const MyMixin = Bare((superclass) => class extends superclass {});
 
-                class A {
-                    foo() {
+                class A
+                {
+                    foo()
+                    {
                         return 'foo';
                     }
                 }
 
-                class B extends MyMixin(A) {
-                    foo() {
+                class B extends MyMixin(A)
+                {
+                    foo()
+                    {
                         return 'bar';
                     }
                 }
@@ -134,22 +152,27 @@ describe('@aedart/support/mixins', () => {
                 expect(instance.foo(), 'subclass should overwrite superclass defined methods')
                     .toEqual('bar');
             });
-            
-            test('mixin can invoke superclass methods', () => {
-                
-                const MyMixin = Bare((superclass) => class extends superclass {
-                    foo() {
-                        return super.foo();
-                    }
-                });
 
-                class A {
-                    foo() {
+            test('mixin can invoke superclass methods', () => {
+                const MyMixin = Bare((superclass) =>
+                    class extends superclass {
+                        foo()
+                        {
+                            return super.foo();
+                        }
+                    }
+                );
+
+                class A
+                {
+                    foo()
+                    {
                         return 'weeee';
                     }
                 }
 
-                class B extends MyMixin(A) {}
+                class B extends MyMixin(A)
+                {}
 
                 // -------------------------------------------------------------------------- //
 
@@ -160,17 +183,20 @@ describe('@aedart/support/mixins', () => {
             });
 
             test('subclass can invoke parent methods', () => {
-
                 const MyMixin = Bare((superclass) => class extends superclass {});
 
-                class A {
-                    foo() {
+                class A
+                {
+                    foo()
+                    {
                         return 'bar';
                     }
                 }
 
-                class B extends MyMixin(A) {
-                    foo() {
+                class B extends MyMixin(A)
+                {
+                    foo()
+                    {
                         return super.foo();
                     }
                 }
@@ -182,7 +208,6 @@ describe('@aedart/support/mixins', () => {
                 expect(instance.foo(), 'subclass should be able to call super.foo')
                     .toEqual('bar');
             });
-            
         });
     });
 });

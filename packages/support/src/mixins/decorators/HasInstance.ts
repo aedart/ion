@@ -1,13 +1,13 @@
-import type { MixinFunction } from "@aedart/contracts/support/mixins";
-import { hasMixin } from "../hasMixin.js";
+import type { MixinFunction } from '@aedart/contracts/support/mixins';
+import { hasMixin } from '../hasMixin.js';
 
 /**
  * @deprecated Since 0.15.0, Mixins submodule will be removed in future versions
- * 
+ *
  * Adds {@link Symbol.hasInstance} to mixin, if not already in mixin
- * 
+ *
  * @param {MixinFunction} mixin
- * 
+ *
  * @returns {MixinFunction}
  */
 export const HasInstance = function(mixin: MixinFunction): MixinFunction
@@ -19,11 +19,11 @@ export const HasInstance = function(mixin: MixinFunction): MixinFunction
     if (Object.hasOwn(mixin, Symbol.hasInstance)) {
         return mixin;
     }
-    
+
     // Otherwise, define the Symbol.hasInstance
     return Object.defineProperty(mixin, Symbol.hasInstance, {
         value: (instance: object) => {
             return hasMixin(instance, mixin);
         },
     });
-}
+};

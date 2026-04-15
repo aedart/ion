@@ -1,50 +1,53 @@
-import { mix, Builder, Mixin } from "@aedart/support/mixins";
+import { Builder, mix, Mixin } from '@aedart/support/mixins';
 import { describe, expect, test } from 'vitest';
 describe('@aedart/support/mixins', () => {
     describe('mix()', () => {
-
         test('returns Mixin Builder instance', () => {
             const builder = mix();
-            
+
             expect(builder)
                 .toBeInstanceOf(Builder);
         });
 
         test('returns superclass when none() called', () => {
-            class A {}
-            
+            class A
+            {}
+
             const none = mix(A).none();
 
             expect(none, 'Incorrect superclass for none()')
                 .toBe(A);
         });
-        
+
         test('returns superclass when no mixin applied using with()', () => {
-            class A {}
-            
+            class A
+            {}
+
             const withoutMixins = mix(A).with();
-            
+
             expect(withoutMixins, 'Incorrect superclass for with() without arguments')
                 .toBe(A);
         });
 
         test('can mix with a single mixin', () => {
-
             const value = 123;
 
             // @ts-expect-error Ignore superclass type for testing purposes
-            const MyMixin = (superclass) => class extends superclass {
-                foo() {
-                    return value
-                }
-            };
+            const MyMixin = (superclass) =>
+                class extends superclass {
+                    foo()
+                    {
+                        return value;
+                    }
+                };
 
-            class A extends mix().with(MyMixin){}
+            class A extends mix().with(MyMixin)
+            {}
 
             // -------------------------------------------------------------------------- //
 
             const instance = new A();
-            
+
             // @ts-expect-error Ignore foo() for testing purposes
             const result = instance.foo();
 
@@ -53,33 +56,45 @@ describe('@aedart/support/mixins', () => {
         });
 
         test('can mix with multiple mixins', () => {
-
             const valueA = 123;
 
             // @ts-expect-error Ignore superclass type for testing purposes
-            const MyMixinA = (superclass) => class extends superclass {
-                foo() { return valueA }
-            };
+            const MyMixinA = (superclass) =>
+                class extends superclass {
+                    foo()
+                    {
+                        return valueA;
+                    }
+                };
 
             const valueB = 456;
 
             // @ts-expect-error Ignore superclass type for testing purposes
-            const MyMixinB = (superclass) => class extends superclass {
-                bar() { return valueB }
-            };
+            const MyMixinB = (superclass) =>
+                class extends superclass {
+                    bar()
+                    {
+                        return valueB;
+                    }
+                };
 
             const valueC = 'zoom';
 
             // @ts-expect-error Ignore superclass type for testing purposes
-            const MyMixinC = (superclass) => class extends superclass {
-                zar() { return valueC }
-            };
+            const MyMixinC = (superclass) =>
+                class extends superclass {
+                    zar()
+                    {
+                        return valueC;
+                    }
+                };
 
             class A extends mix().with(
                 MyMixinA,
                 MyMixinB,
                 MyMixinC,
-            ){}
+            )
+            {}
 
             // -------------------------------------------------------------------------- //
 
@@ -99,44 +114,61 @@ describe('@aedart/support/mixins', () => {
         });
 
         test('can mix with class that extends parent with mixins applied', () => {
-
             const valueA = 984;
 
             // @ts-expect-error Ignore superclass type for testing purposes
-            const MyMixinA = (superclass) => class extends superclass {
-                a() { return valueA }
-            };
+            const MyMixinA = (superclass) =>
+                class extends superclass {
+                    a()
+                    {
+                        return valueA;
+                    }
+                };
 
             const valueB = 852;
 
             // @ts-expect-error Ignore superclass type for testing purposes
-            const MyMixinB = (superclass) => class extends superclass {
-                b() { return valueB }
-            };
+            const MyMixinB = (superclass) =>
+                class extends superclass {
+                    b()
+                    {
+                        return valueB;
+                    }
+                };
 
             const valueC = 123;
 
             // @ts-expect-error Ignore superclass type for testing purposes
-            const MyMixinC = (superclass) => class extends superclass {
-                c() { return valueC }
-            };
+            const MyMixinC = (superclass) =>
+                class extends superclass {
+                    c()
+                    {
+                        return valueC;
+                    }
+                };
 
             const valueD = 462;
 
             // @ts-expect-error Ignore superclass type for testing purposes
-            const MyMixinD = (superclass) => class extends superclass {
-                d() { return valueD }
-            };
-            
+            const MyMixinD = (superclass) =>
+                class extends superclass {
+                    d()
+                    {
+                        return valueD;
+                    }
+                };
+
             class A extends mix().with(
                 MyMixinA,
                 MyMixinB,
-            ){}
+            )
+            {}
 
             class B extends mix(A).with(
                 MyMixinC,
-                MyMixinD
-            ) {}
+                MyMixinD,
+            )
+            {}
 
             // -------------------------------------------------------------------------- //
 
@@ -168,31 +200,39 @@ describe('@aedart/support/mixins', () => {
         });
 
         test('mixin constructors are invoked', () => {
-
             const invoked: string[] = [];
-            const MyMixinA = Mixin((superclass) => class extends superclass {
-                constructor() {
-                    super();
-                    invoked.push('Mixin A');
-                }
+            const MyMixinA = Mixin((superclass) =>
+                class extends superclass {
+                    constructor()
+                    {
+                        super();
+                        invoked.push('Mixin A');
+                    }
 
-                getThis() {
-                    return this;
+                    getThis()
+                    {
+                        return this;
+                    }
                 }
-            });
+            );
 
-            const MyMixinB = Mixin((superclass) => class extends superclass {
-                constructor() {
-                    super();
-                    invoked.push('Mixin B');
+            const MyMixinB = Mixin((superclass) =>
+                class extends superclass {
+                    constructor()
+                    {
+                        super();
+                        invoked.push('Mixin B');
+                    }
                 }
-            });
+            );
 
             class A extends mix().with(
                 MyMixinA,
-                MyMixinB
-            ){
-                constructor() {
+                MyMixinB,
+            )
+            {
+                constructor()
+                {
                     super();
                     invoked.push('Class A');
                 }
@@ -217,7 +257,7 @@ describe('@aedart/support/mixins', () => {
                 .toBeTruthy();
 
             // Debug
-            //console.log('invoked constructors', invoked);
+            // console.log('invoked constructors', invoked);
 
             // Constructors check
             expect(invoked.length, 'Incorrect amount of constructors invoked')
@@ -231,30 +271,37 @@ describe('@aedart/support/mixins', () => {
         });
 
         test('mixin constructors are invoked, even when class has no constructor defined', () => {
-
             const invoked: string[] = [];
-            const MyMixinA = Mixin((superclass) => class extends superclass {
-                constructor() {
-                    super();
-                    invoked.push('Mixin A');
-                }
+            const MyMixinA = Mixin((superclass) =>
+                class extends superclass {
+                    constructor()
+                    {
+                        super();
+                        invoked.push('Mixin A');
+                    }
 
-                getThis() {
-                    return this;
+                    getThis()
+                    {
+                        return this;
+                    }
                 }
-            });
+            );
 
-            const MyMixinB = Mixin((superclass) => class extends superclass {
-                constructor() {
-                    super();
-                    invoked.push('Mixin B');
+            const MyMixinB = Mixin((superclass) =>
+                class extends superclass {
+                    constructor()
+                    {
+                        super();
+                        invoked.push('Mixin B');
+                    }
                 }
-            });
+            );
 
             class A extends mix().with(
                 MyMixinA,
-                MyMixinB                
-            ){
+                MyMixinB,
+            )
+            {
                 // NOTE: No constructor here, but mixin constructor(s) should still be invoked correctly
             }
 
@@ -263,7 +310,7 @@ describe('@aedart/support/mixins', () => {
             const instance = new A();
 
             // Debug
-            //console.log('invoked constructors', invoked);
+            // console.log('invoked constructors', invoked);
 
             // Constructors check
             expect(invoked.length, 'Incorrect amount of constructors invoked')
@@ -275,42 +322,55 @@ describe('@aedart/support/mixins', () => {
         });
 
         test('constructors invoked correctly, when extending parent with mixins', () => {
-
             const invoked: string[] = [];
 
-            const MyMixinA = Mixin((superclass) => class extends superclass {
-                constructor() {
-                    super();
-                    invoked.push('Mixin A');
+            const MyMixinA = Mixin((superclass) =>
+                class extends superclass {
+                    constructor()
+                    {
+                        super();
+                        invoked.push('Mixin A');
+                    }
                 }
-            });
+            );
 
-            const MyMixinB = Mixin((superclass) => class extends superclass {
-                constructor() {
-                    super();
-                    invoked.push('Mixin B');
+            const MyMixinB = Mixin((superclass) =>
+                class extends superclass {
+                    constructor()
+                    {
+                        super();
+                        invoked.push('Mixin B');
+                    }
                 }
-            });
+            );
 
-            const MyMixinC = Mixin((superclass) => class extends superclass {
-                constructor() {
-                    super();
-                    invoked.push('Mixin C');
+            const MyMixinC = Mixin((superclass) =>
+                class extends superclass {
+                    constructor()
+                    {
+                        super();
+                        invoked.push('Mixin C');
+                    }
                 }
-            });
+            );
 
-            const MyMixinD = Mixin((superclass) => class extends superclass {
-                constructor() {
-                    super();
-                    invoked.push('Mixin D');
+            const MyMixinD = Mixin((superclass) =>
+                class extends superclass {
+                    constructor()
+                    {
+                        super();
+                        invoked.push('Mixin D');
+                    }
                 }
-            });
+            );
 
             class A extends mix().with(
                 MyMixinA,
                 MyMixinB,
-            ){
-                constructor() {
+            )
+            {
+                constructor()
+                {
                     super();
                     invoked.push('Class A');
                 }
@@ -318,9 +378,11 @@ describe('@aedart/support/mixins', () => {
 
             class B extends mix(A).with(
                 MyMixinC,
-                MyMixinD
-            ) {
-                constructor() {
+                MyMixinD,
+            )
+            {
+                constructor()
+                {
                     super();
                     invoked.push('Class B');
                 }
@@ -366,34 +428,42 @@ describe('@aedart/support/mixins', () => {
         });
 
         test('constructor arguments correctly passed on', () => {
-            const MyMixinA = Mixin((superclass) => class extends superclass {
-                #msg = '';
+            const MyMixinA = Mixin((superclass) =>
+                class extends superclass {
+                    #msg = '';
 
-                constructor(...args: any[]) {
-                    super(...args);
-                    this.message = args[0];
-                }
+                    constructor(...args: any[])
+                    {
+                        super(...args);
+                        this.message = args[0];
+                    }
 
-                set message(value) {
-                    this.#msg = value;
-                }
+                    set message(value) {
+                        this.#msg = value;
+                    }
 
-                get message() {
-                    return this.#msg;
+                    get message() {
+                        return this.#msg;
+                    }
                 }
-            });
+            );
 
-            const MyMixinB = Mixin((superclass) => class extends superclass {
-                constructor(...args: any[]) {
-                    super(...args);
+            const MyMixinB = Mixin((superclass) =>
+                class extends superclass {
+                    constructor(...args: any[])
+                    {
+                        super(...args);
+                    }
                 }
-            });
+            );
 
             class A extends mix().with(
                 MyMixinA,
-                MyMixinB
-            ){
-                constructor(...args: any[]) {
+                MyMixinB,
+            )
+            {
+                constructor(...args: any[])
+                {
                     super(...args);
                 }
             }
@@ -405,11 +475,11 @@ describe('@aedart/support/mixins', () => {
 
             // @ts-expect-error ignore message property
             expect(instance.message, 'Arguments not passed on correctly')
-                .toEqual(messageA)
+                .toEqual(messageA);
 
             // Perhaps a bit redundant to test here, but better safe than sorry...
             const messageB = 'Hi back at you...';
-            
+
             // @ts-expect-error ignore message property
             instance.message = messageB;
 
