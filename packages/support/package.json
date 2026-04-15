@@ -35,6 +35,10 @@
             "types": "./dist/exceptions/index.d.ts",
             "import": "./dist/exceptions/index.js"
         },
+        "./mixins": {
+            "types": "./dist/mixins/index.d.ts",
+            "import": "./dist/mixins/index.js"
+        },
         "./misc": {
             "types": "./dist/misc/index.d.ts",
             "import": "./dist/misc/index.js"

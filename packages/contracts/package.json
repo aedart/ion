@@ -42,6 +42,10 @@
             "types": "./dist/support/exceptions/index.d.ts",
             "import": "./dist/support/exceptions/index.js"
         },
+        "./support/mixins": {
+            "types": "./dist/support/mixins/index.d.ts",
+            "import": "./dist/support/mixins/index.js"
+        },
         "./support/objects": {
             "types": "./dist/support/objects/index.d.ts",
             "import": "./dist/support/objects/index.js"
