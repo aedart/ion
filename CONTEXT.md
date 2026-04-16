@@ -32,26 +32,27 @@ This document serves as the persistent state and configuration guide for the **@
 * **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains to eliminate `.reverse()` allocations.
 * **Memory Management**: Pre-allocate arrays when total size is known. Avoid intermediate arrays/iterator overhead in hot paths.
 * **GC Pressure**: Avoid generator usage (`yield`) in high-frequency utility functions; prefer standard `while` loops.
-* **Collection Threshold**: Use `LOOKUP_THRESHOLD` (16) to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$).
 
 ## Technical Definitions & Utilities
 
 ### Reflection & Prototypes (`@aedart/support/reflections`)
 
 * **`isSubclass`**: Optimized $O(1)$ prototype check; returns `false` if target equals superclass.
-* **`walkParents`**: Generator-based traversal of the inheritance chain.
-* **`getAllParentsOfClass`**: Returns an array of parent classes; optimized to minimize prototype lookups.
-* **`getClassPropertyDescriptors`**: Aggregates descriptors across the prototype chain using `Reflect.getOwnPropertyDescriptor`. Processes chain in reverse to respect child overrides.
-* **`TYPED_ARRAY_PROTOTYPE`**: Resolved via `Reflect.getPrototypeOf(Int8Array.prototype)`.
+* **`getClassPropertyDescriptors`**: Aggregates descriptors across the prototype chain using `Reflect.getOwnPropertyDescriptor`. Optimized with reverse iteration.
+* **`isKeyUnsafe`**: Validates against prototype pollution keys (`__proto__`, `constructor`, `prototype`).
 
 ### Objects Sub-Module (`@aedart/support/objects`)
 
-* **`Merger`**: Deep merger supporting `mergeArrays`, custom `depth` limits, and safety checks.
-* **`merge()`**: Hybrid utility/factory. Supports direct calls with variadic intersection return types.
+* **`Merger`**: Deep merger supporting custom `depth` limits and safety checks.
 * **`populate`**: Optimized shallow copy utility using index loops and `isKeyUnsafe` validation.
-* **Encapsulation**: Use native JavaScript private fields (`#field`).
 
-### Exceptions (`@aedart/support/exceptions`)
+## Planned Architectures (Pending Implementation)
 
-* **`BaseError`**: Abstract base class automating `this.name` and V8 stack capture.
-* **`MergeError` / `ArrayMergeError`**: Specialized exceptions inheriting from `BaseError`.
+### Concerns (PHP-style Traits)
+
+* **Status**: Design Phase (Not yet implemented).
+* **Pattern**: Stage 3 Class Decorators combined with **Interface Merging** for IDE support.
+* **Core Utility (`@use`)**: Must perform recursive prototype descriptor injection.
+* **Conflict Resolution**: Support for aliasing (renaming) and exclusion (insteadof) via configuration object.
+* **Registry**: A hidden `Symbol`-based `Set` on constructors to track applied concerns.
+* **Verification (`usesConcerns`)**: A utility performing a strict AND-check against the registry.
