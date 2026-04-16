@@ -29,8 +29,9 @@ This document serves as the persistent state and configuration guide for the **@
 ## Performance Patterns (Strict)
 
 * **Looping**: Prefer index-based `for` loops with cached length over `for...of`, `forEach`, or `.map()`.
-* **Memory Management**: Pre-allocate arrays (e.g., `new Array(totalLength)`) when total size is known to reduce resizing/re-allocation overhead.
-* **GC Pressure**: Minimize object/array allocations in hot paths. Avoid intermediate arrays (e.g., avoid `[].concat(...).map(...)`).
+* **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains to eliminate `.reverse()` allocations.
+* **Memory Management**: Pre-allocate arrays when total size is known. Avoid intermediate arrays/iterator overhead in hot paths.
+* **GC Pressure**: Avoid generator usage (`yield`) in high-frequency utility functions; prefer standard `while` loops.
 * **Collection Threshold**: Use `LOOKUP_THRESHOLD` (16) to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$).
 
 ## Technical Definitions & Utilities
@@ -38,25 +39,16 @@ This document serves as the persistent state and configuration guide for the **@
 ### Reflection & Prototypes (`@aedart/support/reflections`)
 
 * **`isSubclass`**: Optimized $O(1)$ prototype check; returns `false` if target equals superclass.
-* **`isTypedArray`**: Uses `TYPED_ARRAY_PROTOTYPE.isPrototypeOf(target)` for V8-optimized instance checking.
-* **`isWeakKind`**: Fast-exit $O(1)$ check for `WeakRef`, `WeakMap`, and `WeakSet`.
-* **`isKeyUnsafe`**: Validates against prototype pollution keys (`__proto__`, `constructor`, `prototype`).
-* **`isConcatSpreadable`**: Returns `true` only if `Symbol.isConcatSpreadable` is explicitly `true`.
+* **`walkParents`**: Generator-based traversal of the inheritance chain.
+* **`getAllParentsOfClass`**: Returns an array of parent classes; optimized to minimize prototype lookups.
+* **`getClassPropertyDescriptors`**: Aggregates descriptors across the prototype chain using `Reflect.getOwnPropertyDescriptor`. Processes chain in reverse to respect child overrides.
 * **`TYPED_ARRAY_PROTOTYPE`**: Resolved via `Reflect.getPrototypeOf(Int8Array.prototype)`.
-
-### Arrays & Collections (`@aedart/support/arrays`)
-
-* **`IntersectArrays<T>`**: Variadic recursive type for intersecting multiple array types into a single type.
-* **`isSafeArrayLike`**: Validates array-like properties while excluding strings, boxed strings, and TypedArrays.
-* **`Merger` (Array)**: Optimized deep merger using `structuredClone` and symbol-based clone support.
 
 ### Objects Sub-Module (`@aedart/support/objects`)
 
 * **`Merger`**: Deep merger supporting `mergeArrays`, custom `depth` limits, and safety checks.
-* **`merge()`**: Hybrid utility/factory. Supports direct calls with variadic intersection return types and `.using()` configuration.
-* **`CLONE` Symbol**: `unique symbol` for `Cloneable` interface.
-* **`canCloneUsingStructuredClone`**: Optimized utility using `instanceof` with a guarded loop and `isPrototypeOf` for typed arrays.
-* **`populate`**: Optimized shallow copy utility using index loops and `LOOKUP_THRESHOLD` scaling.
+* **`merge()`**: Hybrid utility/factory. Supports direct calls with variadic intersection return types.
+* **`populate`**: Optimized shallow copy utility using index loops and `isKeyUnsafe` validation.
 * **Encapsulation**: Use native JavaScript private fields (`#field`).
 
 ### Exceptions (`@aedart/support/exceptions`)
