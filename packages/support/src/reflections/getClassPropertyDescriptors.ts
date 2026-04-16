@@ -1,10 +1,10 @@
-import type { ConstructorLike } from "@aedart/contracts";
-import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty.js";
-import { getAllParentsOfClass } from "./getAllParentsOfClass.js";
-import { merge } from "../objects/merge.js";
+import type {ConstructorLike} from "@aedart/contracts";
+import {assertHasPrototypeProperty} from "./assertHasPrototypeProperty.js";
+import {walkParents} from "./walkParents.js";
+import { populateDescriptors } from "./populateDescriptors.js";
 
 /**
- * Returns all property descriptors that are defined target's prototype
+ * Returns all property descriptors that are defined on the target's prototype chain.
  *
  * @param {ConstructorLike} target The target class
  * @param {boolean} [recursive=false] If `true`, then target's parent prototypes are traversed.
@@ -19,41 +19,27 @@ export function getClassPropertyDescriptors(target: ConstructorLike, recursive: 
 {
     assertHasPrototypeProperty(target);
 
-    // Get all prototypes (inheritance chain)
-    const prototypes: any[] = recursive
-        ? getAllParentsOfClass(target.prototype, true)
-        : [target.prototype];
-
     const output: Record<PropertyKey, PropertyDescriptor> = Object.create(null);
-    const protoLen = prototypes.length;
 
-    // Loop through the prototypes (in reverse)
-    for (let i = protoLen - 1; i >= 0; i--) {
-        const currentProto = prototypes[i];
-        const keys = Reflect.ownKeys(currentProto);
-        const keysLen = keys.length;
+    // If not recursive, we only care about the immediate prototype.
+    if (!recursive) {
+        return populateDescriptors(output, target.prototype);
+    }
+    
+    // To respect the inheritance priority (child overrides parent), we collect
+    // the chain first.
+    const chain: any[] = [];
+    for (const parent of walkParents(target.prototype, true)) {
+        chain.push(parent);
+    }
 
-        // Loop through the prototype's keys
-        for (let j = 0; j < keysLen; j++) {
-            const key = keys[j];
-            const descriptor = Reflect.getOwnPropertyDescriptor(currentProto, key);
-
-            if (descriptor === undefined) {
-                continue;
-            }
-            
-            // If the key doesn't exist, assign directly to avoid object allocation.
-            if (output[key] === undefined) {
-                output[key] = descriptor;
-                continue;
-            }
-
-            // Note: descriptor objects are typically small; merge() is used per constraints.
-            output[key] = merge()
-                .using({overwriteWithUndefined: false})
-                .of(output[key], descriptor);
-        }
+    // Since walkParents yields nearest parent first, we
+    // iterate the chain in reverse order to ensure child descriptors
+    // win or are merged onto parent descriptors.
+    for (let i = chain.length - 1; i >= 0; i--) {
+        populateDescriptors(output, chain[i]);
     }
 
     return output;
 }
+
