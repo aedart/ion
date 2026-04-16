@@ -3,6 +3,7 @@ export * from './classLooksLike.js';
 export * from './classOwnKeys.js';
 export * from './getAllParentsOfClass.js';
 export * from './getClassPropertyDescriptor.js';
+export * from './getClassPropertyDescriptors.js';
 export * from './getConstructorName.js';
 export * from './getNameOrDesc.js';
 export * from './getParentOfClass.js';
