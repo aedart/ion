@@ -1,14 +1,17 @@
-import {merge} from "../objects/merge.js";
+import { merge } from '../objects/merge.js';
 
 /**
  * Populate descriptors
- * 
+ *
  * @param {Record<PropertyKey, PropertyDescriptor>} output
  * @param {*} proto
- * 
+ *
  * @returns {Record<PropertyKey, PropertyDescriptor>}
  */
-export function populateDescriptors(output: Record<PropertyKey, PropertyDescriptor>, proto: any): Record<PropertyKey, PropertyDescriptor>
+export function populateDescriptors(
+    output: Record<PropertyKey, PropertyDescriptor>,
+    proto: any,
+): Record<PropertyKey, PropertyDescriptor>
 {
     const keys = Reflect.ownKeys(proto);
     const len = keys.length;
@@ -28,7 +31,7 @@ export function populateDescriptors(output: Record<PropertyKey, PropertyDescript
 
         // Merge collision: Child descriptor takes precedence or merges with parent.
         output[key] = merge()
-            .using({overwriteWithUndefined: false})
+            .using({ overwriteWithUndefined: false })
             .of(output[key], descriptor);
     }
 

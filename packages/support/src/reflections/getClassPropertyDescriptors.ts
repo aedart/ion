@@ -1,7 +1,7 @@
-import type {ConstructorLike} from "@aedart/contracts";
-import {assertHasPrototypeProperty} from "./assertHasPrototypeProperty.js";
-import {walkParents} from "./walkParents.js";
-import { populateDescriptors } from "./populateDescriptors.js";
+import type { ConstructorLike } from '@aedart/contracts';
+import { assertHasPrototypeProperty } from './assertHasPrototypeProperty.js';
+import { populateDescriptors } from './populateDescriptors.js';
+import { walkParents } from './walkParents.js';
 
 /**
  * Returns all property descriptors that are defined on the target's prototype chain.
@@ -12,10 +12,13 @@ import { populateDescriptors } from "./populateDescriptors.js";
  * @return {Record<PropertyKey, PropertyDescriptor>}
  *
  * @throws {TypeError}
- * 
+ *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/getOwnPropertyDescriptor
  */
-export function getClassPropertyDescriptors(target: ConstructorLike, recursive: boolean = false): Record<PropertyKey, PropertyDescriptor>
+export function getClassPropertyDescriptors(
+    target: ConstructorLike,
+    recursive: boolean = false,
+): Record<PropertyKey, PropertyDescriptor>
 {
     assertHasPrototypeProperty(target);
 
@@ -25,7 +28,7 @@ export function getClassPropertyDescriptors(target: ConstructorLike, recursive: 
     if (!recursive) {
         return populateDescriptors(output, target.prototype);
     }
-    
+
     // To respect the inheritance priority (child overrides parent), we collect
     // the chain first.
     const chain: any[] = [];
@@ -42,4 +45,3 @@ export function getClassPropertyDescriptors(target: ConstructorLike, recursive: 
 
     return output;
 }
-

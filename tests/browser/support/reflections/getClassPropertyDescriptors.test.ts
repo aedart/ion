@@ -1,29 +1,35 @@
-import { getClassPropertyDescriptors, getClassPropertyDescriptor } from '@aedart/support/reflections';
+import {
+    getClassPropertyDescriptor,
+    getClassPropertyDescriptors,
+} from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('getClassPropertyDescriptors()', () => {
-
         test('fails when target has no prototype', () => {
             const callback = () => {
                 const obj = Object.create(null);
 
                 getClassPropertyDescriptors(obj);
-            }
+            };
 
             expect(callback, 'Should not be able to obtain anything from object without prototype')
                 .toThrow(TypeError);
         });
 
         test('can get property descriptors for class', () => {
-
             const MY_SYMBOL = Symbol('my_symbol');
 
-            class A {
+            class A
+            {
                 set name(v) {}
-                get name() { return null; }
-                bar() {}
-                [MY_SYMBOL]() {}
+                get name() {
+                    return null;
+                }
+                bar()
+                {}
+                [MY_SYMBOL]()
+                {}
             }
 
             // -------------------------------------------------------------------------------- //
@@ -32,7 +38,7 @@ describe('@aedart/support/refelctions', () => {
                 'constructor',
                 'name',
                 'bar',
-                MY_SYMBOL
+                MY_SYMBOL,
             ];
 
             const descriptors = getClassPropertyDescriptors(A);
@@ -41,9 +47,9 @@ describe('@aedart/support/refelctions', () => {
             // console.log(descriptors);
 
             for (const key of expected) {
-                let k = (typeof key == "symbol")
+                let k = (typeof key == 'symbol')
                     ? key.toString()
-                    : key
+                    : key;
 
                 expect(Reflect.has(descriptors, key), 'Key ' + k + ' not in descriptors record')
                     .toBeTruthy();
@@ -60,19 +66,26 @@ describe('@aedart/support/refelctions', () => {
         });
 
         test('can get property descriptors for class recursively', () => {
-
             const MY_SYMBOL = Symbol('my_symbol');
 
-            class A {
+            class A
+            {
                 set name(v) {}
-                get name() { return null; }
-                foo() {}
-                [MY_SYMBOL]() {}
+                get name() {
+                    return null;
+                }
+                foo()
+                {}
+                [MY_SYMBOL]()
+                {}
             }
 
-            class B extends A {
+            class B extends A
+            {
                 set bar(v) {}
-                get bar() { return null; }
+                get bar() {
+                    return null;
+                }
             }
 
             // -------------------------------------------------------------------------------- //
@@ -82,17 +95,17 @@ describe('@aedart/support/refelctions', () => {
                 'name',
                 'foo',
                 'bar',
-                MY_SYMBOL
+                MY_SYMBOL,
             ];
 
             const descriptors = getClassPropertyDescriptors(B, true);
             for (const key of expected) {
-                let k = (typeof key == "symbol")
+                let k = (typeof key == 'symbol')
                     ? key.toString()
-                    : key
+                    : key;
 
                 expect(Reflect.has(descriptors, key), 'Key ' + k + ' not in descriptors record')
-                    .toBeTruthy()
+                    .toBeTruthy();
 
                 const descriptor = descriptors[key];
                 expect(descriptor, 'No descriptor returned for ' + k)
@@ -102,21 +115,30 @@ describe('@aedart/support/refelctions', () => {
         });
 
         test('returns top-most property descriptors', () => {
-
             const MY_SYMBOL = Symbol('my_symbol');
 
-            class A {
+            class A
+            {
                 set name(v) {}
-                get name() { return null; }
-                foo() {}
-                [MY_SYMBOL]() {}
+                get name() {
+                    return null;
+                }
+                foo()
+                {}
+                [MY_SYMBOL]()
+                {}
             }
 
-            class B extends A {
+            class B extends A
+            {
                 set name(v) {}
-                get name() { return null; }
-                foo() {}
-                [MY_SYMBOL]() {
+                get name() {
+                    return null;
+                }
+                foo()
+                {}
+                [MY_SYMBOL]()
+                {
                     return false;
                 }
             }
@@ -127,14 +149,14 @@ describe('@aedart/support/refelctions', () => {
                 'constructor',
                 'name',
                 'foo',
-                MY_SYMBOL
+                MY_SYMBOL,
             ];
 
             const descriptors = getClassPropertyDescriptors(B, true);
             for (const key of expected) {
-                let k = (typeof key == "symbol")
+                let k = (typeof key == 'symbol')
                     ? key.toString()
-                    : key
+                    : key;
 
                 const parentDescriptor = getClassPropertyDescriptor(A, key);
                 const targetDescriptor = getClassPropertyDescriptor(B, key);
@@ -147,7 +169,6 @@ describe('@aedart/support/refelctions', () => {
                 // Value, get, set... check of descriptor
                 const props: PropertyKey[] = Reflect.ownKeys(descriptor);
                 for (const p of props) {
-
                     // Debug
                     // console.log('   - parent', p, parentDescriptor[p]);
                     // console.log('   - target', p, descriptor[p]);
@@ -159,12 +180,18 @@ describe('@aedart/support/refelctions', () => {
 
                     // Ensure does not match parent's descriptor...
                     // @ts-expect-error Ignore descriptor property comparison here for testing purposes.
-                    expect(descriptor[p] !== parentDescriptor[p], `${k}[${p}] matches parent descriptor property, but SHOULD NOT do so`)
-                        .toBeTruthy()
+                    expect(
+                        descriptor[p] !== parentDescriptor[p],
+                        `${k}[${p}] matches parent descriptor property, but SHOULD NOT do so`,
+                    )
+                        .toBeTruthy();
 
                     // Double check...
                     // @ts-expect-error Ignore descriptor property comparison here for testing purposes.
-                    expect(descriptor[p] === targetDescriptor[p], `${k}[${p}] does NOT match target property descriptor property!`)
+                    expect(
+                        descriptor[p] === targetDescriptor[p],
+                        `${k}[${p}] does NOT match target property descriptor property!`,
+                    )
                         .toBeTruthy();
                 }
 
@@ -174,12 +201,15 @@ describe('@aedart/support/refelctions', () => {
         });
 
         test('merges property descriptors', () => {
-
-            class A {
-                get age(): number { return 0; }
+            class A
+            {
+                get age(): number {
+                    return 0;
+                }
             }
 
-            class B extends A {
+            class B extends A
+            {
                 set age(value: number) {}
             }
 
