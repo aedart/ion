@@ -1,9 +1,7 @@
 import type { ConstructorLike } from "@aedart/contracts";
-import { getClassPropertyDescriptor } from "./getClassPropertyDescriptor.js";
 import { assertHasPrototypeProperty } from "./assertHasPrototypeProperty.js";
 import { getAllParentsOfClass } from "./getAllParentsOfClass.js";
 import { merge } from "../objects/merge.js";
-
 
 /**
  * Returns all property descriptors that are defined target's prototype
@@ -21,24 +19,24 @@ export function getClassPropertyDescriptors(target: ConstructorLike, recursive: 
 {
     assertHasPrototypeProperty(target);
 
-    // 1. Identify inheritance chain. 
-    // We use a flat array to avoid iterator overhead in the hot path.
+    // Get all prototypes (inheritance chain)
     const prototypes: any[] = recursive
-        ? getAllParentsOfClass(target.prototype, true).reverse()
+        ? getAllParentsOfClass(target.prototype, true)
         : [target.prototype];
 
     const output: Record<PropertyKey, PropertyDescriptor> = Object.create(null);
     const protoLen = prototypes.length;
 
-    // 2. Optimized nested loop (Index-based)
-    for (let i = 0; i < protoLen; i++) {
+    // Loop through the prototypes (in reverse)
+    for (let i = protoLen - 1; i >= 0; i--) {
         const currentProto = prototypes[i];
         const keys = Reflect.ownKeys(currentProto);
         const keysLen = keys.length;
 
+        // Loop through the prototype's keys
         for (let j = 0; j < keysLen; j++) {
             const key = keys[j];
-            const descriptor = getClassPropertyDescriptor(currentProto.constructor, key);
+            const descriptor = Reflect.getOwnPropertyDescriptor(currentProto, key);
 
             if (descriptor === undefined) {
                 continue;
