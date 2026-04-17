@@ -37,22 +37,27 @@ This document serves as the persistent state and configuration guide for the **@
 
 ### Reflection & Prototypes (`@aedart/support/reflections`)
 
-* **`isSubclass`**: Optimized $O(1)$ prototype check; returns `false` if target equals superclass.
-* **`getClassPropertyDescriptors`**: Aggregates descriptors across the prototype chain using `Reflect.getOwnPropertyDescriptor`. Optimized with reverse iteration.
+* **`isSubclass`**: Optimized $O(1)$ prototype check.
+* **`getClassPropertyDescriptors`**: Aggregates descriptors across the prototype chain using reverse iteration.
 * **`isKeyUnsafe`**: Validates against prototype pollution keys (`__proto__`, `constructor`, `prototype`).
+
+### Concerns (PHP-style Traits) (`@aedart/support/concerns`)
+
+* **Pattern**: Stateless "Direct Injection" (Descriptor Copy) using Stage 3 Decorators.
+* **Base Class**: `AbstractConcern` (Prevents direct instantiation; marked with `CONCERN_CLASS` symbol).
+* **Decorator (`@use`)**:
+    * Performs $O(n)$ descriptor injection into target prototypes.
+    * Supports recursive **Registry Flattening** (merges nested concern registries into the target).
+    * Implements strict **Conflict Resolution** (throws `InjectionConflictError` on naming collisions).
+    * Supports **Aliasing & Exclusions** via `ConcernConfiguration`.
+* **Registry**: `CONCERN_REGISTRY` (Symbol-based `Set` on constructors).
+* **Reflection API**:
+    * `usesConcerns()`: AND-based check across flattened registries.
+    * `appliedConcerns()`: Aggregates all unique concern constructors in the inheritance chain.
+    * `getAliasSource()`: Recursive resolution of an aliased property back to its ultimate origin.
+    * `appliedAliases()`: Returns a complete map of injected aliases and their sources.
 
 ### Objects Sub-Module (`@aedart/support/objects`)
 
 * **`Merger`**: Deep merger supporting custom `depth` limits and safety checks.
 * **`populate`**: Optimized shallow copy utility using index loops and `isKeyUnsafe` validation.
-
-## Planned Architectures (Pending Implementation)
-
-### Concerns (PHP-style Traits)
-
-* **Status**: Design Phase (Not yet implemented).
-* **Pattern**: Stage 3 Class Decorators combined with **Interface Merging** for IDE support.
-* **Core Utility (`@use`)**: Must perform recursive prototype descriptor injection.
-* **Conflict Resolution**: Support for aliasing (renaming) and exclusion (insteadof) via configuration object.
-* **Registry**: A hidden `Symbol`-based `Set` on constructors to track applied concerns.
-* **Verification (`usesConcerns`)**: A utility performing a strict AND-check against the registry.
