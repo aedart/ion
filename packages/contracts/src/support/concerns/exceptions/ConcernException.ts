@@ -1,9 +1,7 @@
-import Throwable from '../../exceptions/Throwable.js'
+import Throwable from '../../exceptions/Throwable.js';
 
 /**
  * Concern Exception
  */
-export default interface ConcernException extends Throwable
-{
-    
+export default interface ConcernException extends Throwable {
 }

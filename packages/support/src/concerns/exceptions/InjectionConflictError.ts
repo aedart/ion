@@ -3,7 +3,7 @@ import ConcernError from './ConcernError.js';
 
 /**
  * Injection Conflict Error
- * 
+ *
  * @see ConcernError
  * @see ConcernConflictException
  */
@@ -30,7 +30,7 @@ export default class InjectionConflictError extends ConcernError implements Conc
     constructor(target: object, key: PropertyKey, message?: string, options?: ErrorOptions)
     {
         super(message ?? 'Injection Conflict', options);
-        
+
         this.#target = target;
         this.#key = key;
     }
@@ -38,16 +38,14 @@ export default class InjectionConflictError extends ConcernError implements Conc
     /**
      * The target class where the conflict occurred
      */
-    public get target(): object
-    {
+    public get target(): object {
         return this.#target;
     }
 
     /**
      * The property name that caused the conflict
      */
-    public get key(): PropertyKey
-    {
+    public get key(): PropertyKey {
         return this.#key;
     }
 }

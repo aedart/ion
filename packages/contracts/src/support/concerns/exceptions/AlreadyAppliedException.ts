@@ -1,10 +1,9 @@
-import InvalidConcernException from './InvalidConcernException.js'
+import InvalidConcernException from './InvalidConcernException.js';
 
 /**
  * Already Applied Exception
  */
-export default interface AlreadyAppliedException extends InvalidConcernException
-{
+export default interface AlreadyAppliedException extends InvalidConcernException {
     /**
      * The target class where the conflict occurred
      */

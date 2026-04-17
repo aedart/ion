@@ -1,12 +1,11 @@
-import
-{
-    type ConcernConstructor,
+import {
+    CONCERN_REGISTRY,
     type ConcernConfiguration,
-    CONCERN_REGISTRY
+    type ConcernConstructor,
 } from '@aedart/contracts/support/concerns';
-import {InjectionConflictError} from './exceptions/index.js';
-import {getClassPropertyDescriptors} from '../reflections/index.js';
-import { recordAlias } from './recordAlias.js'
+import { getClassPropertyDescriptors } from '../reflections/index.js';
+import { InjectionConflictError } from './exceptions/index.js';
+import { recordAlias } from './recordAlias.js';
 
 /**
  * Inject properties from the concern into the target prototype
@@ -44,7 +43,7 @@ export function inject(target: any, entry: ConcernConstructor | ConcernConfigura
             throw new InjectionConflictError(
                 target,
                 finalKey,
-                `Property "${String(finalKey)}" already exists in ${target.name}`
+                `Property "${String(finalKey)}" already exists in ${target.name}`,
             );
         }
 
@@ -52,7 +51,7 @@ export function inject(target: any, entry: ConcernConstructor | ConcernConfigura
         if (finalKey !== key) {
             recordAlias(target, constructor, key, finalKey);
         }
-        
+
         // Direct Injection
         Reflect.defineProperty(target.prototype, finalKey, descriptors[key as string]);
     }

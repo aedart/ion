@@ -31,8 +31,7 @@ export default class InvalidConcernError extends ConcernError implements Invalid
     /**
      * The invalid concern class
      */
-    public get concern(): any
-    {
+    public get concern(): any {
         return this.#concern;
     }
 }

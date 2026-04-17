@@ -1,11 +1,10 @@
-import ConcernConstructor from "./ConcernConstructor.js";
-import type { AliasMap } from "./types.js";
+import ConcernConstructor from './ConcernConstructor.js';
+import type { AliasMap } from './types.js';
 
 /**
  * Concern Configuration
  */
-export default interface ConcernConfiguration
-{
+export default interface ConcernConfiguration {
     /**
      * The Concern class to be applied
      */

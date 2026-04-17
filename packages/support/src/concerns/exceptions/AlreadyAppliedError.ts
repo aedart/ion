@@ -1,18 +1,19 @@
 import { type AlreadyAppliedException } from '@aedart/contracts/support/concerns';
-import InvalidConcernError from './InvalidConcernError.js'
+import InvalidConcernError from './InvalidConcernError.js';
 
 /**
  * Already Applied Error
  *
  * Thrown when a concern is applied to a target that already uses it.
  */
-export default class AlreadyAppliedError extends InvalidConcernError implements AlreadyAppliedException
+export default class AlreadyAppliedError extends InvalidConcernError
+    implements AlreadyAppliedException
 {
     /**
      * The target class where the conflict occurred
      */
     readonly #target: object;
-    
+
     /**
      * Create a new Already Applied Error instance
      *
@@ -31,8 +32,7 @@ export default class AlreadyAppliedError extends InvalidConcernError implements 
     /**
      * The target class where the conflict occurred
      */
-    public get target(): object
-    {
+    public get target(): object {
         return this.#target;
     }
 }

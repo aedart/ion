@@ -1,4 +1,4 @@
-import {CONCERN_REGISTRY, type ConcernConstructor} from '@aedart/contracts/support/concerns';
+import { CONCERN_REGISTRY, type ConcernConstructor } from '@aedart/contracts/support/concerns';
 
 /**
  * Returns a list of all concerns applied to the target

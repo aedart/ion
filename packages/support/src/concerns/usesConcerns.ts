@@ -1,5 +1,5 @@
-import {type ConcernConstructor} from '@aedart/contracts/support/concerns';
-import {hasConcern} from "./hasConcern.js";
+import { type ConcernConstructor } from '@aedart/contracts/support/concerns';
+import { hasConcern } from './hasConcern.js';
 
 /**
  * Determine if the target uses all of the given concerns

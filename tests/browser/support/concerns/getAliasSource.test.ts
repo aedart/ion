@@ -1,12 +1,9 @@
-import {describe, expect, test} from 'vitest';
-import {use, AbstractConcern, getAliasSource} from '@aedart/support/concerns';
+import { AbstractConcern, getAliasSource, use } from '@aedart/support/concerns';
+import { describe, expect, test } from 'vitest';
 
-describe('@aedart/support/concerns', () =>
-{
-    describe('getAliasSource()', () =>
-    {
-        test('can identify the source of an aliased method', () =>
-        {
+describe('@aedart/support/concerns', () => {
+    describe('getAliasSource()', () => {
+        test('can identify the source of an aliased method', () => {
             class LoggerConcern extends AbstractConcern
             {
                 public log(msg: string)
@@ -17,7 +14,7 @@ describe('@aedart/support/concerns', () =>
 
             @use({
                 concern: LoggerConcern,
-                aliases: {log: 'writeToLog'}
+                aliases: { log: 'writeToLog' },
             })
             class MyService
             {
@@ -33,15 +30,22 @@ describe('@aedart/support/concerns', () =>
             expect(getAliasSource(MyService, 'log')).toBeUndefined();
         });
 
-        test('resolves the ultimate source across multiple levels of aliasing', () =>
-        {
-            class BaseBehavior extends AbstractConcern { public ping() { return 'pong'; } }
+        test('resolves the ultimate source across multiple levels of aliasing', () => {
+            class BaseBehavior extends AbstractConcern
+            {
+                public ping()
+                {
+                    return 'pong';
+                }
+            }
 
             @use({ concern: BaseBehavior, aliases: { ping: 'ping_aliased' } })
-            class CompositeConcern extends AbstractConcern {}
+            class CompositeConcern extends AbstractConcern
+            {}
 
             @use({ concern: CompositeConcern, aliases: { ping_aliased: 'ping_final' } })
-            class FinalService {}
+            class FinalService
+            {}
 
             const source = getAliasSource(FinalService, 'ping_final');
 
@@ -49,5 +53,4 @@ describe('@aedart/support/concerns', () =>
             expect(source?.original).toBe('ping');
         });
     });
-
 });

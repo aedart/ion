@@ -1,13 +1,8 @@
+import { AbstractConcern, use, usesConcerns } from '@aedart/support/concerns';
 import { describe, expect, test } from 'vitest';
-import {
-    use,
-    AbstractConcern,
-    usesConcerns
-} from '@aedart/support/concerns';
 
 describe('@aedart/support/concerns', () => {
     describe('usesConcerns', () => {
-
         /**
          * Mock Concern: Timestamp
          */
@@ -29,18 +24,18 @@ describe('@aedart/support/concerns', () => {
                 return `Log: ${msg}`;
             }
         }
-        
-        test('can verify if multiple concerns are applied', () =>
-        {
+
+        test('can verify if multiple concerns are applied', () => {
             @use(TimestampConcern, LoggerConcern)
-            class FullyLoadedService {}
+            class FullyLoadedService
+            {}
 
             @use(TimestampConcern)
-            class PartialService {}
+            class PartialService
+            {}
 
             expect(usesConcerns(FullyLoadedService, TimestampConcern, LoggerConcern)).toBe(true);
             expect(usesConcerns(PartialService, TimestampConcern, LoggerConcern)).toBe(false);
         });
-
     });
 });

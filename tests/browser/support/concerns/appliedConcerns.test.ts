@@ -1,10 +1,8 @@
-import {describe, expect, test} from 'vitest';
-import {use, AbstractConcern, appliedConcerns} from '@aedart/support/concerns';
+import { AbstractConcern, appliedConcerns, use } from '@aedart/support/concerns';
+import { describe, expect, test } from 'vitest';
 
-describe('@aedart/support/concerns', () =>
-{
-    describe('appliedConcerns()', () =>
-    {
+describe('@aedart/support/concerns', () => {
+    describe('appliedConcerns()', () => {
         class TimestampConcern extends AbstractConcern
         {
         }
@@ -17,8 +15,7 @@ describe('@aedart/support/concerns', () =>
         {
         }
 
-        test('returns empty array if no concerns are applied', () =>
-        {
+        test('returns empty array if no concerns are applied', () => {
             class PlainClass
             {
             }
@@ -27,8 +24,7 @@ describe('@aedart/support/concerns', () =>
             expect(appliedConcerns(new PlainClass())).toEqual([]);
         });
 
-        test('can retrieve all concerns applied to a class', () =>
-        {
+        test('can retrieve all concerns applied to a class', () => {
             @use(TimestampConcern, LoggerConcern)
             class MyService
             {
@@ -41,8 +37,7 @@ describe('@aedart/support/concerns', () =>
             expect(concerns).toContain(LoggerConcern);
         });
 
-        test('retrieves concerns from the entire inheritance chain', () =>
-        {
+        test('retrieves concerns from the entire inheritance chain', () => {
             @use(TimestampConcern)
             class Parent
             {
@@ -61,8 +56,7 @@ describe('@aedart/support/concerns', () =>
             expect(concerns).toContain(LoggerConcern);
         });
 
-        test('retrieves flattened nested concerns', () =>
-        {
+        test('retrieves flattened nested concerns', () => {
             @use(AuthConcern)
             class SecurityConcern extends AbstractConcern
             {
@@ -81,8 +75,7 @@ describe('@aedart/support/concerns', () =>
             expect(concerns).toContain(AuthConcern);
         });
 
-        test('handles instances as target', () =>
-        {
+        test('handles instances as target', () => {
             @use(TimestampConcern)
             class MyService
             {
@@ -94,8 +87,7 @@ describe('@aedart/support/concerns', () =>
             expect(concerns).toContain(TimestampConcern);
         });
 
-        test('returns unique concerns even if registry exists in multiple levels', () =>
-        {
+        test('returns unique concerns even if registry exists in multiple levels', () => {
             @use(TimestampConcern)
             class Base
             {
@@ -110,5 +102,4 @@ describe('@aedart/support/concerns', () =>
             expect(concerns[0]).toBe(TimestampConcern);
         });
     });
-
 });

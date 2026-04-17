@@ -1,10 +1,9 @@
-import ConcernException from "./ConcernException.js";
+import ConcernException from './ConcernException.js';
 
 /**
  * Concern Conflict Exception
  */
-export default interface ConcernConflictException extends ConcernException
-{
+export default interface ConcernConflictException extends ConcernException {
     /**
      * The target class where the conflict occurred
      */

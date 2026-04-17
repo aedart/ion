@@ -1,4 +1,4 @@
-import {CONCERN_REGISTRY, type ConcernConstructor} from '@aedart/contracts/support/concerns';
+import { CONCERN_REGISTRY, type ConcernConstructor } from '@aedart/contracts/support/concerns';
 
 /**
  * Determine if target uses a single concern

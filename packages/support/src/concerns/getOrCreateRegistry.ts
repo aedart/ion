@@ -1,8 +1,4 @@
-import
-{
-    CONCERN_REGISTRY,
-    type ConcernConstructor,
-} from '@aedart/contracts/support/concerns';
+import { CONCERN_REGISTRY, type ConcernConstructor } from '@aedart/contracts/support/concerns';
 
 /**
  * Get or create the Concern Registry on the target constructor
@@ -18,7 +14,7 @@ export function getOrCreateRegistry(target: any): Set<ConcernConstructor>
             value: new Set<ConcernConstructor>(),
             configurable: false,
             enumerable: false,
-            writable: false
+            writable: false,
         });
     }
 

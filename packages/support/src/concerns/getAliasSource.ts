@@ -1,5 +1,5 @@
-import type {AliasSource} from '@aedart/contracts/support/concerns';
-import {APPLIED_ALIASES} from '@aedart/contracts/support/concerns';
+import type { AliasSource } from '@aedart/contracts/support/concerns';
+import { APPLIED_ALIASES } from '@aedart/contracts/support/concerns';
 
 /**
  * Returns the ultimate source information for a given alias,
@@ -26,7 +26,7 @@ export function getAliasSource(target: any, key: PropertyKey): AliasSource | und
             const mapping: AliasSource | undefined = aliases.get(key);
 
             if (mapping !== undefined) {
-                // Recursive step: attempt to find the original source if the 
+                // Recursive step: attempt to find the original source if the
                 // mapping's concern also defines an alias for the key.
                 return getAliasSource(mapping.concern, mapping.original) ?? mapping;
             }

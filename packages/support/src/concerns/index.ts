@@ -1,11 +1,9 @@
-import AbstractConcern from "./AbstractConcern.js";
-export {
-    AbstractConcern
-}
+import AbstractConcern from './AbstractConcern.js';
+export { AbstractConcern };
 
-export * from './exceptions/index.js';
 export * from './appliedAliases.js';
 export * from './appliedConcerns.js';
+export * from './exceptions/index.js';
 export * from './getAliasSource.js';
 export * from './getOrCreateRegistry.js';
 export * from './hasConcern.js';

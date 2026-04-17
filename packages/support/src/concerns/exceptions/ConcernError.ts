@@ -1,5 +1,5 @@
 import type { ConcernException } from '@aedart/contracts/support/concerns';
-import BaseError from "../../exceptions/BaseError.js";
+import BaseError from '../../exceptions/BaseError.js';
 
 /**
  * Concern Error

@@ -46,16 +46,16 @@ This document serves as the persistent state and configuration guide for the **@
 * **Pattern**: Stateless "Direct Injection" (Descriptor Copy) using Stage 3 Decorators.
 * **Base Class**: `AbstractConcern` (Prevents direct instantiation; marked with `CONCERN_CLASS` symbol).
 * **Decorator (`@use`)**:
-    * Performs $O(n)$ descriptor injection into target prototypes.
-    * Supports recursive **Registry Flattening** (merges nested concern registries into the target).
-    * Implements strict **Conflict Resolution** (throws `InjectionConflictError` on naming collisions).
-    * Supports **Aliasing & Exclusions** via `ConcernConfiguration`.
+  * Performs $O(n)$ descriptor injection into target prototypes.
+  * Supports recursive **Registry Flattening** (merges nested concern registries into the target).
+  * Implements strict **Conflict Resolution** (throws `InjectionConflictError` on naming collisions).
+  * Supports **Aliasing & Exclusions** via `ConcernConfiguration`.
 * **Registry**: `CONCERN_REGISTRY` (Symbol-based `Set` on constructors).
 * **Reflection API**:
-    * `usesConcerns()`: AND-based check across flattened registries.
-    * `appliedConcerns()`: Aggregates all unique concern constructors in the inheritance chain.
-    * `getAliasSource()`: Recursive resolution of an aliased property back to its ultimate origin.
-    * `appliedAliases()`: Returns a complete map of injected aliases and their sources.
+  * `usesConcerns()`: AND-based check across flattened registries.
+  * `appliedConcerns()`: Aggregates all unique concern constructors in the inheritance chain.
+  * `getAliasSource()`: Recursive resolution of an aliased property back to its ultimate origin.
+  * `appliedAliases()`: Returns a complete map of injected aliases and their sources.
 
 ### Objects Sub-Module (`@aedart/support/objects`)
 

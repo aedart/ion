@@ -1,5 +1,5 @@
-import type {AliasSource} from '@aedart/contracts/support/concerns';
-import {APPLIED_ALIASES} from '@aedart/contracts/support/concerns';
+import type { AliasSource } from '@aedart/contracts/support/concerns';
+import { APPLIED_ALIASES } from '@aedart/contracts/support/concerns';
 
 /**
  * Returns a map of all aliases applied to the target

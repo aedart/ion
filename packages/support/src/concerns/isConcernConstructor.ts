@@ -1,5 +1,5 @@
-import {CONCERN_CLASS} from '@aedart/contracts/support/concerns';
-import type {ConcernConstructor} from '@aedart/contracts/support/concerns';
+import { CONCERN_CLASS } from '@aedart/contracts/support/concerns';
+import type { ConcernConstructor } from '@aedart/contracts/support/concerns';
 
 /**
  * Determine if target is a valid concern constructor

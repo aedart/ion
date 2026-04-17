@@ -1,13 +1,12 @@
 import Concern from './Concern.js';
-import { CONCERN_CLASS } from "./types.js";
+import { CONCERN_CLASS } from './types.js';
 
 /**
  * Concern Constructor
- * 
+ *
  * @see Concern
  */
-export default interface ConcernConstructor<T extends Concern = Concern>
-{
+export default interface ConcernConstructor<T extends Concern = Concern> {
     /**
      * Identification tag to distinguish concerns from regular classes.
      */
@@ -16,5 +15,5 @@ export default interface ConcernConstructor<T extends Concern = Concern>
     /**
      * Concern Constructor
      */
-    new (): T;
+    new(): T;
 }

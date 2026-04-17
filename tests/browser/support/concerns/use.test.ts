@@ -1,17 +1,15 @@
-import { describe, expect, test } from 'vitest';
 import {
-    use,
-    usesConcerns,
     AbstractConcern,
+    AlreadyAppliedError,
     InjectionConflictError,
     InvalidConcernError,
-    AlreadyAppliedError
+    use,
+    usesConcerns,
 } from '@aedart/support/concerns';
+import { describe, expect, test } from 'vitest';
 
-describe('@aedart/support/concerns', () =>
-{
-    describe('use() Decorator', () =>
-    {
+describe('@aedart/support/concerns', () => {
+    describe('use() Decorator', () => {
         /**
          * Mock Concern: Timestamp
          */
@@ -34,8 +32,7 @@ describe('@aedart/support/concerns', () =>
             }
         }
 
-        test('can inject concern properties into target class', () =>
-        {
+        test('can inject concern properties into target class', () => {
             @use(TimestampConcern)
             class MyService
             {
@@ -46,8 +43,7 @@ describe('@aedart/support/concerns', () =>
             expect(service.getCreated()).toBe(12345);
         });
 
-        test('can inject multiple concerns', () =>
-        {
+        test('can inject multiple concerns', () => {
             @use(TimestampConcern, LoggerConcern)
             class MultiService
             {
@@ -59,10 +55,8 @@ describe('@aedart/support/concerns', () =>
             expect(service.log('test')).toBe('Log: test');
         });
 
-        test('throws InvalidConcernError if target is not a valid concern', () =>
-        {
-            const action = () =>
-            {
+        test('throws InvalidConcernError if target is not a valid concern', () => {
+            const action = () => {
                 class NotAConcern
                 {
                 }
@@ -76,10 +70,8 @@ describe('@aedart/support/concerns', () =>
             expect(action).toThrow(InvalidConcernError);
         });
 
-        test('throws InjectionConflictError when property already exists on target', () =>
-        {
-            const action = () =>
-            {
+        test('throws InjectionConflictError when property already exists on target', () => {
+            const action = () => {
                 @use(TimestampConcern)
                 class ConflictingClass
                 {
@@ -93,11 +85,10 @@ describe('@aedart/support/concerns', () =>
             expect(action).toThrow(InjectionConflictError);
         });
 
-        test('can alias properties to avoid conflicts', () =>
-        {
+        test('can alias properties to avoid conflicts', () => {
             @use({
                 concern: TimestampConcern,
-                aliases: {getCreated: 'getTimestamp'}
+                aliases: { getCreated: 'getTimestamp' },
             })
             class AliasedService
             {
@@ -109,11 +100,10 @@ describe('@aedart/support/concerns', () =>
             expect(service.getCreated).toBeUndefined();
         });
 
-        test('can exclude specific properties', () =>
-        {
+        test('can exclude specific properties', () => {
             @use({
                 concern: LoggerConcern,
-                excludes: ['log']
+                excludes: ['log'],
             })
             class ExcludedService
             {
@@ -124,23 +114,22 @@ describe('@aedart/support/concerns', () =>
             expect(service.log).toBeUndefined();
         });
 
-        test('throws AlreadyAppliedError if concern is already applied to parent', () =>
-        {
+        test('throws AlreadyAppliedError if concern is already applied to parent', () => {
             @use(TimestampConcern)
-            class Parent {}
+            class Parent
+            {}
 
-            const action = () =>
-            {
+            const action = () => {
                 @use(TimestampConcern)
-                class Child extends Parent {}
+                class Child extends Parent
+                {}
             };
 
             expect(action).toThrow(AlreadyAppliedError);
         });
     });
 
-    describe('Nested Concerns', () =>
-    {
+    describe('Nested Concerns', () => {
         /**
          * Level 1: The "Base" behavior
          */
@@ -168,10 +157,10 @@ describe('@aedart/support/concerns', () =>
          * Level 3: The Target Class
          */
         @use(CompositeConcern)
-        class FinalService {}
+        class FinalService
+        {}
 
-        test('can access methods from nested concerns', () =>
-        {
+        test('can access methods from nested concerns', () => {
             const service: any = new FinalService();
 
             // Directly from the primary concern
@@ -181,8 +170,7 @@ describe('@aedart/support/concerns', () =>
             expect(service.ping()).toBe('pong');
         });
 
-        test('registry identifies all concerns in the chain due to flattening', () =>
-        {
+        test('registry identifies all concerns in the chain due to flattening', () => {
             // 1. Check primary application
             expect(usesConcerns(FinalService, CompositeConcern)).toBe(true);
 
@@ -193,42 +181,42 @@ describe('@aedart/support/concerns', () =>
             expect(usesConcerns(CompositeConcern, BaseBehavior)).toBe(true);
         });
 
-        test('throws AlreadyAppliedError if nested concern is already applied to target', () =>
-        {
-            const action = () =>
-            {
-                // BaseBehavior is already part of CompositeConcern. 
+        test('throws AlreadyAppliedError if nested concern is already applied to target', () => {
+            const action = () => {
+                // BaseBehavior is already part of CompositeConcern.
                 // Applying both manually should trigger the check.
                 @use(BaseBehavior, CompositeConcern)
-                class DoubleAppliedService {}
+                class DoubleAppliedService
+                {}
             };
 
             expect(action).toThrow(AlreadyAppliedError);
         });
 
-        test('throws AlreadyAppliedError if target parent already uses a nested concern', () =>
-        {
+        test('throws AlreadyAppliedError if target parent already uses a nested concern', () => {
             @use(BaseBehavior)
-            class ParentService {}
+            class ParentService
+            {}
 
-            const action = () =>
-            {
-                // CompositeConcern also brings in BaseBehavior, 
+            const action = () => {
+                // CompositeConcern also brings in BaseBehavior,
                 // but ParentService already has it.
                 @use(CompositeConcern)
-                class ChildService extends ParentService {}
+                class ChildService extends ParentService
+                {}
             };
 
             expect(action).toThrow(AlreadyAppliedError);
         });
 
-        test('deeply nested concerns are flattened correctly', () =>
-        {
+        test('deeply nested concerns are flattened correctly', () => {
             @use(CompositeConcern)
-            class DeeplyNestedConcern extends AbstractConcern {}
+            class DeeplyNestedConcern extends AbstractConcern
+            {}
 
             @use(DeeplyNestedConcern)
-            class MassiveService {}
+            class MassiveService
+            {}
 
             expect(usesConcerns(MassiveService, BaseBehavior)).toBe(true);
             expect(usesConcerns(MassiveService, CompositeConcern)).toBe(true);

@@ -1,10 +1,8 @@
-import {describe, expect, test} from 'vitest';
-import {use, AbstractConcern, appliedAliases} from '@aedart/support/concerns';
+import { AbstractConcern, appliedAliases, use } from '@aedart/support/concerns';
+import { describe, expect, test } from 'vitest';
 
-describe('@aedart/support/concerns', () =>
-{
-    describe('appliedAliases()', () =>
-    {
+describe('@aedart/support/concerns', () => {
+    describe('appliedAliases()', () => {
         class LoggerConcern extends AbstractConcern
         {
             public log(msg: string)
@@ -21,8 +19,7 @@ describe('@aedart/support/concerns', () =>
             }
         }
 
-        test('returns empty map if no aliases are applied', () =>
-        {
+        test('returns empty map if no aliases are applied', () => {
             @use(LoggerConcern)
             class NoAliasService
             {
@@ -34,15 +31,14 @@ describe('@aedart/support/concerns', () =>
             expect(aliases instanceof Map).toBe(true);
         });
 
-        test('can retrieve all aliases from a single class', () =>
-        {
+        test('can retrieve all aliases from a single class', () => {
             @use({
                 concern: LoggerConcern,
-                aliases: {log: 'writeToLog'}
+                aliases: { log: 'writeToLog' },
             })
             @use({
                 concern: AuthConcern,
-                aliases: {login: 'authenticate'}
+                aliases: { login: 'authenticate' },
             })
             class AliasedService
             {
@@ -55,11 +51,10 @@ describe('@aedart/support/concerns', () =>
             expect(aliases.get('authenticate')?.original).toBe('login');
         });
 
-        test('aggregates aliases from the inheritance chain', () =>
-        {
+        test('aggregates aliases from the inheritance chain', () => {
             @use({
                 concern: LoggerConcern,
-                aliases: {log: 'parentLog'}
+                aliases: { log: 'parentLog' },
             })
             class Parent
             {
@@ -67,7 +62,7 @@ describe('@aedart/support/concerns', () =>
 
             @use({
                 concern: AuthConcern,
-                aliases: {login: 'childLogin'}
+                aliases: { login: 'childLogin' },
             })
             class Child extends Parent
             {
@@ -80,11 +75,10 @@ describe('@aedart/support/concerns', () =>
             expect(aliases.has('childLogin')).toBe(true);
         });
 
-        test('preserves alias source information', () =>
-        {
+        test('preserves alias source information', () => {
             @use({
                 concern: LoggerConcern,
-                aliases: {log: 'writeLog'}
+                aliases: { log: 'writeLog' },
             })
             class MyService
             {
@@ -97,11 +91,10 @@ describe('@aedart/support/concerns', () =>
             expect(source?.original).toBe('log');
         });
 
-        test('handles nested concern aliases through flattening', () =>
-        {
+        test('handles nested concern aliases through flattening', () => {
             @use({
                 concern: LoggerConcern,
-                aliases: {log: 'internalLog'}
+                aliases: { log: 'internalLog' },
             })
             class CompositeConcern extends AbstractConcern
             {
@@ -109,7 +102,7 @@ describe('@aedart/support/concerns', () =>
 
             @use({
                 concern: CompositeConcern,
-                aliases: {internalLog: 'finalLog'}
+                aliases: { internalLog: 'finalLog' },
             })
             class FinalService
             {

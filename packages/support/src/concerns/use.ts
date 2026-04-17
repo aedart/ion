@@ -1,14 +1,13 @@
-import
-{
+import {
+    type ConcernConfiguration,
     type ConcernConstructor,
-    type ConcernConfiguration
 } from '@aedart/contracts/support/concerns';
-import {isConcernConstructor} from './isConcernConstructor.js';
-import {InvalidConcernError, AlreadyAppliedError} from './exceptions/index.js';
-import {getOrCreateRegistry} from './getOrCreateRegistry.js';
-import {inject} from './inject.js';
-import {usesConcerns} from './usesConcerns.js'
-import {mergeRegistry} from "./mergeRegistry.js";
+import { AlreadyAppliedError, InvalidConcernError } from './exceptions/index.js';
+import { getOrCreateRegistry } from './getOrCreateRegistry.js';
+import { inject } from './inject.js';
+import { isConcernConstructor } from './isConcernConstructor.js';
+import { mergeRegistry } from './mergeRegistry.js';
+import { usesConcerns } from './usesConcerns.js';
 
 /**
  * Use one or more concerns (traits)
@@ -22,7 +21,7 @@ import {mergeRegistry} from "./mergeRegistry.js";
  */
 export function use(...concerns: (ConcernConstructor | ConcernConfiguration)[])
 {
-    return function (target: any)
+    return function(target: any)
     {
         const registry: Set<ConcernConstructor> = getOrCreateRegistry(target);
 
@@ -43,7 +42,11 @@ export function use(...concerns: (ConcernConstructor | ConcernConfiguration)[])
 
             // 3. Strict Duplicate Check for the concern itself
             if (registry.has(constructor)) {
-                throw new AlreadyAppliedError(target, constructor, `Concern ${constructor.name} is already applied.`);
+                throw new AlreadyAppliedError(
+                    target,
+                    constructor,
+                    `Concern ${constructor.name} is already applied.`,
+                );
             }
 
             // 4. Inject Properties & Methods
