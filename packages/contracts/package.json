@@ -38,6 +38,10 @@
             "types": "./dist/support/arrays/index.d.ts",
             "import": "./dist/support/arrays/index.js"
         },
+        "./support/concerns": {
+            "types": "./dist/support/concerns/index.d.ts",
+            "import": "./dist/support/concerns/index.js"
+        },
         "./support/exceptions": {
             "types": "./dist/support/exceptions/index.d.ts",
             "import": "./dist/support/exceptions/index.js"

@@ -31,6 +31,10 @@
             "types": "./dist/arrays/index.d.ts",
             "import": "./dist/arrays/index.js"
         },
+        "./concerns": {
+            "types": "./dist/concerns/index.d.ts",
+            "import": "./dist/concerns/index.js"
+        },
         "./exceptions": {
             "types": "./dist/exceptions/index.d.ts",
             "import": "./dist/exceptions/index.js"
