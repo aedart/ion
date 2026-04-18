@@ -100,6 +100,20 @@ describe('@aedart/support/concerns', () => {
             expect(service.getCreated).toBeUndefined();
         });
 
+        test('can alias properties using shorthand configuration', () => {
+            @use(
+                [TimestampConcern, { getCreated: 'getTimestamp' }]
+            )
+            class AliasedService
+            {
+            }
+
+            const service: any = new AliasedService();
+
+            expect(service.getTimestamp()).toBe(12345);
+            expect(service.getCreated).toBeUndefined();
+        });
+        
         test('can exclude specific properties', () => {
             @use({
                 concern: LoggerConcern,

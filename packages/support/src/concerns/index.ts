@@ -10,6 +10,7 @@ export * from './hasConcern.js';
 export * from './inject.js';
 export * from './isConcernConstructor.js';
 export * from './mergeRegistry.js';
+export * from './normalizeConfig.js';
 export * from './recordAlias.js';
 export * from './use.js';
 export * from './usesConcerns.js';

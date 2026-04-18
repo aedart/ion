@@ -1,35 +1,34 @@
 import {
     type ConcernConfiguration,
     type ConcernConstructor,
+    type ShorthandConfiguration
 } from '@aedart/contracts/support/concerns';
 import { AlreadyAppliedError, InvalidConcernError } from './exceptions/index.js';
 import { getOrCreateRegistry } from './getOrCreateRegistry.js';
 import { inject } from './inject.js';
 import { isConcernConstructor } from './isConcernConstructor.js';
 import { mergeRegistry } from './mergeRegistry.js';
-import { usesConcerns } from './usesConcerns.js';
+import { normalizeConfig } from "./normalizeConfig.js";
 
 /**
  * Use one or more concerns (traits)
  *
- * @param {...(ConcernConstructor | ConcernConfiguration)} concerns
+ * @param {...(ConcernConstructor | ConcernConfiguration | ShorthandConfiguration)} concerns
  *
  * @returns {ClassDecorator}
  *
  * @throws {InvalidConcernError} If a provided concern is not a valid concern constructor
  * @throws {InjectionConflictError} If a concern property conflicts with an existing property in the target
  */
-export function use(...concerns: (ConcernConstructor | ConcernConfiguration)[])
+export function use(...concerns: (ConcernConstructor | ConcernConfiguration | ShorthandConfiguration)[])
 {
     return function(target: any)
     {
         const registry: Set<ConcernConstructor> = getOrCreateRegistry(target);
 
         for (let i: number = 0, limit: number = concerns.length; i < limit; i++) {
-            const entry: ConcernConstructor | ConcernConfiguration = concerns[i];
-            const constructor: ConcernConstructor = (typeof entry === 'function')
-                ? entry
-                : entry.concern;
+            const config = normalizeConfig(concerns[i]);
+            const constructor = config.concern;
 
             // 1. Validate Concern
             if (!isConcernConstructor(constructor)) {
@@ -50,7 +49,7 @@ export function use(...concerns: (ConcernConstructor | ConcernConfiguration)[])
             }
 
             // 4. Inject Properties & Methods
-            inject(target, entry);
+            inject(target, config);
 
             // 5. Update Registry
             registry.add(constructor);

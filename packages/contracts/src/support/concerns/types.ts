@@ -1,9 +1,22 @@
+import Concern from './Concern.js';
+import ConcernConstructor from './ConcernConstructor.js';
+
 /**
  * Alias Configuration
  *
  * Key is the original property name, Value is the new alias
  */
 export type AliasMap = Record<PropertyKey, PropertyKey>;
+
+/**
+ * Shorthand Concern Injection Configuration
+ *
+ * [ Concern Constructor, Alias Map ]
+ */
+export type ShorthandConfiguration<T extends Concern = Concern> = [
+    ConcernConstructor<T>,
+    AliasMap
+];
 
 /**
  * Symbol used to identify a class as being a valid Concern.

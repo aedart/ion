@@ -11,16 +11,16 @@ import { recordAlias } from './recordAlias.js';
  * Inject properties from the concern into the target prototype
  *
  * @param {any} target
- * @param {ConcernConstructor | ConcernConfiguration} entry
+ * @param {ConcernConfiguration} config
  */
-export function inject(target: any, entry: ConcernConstructor | ConcernConfiguration): void
+export function inject(target: any, config: ConcernConfiguration): void
 {
-    const constructor: ConcernConstructor = (typeof entry === 'function') ? entry : entry.concern;
+    const constructor: ConcernConstructor = config.concern;
     const descriptors: PropertyDescriptorMap = getClassPropertyDescriptors(constructor);
     const keys: (string | symbol)[] = Reflect.ownKeys(descriptors);
 
-    const aliases = (typeof entry !== 'function') ? (entry.aliases ?? {}) : {};
-    const excludes = (typeof entry !== 'function') ? (entry.excludes ?? []) : [];
+    const aliases = config.aliases ?? {};
+    const excludes = config.excludes ?? [];
 
     for (let i: number = 0, limit: number = keys.length; i < limit; i++) {
         const key: string | symbol = keys[i];
