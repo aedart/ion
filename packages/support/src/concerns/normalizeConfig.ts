@@ -1,7 +1,7 @@
 import {
     type ConcernConfiguration,
     type ConcernConstructor,
-    type ShorthandConfiguration
+    type ShorthandConfiguration,
 } from '@aedart/contracts/support/concerns';
 
 /**
@@ -11,13 +11,15 @@ import {
  *
  * @returns {ConcernConfiguration}
  */
-export function normalizeConfig(entry: ConcernConstructor | ConcernConfiguration | ShorthandConfiguration): ConcernConfiguration
+export function normalizeConfig(
+    entry: ConcernConstructor | ConcernConfiguration | ShorthandConfiguration,
+): ConcernConfiguration
 {
     // If entry is a ShorthandConfiguration [Constructor, AliasMap]
     if (Array.isArray(entry)) {
         return {
             concern: entry[0],
-            aliases: entry[1]
+            aliases: entry[1],
         };
     }
 
@@ -28,6 +30,6 @@ export function normalizeConfig(entry: ConcernConstructor | ConcernConfiguration
 
     // Otherwise, assume it's a ConcernConstructor
     return {
-        concern: entry as ConcernConstructor
+        concern: entry as ConcernConstructor,
     };
 }

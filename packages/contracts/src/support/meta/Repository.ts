@@ -1,11 +1,10 @@
 import { Key } from '../types.js';
-import { MetadataRecord } from "./types.js";
+import { MetadataRecord } from './types.js';
 
 /**
  * Metadata Repository Contract
  */
-export default interface Repository
-{
+export default interface Repository {
     /**
      * Set a metadata value for the given key or path.
      *
@@ -18,7 +17,7 @@ export default interface Repository
      * Get a metadata value for the given key or path.
      *
      * @template T
-     * 
+     *
      * @param {Key} key
      * @param {any} [defaultValue]
      *

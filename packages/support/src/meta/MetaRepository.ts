@@ -1,14 +1,6 @@
-import {
-    Repository,
-    MetadataRecord
-} from '@aedart/contracts/support/meta';
-import { Key } from "@aedart/contracts/support";
-import {
-    get,
-    set,
-    has,
-    forget
-} from '../objects/index.js';
+import { Key } from '@aedart/contracts/support';
+import { MetadataRecord, Repository } from '@aedart/contracts/support/meta';
+import { forget, get, has, set } from '../objects/index.js';
 
 /**
  * Metadata Repository

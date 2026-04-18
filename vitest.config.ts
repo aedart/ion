@@ -1,6 +1,6 @@
 import { playwright } from '@vitest/browser-playwright';
-import { defineConfig } from 'vitest/config';
 import swc from 'unplugin-swc';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     test: {
@@ -31,17 +31,17 @@ export default defineConfig({
                     swc.vite({
                         jsc: {
                             parser: {
-                                syntax: "typescript",
+                                syntax: 'typescript',
                                 decorators: true, // Enable decorator syntax
                             },
                             transform: {
                                 // Ensure this matches the Stage 3 version you are using
-                                decoratorVersion: "2022-03",
+                                decoratorVersion: '2022-03',
                             },
                         },
                     }),
                 ],
-                
+
                 test: {
                     name: 'browser-headless',
                     browser: {

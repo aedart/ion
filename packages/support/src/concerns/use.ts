@@ -1,14 +1,14 @@
 import {
     type ConcernConfiguration,
     type ConcernConstructor,
-    type ShorthandConfiguration
+    type ShorthandConfiguration,
 } from '@aedart/contracts/support/concerns';
 import { AlreadyAppliedError, InvalidConcernError } from './exceptions/index.js';
 import { getOrCreateRegistry } from './getOrCreateRegistry.js';
 import { inject } from './inject.js';
 import { isConcernConstructor } from './isConcernConstructor.js';
 import { mergeRegistry } from './mergeRegistry.js';
-import { normalizeConfig } from "./normalizeConfig.js";
+import { normalizeConfig } from './normalizeConfig.js';
 
 /**
  * Use one or more concerns (traits)
@@ -20,7 +20,9 @@ import { normalizeConfig } from "./normalizeConfig.js";
  * @throws {InvalidConcernError} If a provided concern is not a valid concern constructor
  * @throws {InjectionConflictError} If a concern property conflicts with an existing property in the target
  */
-export function use(...concerns: (ConcernConstructor | ConcernConfiguration | ShorthandConfiguration)[])
+export function use(
+    ...concerns: (ConcernConstructor | ConcernConfiguration | ShorthandConfiguration)[]
+)
 {
     return function(target: any)
     {

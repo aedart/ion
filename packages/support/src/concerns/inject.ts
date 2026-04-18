@@ -4,16 +4,16 @@ import {
     type ConcernConstructor,
 } from '@aedart/contracts/support/concerns';
 import { getClassPropertyDescriptors } from '../reflections/index.js';
+import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
 import { InjectionConflictError } from './exceptions/index.js';
 import { recordAlias } from './recordAlias.js';
-import { isKeyUnsafe } from "../reflections/isKeyUnsafe.js";
 
 /**
  * Inject properties from the concern into the target prototype
  *
  * @param {any} target
  * @param {ConcernConfiguration} config
- * 
+ *
  * @throws {InjectionConflictError}
  */
 export function inject(target: any, config: ConcernConfiguration): void
@@ -46,7 +46,7 @@ export function inject(target: any, config: ConcernConfiguration): void
             throw new InjectionConflictError(
                 target,
                 finalKey,
-                `Illegal alias target: ${String(finalKey)} in ${target.name}`
+                `Illegal alias target: ${String(finalKey)} in ${target.name}`,
             );
         }
 
@@ -56,7 +56,9 @@ export function inject(target: any, config: ConcernConfiguration): void
             throw new InjectionConflictError(
                 target,
                 finalKey,
-                `Property "${String(finalKey)}" already exists in ${target.name} (or was previously injected)`,
+                `Property "${
+                    String(finalKey)
+                }" already exists in ${target.name} (or was previously injected)`,
             );
         }
 
@@ -69,4 +71,3 @@ export function inject(target: any, config: ConcernConfiguration): void
         Reflect.defineProperty(target.prototype, finalKey, descriptors[key as string]);
     }
 }
-

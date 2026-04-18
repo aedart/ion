@@ -1,5 +1,3 @@
-
-
 /**
  * A record representing the raw metadata "shelf" provided by the JS engine.
  */

@@ -10,9 +10,7 @@ export const SUPPORT_META: unique symbol = Symbol('@aedart/contracts/support/met
  */
 export const METADATA: unique symbol = Symbol.for('Symbol.metadata');
 
-import Repository from "./Repository.js";
-export {
-    type Repository
-}
+import Repository from './Repository.js';
+export { type Repository };
 
 export type * from './types.js';

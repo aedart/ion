@@ -1,5 +1,5 @@
-import { MetaContext } from '@aedart/contracts/support/meta';
 import { Key } from '@aedart/contracts/support';
+import { MetaContext } from '@aedart/contracts/support/meta';
 import MetaRepository from './MetaRepository.js';
 
 /**
@@ -12,8 +12,7 @@ import MetaRepository from './MetaRepository.js';
  */
 export function meta(key: Key, value: any)
 {
-    return (target: any, context: MetaContext): void =>
-    {
+    return (target: any, context: MetaContext): void => {
         // 1. Obtain the metadata shelf from context
         const shelf = context.metadata;
 

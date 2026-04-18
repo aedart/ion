@@ -15,7 +15,7 @@ export type AliasMap = Record<PropertyKey, PropertyKey>;
  */
 export type ShorthandConfiguration<T extends Concern = Concern> = [
     ConcernConstructor<T>,
-    AliasMap
+    AliasMap,
 ];
 
 /**

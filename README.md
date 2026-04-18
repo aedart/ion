@@ -20,9 +20,9 @@ This project utilizes advanced Artificial Intelligence (AI) models, specifically
 
 I acknowledge and credit the following contributors to the intelligence powering this repository:
 
-*   **Model Developers & Researchers**: The engineers and scientists at OpenAI and Anthropic who developed the Large Language Models (LLMs) used during development.
-*   **Trainers & Data Contributors**: The vast ecosystem of human trainers, feedback providers, and the global open-source community whose collective knowledge forms the foundation of these models' capabilities.
-*   **AI Synthesis**: Portions of the logic, performance optimizations, and documentation structures were generated or refined through AI-assisted pair programming.
+* **Model Developers & Researchers**: The engineers and scientists at OpenAI and Anthropic who developed the Large Language Models (LLMs) used during development.
+* **Trainers & Data Contributors**: The vast ecosystem of human trainers, feedback providers, and the global open-source community whose collective knowledge forms the foundation of these models' capabilities.
+* **AI Synthesis**: Portions of the logic, performance optimizations, and documentation structures were generated or refined through AI-assisted pair programming.
 
-**Transparency Note for Developers**:  
+**Transparency Note for Developers**:\
 While AI is used to accelerate development and ensure adherence to strict coding standards, all generated code undergoes rigorous review to ensure it meets the project’s security, performance, and architectural integrity requirements.

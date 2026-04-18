@@ -27,27 +27,31 @@ This document serves as the persistent state and configuration guide for the **@
 ## Sub-Module Status
 
 ### Concerns (`@aedart/support/concerns`)
+
 * **Status**: **Completed (v1)**.
 * **Features**:
-    * Stage 3 Decorator-based injection.
-    * Supports `ShorthandConfiguration`: `[ConcernConstructor, AliasMap]`.
-    * **Security**: `isKeyUnsafe` validation on both source keys and alias targets to prevent prototype pollution.
-    * **Conflict Resolution**: Throws `InjectionConflictError` on naming collisions or illegal alias targets.
+  * Stage 3 Decorator-based injection.
+  * Supports `ShorthandConfiguration`: `[ConcernConstructor, AliasMap]`.
+  * **Security**: `isKeyUnsafe` validation on both source keys and alias targets to prevent prototype pollution.
+  * **Conflict Resolution**: Throws `InjectionConflictError` on naming collisions or illegal alias targets.
 
 ### Meta (`@aedart/support/meta`)
+
 * **Status**: **In Progress**.
 * **Architecture**: Native Stage 3 Decorator Metadata integration.
 * **Components**:
-    * `MetaRepository`: Wraps `context.metadata` for path-aware get/set/has/forget operations.
-    * `@meta()`: Decorator supporting class, method, and property metadata association.
+  * `MetaRepository`: Wraps `context.metadata` for path-aware get/set/has/forget operations.
+  * `@meta()`: Decorator supporting class, method, and property metadata association.
 * **Inheritance**: Leverages native prototype-based inheritance (`Child[Symbol.metadata].__proto__ === Parent[Symbol.metadata]`).
 * **Next Task**: Determine logic for `all()` (Own vs. Merged) and `forget()` (Shadowing vs. Deletion).
 
 ### Objects (`@aedart/support/objects`)
+
 * **Utilities**: `get`, `set`, `has`, `forget` (lodash wrappers used by Meta).
 
 ## Infrastructure & Testing (Vitest Browser)
+
 * **Configuration**:
-    * Stage 3 Decorators require `oxc: false` and `esbuild: false` within the specific browser project configuration.
-    * **Transpilation**: `unplugin-swc` (with `decoratorVersion: "2022-03"`) must be injected at the project level to handle the `@` syntax for browsers.
-    * **Polyfill**: `Symbol.metadata` is patched in `@aedart/support/meta/index.ts` to ensure compatibility across Node 24 and Browser runtimes.
+  * Stage 3 Decorators require `oxc: false` and `esbuild: false` within the specific browser project configuration.
+  * **Transpilation**: `unplugin-swc` (with `decoratorVersion: "2022-03"`) must be injected at the project level to handle the `@` syntax for browsers.
+  * **Polyfill**: `Symbol.metadata` is patched in `@aedart/support/meta/index.ts` to ensure compatibility across Node 24 and Browser runtimes.

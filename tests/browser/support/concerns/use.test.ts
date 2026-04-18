@@ -42,7 +42,7 @@ describe('@aedart/support/concerns', () => {
                 return 'safe';
             }
         }
-        
+
         test('can inject concern properties into target class', () => {
             @use(TimestampConcern)
             class MyService
@@ -113,7 +113,7 @@ describe('@aedart/support/concerns', () => {
 
         test('can alias properties using shorthand configuration', () => {
             @use(
-                [TimestampConcern, { getCreated: 'getTimestamp' }]
+                [TimestampConcern, { getCreated: 'getTimestamp' }],
             )
             class AliasedService
             {
@@ -124,7 +124,7 @@ describe('@aedart/support/concerns', () => {
             expect(service.getTimestamp()).toBe(12345);
             expect(service.getCreated).toBeUndefined();
         });
-        
+
         test('can exclude specific properties', () => {
             @use({
                 concern: LoggerConcern,
@@ -153,33 +153,33 @@ describe('@aedart/support/concerns', () => {
             expect(action).toThrow(AlreadyAppliedError);
         });
 
-        test('throws error when aliasing to "constructor"', () =>
-        {
+        test('throws error when aliasing to "constructor"', () => {
             const action = () => {
                 @use([SecurityConcern, { someMethod: 'constructor' }])
-                class DangerousClass {}
+                class DangerousClass
+                {}
             };
 
             expect(action).toThrow(InjectionConflictError);
             expect(action).toThrow(/Illegal alias target: constructor/);
         });
 
-        test('throws error when aliasing to "__proto__"', () =>
-        {
+        test('throws error when aliasing to "__proto__"', () => {
             const action = () => {
                 @use([SecurityConcern, { someMethod: '__proto__' }])
-                class DangerousClass {}
+                class DangerousClass
+                {}
             };
 
             expect(action).toThrow(InjectionConflictError);
             expect(action).toThrow(/Illegal alias target: __proto__/);
         });
 
-        test('throws error when aliasing to "prototype"', () =>
-        {
+        test('throws error when aliasing to "prototype"', () => {
             const action = () => {
                 @use([SecurityConcern, { someMethod: 'prototype' }])
-                class DangerousClass {}
+                class DangerousClass
+                {}
             };
 
             expect(action).toThrow(InjectionConflictError);
