@@ -6,12 +6,15 @@ import {
 import { getClassPropertyDescriptors } from '../reflections/index.js';
 import { InjectionConflictError } from './exceptions/index.js';
 import { recordAlias } from './recordAlias.js';
+import { isKeyUnsafe } from "../reflections/isKeyUnsafe.js";
 
 /**
  * Inject properties from the concern into the target prototype
  *
  * @param {any} target
  * @param {ConcernConfiguration} config
+ * 
+ * @throws {InjectionConflictError}
  */
 export function inject(target: any, config: ConcernConfiguration): void
 {
@@ -25,34 +28,45 @@ export function inject(target: any, config: ConcernConfiguration): void
     for (let i: number = 0, limit: number = keys.length; i < limit; i++) {
         const key: string | symbol = keys[i];
 
-        // Skip constructor and internal AbstractConcern symbols
-        if (key === 'constructor' || key === 'prototype' || key === CONCERN_REGISTRY) {
+        // 1. Security & Internal Check
+        if (isKeyUnsafe(key) || key === CONCERN_REGISTRY) {
             continue;
         }
 
-        // Handle Exclusions
+        // 2. Handle Exclusions
         if (excludes.indexOf(key) !== -1) {
             continue;
         }
 
-        // Determine Final Key (Alias or Original)
+        // 3. Determine Final Key
         const finalKey: PropertyKey = aliases[key as string] ?? key;
 
-        // Conflict Check: Fail-fast if property already exists on target prototype
+        // 4. Security Check on Alias
+        if (isKeyUnsafe(finalKey)) {
+            throw new InjectionConflictError(
+                target,
+                finalKey,
+                `Illegal alias target: ${String(finalKey)} in ${target.name}`
+            );
+        }
+
+        // 5. Conflict Check (Prototype & Existing Member Check)
+        // This catches if the property exists on the class OR was just injected
         if (Reflect.has(target.prototype, finalKey)) {
             throw new InjectionConflictError(
                 target,
                 finalKey,
-                `Property "${String(finalKey)}" already exists in ${target.name}`,
+                `Property "${String(finalKey)}" already exists in ${target.name} (or was previously injected)`,
             );
         }
 
-        // Record Alias Mapping (Only if an alias was actually defined)
+        // 6. Record Alias Mapping
         if (finalKey !== key) {
             recordAlias(target, constructor, key, finalKey);
         }
 
-        // Direct Injection
+        // 7. Direct Injection
         Reflect.defineProperty(target.prototype, finalKey, descriptors[key as string]);
     }
 }
+

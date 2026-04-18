@@ -32,6 +32,17 @@ describe('@aedart/support/concerns', () => {
             }
         }
 
+        /**
+         * Mock Concern: SecurityConcern
+         */
+        class SecurityConcern extends AbstractConcern
+        {
+            someMethod()
+            {
+                return 'safe';
+            }
+        }
+        
         test('can inject concern properties into target class', () => {
             @use(TimestampConcern)
             class MyService
@@ -140,6 +151,39 @@ describe('@aedart/support/concerns', () => {
             };
 
             expect(action).toThrow(AlreadyAppliedError);
+        });
+
+        test('throws error when aliasing to "constructor"', () =>
+        {
+            const action = () => {
+                @use([SecurityConcern, { someMethod: 'constructor' }])
+                class DangerousClass {}
+            };
+
+            expect(action).toThrow(InjectionConflictError);
+            expect(action).toThrow(/Illegal alias target: constructor/);
+        });
+
+        test('throws error when aliasing to "__proto__"', () =>
+        {
+            const action = () => {
+                @use([SecurityConcern, { someMethod: '__proto__' }])
+                class DangerousClass {}
+            };
+
+            expect(action).toThrow(InjectionConflictError);
+            expect(action).toThrow(/Illegal alias target: __proto__/);
+        });
+
+        test('throws error when aliasing to "prototype"', () =>
+        {
+            const action = () => {
+                @use([SecurityConcern, { someMethod: 'prototype' }])
+                class DangerousClass {}
+            };
+
+            expect(action).toThrow(InjectionConflictError);
+            expect(action).toThrow(/Illegal alias target: prototype/);
         });
     });
 
