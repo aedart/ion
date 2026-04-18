@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
         "paths": {
             "@aedart/contracts": ["./packages/contracts/src/index.ts"],
             "@aedart/contracts/*": ["./packages/contracts/src/*"],
@@ -22,6 +22,10 @@
         "declarationMap": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": false,
+        "emitDecoratorMetadata": false,
+        "useDefineForClassFields": true,
+
+        "lib": ["ESNext", "DOM"]
     }
 }
