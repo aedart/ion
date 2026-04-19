@@ -11,14 +11,21 @@ import MetaRepository from './MetaRepository.js';
  */
 export function meta(key: Key, value: any)
 {
+    // Use 'any' for target to support both Class and Members
     return (target: any, context: DecoratorContext): void => {
-        // 1. Obtain the metadata shelf from context
-        const shelf = context.metadata;
 
-        // 2. Wrap the shelf in a repository for path-aware operations
-        const repository = new MetaRepository(shelf);
-
-        // 3. Persist the metadata
+        // Debug
+        // console.warn('META', context);
+        
+        const repository = new MetaRepository(
+            context.metadata,
+            context.kind === 'class' ? undefined : context.name
+        );
         repository.set(key, value);
+
+        // Return target explicitly for classes to ensure definition completion
+        if (context.kind === 'class') {
+            return target;
+        }
     };
 }
