@@ -238,27 +238,31 @@ describe('@aedart/xyz', () => {
             @decorator('Service Class')
             class Service {
 
+                // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('private id')
-                #id = 1234;
+                #id: number = 1234;
 
+                // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('static private status')
-                static #status = 'on';
+                static #status: string = 'on';
 
+                // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('public url')
-                url = 'www.example.org/api/v3'
+                url: string  = 'www.example.org/api/v3'
 
+                // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('static public host')
-                static host = 'example.org'
+                static host: string = 'example.org'
 
                 @decorator('accessor query')
-                accessor query = {};
+                accessor query: Record<PropertyKey, any> = {};
 
                 @decorator('static accessor protocol')
-                static accessor protocol = 'https';
+                static accessor protocol: string = 'https';
 
-                _name;
+                _name: string = '';
                 @decorator('public set name')
-                set name(value) {
+                set name(value: string) {
                     this._name = value;
                 }
 
@@ -267,9 +271,9 @@ describe('@aedart/xyz', () => {
                     return this._name;
                 }
 
-                static _log
+                static _log: string;
                 @decorator('static public set log')
-                static set log(value) {
+                static set log(value: string) {
                     Service._log = value;
                 }
 
