@@ -1,6 +1,6 @@
 import { playwright } from '@vitest/browser-playwright';
-import swc from 'unplugin-swc';
 import { defineConfig } from 'vitest/config';
+import swc from 'unplugin-swc';
 
 export default defineConfig({
     test: {
@@ -14,7 +14,7 @@ export default defineConfig({
                 test: {
                     name: 'node-cli',
                     environment: 'node',
-                    // setupFiles: ['./tests/vitest.setup.ts'],
+                    //setupFiles: ['./tests/vitest.setup.ts'],
                     include: [
                         'tests/node/**/*/*.test.ts',
                         'tests/node/**/*.test.ts',
@@ -32,11 +32,13 @@ export default defineConfig({
                         jsc: {
                             parser: {
                                 syntax: 'typescript',
-                                decorators: true, // Enable decorator syntax
+                                decorators: true,
                             },
                             transform: {
-                                // Ensure this matches the Stage 3 version you are using
-                                decoratorVersion: '2022-03',
+                                decoratorVersion: '2023-11',
+
+                                // This corresponds to TS `emitDecoratorMetadata` (which is outdated)
+                                decoratorMetadata: false,
                             },
                         },
                     }),
@@ -51,7 +53,7 @@ export default defineConfig({
                         screenshotDirectory: 'tests/output',
                         instances: [{ browser: 'chromium' }, { browser: 'firefox' }],
                     },
-                    // setupFiles: ['./tests/vitest.setup.ts'],
+                    //setupFiles: ['./tests/vitest.setup.ts'],
                     include: [
                         'tests/browser/**/*/*.test.ts',
                         'tests/browser/**/*.test.ts',
