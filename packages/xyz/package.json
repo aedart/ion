@@ -28,6 +28,10 @@
             "types": "./dist/index.d.ts",
             "import": "./dist/index.js"
         },
+        "./decorators": {
+            "types": "./dist/decorators/index.d.ts",
+            "import": "./dist/decorators/index.js"
+        },
         "./utils": {
             "types": "./dist/utils/index.d.ts",
             "import": "./dist/utils/index.js"
