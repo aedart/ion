@@ -1,5 +1,4 @@
 import { Key } from '../types.js';
-import { MetadataRecord } from './types.js';
 
 /**
  * Metadata Repository Contract
@@ -44,9 +43,16 @@ export default interface Repository {
     forget(key: Key): boolean;
 
     /**
-     * Returns the underlying metadata record (the "shelf").
-     *
-     * @returns {MetadataRecord}
+     * Returns the metadata for the bound target only.
+     *  
+     * @returns {DecoratorMetadata}
      */
-    all(): MetadataRecord;
+    all(): DecoratorMetadata;
+
+    /**
+     * Returns the entire raw metadata shelf.
+     * 
+     * @returns {DecoratorMetadata}
+     */
+    getShelf(): DecoratorMetadata;
 }
