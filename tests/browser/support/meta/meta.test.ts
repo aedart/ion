@@ -31,14 +31,14 @@ describe('@meta decorator & MetaRepository', () => {
 
         test('inherits deeply nested paths in child from parent', () => {
             const childRepo = new MetaRepository(Child[Symbol.metadata]!);
-            // 'config.version' was not overwritten in Child, so it bubbles up to Parent
+            // 'config.version' was not overwritten in Child, so it inherited from Parent
             expect(childRepo.get(['config', 'version'])).toBe('1.0.0');
         });
 
-        test('bubbles up metadata to grand child through the prototype chain', () => {
+        test('grand child inherits metadata from the prototype chain', () => {
             const grandRepo = new MetaRepository(GrandChild[Symbol.metadata]!);
 
-            // GrandChild inherits from Child (which overrode tags) and Parent (version)
+            // GrandChild inherits from Child (which overrode tags), but inherits Parent's 'config.version'
             expect(grandRepo.get('tags')).toEqual(['child-override']);
             expect(grandRepo.get(['config', 'version'])).toBe('1.0.0');
         });
@@ -57,8 +57,8 @@ describe('@meta decorator & MetaRepository', () => {
 
         test('can associate metadata with methods', () => {
             const repo = new MetaRepository(Service[Symbol.metadata]!);
-            // Note: Our implementation of @meta simply sets the key on the shared shelf.
-            // If you want to namespace by member name automatically, we can adjust the decorator.
+            // Note: implementation of @meta simply sets the key on the shared shelf.
+            // Can be namespaced by member name automatically, we can adjust the decorator.
             expect(repo.get('role')).toBe('admin');
         });
 
