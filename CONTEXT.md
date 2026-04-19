@@ -1,57 +1,32 @@
 # Project Context: Modern TypeScript Monorepo (Node 24 / TS 6.0)
 
-This document serves as the persistent state and configuration guide for the **@aedart** monorepo.
-
 ## Tech Stack & Environment
+*   **Runtime**: Node.js v24.x (LTS)
+*   **Package Manager**: pnpm v9.x
+*   **Language**: TypeScript v6.0 (Target: ESNext)
+*   **Orchestration**: Turborepo
+*   **Formatting**: dprint (4-space indent, Allman braces)
+*   **Transpiler**: SWC (via unplugin-swc) - **Current Limitation**: Prototype linking for `Symbol.metadata` is inconsistent (v2022-03/2023-11).
 
-* **Runtime**: Node.js v24.x (LTS)
-* **Package Manager**: pnpm v9.x (Workspaces)
-* **Language**: TypeScript v6.0 (Target: ESNext)
-* **Orchestration**: Turborepo
-* **Formatting**: dprint (4-space indent, Allman braces for functions/classes).
-* **Linting**: ESLint v9.x (Flat Config).
+## Sub-Module Status: Meta (`@aedart/support/meta`)
 
-## Coding Standards & Style
+### Architecture: Stage 3 Decorator Metadata
+*   **MetaRepository**: En target-bound wrapper omkring `context.metadata`.
+    *   Understøtter namespacing af medlemmer via `members.{name}`.
+    *   Benytter en "Copy-on-Write" (Shallow Copy) strategi for at isolere metadata mellem forældre- og børne-klasser.
+*   **@meta() Decorator**:
+    *   Universal dekoratør til klasser, metoder og properties.
+    *   Identificerer automatisk `targetName` baseret på `context.kind`.
 
-* **Indentation**: 4-space width (Spaces only).
-* **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
-* **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
-* **ESM Resolution**: Relative imports must include explicit `.js` extensions.
+### Current Implementation Details
+*   **Isolation Logic**: For at forhindre prototype pollution (da transpileren ikke altid linker `[Symbol.metadata]` korrekt), sikrer repository manuelt, at hver sti-segment er en "own property" på den nuværende shelf ved skrivning.
+*   **Manual Traversal**: På grund af defekt prototype-linking i test-miljøet, er repository designet til manuelt at iterere op gennem klasse-hierarkiet via `Object.getPrototypeOf(owner)` for at finde nedarvet metadata.
 
-## Performance Patterns (Strict)
+### Known Issues & Challenges
+*   **Transpiler Bug**: `Object.getPrototypeOf(Sub[Symbol.metadata]) === Base[Symbol.metadata]` returnerer `false` i Vitest Browser (SWC).
+*   **Target Isolation**: Ved dekorering af class fields er `target` ofte `undefined`, hvilket kræver alternativ opslag af klassens constructor (f.eks. via `addInitializer` eller `context` metadata referencen).
 
-* **Looping**: Prefer index-based `for` loops with cached length.
-* **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains.
-* **Memory Management**: Pre-allocate arrays when total size is known.
-
-## Sub-Module Status
-
-### Concerns (`@aedart/support/concerns`)
-
-* **Status**: **Completed (v1)**.
-* **Features**:
-  * Stage 3 Decorator-based injection.
-  * Supports `ShorthandConfiguration`: `[ConcernConstructor, AliasMap]`.
-  * **Security**: `isKeyUnsafe` validation on both source keys and alias targets to prevent prototype pollution.
-  * **Conflict Resolution**: Throws `InjectionConflictError` on naming collisions or illegal alias targets.
-
-### Meta (`@aedart/support/meta`)
-
-* **Status**: **In Progress**.
-* **Architecture**: Native Stage 3 Decorator Metadata integration.
-* **Components**:
-  * `MetaRepository`: Wraps `context.metadata` for path-aware get/set/has/forget operations.
-  * `@meta()`: Decorator supporting class, method, and property metadata association.
-* **Inheritance**: Leverages native prototype-based inheritance (`Child[Symbol.metadata].__proto__ === Parent[Symbol.metadata]`).
-* **Next Task**: Determine logic for `all()` (Own vs. Merged) and `forget()` (Shadowing vs. Deletion).
-
-### Objects (`@aedart/support/objects`)
-
-* **Utilities**: `get`, `set`, `has`, `forget` (lodash wrappers used by Meta).
-
-## Infrastructure & Testing (Vitest Browser)
-
-* **Configuration**:
-  * Stage 3 Decorators require `oxc: false` and `esbuild: false` within the specific browser project configuration.
-  * **Transpilation**: `unplugin-swc` (with `decoratorVersion: "2022-03"`) must be injected at the project level to handle the `@` syntax for browsers.
-  * **Polyfill**: `Symbol.metadata` is patched in `@aedart/support/meta/index.ts` to ensure compatibility across Node 24 and Browser runtimes.
+### Next Steps
+1.  **Refaktorisering af Traversal**: Stabilisere den manuelle prototype-opslag logik i `MetaRepository.get()`.
+2.  **Shadowing Verification**: Færdiggøre tests for `forget()` for at sikre, at sletning i en barne-klasse ikke påvirker forælderen (korrekt shadowing).
+3.  **all() Implementation**: Beslutte om `all()` skal returnere en "merged" view (via traversal) eller kun "own" metadata.
