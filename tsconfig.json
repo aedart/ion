@@ -26,6 +26,7 @@
         "emitDecoratorMetadata": false,
         "useDefineForClassFields": true,
 
+        "importHelpers": true,
         "noEmitHelpers": true,
         "lib": ["ESNext", "DOM"]
     }
