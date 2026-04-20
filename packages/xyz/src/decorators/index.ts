@@ -11,8 +11,32 @@ class Character
      * Move this character
      */
     @logMethodCall
-    move() {
+    move()
+    {
         DummyLogger.log('Moving');
+    }
+}
+
+/**
+ * Orc Character
+ */
+class Orc extends Character
+{
+    /**
+     * @inheritdoc
+     */
+    @logMethodCall
+    move()
+    {
+        DummyLogger.log('Orc Moving');
+    }
+
+    /**
+     * Makes the orc talk...
+     */
+    talk()
+    {
+        DummyLogger.log('Orc talking...');
     }
 }
 
@@ -20,5 +44,6 @@ export {
     logMethodCall,
     DummyLogger,
     ChannelLogger,
-    Character as default
+    Character as default,
+    Orc
 }
