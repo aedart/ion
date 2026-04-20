@@ -20,7 +20,7 @@ Temporary changelog for feature branch.
 
 **Breaking**
 
-* Switched to use TypeScript `v6` and Node.js `v24`.
+* Switched to use TypeScript `v6`, Node.js `v24` and target set to `es2025`.
 * Now using pnpm, with turbo, vite, and vitest (_previously used rollup, karma.js, webpack and other_).
 * Upgraded to vuepress `^2.0.0-rc.28`, using vite as bundler.
 * Concerns have been completely redesigned, now copies properties and methods into a target instead of previous "proxy" behaviour (_contracts and support packages_).
