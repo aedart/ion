@@ -4,54 +4,44 @@ This document serves as the persistent state and configuration guide for the **@
 
 ## Tech Stack & Environment
 
-* **Runtime**: Node.js v24.x (LTS)
-* **Package Manager**: pnpm v9.x (Workspaces)
-* **Language**: TypeScript v6.0 (Target: ESNext)
-* **Orchestration**: Turborepo
-* **Formatting**: dprint (4-space indent, Allman braces for functions/classes).
-* **Linting**: ESLint v9.x (Flat Config).
+*   **Runtime**: Node.js v24.x (LTS)
+*   **Package Manager**: pnpm v9.x (Workspaces)
+*   **Language**: TypeScript v6.0 (Target: ESNext)
+*   **Orchestration**: Turborepo
+*   **Formatting**: dprint (4-space indent, Allman braces for functions/classes).
+*   **Linting**: ESLint v9.x (Flat Config).
 
 ## Coding Standards & Style
 
-* **Indentation**: 4-space width (Spaces only).
-* **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
-* **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
-* **ESM Resolution**: Relative imports must include explicit `.js` extensions.
+*   **Indentation**: 4-space width (Spaces only).
+*   **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
+*   **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
+*   **ESM Resolution**: Relative imports must include explicit `.js` extensions.
 
 ## Performance Patterns (Strict)
 
-* **Looping**: Prefer index-based `for` loops with cached length.
-* **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains.
-* **Memory Management**: Pre-allocate arrays when total size is known.
+*   **Looping**: Prefer index-based `for` loops with cached length.
+*   **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains.
+*   **Memory Management**: Pre-allocate arrays when total size is known.
 
 ## Sub-Module Status
 
 ### Concerns (`@aedart/support/concerns`)
-
-* **Status**: **Completed (v1)**.
-* **Features**:
-  * Stage 3 Decorator-based injection.
-  * Supports `ShorthandConfiguration`: `[ConcernConstructor, AliasMap]`.
-  * **Security**: `isKeyUnsafe` validation on both source keys and alias targets to prevent prototype pollution.
-  * **Conflict Resolution**: Throws `InjectionConflictError` on naming collisions or illegal alias targets.
+*   **Status**: Completed (v1).
+*   **Features**: Stage 3 Decorator-based injection, `ShorthandConfiguration`, prototype pollution security, conflict resolution.
 
 ### Meta (`@aedart/support/meta`)
-
-* **Status**: **In Progress**.
-* **Architecture**: Native Stage 3 Decorator Metadata integration.
-* **Components**:
-  * `MetaRepository`: Wraps `context.metadata` for path-aware get/set/has/forget operations.
-  * `@meta()`: Decorator supporting class, method, and property metadata association.
-* **Inheritance**: Leverages native prototype-based inheritance (`Child[Symbol.metadata].__proto__ === Parent[Symbol.metadata]`).
-* **Next Task**: Determine logic for `all()` (Own vs. Merged) and `forget()` (Shadowing vs. Deletion).
+*   **Status**: **Redesign Required (Blocked)**.
+*   **Diagnostic Findings**:
+    *   **Shelf Identity Leak**: The current environment (Babel `2023-11`) incorrectly shares the same `Symbol.metadata` object instance across parent and child classes.
+    *   **Prototype Failure**: The environment fails to link metadata shelves via the prototype chain (Object.getPrototypeOf(Child[Symbol.metadata]) !== Parent[Symbol.metadata]).
+    *   **Resolution Strategy**: Native `context.metadata` is currently unreliable. A pivot to a custom registry or a manual branching strategy is required to achieve inheritance-safe metadata isolation.
 
 ### Objects (`@aedart/support/objects`)
-
-* **Utilities**: `get`, `set`, `has`, `forget` (lodash wrappers used by Meta).
+*   **Utilities**: `get`, `set`, `has`, `forget` (custom logic/lodash wrappers).
 
 ## Infrastructure & Testing (Vitest Browser)
 
-* **Configuration**:
-  * Stage 3 Decorators require `oxc: false` and `esbuild: false` within the specific browser project configuration.
-  * **Transpilation**: `unplugin-swc` (with `decoratorVersion: "2022-03"`) must be injected at the project level to handle the `@` syntax for browsers.
-  * **Polyfill**: `Symbol.metadata` is patched in `@aedart/support/meta/index.ts` to ensure compatibility across Node 24 and Browser runtimes.
+*   **Transpilation**: `@rolldown/plugin-babel` with `@babel/plugin-proposal-decorators` (version: "2023-11").
+*   **Polyfill**: `Symbol.metadata` is patched in `@aedart/support/meta/index.ts`.
+*   **Current Issue**: The transpiler/runtime exhibits shared state behavior for metadata, leading to cross-contamination between `Base` and `Sub` classes during deep-path writes.
