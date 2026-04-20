@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "es2025",
         "module": "esnext",
         "moduleResolution": "bundler",
         "paths": {
