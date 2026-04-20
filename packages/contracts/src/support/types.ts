@@ -1,7 +1,7 @@
 /**
  * Key or path identifier
  */
-export type Key = OneOrMany<PropertyKey>;
+export type Key = PropertyKey | (PropertyKey)[];
 
 /**
  * One or many

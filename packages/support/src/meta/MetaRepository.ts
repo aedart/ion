@@ -1,6 +1,6 @@
-import { Key } from '@aedart/contracts/support';
-import { Repository } from '@aedart/contracts/support/meta';
-import { forget, get, has, set } from '../objects/index.js';
+import {Key} from '@aedart/contracts/support';
+import {Repository} from '@aedart/contracts/support/meta';
+import {get, has} from '../objects/index.js';
 
 /**
  * Metadata Repository
@@ -9,209 +9,132 @@ import { forget, get, has, set } from '../objects/index.js';
  */
 export default class MetaRepository implements Repository
 {
-    // /**
-    //  * Create a new Metadata Repository instance
-    //  * 
-    //  * @param {DecoratorMetadata} shelf the raw context.metadata obejct
-    //  * @param {PropertyKey} [targetName] The "target" name of the member (if any)
-    //  */
-    // constructor(
-    //     protected shelf: DecoratorMetadata,
-    //     protected targetName?: PropertyKey
-    // ) {}
-    //
-    // /**
-    //  * @inheritDoc
-    //  */
-    // public set(key: Key, value: any): void
-    // {
-    //     const path = Array.isArray(key) ? key : [key];
-    //     let current = this.shelf;
-    //
-    //     // 1. Isolate 'members' and the member name if applicable
-    //     if (this.targetName !== undefined) {
-    //         current = this.ensureOwn(current, 'members');
-    //         current = this.ensureOwn(current, this.targetName);
-    //     }
-    //
-    //     // 2. Recursively isolate each step of the path
-    //     for (let i = 0; i < path.length - 1; i++) {
-    //         current = this.ensureOwn(current, path[i]);
-    //     }
-    //
-    //     // 3. Final assignment on the fully isolated leaf parent
-    //     // Use a direct assignment here to avoid lodash potentially resetting the path
-    //     current[path[path.length - 1]] = value;
-    // }
-    //
-    // /**
-    //  * Ensures the property is an "own" property by shallow-copying
-    //  * the inherited value if necessary.
-    //  */
-    // protected ensureOwn(target: any, key: PropertyKey): any
-    // {
-    //     // If the property is not an 'own' property, shallow copy it from the prototype
-    //     if (!Object.prototype.hasOwnProperty.call(target, key)) {
-    //         target[key] = (target[key] !== undefined && target[key] !== null)
-    //             ? { ...target[key] }
-    //             : {};
-    //     }
-    //     return target[key];
-    // }
-    //
-    // /**
-    //  * @inheritDoc
-    //  */
-    // public get<T>(key: Key, defaultValue?: T): T | undefined
-    // {
-    //     const path = Array.isArray(key) ? key : [key];
-    //     const fullPath = this.targetName !== undefined
-    //         ? ['members', this.targetName, ...path]
-    //         : path;
-    //
-    //     return get(this.shelf, fullPath, defaultValue) as T;
-    // }
-    //
-    // /**
-    //  * @inheritDoc
-    //  */
-    // public has(key: Key): boolean
-    // {
-    //     const fullPath = this.targetName !== undefined
-    //         ? ['members', this.targetName, ...(Array.isArray(key) ? key : [key])]
-    //         : key;
-    //
-    //     return has(this.shelf, fullPath);
-    // }
-    //
-    // /**
-    //  * @inheritDoc
-    //  */
-    // public forget(key: Key): boolean
-    // {
-    //     const path = Array.isArray(key) ? key : [key];
-    //     let current = this.shelf;
-    //
-    //     if (this.targetName !== undefined) {
-    //         // We only forget if the path actually exists as an "own" property
-    //         if (!Object.prototype.hasOwnProperty.call(this.shelf, 'members')) return false;
-    //         current = this.shelf.members as DecoratorMetadataObject;
-    //
-    //         if (!Object.prototype.hasOwnProperty.call(current, this.targetName)) return false;
-    //         current = current[this.targetName as any] as DecoratorMetadataObject;
-    //     }
-    //
-    //     // Navigate to the parent of the leaf we want to forget
-    //     for (let i = 0; i < path.length - 1; i++) {
-    //         if (!Object.prototype.hasOwnProperty.call(current, path[i])) return false;
-    //         current = current[path[i]] as DecoratorMetadataObject;
-    //     }
-    //
-    //     return forget(current, path[path.length - 1]);
-    // }
-    //
-    // /**
-    //  * @inheritDoc
-    //  */
-    // public all(): DecoratorMetadata
-    // {
-    //     const data = this.targetName
-    //         ? get(this.shelf, ['members', this.targetName])
-    //         : this.shelf;
-    //
-    //     return data ? { ...data } : {};
-    // }
-    //
-    // /**
-    //  * @inheritdoc
-    //  */
-    // getShelf(): DecoratorMetadata
-    // {
-    //     return this.shelf;
-    // }
+    protected shelf: DecoratorMetadata;
+    protected readonly target: any;
+    protected readonly targetName: PropertyKey | undefined;
 
-    constructor(
-        protected shelf: DecoratorMetadata,
-        protected targetName?: PropertyKey
-    ) {}
+    constructor(target: any, targetName?: PropertyKey)
+    {
+        this.target = target;
+        this.shelf = target[Symbol.metadata] ?? target;
+        this.targetName = targetName;
+    }
+    protected toParts(key: Key): string[]
+    {
+        return Array.isArray(key) ? key.map(String) : String(key).split('.');
+    }
 
     public set(key: Key, value: any): void
     {
-        // Copy-on-write isolation: ensures we don't mutate parent objects
-        if (this.targetName !== undefined) {
-            this.ensureOwn(this.shelf, 'members');
-            this.ensureOwn(this.shelf.members, this.targetName);
+        // 1. REPAIR CLASS SHELF: If we share an instance with the parent, 
+        // we must branch it manually before doing anything else.
+        this.ensureShelfIsOwned();
+
+        // 2. BRANCH MEMBER NAMESPACE: Now that the shelf is unique, 
+        // ensure the member namespace is also a unique branch.
+        this.ensureNamespaceIsOwned();
+
+        let current: any = this.targetName !== undefined
+            ? (this.shelf as any)[this.targetName]
+            : this.shelf;
+
+        const parts = this.toParts(key);
+        const last = parts.pop()!;
+
+        for (const part of parts) {
+            // Path Branching: Ensure we don't mutate inherited nested objects
+            if (!Object.hasOwn(current, part)) {
+                const existing = current[part];
+                current[part] = Array.isArray(existing)
+                    ? [...(existing ?? [])]
+                    : { ...(existing ?? {}) };
+            }
+            current = current[part];
         }
-
-        set(this.shelf, this.resolveKey(key), value);
+        current[last] = value;
     }
 
-    public get<T>(key: Key, defaultValue?: T): T | undefined
+    protected ensureShelfIsOwned(): void
     {
-        return get(this.shelf, this.resolveKey(key), defaultValue);
+        // Detect if the target class is sharing its metadata object with its parent
+        if (this.target && this.target[Symbol.metadata]) {
+            const parent = Object.getPrototypeOf(this.target);
+            const parentMetadata = parent?.[Symbol.metadata];
+
+            // If identities are shared, or prototype link is missing (the Nuclear leak)
+            if (parentMetadata && (this.shelf === parentMetadata || Object.getPrototypeOf(this.shelf) !== parentMetadata)) {
+                this.shelf = Object.create(parentMetadata);
+                this.target[Symbol.metadata] = this.shelf;
+            }
+        }
     }
 
-    protected resolveKey(key: Key): Key {
-        if (this.targetName === undefined) return key;
-        return Array.isArray(key)
-            ? ['members', this.targetName, ...key as (PropertyKey)[]]
-            : ['members', this.targetName, key as PropertyKey];
-    }
-
-    protected ensureOwn(target: any, key: PropertyKey): void {
-        if (!Object.prototype.hasOwnProperty.call(target, key)) {
-            // Shallow copy to isolate but keep inherited values
-            target[key] = target[key] ? { ...target[key] } : {};
+    protected ensureNamespaceIsOwned(): void
+    {
+        if (this.targetName && !Object.hasOwn(this.shelf, this.targetName)) {
+            const inherited = (this.shelf as any)[this.targetName];
+            (this.shelf as any)[this.targetName] = inherited !== undefined
+                ? Object.create(inherited)
+                : {};
         }
     }
     
-    public has(key: Key): boolean
+    public get<T>(key: Key, defaultValue?: T): T | undefined
     {
-        return this.get(key, Symbol.for('not_found')) !== Symbol.for('not_found');
-    }
-
-    public forget(key: Key): boolean
-    {
-        const path = Array.isArray(key) ? key : [key];
-        let current = this.shelf;
-
-        if (this.targetName !== undefined) {
-            if (!Object.prototype.hasOwnProperty.call(this.shelf, 'members')) return false;
-            // @ts-expect-error TODO
-            current = this.shelf.members;
-            if (!Object.prototype.hasOwnProperty.call(current, this.targetName)) return false;
-            // @ts-expect-error TODO
-            current = current[this.targetName];
-        }
-
-        for (let i = 0; i < path.length - 1; i++) {
-            const segment = path[i];
-            if (!Object.prototype.hasOwnProperty.call(current, segment)) return false;
-            // @ts-expect-error TODO
-            current = current[segment];
-        }
-
-        const last = path[path.length - 1];
-        if (Object.prototype.hasOwnProperty.call(current, last)) {
-            delete current[last];
-            return true;
-        }
-
-        return false;
-    }
-
-    public all(): DecoratorMetadata
-    {
-        const data = this.targetName
-            // @ts-expect-error TODO
-            ? (this.shelf?.['members']?.[this.targetName])
+        let current: any = this.targetName !== undefined
+            ? (this.shelf as any)[this.targetName]
             : this.shelf;
 
-        return data ? { ...data } : {};
+        if (!current) return defaultValue;
+
+        const parts = this.toParts(key);
+        for (const part of parts) {
+            if (current === null || current === undefined || current[part] === undefined) {
+                return defaultValue;
+            }
+            current = current[part];
+        }
+
+        return current as T;
     }
 
-    public getShelf(): DecoratorMetadata
+    public has(key: Key): boolean
     {
-        return this.shelf;
+        return this.get(key) !== undefined;
+    }
+
+    public all(merged: boolean = false): DecoratorMetadata
+    {
+        if (this.targetName === undefined) {
+            const data = merged ? this.flatten(this.shelf) : { ...this.shelf };
+            return Object.fromEntries(
+                Object.entries(data).filter(([_, v]) => !this.isPlainObject(v))
+            );
+        }
+
+        const namespace = (this.shelf as any)[this.targetName];
+        return namespace ? (merged ? this.flatten(namespace) : { ...namespace }) : {};
+    }
+
+    protected flatten(obj: object): Record<PropertyKey, any>
+    {
+        const result: Record<PropertyKey, any> = {};
+        const chain: object[] = [];
+        let proto = obj;
+
+        while (proto && proto !== Object.prototype) {
+            chain.push(proto);
+            proto = Object.getPrototypeOf(proto);
+        }
+
+        for (let i = chain.length - 1; i >= 0; i--) {
+            Object.assign(result, chain[i]);
+        }
+        return result;
+    }
+
+    protected isPlainObject(value: any): boolean
+    {
+        return typeof value === 'object' && value !== null && !Array.isArray(value);
     }
 }
