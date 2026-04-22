@@ -15,7 +15,7 @@ export function isArrayLike(value: any): boolean
         return false;
     }
 
-    // Functions are objects and have a .length (number of arguments), 
+    // Functions are objects and have a .length (number of arguments),
     // but Lodash and standard JS conventions usually exclude them from "array-like".
     const type = typeof value;
     if (type === 'function') {
@@ -26,8 +26,8 @@ export function isArrayLike(value: any): boolean
     // If you want to include strings (like Lodash does), we check the length.
     const length = value.length;
 
-    return typeof length === 'number' &&
-        length >= 0 &&
-        length <= Number.MAX_SAFE_INTEGER &&
-        Number.isInteger(length);
+    return typeof length === 'number'
+        && length >= 0
+        && length <= Number.MAX_SAFE_INTEGER
+        && Number.isInteger(length);
 }

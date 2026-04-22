@@ -1,24 +1,34 @@
 import { meta, MetaRepository } from '@aedart/support/meta';
 import { describe, expect, test } from 'vitest';
 
-describe('NUCLEAR DIAGNOSTIC: Shelf Identity', () =>
-{
-    test('IDENTITY CHECK', () =>
-    {
-        class Base { @meta('a', 1) m() {} }
-        class Sub extends Base {}
+describe('NUCLEAR DIAGNOSTIC: Shelf Identity', () => {
+    test('IDENTITY CHECK', () => {
+        class Base
+        {
+            @meta('a', 1)
+            m()
+            {}
+        }
+        class Sub extends Base
+        {}
 
         const baseShelf = (Base as any)[Symbol.metadata];
         const subShelf = (Sub as any)[Symbol.metadata];
 
         console.log('--- Nuclear Diagnostic ---');
         console.log('Identity: Are shelves literally the same object?', baseShelf === subShelf);
-        console.log('Prototype: Is Base the proto of Sub?', Object.getPrototypeOf(subShelf) === baseShelf);
+        console.log(
+            'Prototype: Is Base the proto of Sub?',
+            Object.getPrototypeOf(subShelf) === baseShelf,
+        );
 
         // Let's test a raw mutation
         if (subShelf !== baseShelf) {
             subShelf.leak_test = 'mutated';
-            console.log('After raw mutation - Sub owns leak_test?', Object.hasOwn(subShelf, 'leak_test'));
+            console.log(
+                'After raw mutation - Sub owns leak_test?',
+                Object.hasOwn(subShelf, 'leak_test'),
+            );
             console.log('After raw mutation - Base has leak_test?', 'leak_test' in baseShelf);
         }
 
@@ -144,7 +154,6 @@ describe('NUCLEAR DIAGNOSTIC: Shelf Identity', () =>
 //         });
 //     });
 // });
-
 
 //
 // describe('@meta decorator & Target-Bound MetaRepository', () =>

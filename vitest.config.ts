@@ -1,7 +1,7 @@
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
 // import swc from 'unplugin-swc';
-import babelPlugin from "@rolldown/plugin-babel";
+import babelPlugin from '@rolldown/plugin-babel';
 
 export default defineConfig({
     test: {
@@ -15,7 +15,7 @@ export default defineConfig({
                 test: {
                     name: 'node-cli',
                     environment: 'node',
-                    //setupFiles: ['./tests/vitest.setup.ts'],
+                    // setupFiles: ['./tests/vitest.setup.ts'],
                     include: [
                         'tests/node/**/*/*.test.ts',
                         'tests/node/**/*.test.ts',
@@ -27,9 +27,8 @@ export default defineConfig({
                 // Disable default transformers to prevent them from skipping the @ symbol
                 // oxc: false,
                 // esbuild: false,
-                
+
                 plugins: [
-                    
                     // WARNING: Do NOT use this for decorator transpiling. It has WRONG context.metadata
                     // inheritance.
                     // swc.vite({
@@ -52,13 +51,13 @@ export default defineConfig({
                         presets: [{
                             preset: () => ({
                                 plugins: [
-                                    ["@babel/plugin-proposal-decorators", {version: "2023-11"}]
-                                ]
+                                    ['@babel/plugin-proposal-decorators', { version: '2023-11' }],
+                                ],
                             }),
                             rolldown: {
                                 filter: {
-                                    code: "@"
-                                }
+                                    code: '@',
+                                },
                             },
                         }],
                     }),
@@ -73,7 +72,7 @@ export default defineConfig({
                         screenshotDirectory: 'tests/output',
                         instances: [{ browser: 'chromium' }, { browser: 'firefox' }],
                     },
-                    //setupFiles: ['./tests/vitest.setup.ts'],
+                    // setupFiles: ['./tests/vitest.setup.ts'],
                     include: [
                         'tests/browser/**/*/*.test.ts',
                         'tests/browser/**/*.test.ts',

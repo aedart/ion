@@ -1,4 +1,4 @@
-import DummyLogger from "./DummyLogger.js";
+import DummyLogger from './DummyLogger.js';
 
 /**
  * Logs method call
@@ -10,7 +10,8 @@ import DummyLogger from "./DummyLogger.js";
  */
 export function logMethodCall(method: any, context: ClassMethodDecoratorContext)
 {
-    return function(this: any, ...args: any[]) {
+    return function(this: any, ...args: any[])
+    {
         DummyLogger.log('LOG: Invoking method', context);
 
         let result = method.call(this, ...args);
@@ -18,5 +19,5 @@ export function logMethodCall(method: any, context: ClassMethodDecoratorContext)
         DummyLogger.log('LOG: method was invoked');
 
         return result;
-    }
+    };
 }

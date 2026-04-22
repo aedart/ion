@@ -1,6 +1,6 @@
-import {logMethodCall} from "./logMethodCall.js";
-import DummyLogger from "./DummyLogger.js";
-import ChannelLogger from "./ChannelLogger.js";
+import ChannelLogger from './ChannelLogger.js';
+import DummyLogger from './DummyLogger.js';
+import { logMethodCall } from './logMethodCall.js';
 
 /**
  * A Character
@@ -40,10 +40,4 @@ class Orc extends Character
     }
 }
 
-export {
-    logMethodCall,
-    DummyLogger,
-    ChannelLogger,
-    Character as default,
-    Orc
-}
+export { ChannelLogger, Character as default, DummyLogger, logMethodCall, Orc };

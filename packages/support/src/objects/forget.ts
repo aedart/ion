@@ -1,6 +1,6 @@
-import {Key} from '@aedart/contracts/support';
-import {toParts} from "./toParts.js";
-import {isKeyUnsafe} from '../reflections/isKeyUnsafe.js';
+import { Key } from '@aedart/contracts/support';
+import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
+import { toParts } from './toParts.js';
 
 /**
  * Removes a value at a given path on a target object.

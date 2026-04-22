@@ -89,7 +89,7 @@ describe('@aedart/support/objects', () => {
 
         test('handles sparse arrays (holes)', () => {
             const target = {
-                arr: [1, /* hole */, 3]
+                arr: [1, /* hole */, 3],
             };
 
             expect(has(target, 'arr[0]')).toBeTruthy();
@@ -104,7 +104,7 @@ describe('@aedart/support/objects', () => {
             // @ts-expect-error testing invalid input
             expect(has(target, null)).toBeFalsy();
         });
-        
+
         test('can determine if single property exist, inherited', function()
         {
             class Box

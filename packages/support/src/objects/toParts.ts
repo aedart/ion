@@ -1,4 +1,4 @@
-import {Key} from '@aedart/contracts/support';
+import { Key } from '@aedart/contracts/support';
 
 /**
  * Resolves a key or path into individual parts.

@@ -43,7 +43,7 @@ describe('@aedart/support/objects', () => {
 
             // Test setting a value through a path that contains a falsy value (should overwrite)
             set(target, 'a.b.c', 'overwritten');
-            
+
             // @ts-expect-error ignore "c" for testing purpose
             expect(target.a.b.c).toBe('overwritten');
         });
@@ -60,7 +60,7 @@ describe('@aedart/support/objects', () => {
 
         test('supports numeric keys in arrays without look-ahead if already an array', () => {
             const target = {
-                arr: ['initial']
+                arr: ['initial'],
             };
 
             // Setting at index 1

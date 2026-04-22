@@ -3,8 +3,7 @@ import { Key } from '../types.js';
 /**
  * Metadata Repository Contract
  */
-export default interface Repository
-{
+export default interface Repository {
     /**
      * Set a metadata value for the given key or path.
      */

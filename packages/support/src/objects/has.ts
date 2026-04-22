@@ -1,13 +1,13 @@
-import {Key} from '@aedart/contracts/support';
-import {toParts} from "./toParts.js";
-import {isKeyUnsafe} from '../reflections/isKeyUnsafe.js';
+import { Key } from '@aedart/contracts/support';
+import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
+import { toParts } from './toParts.js';
 
 /**
  * Check if a value exists at a given path on a target object.
- * 
+ *
  * @param {object} target
  * @param {Key} path
- * 
+ *
  * @returns {boolean}
  */
 export function has(target: object, path: Key): boolean
@@ -21,7 +21,7 @@ export function has(target: object, path: Key): boolean
     if (len === 0) {
         return false;
     }
-    
+
     let current: any = target;
 
     for (let i = 0; i < len; i++) {

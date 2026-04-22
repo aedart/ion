@@ -1,6 +1,6 @@
-import {Key} from '@aedart/contracts/support';
-import {isKeyUnsafe} from '../reflections/isKeyUnsafe.js';
-import {toParts} from "./toParts.js";
+import { Key } from '@aedart/contracts/support';
+import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
+import { toParts } from './toParts.js';
 
 /**
  * Sets a value at a given path on a target object.
@@ -20,7 +20,7 @@ export function set(target: object, path: Key, value: any): void
     if (len === 0) {
         return;
     }
-    
+
     let current: any = target;
 
     for (let i = 0; i < len; i++) {
@@ -40,12 +40,14 @@ export function set(target: object, path: Key, value: any): void
         const nextKey = segments[i + 1];
 
         // If current key doesn't exist or isn't an object/array, initialize it
-        if (current[key] === undefined || current[key] === null || typeof current[key] !== 'object') {
-            // NEW: Only check for numeric index if the next key is a string. 
+        if (
+            current[key] === undefined || current[key] === null || typeof current[key] !== 'object'
+        ) {
+            // NEW: Only check for numeric index if the next key is a string.
             // Symbols can never be array indices in this path context.
-            const isNextKeyIndex = typeof nextKey === 'string' &&
-                nextKey !== '' &&
-                !Number.isNaN(Number(nextKey));
+            const isNextKeyIndex = typeof nextKey === 'string'
+                && nextKey !== ''
+                && !Number.isNaN(Number(nextKey));
 
             current[key] = isNextKeyIndex ? [] : {};
         }

@@ -53,7 +53,7 @@ describe('@aedart/support/objects', () => {
             const target = {};
             Object.defineProperty(target, 'readonly', {
                 value: 1,
-                configurable: false
+                configurable: false,
             });
 
             expect(forget(target, 'readonly')).toBeFalsy();
@@ -62,7 +62,7 @@ describe('@aedart/support/objects', () => {
 
         test('leaves a hole in arrays when forgetting an index', () => {
             const target = {
-                arr: ['first', 'second', 'third']
+                arr: ['first', 'second', 'third'],
             };
 
             const result = forget(target, 'arr[1]');

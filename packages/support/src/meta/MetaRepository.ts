@@ -1,6 +1,6 @@
-import {Key} from '@aedart/contracts/support';
-import {Repository} from '@aedart/contracts/support/meta';
-import {get, has} from '../objects/index.js';
+import { Key } from '@aedart/contracts/support';
+import { Repository } from '@aedart/contracts/support/meta';
+import { get, has } from '../objects/index.js';
 
 /**
  * Metadata Repository
@@ -26,11 +26,11 @@ export default class MetaRepository implements Repository
 
     public set(key: Key, value: any): void
     {
-        // 1. REPAIR CLASS SHELF: If we share an instance with the parent, 
+        // 1. REPAIR CLASS SHELF: If we share an instance with the parent,
         // we must branch it manually before doing anything else.
         this.ensureShelfIsOwned();
 
-        // 2. BRANCH MEMBER NAMESPACE: Now that the shelf is unique, 
+        // 2. BRANCH MEMBER NAMESPACE: Now that the shelf is unique,
         // ensure the member namespace is also a unique branch.
         this.ensureNamespaceIsOwned();
 
@@ -62,7 +62,11 @@ export default class MetaRepository implements Repository
             const parentMetadata = parent?.[Symbol.metadata];
 
             // If identities are shared, or prototype link is missing (the Nuclear leak)
-            if (parentMetadata && (this.shelf === parentMetadata || Object.getPrototypeOf(this.shelf) !== parentMetadata)) {
+            if (
+                parentMetadata
+                && (this.shelf === parentMetadata
+                    || Object.getPrototypeOf(this.shelf) !== parentMetadata)
+            ) {
                 this.shelf = Object.create(parentMetadata);
                 this.target[Symbol.metadata] = this.shelf;
             }
@@ -78,7 +82,7 @@ export default class MetaRepository implements Repository
                 : {};
         }
     }
-    
+
     public get<T>(key: Key, defaultValue?: T): T | undefined
     {
         let current: any = this.targetName !== undefined
@@ -108,7 +112,7 @@ export default class MetaRepository implements Repository
         if (this.targetName === undefined) {
             const data = merged ? this.flatten(this.shelf) : { ...this.shelf };
             return Object.fromEntries(
-                Object.entries(data).filter(([_, v]) => !this.isPlainObject(v))
+                Object.entries(data).filter(([_, v]) => !this.isPlainObject(v)),
             );
         }
 
