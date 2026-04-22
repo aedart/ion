@@ -11,6 +11,7 @@ export * from './isset.js';
 export * from './merge.js';
 export * from './populate.js';
 export * from './set.js';
+export * from './toParts.js';
 export * from './uniqueId.js';
 
 import ObjectId from './ObjectId.js';

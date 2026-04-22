@@ -4,14 +4,12 @@ import { has } from './has.js';
 /**
  * Determine if any paths are properties of given object
  *
- * @template T
- *
- * @param {T} object Target object
+ * @param {object} object Target object
  * @param {...Key} paths Property path(s)
  *
  * @returns {boolean}
  */
-export function hasAny<T>(object: T, ...paths: Key[]): boolean
+export function hasAny(object: object, ...paths: Key[]): boolean
 {
     const len = paths.length;
     if (object === undefined || len === 0) {

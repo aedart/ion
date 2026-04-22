@@ -1,14 +1,33 @@
-import { isArrayLike as _isArrayLike } from 'lodash-es';
-
 /**
  * Determine if value is "array-like".
- * (Alias for Lodash's [`isArrayLike`]{@link import('lodash').isArrayLike}) method.
  *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#array-like_objects
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections#working_with_array-like_objects
+ * An array-like object is a non-null object that has a `length` property
+ * which is a non-negative integer.
  *
  * @param {any} value
  *
- * @return {boolean}
+ * @returns {boolean}
  */
-export const isArrayLike: typeof _isArrayLike = _isArrayLike;
+export function isArrayLike(value: any): boolean
+{
+    // Values that are null or not objects/functions cannot be array-like
+    if (value === null || value === undefined || typeof value === 'symbol') {
+        return false;
+    }
+
+    // Functions are objects and have a .length (number of arguments), 
+    // but Lodash and standard JS conventions usually exclude them from "array-like".
+    const type = typeof value;
+    if (type === 'function') {
+        return false;
+    }
+
+    // Primitives like strings have a .length, and are technically array-like.
+    // If you want to include strings (like Lodash does), we check the length.
+    const length = value.length;
+
+    return typeof length === 'number' &&
+        length >= 0 &&
+        length <= Number.MAX_SAFE_INTEGER &&
+        Number.isInteger(length);
+}
