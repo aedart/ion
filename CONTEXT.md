@@ -23,8 +23,16 @@ This document serves as the persistent state and configuration guide for the **@
 * **Looping**: Prefer index-based `for` loops with cached length.
 * **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains.
 * **Memory Management**: Pre-allocate arrays when total size is known.
+* **Security**: All path-based operations must utilize `isKeyUnsafe` to prevent prototype pollution.
 
 ## Sub-Module Status
+
+### Objects & Arrays (`@aedart/support/objects`, `@aedart/support/arrays`)
+
+* **Status**: **Completed (v2)**.
+* **Features**: Custom high-performance replacements for Lodash (`get`, `set`, `has`, `forget`, `isArrayLike`, `isSafeArrayLike`).
+* **Capabilities**: Full support for `PropertyKey` (including Symbols), dot-notation, bracket-notation, and automatic array initialization during deep `set` operations.
+* **Dependencies**: **Lodash dependency removed**.
 
 ### Concerns (`@aedart/support/concerns`)
 
@@ -33,18 +41,13 @@ This document serves as the persistent state and configuration guide for the **@
 
 ### Meta (`@aedart/support/meta`)
 
-* **Status**: **Redesign Required (Blocked)**.
+* **Status**: **Redesign Required (Current state: Influx)**.
 * **Diagnostic Findings**:
-  * **Shelf Identity Leak**: The current environment (Babel `2023-11`) incorrectly shares the same `Symbol.metadata` object instance across parent and child classes.
-  * **Prototype Failure**: The environment fails to link metadata shelves via the prototype chain (Object.getPrototypeOf(Child[Symbol.metadata]) !== Parent[Symbol.metadata]).
-  * **Resolution Strategy**: Native `context.metadata` is currently unreliable. A pivot to a custom registry or a manual branching strategy is required to achieve inheritance-safe metadata isolation.
-
-### Objects (`@aedart/support/objects`)
-
-* **Utilities**: `get`, `set`, `has`, `forget` (custom logic/lodash wrappers).
+  * **Shelf Identity Leak**: The current environment incorrectly shares the same `Symbol.metadata` object instance across parent and child classes.
+  * **Prototype Failure**: Metadata shelves are not being linked via the prototype chain during transpilation.
+* **Resolution Strategy**: Pivot to a manual branching strategy using the new `@aedart/support/objects` utilities to achieve inheritance-safe metadata isolation.
 
 ## Infrastructure & Testing (Vitest Browser)
 
 * **Transpilation**: `@rolldown/plugin-babel` with `@babel/plugin-proposal-decorators` (version: "2023-11").
 * **Polyfill**: `Symbol.metadata` is patched in `@aedart/support/meta/index.ts`.
-* **Current Issue**: The transpiler/runtime exhibits shared state behavior for metadata, leading to cross-contamination between `Base` and `Sub` classes during deep-path writes.
