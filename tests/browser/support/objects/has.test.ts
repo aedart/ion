@@ -66,6 +66,45 @@ describe('@aedart/support/objects', () => {
             });
         });
 
+        test('returns true for existing falsy values', () => {
+            const target = {
+                a: null,
+                b: 0,
+                c: false,
+                d: '',
+            };
+
+            expect(has(target, 'a')).toBeTruthy();
+            expect(has(target, 'b')).toBeTruthy();
+            expect(has(target, 'c')).toBeTruthy();
+            expect(has(target, 'd')).toBeTruthy();
+        });
+
+        test('returns false for unsafe properties', () => {
+            const target = {};
+            // Even though these exist on Object.prototype, our utility should deny them
+            expect(has(target, '__proto__')).toBeFalsy();
+            expect(has(target, 'constructor')).toBeFalsy();
+        });
+
+        test('handles sparse arrays (holes)', () => {
+            const target = {
+                arr: [1, /* hole */, 3]
+            };
+
+            expect(has(target, 'arr[0]')).toBeTruthy();
+            expect(has(target, 'arr[1]')).toBeFalsy(); // Index exists but has no value
+            expect(has(target, 'arr[2]')).toBeTruthy();
+        });
+
+        test('returns false for empty or invalid path types', () => {
+            const target = { a: 1 };
+
+            expect(has(target, '')).toBeFalsy();
+            // @ts-expect-error testing invalid input
+            expect(has(target, null)).toBeFalsy();
+        });
+        
         test('can determine if single property exist, inherited', function()
         {
             class Box
@@ -134,6 +173,7 @@ describe('@aedart/support/objects', () => {
 
     describe('hasAny', () => {
         test('Returns false when target is undefined', () => {
+            // @ts-expect-error ignore target type for testing purpose
             expect(hasAny(undefined, ['a.b.c']))
                 .toBeFalsy();
         });

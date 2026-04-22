@@ -28,10 +28,10 @@ describe('@aedart/support/objects', () => {
 
             const paths = [
                 'a',
-                'b',
                 'b.name',
                 'b.c.age',
                 'b.c',
+                'b',
                 'd[1].name',
                 'd',
                 sym,
@@ -48,10 +48,46 @@ describe('@aedart/support/objects', () => {
                     .toBeFalsy();
             });
         });
+
+        test('returns false when trying to forget a non-configurable property', () => {
+            const target = {};
+            Object.defineProperty(target, 'readonly', {
+                value: 1,
+                configurable: false
+            });
+
+            expect(forget(target, 'readonly')).toBeFalsy();
+            expect(has(target, 'readonly')).toBeTruthy();
+        });
+
+        test('leaves a hole in arrays when forgetting an index', () => {
+            const target = {
+                arr: ['first', 'second', 'third']
+            };
+
+            const result = forget(target, 'arr[1]');
+
+            expect(result).toBeTruthy();
+            expect(target.arr.length).toBe(3);
+            expect(target.arr[1]).toBeUndefined();
+            expect(1 in target.arr).toBeFalsy(); // The hole check
+        });
+
+        test('returns false for empty path', () => {
+            const target = { a: 1 };
+            expect(forget(target, '')).toBeFalsy();
+        });
+
+        test('returns true when forgetting path that does not exist (idempotency)', () => {
+            const target = { a: 1 };
+            // The parent 'b' doesn't exist, so 'b.c' is effectively already forgotten.
+            expect(forget(target, 'b.c')).toBeTruthy();
+        });
     });
 
     describe('forgetAll', () => {
         test('does nothing when target is undefined', () => {
+            // @ts-expect-error ignore target type here, for testing purpose
             forgetAll(undefined);
 
             // NA - if no failure, then passes...
