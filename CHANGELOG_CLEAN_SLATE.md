@@ -15,6 +15,7 @@ Temporary changelog for feature branch.
 * `scripts/sync-peer-deps.js` and `scripts/propagate-deps.js` utils scripts for synchronising dependencies between root package.json and packages' dependencies.
 * `scripts/sync-assets.js` util for exporting assets, like `vue`, `scss`, `css`...etc.
 * `scripts/fix-esm-imports.js` util for fixing ESM imports.
+* `toParts()` util function (_support package_).
 
 ### Changed
 
@@ -36,6 +37,7 @@ Temporary changelog for feature branch.
 * `isConcatSpreadable()` now only returns true if `Symbol.isConcatSpreadable` is present and set to `true`.
 * `useCloneable` option has been renamed to `clone` and set to `false` by default, in `MergeOptions` (_contracts and support packages_)
 * Object `merge()` behaviour changed to correctly deal with concat-spreadable objects and arrays (_support package_).
+* `set()`, `get()`, `has()`, `forget()` and `isArrayLike()` no longer use lodash (_support package_).
 
 **Non-breaking Changes**
 
