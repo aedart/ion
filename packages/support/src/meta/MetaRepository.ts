@@ -1,144 +1,107 @@
-import { Key } from '@aedart/contracts/support';
-import { Repository } from '@aedart/contracts/support/meta';
-import { get, has } from '../objects/index.js';
+import Repository from '@aedart/contracts/support/meta/Repository.js';
+import { Key } from '@aedart/contracts/support/types.js';
+import { get, has, set, toParts } from '../objects/index.js';
+import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
 
 /**
- * Metadata Repository
- *
- * @see Repository
+ * Meta Repository implementation
  */
 export default class MetaRepository implements Repository
 {
-    protected shelf: DecoratorMetadata;
-    protected readonly target: any;
-    protected readonly targetName: PropertyKey | undefined;
+    /**
+     * The target this repository is bound to.
+     */
+    readonly #owner: object;
 
-    constructor(target: any, targetName?: PropertyKey)
+    /**
+     * The parent repository.
+     */
+    readonly #parent: Repository | undefined;
+
+    /**
+     * The actual metadata store for this specific owner.
+     */
+    readonly #data: Record<PropertyKey, any> = Object.create(null);
+
+    /**
+     * Create a new Metadata Repository instance.
+     *
+     * @param {object} owner
+     * @param {Repository} [parent]
+     */
+    constructor(owner: object, parent?: Repository)
     {
-        this.target = target;
-        this.shelf = target[Symbol.metadata] ?? target;
-        this.targetName = targetName;
-    }
-    protected toParts(key: Key): string[]
-    {
-        return Array.isArray(key) ? key.map(String) : String(key).split('.');
-    }
-
-    public set(key: Key, value: any): void
-    {
-        // 1. REPAIR CLASS SHELF: If we share an instance with the parent,
-        // we must branch it manually before doing anything else.
-        this.ensureShelfIsOwned();
-
-        // 2. BRANCH MEMBER NAMESPACE: Now that the shelf is unique,
-        // ensure the member namespace is also a unique branch.
-        this.ensureNamespaceIsOwned();
-
-        let current: any = this.targetName !== undefined
-            ? (this.shelf as any)[this.targetName]
-            : this.shelf;
-
-        const parts = this.toParts(key);
-        const last = parts.pop()!;
-
-        for (const part of parts) {
-            // Path Branching: Ensure we don't mutate inherited nested objects
-            if (!Object.hasOwn(current, part)) {
-                const existing = current[part];
-                current[part] = Array.isArray(existing)
-                    ? [...(existing ?? [])]
-                    : { ...(existing ?? {}) };
-            }
-            current = current[part];
-        }
-        current[last] = value;
+        this.#owner = owner;
+        this.#parent = parent;
     }
 
-    protected ensureShelfIsOwned(): void
+    /**
+     * @inheritdoc
+     */
+    set(key: Key, value: any): void
     {
-        // Detect if the target class is sharing its metadata object with its parent
-        if (this.target && this.target[Symbol.metadata]) {
-            const parent = Object.getPrototypeOf(this.target);
-            const parentMetadata = parent?.[Symbol.metadata];
+        // Explicit security validation
+        // We parse the parts to check every segment of the path
+        const parts = toParts(key);
+        const len = parts.length;
 
-            // If identities are shared, or prototype link is missing (the Nuclear leak)
-            if (
-                parentMetadata
-                && (this.shelf === parentMetadata
-                    || Object.getPrototypeOf(this.shelf) !== parentMetadata)
-            ) {
-                this.shelf = Object.create(parentMetadata);
-                this.target[Symbol.metadata] = this.shelf;
+        for (let i = 0; i < len; i++) {
+            if (isKeyUnsafe(parts[i])) {
+                throw new TypeError(`Unsafe metadata key/path detected: ${String(key)}`);
             }
         }
+
+        // Set key-value only after key is determined safe...
+        set(this.#data, key, value);
     }
 
-    protected ensureNamespaceIsOwned(): void
+    /**
+     * @inheritdoc
+     */
+    get<T>(key: Key, defaultValue?: T): T | undefined
     {
-        if (this.targetName && !Object.hasOwn(this.shelf, this.targetName)) {
-            const inherited = (this.shelf as any)[this.targetName];
-            (this.shelf as any)[this.targetName] = inherited !== undefined
-                ? Object.create(inherited)
-                : {};
-        }
-    }
-
-    public get<T>(key: Key, defaultValue?: T): T | undefined
-    {
-        let current: any = this.targetName !== undefined
-            ? (this.shelf as any)[this.targetName]
-            : this.shelf;
-
-        if (!current) return defaultValue;
-
-        const parts = this.toParts(key);
-        for (const part of parts) {
-            if (current === null || current === undefined || current[part] === undefined) {
-                return defaultValue;
-            }
-            current = current[part];
+        if (has(this.#data, key)) {
+            return get(this.#data, key);
         }
 
-        return current as T;
-    }
-
-    public has(key: Key): boolean
-    {
-        return this.get(key) !== undefined;
-    }
-
-    public all(merged: boolean = false): DecoratorMetadata
-    {
-        if (this.targetName === undefined) {
-            const data = merged ? this.flatten(this.shelf) : { ...this.shelf };
-            return Object.fromEntries(
-                Object.entries(data).filter(([_, v]) => !this.isPlainObject(v)),
-            );
+        if (this.#parent !== undefined) {
+            return this.#parent.get<T>(key, defaultValue);
         }
 
-        const namespace = (this.shelf as any)[this.targetName];
-        return namespace ? (merged ? this.flatten(namespace) : { ...namespace }) : {};
+        return defaultValue;
     }
 
-    protected flatten(obj: object): Record<PropertyKey, any>
+    /**
+     * @inheritdoc
+     */
+    has(key: Key): boolean
     {
-        const result: Record<PropertyKey, any> = {};
-        const chain: object[] = [];
-        let proto = obj;
-
-        while (proto && proto !== Object.prototype) {
-            chain.push(proto);
-            proto = Object.getPrototypeOf(proto);
+        if (has(this.#data, key)) {
+            return true;
         }
 
-        for (let i = chain.length - 1; i >= 0; i--) {
-            Object.assign(result, chain[i]);
-        }
-        return result;
+        return this.#parent?.has(key) ?? false;
     }
 
-    protected isPlainObject(value: any): boolean
+    /**
+     * @inheritdoc
+     */
+    all(): Record<PropertyKey, any>
     {
-        return typeof value === 'object' && value !== null && !Array.isArray(value);
+        return { ...this.#data };
+    }
+
+    /**
+     * @inheritdoc
+     */
+    get owner(): object {
+        return this.#owner;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    get parent(): Repository | undefined {
+        return this.#parent;
     }
 }

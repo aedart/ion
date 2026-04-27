@@ -1,4 +1,9 @@
+import MetaEntry from './MetaEntry.js';
+
 /**
- * Defines the target of a metadata association.
+ * Callback that returns a meta entry object.
  */
-export type MetaTarget = object | Function;
+export type MetaCallback = (
+    target: object,
+    context: DecoratorContext,
+) => MetaEntry;

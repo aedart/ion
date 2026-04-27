@@ -1,55 +1,44 @@
 import { Key } from '@aedart/contracts/support';
-import { set } from '../objects/set';
+import { MetaCallback, MetaEntry } from '@aedart/contracts/support/meta';
+import { getOrCreateRepository } from './getOrCreateRepository.js';
 
 /**
- * Associate metadata with the target class or member
- *
- * @param {Key} key
- * @param {any} value
- *
- * @returns {(target: any, context: DecoratorContext) => void}
+ * Store metadata on a class or class member.
  */
-export function meta(key: Key, value: any)
+export function meta(keyOrCallback: Key | MetaCallback, value?: any)
 {
-    // Use 'any' for target to support both Class and Members
-    return (target: any, context: DecoratorContext): void => {
-        const metadata = context.metadata as Record<PropertyKey, any>;
-        const toParts = (k: Key): string[] =>
-            Array.isArray(k) ? k.map(String) : String(k).split('.');
+    return function(target: any, context: DecoratorContext)
+    {
+        const isClass = context.kind === 'class';
 
-        let current: any;
-        if (context.kind === 'class') {
-            current = metadata;
-        } else {
-            const name = context.name;
-            // Branch namespace: Since context.metadata might be shared across classes,
-            // we MUST use Object.hasOwn to check if we already branched this member.
-            if (!Object.hasOwn(metadata, name)) {
-                metadata[name] = metadata[name] !== undefined
-                    ? Object.create(metadata[name])
-                    : {};
-            }
-            current = metadata[name];
+        // 1. Immediate resolution for classes
+        if (isClass) {
+            const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
+            getOrCreateRepository(target).set(key, val);
+            return;
         }
 
-        const parts = toParts(key);
-        const last = parts.pop()!;
+        // 2. Initializer-based resolution for all members
+        context.addInitializer(function(this: any)
+        {
+            const owner = context.static
+                ? this
+                : (this.prototype ?? Object.getPrototypeOf(this) ?? this);
 
-        for (const part of parts) {
-            if (!Object.hasOwn(current, part)) {
-                const existing = current[part];
-                current[part] = Array.isArray(existing)
-                    ? [...(existing ?? [])]
-                    : { ...(existing ?? {}) };
-            }
-            current = current[part];
-        }
+            const repo = getOrCreateRepository(owner);
+            const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
 
-        current[last] = value;
-
-        // Return target for classes to satisfy spec requirements
-        if (context.kind === 'class') {
-            return target;
-        }
+            const namespace = context.kind === 'method' ? 'methods' : 'fields';
+            repo.set(`${namespace}.${String(context.name)}.${String(key)}`, val);
+        });
     };
+}
+
+function resolveKeyValue(koc: Key | MetaCallback, v: any, target: any, context: DecoratorContext)
+{
+    if (typeof koc === 'function') {
+        const entry: MetaEntry = (koc as MetaCallback)(target, context);
+        return { key: entry.key, val: entry.value };
+    }
+    return { key: koc, val: v };
 }

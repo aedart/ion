@@ -6,11 +6,12 @@
 export const SUPPORT_META: unique symbol = Symbol('@aedart/contracts/support/meta');
 
 /**
- * The official Symbol used by the JS engine to store metadata on constructors.
+ * Unique symbol used for accessing a metadata repository on a target.
  */
-export const METADATA: unique symbol = Symbol.for('Symbol.metadata');
+// export const METADATA: unique symbol = Symbol('@aedart_metadata');
 
+import MetaEntry from './MetaEntry.js';
 import Repository from './Repository.js';
-export { type Repository };
+export { type MetaEntry, type Repository };
 
 export type * from './types.js';
