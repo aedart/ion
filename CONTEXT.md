@@ -23,31 +23,35 @@ This document serves as the persistent state and configuration guide for the **@
 * **Looping**: Prefer index-based `for` loops with cached length.
 * **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains.
 * **Memory Management**: Pre-allocate arrays when total size is known.
-* **Security**: All path-based operations must utilize `isKeyUnsafe` to prevent prototype pollution.
+* **Security**: All path-based operations must utilize `isKeyUnsafe` via `toParts` to prevent prototype pollution.
 
 ## Sub-Module Status
 
 ### Objects & Arrays (`@aedart/support/objects`, `@aedart/support/arrays`)
 
 * **Status**: **Completed (v2)**.
-* **Features**: Custom high-performance replacements for Lodash (`get`, `set`, `has`, `forget`, `isArrayLike`, `isSafeArrayLike`).
-* **Capabilities**: Full support for `PropertyKey` (including Symbols), dot-notation, bracket-notation, and automatic array initialization during deep `set` operations.
-* **Dependencies**: **Lodash dependency removed**.
+* **Features**: High-performance replacements for Lodash; full `PropertyKey` and dot-notation support.
+
+### Meta (`@aedart/support/meta`)
+
+* **Status**: **Completed (v2 Redesign)**.
+* **Architecture**: Manual Branching Strategy.
+* **Storage**: `WeakMap` based registry using `MetaRepository` instances.
+* **Inheritance**:
+  * Repositories maintain a `#parent` reference for optimized O(1) ancestor access.
+  * `findRepository` utility bridges gaps in the inheritance chain (skipping undecorated classes).
+* **Member Metadata**:
+  * Uses namespaced keys (`methods.[name].[key]`, `fields.[name].[key]`) stored on the Class/Prototype.
+  * Resolves the "Method Gap" by allowing child classes to inherit parent member metadata even when methods are overridden.
+* **Security**: `MetaRepository.set()` enforces strict `isKeyUnsafe` validation, throwing `TypeError` on pollution attempts.
+* **Usage**: `Metadata` static helper provides the primary public API.
 
 ### Concerns (`@aedart/support/concerns`)
 
 * **Status**: Completed (v1).
-* **Features**: Stage 3 Decorator-based injection, `ShorthandConfiguration`, prototype pollution security, conflict resolution.
-
-### Meta (`@aedart/support/meta`)
-
-* **Status**: **Redesign Required (Current state: Influx)**.
-* **Diagnostic Findings**:
-  * **Shelf Identity Leak**: The current environment incorrectly shares the same `Symbol.metadata` object instance across parent and child classes.
-  * **Prototype Failure**: Metadata shelves are not being linked via the prototype chain during transpilation.
-* **Resolution Strategy**: Pivot to a manual branching strategy using the new `@aedart/support/objects` utilities to achieve inheritance-safe metadata isolation.
+* **Features**: Stage 3 Decorator-based injection.
 
 ## Infrastructure & Testing (Vitest Browser)
 
-* **Transpilation**: `@rolldown/plugin-babel` with `@babel/plugin-proposal-decorators` (version: "2023-11").
-* **Polyfill**: `Symbol.metadata` is patched in `@aedart/support/meta/index.ts`.
+* **Transpilation**: `@rolldown/plugin-babel` with `@babel/plugin-proposal-decorators` ("2023-11").
+* **Metadata Note**: Native `Symbol.metadata` polyfills removed in favor of the manual `MetaRepository` registry.
