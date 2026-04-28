@@ -56,6 +56,61 @@ describe('@meta() decorator', () => {
         expect(Metadata.get(C, 'local')).toBe('yes');
     });
 
+    test('bridges long inheritance gaps for members', () => {
+        // Level 1: Define base metadata on a method and field
+        class Level1 {
+            @meta('status', 'base-method')
+            doWork() {}
+
+            @meta('prop-type', 'string')
+            name: string = '';
+        }
+
+        // Level 2-4: Empty classes (The Gaps)
+        // These should not have their own repositories initially, 
+        // so findRepository must skip them to find Level1.
+        class Level2 extends Level1 {}
+        class Level3 extends Level2 {}
+        class Level4 extends Level3 {}
+
+        // Level 5: Define static metadata to test the static namespace path
+        class Level5 extends Level4 {
+            @meta('version', 'v5-static')
+            static connect() {}
+        }
+
+        // Level 6: The Leaf class
+        class Level6 extends Level5 {}
+
+        // Ensure instance is created, or no metadata will be available...
+        new Level6();
+        
+        // --- Assertions ---
+        
+        // 1. Instance Method Metadata (Deep Inheritance)
+        // Should resolve: Level6 -> Level6.prototype -> Level1.prototype (via #parent)
+        expect(Metadata.get(Level6, 'methods.doWork.status'))
+            .toBe('base-method');
+
+        // 2. Instance Field Metadata (Deep Inheritance)
+        expect(Metadata.get(Level6, 'fields.name.prop-type'))
+            .toBe('string');
+
+        // 3. Static Method Metadata (Bridge Gap)
+        // Should resolve: Level6 -> Level5 (via #parent)
+        expect(Metadata.get(Level6, 'static.methods.connect.version'))
+            .toBe('v5-static');
+
+        // 4. Verification of "local" vs "inherited"
+        // Ensure that setting metadata on a child doesn't pollute the parent
+        @meta('is-leaf', true)
+        class Leaf extends Level6 {}
+
+        expect(Metadata.has(Leaf, 'methods.doWork.status')).toBe(true);
+        expect(Metadata.get(Leaf, 'is-leaf')).toBe(true);
+        expect(Metadata.has(Level1, 'is-leaf')).toBe(false);
+    });
+    
     test('can decorate and inherit instance methods', () => {
         class Parent
         {
