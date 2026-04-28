@@ -13,13 +13,17 @@ import { registry } from './registry.js';
  */
 export function getOrCreateRepository(target: object): Repository
 {
-    let repo = registry.get(target);
-
-    if (repo === undefined) {
-        const parent = findRepository(target);
-        repo = new MetaRepository(target, parent);
-        registry.set(target, repo);
+    // 1. If repository already exists for this specific target, return it.
+    if (registry.has(target)) {
+        return registry.get(target)!;
     }
+
+    // 2. Otherwise, we create a new one. 
+    // We MUST find the closest ancestor that has a repository to maintain the chain.
+    const parent = findRepository(Object.getPrototypeOf(target));
+
+    const repo = new MetaRepository(target, parent);
+    registry.set(target, repo);
 
     return repo;
 }

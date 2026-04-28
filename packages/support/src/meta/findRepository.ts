@@ -1,24 +1,29 @@
 // @aedart/support/meta/findRepository.js
-import { Repository } from '@aedart/contracts/support/meta';
-import { registry } from './registry.js';
+import {Repository} from '@aedart/contracts/support/meta';
+import {registry} from './registry.js';
 
 /**
  * Find the nearest parent repository in the prototype chain.
  *
- * @param {object} target
+ * @param {object|null} target
  *
  * @returns {Repository | undefined}
  */
-export function findRepository(target: object): Repository | undefined
+export function findRepository(target: object | null): Repository | undefined
 {
-    let proto = Object.getPrototypeOf(target);
+    let current = target;
 
-    while (proto !== null) {
-        const repo = registry.get(proto);
-        if (repo !== undefined) {
+    while (current !== null)
+    {
+        // 1. Check if the current target has a repository
+        const repo = registry.get(current);
+        if (repo !== undefined)
+        {
             return repo;
         }
-        proto = Object.getPrototypeOf(proto);
+
+        // 2. Move up to the prototype (parent class or parent prototype)
+        current = Object.getPrototypeOf(current);
     }
 
     return undefined;
