@@ -28,7 +28,15 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: any)
             const repo = getOrCreateRepository(owner);
             const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
 
-            const namespace = context.kind === 'method' ? 'methods' : 'fields';
+            // Differentiate namespace based on static flag
+            const kind = context.kind === 'method'
+                ? 'methods'
+                : 'fields';
+
+            const namespace = context.static
+                ? `static.${kind}`
+                : kind;
+            
             repo.set(`${namespace}.${String(context.name)}.${String(key)}`, val);
         });
     };
