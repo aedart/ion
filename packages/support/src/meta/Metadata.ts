@@ -68,19 +68,31 @@ export default class Metadata
     {
         if (isConstructor(target)) {
             const parts = toParts(key);
+            const root = parts[0];
 
-            // If the key starts with 'static', it's definitely on the constructor
-            if (parts[0] === 'static') {
-                return target;
-            }
-
-            // If it starts with 'methods' or 'fields' (WITHOUT 'static'), 
-            // it's an instance member and MUST be on the prototype.
-            if (parts[0] === 'methods' || parts[0] === 'fields') {
+            // If querying instance members via the Class, pivot to the Prototype.
+            if (root === 'methods' || root === 'fields') {
                 return (target as any).prototype;
             }
         }
 
         return target;
+        
+        // if (isConstructor(target)) {
+        //     const parts = toParts(key);
+        //
+        //     // If the key starts with 'static', it's definitely on the constructor
+        //     if (parts[0] === 'static') {
+        //         return target;
+        //     }
+        //
+        //     // If it starts with 'methods' or 'fields' (WITHOUT 'static'), 
+        //     // it's an instance member and MUST be on the prototype.
+        //     if (parts[0] === 'methods' || parts[0] === 'fields') {
+        //         return (target as any).prototype;
+        //     }
+        // }
+        //
+        // return target;
     }
 }

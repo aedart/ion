@@ -13,16 +13,24 @@ import { registry } from './registry.js';
  */
 export function getOrCreateRepository(target: object): Repository
 {
-    // 1. If repository already exists for this specific target, return it.
-    if (registry.has(target)) {
-        return registry.get(target)!;
+    console.log(`[getOrCreateRepository] Target:`, target);
+    
+    // 1. Return existing if we have it
+    let repo = registry.get(target);
+    if (repo !== undefined) {
+        return repo;
     }
 
-    // 2. Otherwise, we create a new one. 
-    // We MUST find the closest ancestor that has a repository to maintain the chain.
+    const proto = Object.getPrototypeOf(target);
+    console.log(`[getOrCreateRepository] Walking up to proto:`, proto);
+    
+    // 2. Find the closest existing repository in the inheritance chain
+    // Use the iterative findRepository we optimized earlier!
     const parent = findRepository(Object.getPrototypeOf(target));
+    console.log(`[getOrCreateRepository] Found Parent:`, parent?.owner);
 
-    const repo = new MetaRepository(target, parent);
+    // 3. Create and register the new repository linked to that parent
+    repo = new MetaRepository(target, parent);
     registry.set(target, repo);
 
     return repo;

@@ -58,6 +58,15 @@ describe('@meta() decorator', () => {
 
     test('bridges long inheritance gaps for members', () => {
         // Level 1: Define base metadata on a method and field
+        // class Level1 {
+        //     @meta('status', 'base-method')
+        //     doWork() {}
+        //
+        //     @meta('prop-type', 'string')
+        //     name: string = '';
+        // }
+
+        @meta('foo', 'bar')
         class Level1 {
             @meta('status', 'base-method')
             doWork() {}
@@ -65,7 +74,9 @@ describe('@meta() decorator', () => {
             @meta('prop-type', 'string')
             name: string = '';
         }
-
+        
+        // new Level1()
+        
         // Level 2-4: Empty classes (The Gaps)
         // These should not have their own repositories initially, 
         // so findRepository must skip them to find Level1.
@@ -79,11 +90,16 @@ describe('@meta() decorator', () => {
             static connect() {}
         }
 
+        // new Level1()
+        
         // Level 6: The Leaf class
         class Level6 extends Level5 {}
 
-        // Ensure instance is created, or no metadata will be available...
-        new Level6();
+        // Debugging
+        console.log('--- Debug Registry ---');
+        console.log('Level1 Prototype Has Repo:', Metadata.has(Level1.prototype, 'methods.doWork.status'));
+        console.log('Level6 Prototype Has Repo:', Metadata.has(Level6.prototype, 'methods.doWork.status'));
+
         
         // --- Assertions ---
         
@@ -127,8 +143,8 @@ describe('@meta() decorator', () => {
 
         // Method metadata is stored on the prototype, namespaced by method name
 
-        new Parent();
-        new Child();
+        // new Parent();
+        // new Child();
 
         expect(Metadata.get(Parent, 'methods.doSomething.access')).toBe('admin');
         expect(Metadata.get(Child, 'methods.doSomething.access')).toBe('admin');
@@ -144,8 +160,8 @@ describe('@meta() decorator', () => {
         class Child extends Parent
         {}
 
-        new Parent();
-        new Child();
+        // new Parent();
+        // new Child();
 
         // Note: We access the prototype since instance fields are defined there via decorators
         expect(Metadata.get(Parent, 'fields.name.validation')).toBe('required');
