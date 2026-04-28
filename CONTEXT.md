@@ -1,57 +1,42 @@
-# Project Context: Modern TypeScript Monorepo (Node 24 / TS 6.0)
-
-This document serves as the persistent state and configuration guide for the **@aedart** monorepo.
+# Project Context: Modern TypeScript Monorepo (@aedart)
 
 ## Tech Stack & Environment
+*   **Runtime**: Node.js v24.x (LTS)
+*   **Package Manager**: pnpm v9.x
+*   **Language**: TypeScript v6.0 (Target: ESNext)
+*   **Decorators**: Stage 3 (Babel "2023-11" transform)
+*   **Formatting**: dprint (4-space indent, Allman braces for functions/classes).
 
-* **Runtime**: Node.js v24.x (LTS)
-* **Package Manager**: pnpm v9.x (Workspaces)
-* **Language**: TypeScript v6.0 (Target: ESNext)
-* **Orchestration**: Turborepo
-* **Formatting**: dprint (4-space indent, Allman braces for functions/classes).
-* **Linting**: ESLint v9.x (Flat Config).
+## Sub-Module Status: Meta (`@aedart/support/meta`)
 
-## Coding Standards & Style
+### Current Architecture (v2.1 - "Clean-Slate" Branch)
+*   **Storage**: `WeakMap` based registry using `MetaRepository` instances.
+*   **Inheritance**: Manual branching strategy with optimized O(1) ancestor access via `#parent` reference.
+*   **Target Steering**:
+    *   **Classes & Static Members**: Stored on the **Constructor**.
+    *   **Instance Members**: Stored on the **Prototype**.
+*   **Namespacing**: Explicit separation of static and instance members using `static.methods` and `static.fields` prefixes to ensure deterministic resolution for Dependency Injection (DI).
 
-* **Indentation**: 4-space width (Spaces only).
-* **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
-* **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
-* **ESM Resolution**: Relative imports must include explicit `.js` extensions.
+### Implementation Details & Breakthroughs
+*   **Metadata Helper**: `Metadata.get/has` utilizes a `resolveTarget()` utility that automatically pivots to the prototype if querying instance members via a class constructor.
+*   **Performance Patterns**:
+    *   `findRepository()` is implemented as an optimized iterative `while` loop (non-recursive) to handle deep inheritance chains safely and quickly.
+    *   Metadata values are returned by reference (no deep cloning/freezing) to prioritize performance and minimize GC pressure.
+*   **Registry Flow**: `getOrCreateRepository()` ensures the inheritance bridge is established even for undecorated "gap" classes in the chain.
 
-## Performance Patterns (Strict)
+### Current Challenges & Timing Constraints
+*   **Timing Issue**: In the Babel 2023-11 environment, `addInitializer` for instance members is deferred until instantiation (`new`).
+*   **Current Workaround**: To allow eager scanning (DI-ready) without `new`, a class-level `@meta()` decorator is currently required to "flush" member metadata from the `context.metadata` staging area to the repositories.
+*   **Static Members**: These are successfully flushed during class definition time via static initializers, requiring no class-level decorator.
 
-* **Looping**: Prefer index-based `for` loops with cached length.
-* **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains.
-* **Memory Management**: Pre-allocate arrays when total size is known.
-* **Security**: All path-based operations must utilize `isKeyUnsafe` via `toParts` to prevent prototype pollution.
+### Objectives for Next Session
+1.  **Remove Class Decorator Requirement**: Explore a "Global Staging Fallback" or a "Metadata.get Trigger" to allow instance member metadata to be accessible eagerly without requiring the class to be decorated or instantiated.
+2.  **Service Container Integration**: Prepare for the porting of `@aedart/container` using the new high-performance metadata registry.
+3.  **Reflections**: Ensure `context.metadata` (Symbol.metadata) is utilized as a fallback within the `MetaRepository` or `Metadata` utility where supported.
 
-## Sub-Module Status
-
-### Objects & Arrays (`@aedart/support/objects`, `@aedart/support/arrays`)
-
-* **Status**: **Completed (v2)**.
-* **Features**: High-performance replacements for Lodash; full `PropertyKey` and dot-notation support.
-
-### Meta (`@aedart/support/meta`)
-
-* **Status**: **Completed (v2 Redesign)**.
-* **Architecture**: Manual Branching Strategy.
-* **Storage**: `WeakMap` based registry using `MetaRepository` instances.
-* **Inheritance**:
-  * Repositories maintain a `#parent` reference for optimized O(1) ancestor access.
-  * `findRepository` utility bridges gaps in the inheritance chain (skipping undecorated classes).
-* **Member Metadata**:
-  * Uses namespaced keys (`methods.[name].[key]`, `fields.[name].[key]`) stored on the Class/Prototype.
-  * Resolves the "Method Gap" by allowing child classes to inherit parent member metadata even when methods are overridden.
-* **Security**: `MetaRepository.set()` enforces strict `isKeyUnsafe` validation, throwing `TypeError` on pollution attempts.
-* **Usage**: `Metadata` static helper provides the primary public API.
-
-### Concerns (`@aedart/support/concerns`)
-
-* **Status**: Completed (v1).
-* **Features**: Stage 3 Decorator-based injection.
-
-## Infrastructure & Testing (Vitest Browser)
-
-* **Transpilation**: `@rolldown/plugin-babel` with `@babel/plugin-proposal-decorators` ("2023-11").
-* **Metadata Note**: Native `Symbol.metadata` polyfills removed in favor of the manual `MetaRepository` registry.
+### Files to Scan Before Resuming
+*   `packages/support/src/meta/Metadata.ts`
+*   `packages/support/src/meta/MetaRepository.ts`
+*   `packages/support/src/meta/getOrCreateRepository.ts`
+*   `packages/support/src/meta/meta.ts` (the decorator)
+*   `tests/browser/support/meta/meta.test.ts` (specifically the "Long Walk" inheritance test)
