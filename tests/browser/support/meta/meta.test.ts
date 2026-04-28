@@ -75,8 +75,8 @@ describe('@meta() decorator', () => {
         new Parent();
         new Child();
 
-        expect(Metadata.get(Parent.prototype, 'methods.doSomething.access')).toBe('admin');
-        expect(Metadata.get(Child.prototype, 'methods.doSomething.access')).toBe('admin');
+        expect(Metadata.get(Parent, 'methods.doSomething.access')).toBe('admin');
+        expect(Metadata.get(Child, 'methods.doSomething.access')).toBe('admin');
     });
 
     test('can decorate and inherit instance fields', () => {
@@ -93,8 +93,8 @@ describe('@meta() decorator', () => {
         new Child();
 
         // Note: We access the prototype since instance fields are defined there via decorators
-        expect(Metadata.get(Parent.prototype, 'fields.name.validation')).toBe('required');
-        expect(Metadata.get(Child.prototype, 'fields.name.validation')).toBe('required');
+        expect(Metadata.get(Parent, 'fields.name.validation')).toBe('required');
+        expect(Metadata.get(Child, 'fields.name.validation')).toBe('required');
     });
 
     test('can decorate and inherit static methods', () => {
@@ -108,8 +108,8 @@ describe('@meta() decorator', () => {
         class Child extends Parent
         {}
 
-        expect(Metadata.get(Parent, 'methods.compute.op')).toBe('sum');
-        expect(Metadata.get(Child, 'methods.compute.op')).toBe('sum');
+        expect(Metadata.get(Parent, 'static.methods.compute.op')).toBe('sum');
+        expect(Metadata.get(Child, 'static.methods.compute.op')).toBe('sum');
     });
 
     test('can decorate and inherit static fields', () => {
@@ -122,8 +122,8 @@ describe('@meta() decorator', () => {
         class Child extends Parent
         {}
 
-        expect(Metadata.get(Parent, 'fields.connection.env')).toBe('prod');
-        expect(Metadata.get(Child, 'fields.connection.env')).toBe('prod');
+        expect(Metadata.get(Parent, 'static.fields.connection.env')).toBe('prod');
+        expect(Metadata.get(Child, 'static.fields.connection.env')).toBe('prod');
     });
 
     test('deep path support via @aedart/support/objects', () => {
@@ -144,29 +144,6 @@ describe('@meta() decorator', () => {
 
         expect(Metadata.get(SecureClass, MY_KEY)).toBe('secret-value');
     });
-
-    // test('prevents prototype pollution via unsafe keys', () =>
-    // {
-    //     const trigger = () =>
-    //     {
-    //         class Polluter
-    //         {
-    //             @meta('__proto__.polluted', true)
-    //             static someField = 123;
-    //         }
-    //
-    //         // For static members, the error should happen during class definition
-    //         // if the engine runs static initializers immediately.
-    //         // For instance members, we MUST instantiate:
-    //         class InstancePolluter {
-    //             @meta('constructor.prototype.polluted', true)
-    //             someMethod() {}
-    //         }
-    //         new InstancePolluter();
-    //     };
-    //
-    //     expect(trigger).toThrow();
-    // });
 
     describe('@meta() security: prototype pollution', () => {
         test('immediately prevents pollution via class decorator', () => {
