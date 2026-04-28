@@ -1,5 +1,7 @@
-import { Key } from '@aedart/contracts/support/types.js';
-import { getOrCreateRepository } from './getOrCreateRepository.js';
+import {Key} from '@aedart/contracts/support/types.js';
+import {getOrCreateRepository} from './getOrCreateRepository.js';
+import {isConstructor} from "../reflections/isConstructor.js";
+import {toParts} from "../objects/toParts.js";
 
 /**
  * Metadata Helper
@@ -20,7 +22,9 @@ export default class Metadata
      */
     static get<T>(target: object, key: Key, defaultValue?: T): T | undefined
     {
-        return getOrCreateRepository(target).get<T>(key, defaultValue);
+        const resolved = this.resolveTarget(target, key);
+
+        return getOrCreateRepository(resolved).get<T>(key, defaultValue);
     }
 
     /**
@@ -33,7 +37,9 @@ export default class Metadata
      */
     static has(target: object, key: Key): boolean
     {
-        return getOrCreateRepository(target).has(key);
+        const resolved = this.resolveTarget(target, key);
+
+        return getOrCreateRepository(resolved).has(key);
     }
 
     /**
@@ -46,5 +52,35 @@ export default class Metadata
     static all(target: object): Record<PropertyKey, any>
     {
         return getOrCreateRepository(target).all();
+    }
+
+    /**
+     * Resolves the actual target for metadata lookup
+     *
+     * @param {object} target
+     * @param {PropertyKey} key
+     *
+     * @returns {object}
+     *
+     * @protected
+     */
+    protected static resolveTarget(target: object, key: Key): object
+    {
+        if (isConstructor(target)) {
+            const parts = toParts(key);
+
+            // If the key starts with 'static', it's definitely on the constructor
+            if (parts[0] === 'static') {
+                return target;
+            }
+
+            // If it starts with 'methods' or 'fields' (WITHOUT 'static'), 
+            // it's an instance member and MUST be on the prototype.
+            if (parts[0] === 'methods' || parts[0] === 'fields') {
+                return (target as any).prototype;
+            }
+        }
+
+        return target;
     }
 }
