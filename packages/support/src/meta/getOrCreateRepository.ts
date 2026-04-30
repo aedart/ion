@@ -14,7 +14,7 @@ import { registry } from './registry.js';
 export function getOrCreateRepository(target: object): Repository
 {
     console.log(`[getOrCreateRepository] Target:`, target);
-    
+
     // 1. Return existing if we have it
     let repo = registry.get(target);
     if (repo !== undefined) {
@@ -23,7 +23,7 @@ export function getOrCreateRepository(target: object): Repository
 
     const proto = Object.getPrototypeOf(target);
     console.log(`[getOrCreateRepository] Walking up to proto:`, proto);
-    
+
     // 2. Find the closest existing repository in the inheritance chain
     // Use the iterative findRepository we optimized earlier!
     const parent = findRepository(Object.getPrototypeOf(target));

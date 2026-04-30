@@ -26,7 +26,8 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: any)
             // NEW: If it's a static member, we can flush it immediately using addInitializer
             // because static initializers run during class definition!
             if (isStatic) {
-                context.addInitializer(function(this: any) {
+                context.addInitializer(function(this: any)
+                {
                     getOrCreateRepository(this).set(path, val);
                 });
             }
@@ -45,7 +46,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: any)
             getOrCreateRepository(destination).set(path, staged[path]);
         }
     };
-    
+
     // TODO: C - works, if new Level1() is invoked....
     // return function(target: any, context: ClassDecoratorContext | ClassMemberDecoratorContext): void
     // {
@@ -78,7 +79,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: any)
     //         repo.set(`${namespace}.${String(context.name)}.${String(key)}`, val);
     //     });
     // };
-    
+
     // // TODO: B
     // return function(target: any, context: ClassDecoratorContext | ClassMemberDecoratorContext): void
     // {
@@ -95,12 +96,12 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: any)
     //     // 2. Member Decorators (Static vs Instance)
     //     const isStatic = (context as ClassMemberDecoratorContext).static ?? false;
     //
-    //     // For Static members, we can attach to the 'this' context if it's 
+    //     // For Static members, we can attach to the 'this' context if it's
     //     // available, or we use an initializer that runs during class definition.
     //     // To ensure the DI container sees it immediately after class load:
     //     context.addInitializer(function(this: any)
     //     {
-    //         // 'this' is the Constructor for static members, 
+    //         // 'this' is the Constructor for static members,
     //         // or the Prototype for instance members.
     //         const owner = isStatic
     //             ? this
@@ -119,7 +120,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: any)
     //         console.log(`Repository for ${String(context.name)} parent is:`, (repo as any).parent);
     //     });
     // }
-    
+
     // TODO: A
     // return function(target: any, context: DecoratorContext)
     // {
@@ -150,7 +151,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: any)
     //         const namespace = context.static
     //             ? `static.${kind}`
     //             : kind;
-    //        
+    //
     //         repo.set(`${namespace}.${String(context.name)}.${String(key)}`, val);
     //     });
     // };

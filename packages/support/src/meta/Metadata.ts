@@ -1,7 +1,7 @@
-import {Key} from '@aedart/contracts/support/types.js';
-import {getOrCreateRepository} from './getOrCreateRepository.js';
-import {isConstructor} from "../reflections/isConstructor.js";
-import {toParts} from "../objects/toParts.js";
+import { Key } from '@aedart/contracts/support/types.js';
+import { toParts } from '../objects/toParts.js';
+import { isConstructor } from '../reflections/isConstructor.js';
+import { getOrCreateRepository } from './getOrCreateRepository.js';
 
 /**
  * Metadata Helper
@@ -77,7 +77,7 @@ export default class Metadata
         }
 
         return target;
-        
+
         // if (isConstructor(target)) {
         //     const parts = toParts(key);
         //
@@ -86,7 +86,7 @@ export default class Metadata
         //         return target;
         //     }
         //
-        //     // If it starts with 'methods' or 'fields' (WITHOUT 'static'), 
+        //     // If it starts with 'methods' or 'fields' (WITHOUT 'static'),
         //     // it's an instance member and MUST be on the prototype.
         //     if (parts[0] === 'methods' || parts[0] === 'fields') {
         //         return (target as any).prototype;

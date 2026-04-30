@@ -67,42 +67,55 @@ describe('@meta() decorator', () => {
         // }
 
         @meta('foo', 'bar')
-        class Level1 {
+        class Level1
+        {
             @meta('status', 'base-method')
-            doWork() {}
+            doWork()
+            {}
 
             @meta('prop-type', 'string')
             name: string = '';
         }
-        
+
         // new Level1()
-        
+
         // Level 2-4: Empty classes (The Gaps)
-        // These should not have their own repositories initially, 
+        // These should not have their own repositories initially,
         // so findRepository must skip them to find Level1.
-        class Level2 extends Level1 {}
-        class Level3 extends Level2 {}
-        class Level4 extends Level3 {}
+        class Level2 extends Level1
+        {}
+        class Level3 extends Level2
+        {}
+        class Level4 extends Level3
+        {}
 
         // Level 5: Define static metadata to test the static namespace path
-        class Level5 extends Level4 {
+        class Level5 extends Level4
+        {
             @meta('version', 'v5-static')
-            static connect() {}
+            static connect()
+            {}
         }
 
         // new Level1()
-        
+
         // Level 6: The Leaf class
-        class Level6 extends Level5 {}
+        class Level6 extends Level5
+        {}
 
         // Debugging
         console.log('--- Debug Registry ---');
-        console.log('Level1 Prototype Has Repo:', Metadata.has(Level1.prototype, 'methods.doWork.status'));
-        console.log('Level6 Prototype Has Repo:', Metadata.has(Level6.prototype, 'methods.doWork.status'));
+        console.log(
+            'Level1 Prototype Has Repo:',
+            Metadata.has(Level1.prototype, 'methods.doWork.status'),
+        );
+        console.log(
+            'Level6 Prototype Has Repo:',
+            Metadata.has(Level6.prototype, 'methods.doWork.status'),
+        );
 
-        
         // --- Assertions ---
-        
+
         // 1. Instance Method Metadata (Deep Inheritance)
         // Should resolve: Level6 -> Level6.prototype -> Level1.prototype (via #parent)
         expect(Metadata.get(Level6, 'methods.doWork.status'))
@@ -120,13 +133,14 @@ describe('@meta() decorator', () => {
         // 4. Verification of "local" vs "inherited"
         // Ensure that setting metadata on a child doesn't pollute the parent
         @meta('is-leaf', true)
-        class Leaf extends Level6 {}
+        class Leaf extends Level6
+        {}
 
         expect(Metadata.has(Leaf, 'methods.doWork.status')).toBe(true);
         expect(Metadata.get(Leaf, 'is-leaf')).toBe(true);
         expect(Metadata.has(Level1, 'is-leaf')).toBe(false);
     });
-    
+
     test('can decorate and inherit instance methods', () => {
         class Parent
         {
