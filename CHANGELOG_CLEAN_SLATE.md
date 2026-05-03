@@ -6,6 +6,7 @@ Temporary changelog for feature branch.
 
 ### Added
 
+* Enabled Gemini CLI as coding agent.
 * `Wildcard` type alias (_contracts package_).
 * `walkPrototype()` and `walkParents` reflection utils (_support package_).
 * Abstract `BaseError` (_support package_).
