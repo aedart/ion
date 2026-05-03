@@ -1,0 +1,23 @@
+{
+    "context": {
+        "fileName": [
+            "CONTEXT.md"
+        ]
+    },
+    "mcpServers": {
+        "context7": {
+            "command": "pnpm",
+            "args": ["dlx", "@upstash/context7-mcp"],
+            "env": {
+                "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+            }
+        },
+        "github": {
+            "command": "pnpm",
+            "args": ["dlx", "@modelcontextprotocol/server-github"],
+            "env": {
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_API_TOKEN_GEMINI}"
+            }
+        }
+    }
+}

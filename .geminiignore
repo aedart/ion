@@ -1,0 +1,53 @@
+# --- System & Dependencies ---
+node_modules/
+.pnpm-store/
+.git/
+.turbo/
+.vercel/
+.vitest-attachments/
+.swc/
+
+# --- Build Outputs ---
+dist/
+build/
+out/
+*.tsbuildinfo
+*.js.map
+*.d.ts
+pnpm-lock.yaml
+package-lock.json
+tests/output/
+
+# --- Cache & Temp ---
+.eslintcache
+.dprintcache
+.nyc_output/
+coverage/
+.temp/
+.cache/
+.todo.md
+
+# --- Media & Binary ---
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.pdf
+*.zip
+*.tar.gz
+
+# --- Environment & Secrets (Security Guardrail) ---
+.env
+.env.*
+*.pem
+*.key
+auth.json
+
+# --- Documentation Artifacts ---
+# Keep .md files, but ignore generated site folders
+docs/.vuepress/_site/
+docs/.vuepress/.temp
+docs/.vuepress/.cache
+docs/.vuepress/dist
