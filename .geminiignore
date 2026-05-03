@@ -5,14 +5,18 @@ node_modules/
 .turbo/
 .vercel/
 .vitest-attachments/
+.swc/
 
-# --- Build Outputs (Crucial for Token Saving) ---
+# --- Build Outputs ---
 dist/
 build/
 out/
 *.tsbuildinfo
 *.js.map
 *.d.ts
+pnpm-lock.yaml
+package-lock.json
+tests/output/
 
 # --- Cache & Temp ---
 .eslintcache
@@ -21,8 +25,9 @@ out/
 coverage/
 .temp/
 .cache/
+.todo.md
 
-# --- Media & Binary (AI cannot process these efficiently) ---
+# --- Media & Binary ---
 *.png
 *.jpg
 *.jpeg
