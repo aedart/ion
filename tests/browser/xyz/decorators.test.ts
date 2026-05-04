@@ -7,10 +7,10 @@ describe('@aedart/xyz', () => {
         {
             // This test ensures that the TypeScript
 
-            let character = new Character();
+            const character = new Character();
             character.move();
 
-            let entries = DummyLogger.entries;
+            const entries = DummyLogger.entries;
 
             // Debug
             // console.log(entries);
@@ -21,7 +21,7 @@ describe('@aedart/xyz', () => {
             // --------------------------------------------------------------------------------- //
             // Context in log....
 
-            let context = entries[0][1];
+            const context = entries[0][1];
 
             // Debug
             // console.log(context.kind);
@@ -58,7 +58,7 @@ describe('@aedart/xyz', () => {
 
             // --------------------------------------------------------------------------------- //
 
-            let entries = DummyLogger.entries;
+            const entries = DummyLogger.entries;
 
             // Debug
             // console.log(entries);
@@ -69,7 +69,7 @@ describe('@aedart/xyz', () => {
             // --------------------------------------------------------------------------------- //
             // Context in log....
 
-            let context = entries[0][1];
+            const context = entries[0][1];
 
             // Debug
             // console.log(context.kind);
@@ -105,7 +105,7 @@ describe('@aedart/xyz', () => {
 
             // --------------------------------------------------------------------------------- //
 
-            let entries = DummyLogger.entries;
+            const entries = DummyLogger.entries;
 
             // Debug
             // console.log(entries);
@@ -144,7 +144,7 @@ describe('@aedart/xyz', () => {
 
             // --------------------------------------------------------------------------------- //
 
-            let entries = DummyLogger.entries;
+            const entries = DummyLogger.entries;
 
             // Debug
             // console.log(entries);
@@ -239,27 +239,27 @@ describe('@aedart/xyz', () => {
             {
                 // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('private id')
-                #id: number = 1234;
+                #id = 1234;
 
                 // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('static private status')
-                static #status: string = 'on';
+                static #status = 'on';
 
                 // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('public url')
-                url: string = 'www.example.org/api/v3';
+                url = 'www.example.org/api/v3';
 
                 // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('static public host')
-                static host: string = 'example.org';
+                static host = 'example.org';
 
                 @decorator('accessor query')
                 accessor query: Record<PropertyKey, any> = {};
 
                 @decorator('static accessor protocol')
-                static accessor protocol: string = 'https';
+                static accessor protocol = 'https';
 
-                _name: string = '';
+                _name = '';
                 @decorator('public set name')
                 set name(value: string) {
                     this._name = value;
@@ -305,7 +305,7 @@ describe('@aedart/xyz', () => {
 
             // --------------------------------------------------------------------------------- //
 
-            let entries = ChannelLogger.entries(channel);
+            const entries = ChannelLogger.entries(channel);
             for (const entry of entries) {
                 // Debug
                 // console.log(entry);

@@ -74,7 +74,7 @@ describe('@meta() decorator', () => {
             {}
 
             @meta('prop-type', 'string')
-            name: string = '';
+            name = '';
         }
 
         // new Level1()
@@ -168,7 +168,7 @@ describe('@meta() decorator', () => {
         class Parent
         {
             @meta('validation', 'required')
-            name: string = '';
+            name = '';
         }
 
         class Child extends Parent

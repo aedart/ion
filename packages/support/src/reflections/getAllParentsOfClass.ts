@@ -13,7 +13,7 @@ import { walkParents } from './walkParents.js';
  */
 export function getAllParentsOfClass(
     target: ConstructorLike,
-    includeTarget: boolean = false,
+    includeTarget = false,
 ): ConstructorLike[]
 {
     const output: ConstructorLike[] = [];

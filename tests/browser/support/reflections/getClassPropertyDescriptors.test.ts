@@ -47,7 +47,7 @@ describe('@aedart/support/refelctions', () => {
             // console.log(descriptors);
 
             for (const key of expected) {
-                let k = (typeof key == 'symbol')
+                const k = (typeof key == 'symbol')
                     ? key.toString()
                     : key;
 
@@ -100,7 +100,7 @@ describe('@aedart/support/refelctions', () => {
 
             const descriptors = getClassPropertyDescriptors(B, true);
             for (const key of expected) {
-                let k = (typeof key == 'symbol')
+                const k = (typeof key == 'symbol')
                     ? key.toString()
                     : key;
 
@@ -154,7 +154,7 @@ describe('@aedart/support/refelctions', () => {
 
             const descriptors = getClassPropertyDescriptors(B, true);
             for (const key of expected) {
-                let k = (typeof key == 'symbol')
+                const k = (typeof key == 'symbol')
                     ? key.toString()
                     : key;
 
@@ -220,7 +220,7 @@ describe('@aedart/support/refelctions', () => {
             expect(Reflect.has(descriptors, 'age'), 'age property descriptor not in output')
                 .toBeTruthy();
 
-            const ageDesc = descriptors['age'];
+            const ageDesc = descriptors.age;
 
             // Debug
             // console.log('Age property descriptor', ageDesc);

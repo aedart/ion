@@ -12,7 +12,7 @@ import type { ConstructorLike } from '@aedart/contracts';
  */
 export function* walkParents(
     target: ConstructorLike,
-    includeTarget: boolean = false,
+    includeTarget = false,
 ): Generator<ConstructorLike>
 {
     if (target == null) {
@@ -22,7 +22,7 @@ export function* walkParents(
     let current: ConstructorLike | null = includeTarget
         ? target
         : Object.getPrototypeOf(target) as ConstructorLike | null;
-    
+
     while (current !== null && current !== Function.prototype && current !== Object.prototype) {
         yield current;
         current = Object.getPrototypeOf(current) as ConstructorLike | null;

@@ -14,7 +14,7 @@ export function logMethodCall(method: any, context: ClassMethodDecoratorContext)
     {
         DummyLogger.log('LOG: Invoking method', context);
 
-        let result = method.call(this, ...args);
+        const result = method.call(this, ...args);
 
         DummyLogger.log('LOG: method was invoked');
 

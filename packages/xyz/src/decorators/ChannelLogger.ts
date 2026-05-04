@@ -20,7 +20,7 @@ export default class ChannelLogger
      */
     static log(channel: string | symbol, ...args: any): void
     {
-        let existing = ChannelLogger.channels.get(channel) ?? [];
+        const existing = ChannelLogger.channels.get(channel) ?? [];
         existing.push(args);
 
         ChannelLogger.channels.set(channel, existing);

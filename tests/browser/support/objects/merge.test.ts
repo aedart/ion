@@ -74,7 +74,7 @@ describe('@aedart/support/objects', () => {
             // Debug
             // console.log('result', result);
 
-            expect(result['foo'], 'Value should be undefined')
+            expect(result.foo, 'Value should be undefined')
                 .toBeUndefined();
         });
 
@@ -95,8 +95,8 @@ describe('@aedart/support/objects', () => {
             // Debug
             // console.log('result', result);
 
-            expect(result['foo'], 'Value should NOT be undefined')
-                .toBe(a['foo']);
+            expect(result.foo, 'Value should NOT be undefined')
+                .toBe(a.foo);
         });
 
         test('can apply custom merge callback', () => {
@@ -124,13 +124,13 @@ describe('@aedart/support/objects', () => {
 
             expect(Reflect.has(result, 'a'), 'a missing')
                 .toBeTruthy();
-            expect(result['a'], 'Merge callback not applied for a')
-                .toBe(a['a']);
+            expect(result.a, 'Merge callback not applied for a')
+                .toBe(a.a);
 
             expect(Reflect.has(result, 'b'), 'b missing')
                 .toBeTruthy();
-            expect(result['b'], 'Merge callback not applied for b')
-                .toBe(b['b'] + 1);
+            expect(result.b, 'Merge callback not applied for b')
+                .toBe(b.b + 1);
         });
 
         test('skips dangerous keys', () => {
@@ -268,7 +268,7 @@ describe('@aedart/support/objects', () => {
                 .toBe(expected);
 
             expect(
-                result['arr'] === b['arr'],
+                result.arr === b.arr,
                 'Array property is not copied (structured copy was expected)',
             )
                 .toBeFalsy();
@@ -294,7 +294,7 @@ describe('@aedart/support/objects', () => {
             // console.log('result', result);
 
             const expected = JSON.stringify({
-                'arr': [...a['arr'], ...b['arr']],
+                'arr': [...a.arr, ...b.arr],
             });
             expect(JSON.stringify(result), 'Array value not merged')
                 .toBe(expected);
@@ -524,8 +524,8 @@ describe('@aedart/support/objects', () => {
             expect(Reflect.has(result, 'foo'), 'Key with function value not merged')
                 .toBeTruthy();
 
-            expect(result['foo'], 'Function not referenced in result')
-                .toBe(b['foo']);
+            expect(result.foo, 'Function not referenced in result')
+                .toBe(b.foo);
         });
 
         test('can merge nested objects', () => {
@@ -718,7 +718,7 @@ describe('@aedart/support/objects', () => {
                     name: 'Number',
                     source: { value: new Number(42) },
                     expectedInstanceOf: Number,
-                    match: (cloned: Number) => {
+                    match: (cloned: number) => {
                         return cloned.valueOf() === 42;
                     },
                 },
@@ -744,7 +744,7 @@ describe('@aedart/support/objects', () => {
                     name: 'String',
                     source: { value: new String('John Doe') },
                     expectedInstanceOf: String,
-                    match: (cloned: String) => {
+                    match: (cloned: string) => {
                         return cloned.valueOf() === 'John Doe';
                     },
                 },
@@ -809,13 +809,13 @@ describe('@aedart/support/objects', () => {
             // Debug
             // console.log('result', result);
 
-            expect(result['a'] === b['a'], 'a) WeakRef not same instance')
+            expect(result.a === b.a, 'a) WeakRef not same instance')
                 .toBeTruthy();
 
-            expect(result['b'] === b['b'], 'b) WeakMap not same instance')
+            expect(result.b === b.b, 'b) WeakMap not same instance')
                 .toBeTruthy();
 
-            expect(result['c'] === b['c'], 'c) WeakSet not same instance')
+            expect(result.c === b.c, 'c) WeakSet not same instance')
                 .toBeTruthy();
         });
 

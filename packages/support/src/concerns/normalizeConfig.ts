@@ -25,11 +25,11 @@ export function normalizeConfig(
 
     // If entry is already a ConcernConfiguration object
     if (typeof entry === 'object' && entry !== null && 'concern' in entry) {
-        return entry as ConcernConfiguration;
+        return entry;
     }
 
     // Otherwise, assume it's a ConcernConstructor
     return {
-        concern: entry as ConcernConstructor,
+        concern: entry,
     };
 }

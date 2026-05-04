@@ -20,11 +20,10 @@ This project utilizes Artificial Intelligence (AI) — specifically **Claude** (
 
 The following contributors to the intelligence powering this repository are acknowledged:
 
-*   **Model Developers & Researchers**: The engineers and scientists at Anthropic, Google, and other AI organizations who developed the models used during development.
-*   **The Open-Source Community**: The global community whose collective knowledge forms the foundation of these models' capabilities.
-*   **AI-Assisted Development**: Portions of the logic, performance optimizations, and documentation were refined through AI-assisted pair programming.
+* **Model Developers & Researchers**: The engineers and scientists at Anthropic, Google, and other AI organizations who developed the models used during development.
+* **The Open-Source Community**: The global community whose collective knowledge forms the foundation of these models' capabilities.
+* **AI-Assisted Development**: Portions of the logic, performance optimizations, and documentation were refined through AI-assisted pair programming.
 
 ### Transparency Note
 
 AI is used to accelerate development and maintain strict architectural standards. **Every line of code undergoes thorough human review** to ensure it meets the project's security, performance, and integrity requirements. The final responsibility for the codebase rests solely with the human maintainer.
-

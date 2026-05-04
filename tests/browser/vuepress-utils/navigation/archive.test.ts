@@ -10,8 +10,8 @@ describe('@aedart/vuepress-utils/navigation', () => {
 
             const archive = Archive.make(current, next);
 
-            const name: string = 'My Archive';
-            const path: string = '/my-archive';
+            const name = 'My Archive';
+            const path = '/my-archive';
 
             archive.name = name;
             archive.path = path;
@@ -46,7 +46,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
 
             // ------------------------------------------------------------------------------ //
 
-            let result = archive.asNavigationItem() as NavbarGroupOptions;
+            const result = archive.asNavigationItem() as NavbarGroupOptions;
 
             // Debug
             // console.log(result);
@@ -106,7 +106,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
 
             // ------------------------------------------------------------------------------ //
 
-            let result = archive.sidebarConfiguration();
+            const result = archive.sidebarConfiguration();
 
             // Debug
             // console.log(result);
@@ -127,7 +127,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
                     // console.log(child);
 
                     // Ensure that all "children" of arr items are prefixed...
-                    let children = child.children as string[];
+                    const children = child.children as string[];
                     children.forEach((link) => {
                         expect(
                             link.startsWith(archive.path),

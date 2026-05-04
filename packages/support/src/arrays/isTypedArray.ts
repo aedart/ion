@@ -18,5 +18,5 @@ export function isTypedArray(target: unknown): boolean
 
     // Use isPrototypeOf because TYPED_ARRAY_PROTOTYPE is the prototype object,
     // not the constructor function.
-    return (TYPED_ARRAY_PROTOTYPE as object).isPrototypeOf(target);
+    return (TYPED_ARRAY_PROTOTYPE).isPrototypeOf(target);
 }

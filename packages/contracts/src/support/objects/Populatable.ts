@@ -19,6 +19,6 @@ export default interface Populatable {
         data?: Record<
             PropertyKey,
             any
-        >, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        >,  
     ): this;
 }

@@ -12,7 +12,7 @@ import { hasPrototypeProperty } from './hasPrototypeProperty.js';
  */
 export function assertHasPrototypeProperty(
     target: object,
-    message: string = 'target object has no "prototype" property',
+    message = 'target object has no "prototype" property',
 ): void
 {
     if (!hasPrototypeProperty(target)) {

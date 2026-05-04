@@ -30,17 +30,17 @@ export default class DefaultMergeOptions implements MergeOptions
     /**
      * @inheritdoc
      */
-    overwriteWithUndefined: boolean = true;
+    overwriteWithUndefined = true;
 
     /**
      * @inheritdoc
      */
-    clone: boolean = false;
+    clone = false;
 
     /**
      * @inheritdoc
      */
-    mergeArrays: boolean = false;
+    mergeArrays = false;
 
     /**
      * @inheritdoc
@@ -72,11 +72,11 @@ export default class DefaultMergeOptions implements MergeOptions
         // Resolve merge callback: prioritize function argument, then options property, then default.
         this.callback = (typeof options === 'function')
             ? options
-            : (options as MergeOptions)?.callback ?? defaultMergeCallback;
+            : (options)?.callback ?? defaultMergeCallback;
 
         // Resolve skip callback: ensure it is always a function to avoid type-checking during merge loops.
         if (typeof this.skip !== 'function') {
-            this.skip = makeSkipCallback(this.skip as PropertyKey[]);
+            this.skip = makeSkipCallback(this.skip);
         }
     }
 

@@ -35,7 +35,7 @@ export function empty(value: unknown): boolean
                 Array.isArray(value) || ArrayBuffer.isView(value)
                 || descTag(value) === '[object Arguments]'
             ) {
-                return (value as { length: number }).length === 0;
+                return (value as { length: number; }).length === 0;
             }
             // Map / Set use .size
             if (value instanceof Map || value instanceof Set) {

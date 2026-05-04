@@ -26,7 +26,7 @@ describe('@aedart/support/refelctions', () => {
             ];
 
             data.forEach((entry, index) => {
-                let result = isClassConstructor(entry.value);
+                const result = isClassConstructor(entry.value);
                 expect(result, `${entry.name} was expected to be ${entry.expected}`)
                     .toBe(entry.expected);
             });

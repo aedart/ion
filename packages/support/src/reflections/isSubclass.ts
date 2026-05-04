@@ -21,7 +21,7 @@ export function isSubclass(target: object, superclass: ConstructorLike): boolean
 
     try {
         // Access prototype once. instanceof returns false if target.prototype is null/undefined.
-        return (target as { prototype?: unknown }).prototype instanceof superclass;
+        return (target as { prototype?: unknown; }).prototype instanceof superclass;
     } catch {
         // Handle edge cases where target might be a Proxy or have a revoked prototype
         return false;

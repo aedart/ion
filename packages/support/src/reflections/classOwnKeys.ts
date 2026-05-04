@@ -13,7 +13,7 @@ import { walkPrototype } from './walkPrototype.js';
  *
  * @throws {TypeError} If target object does not have "prototype" property
  */
-export function classOwnKeys(target: ConstructorLike, recursive: boolean = true): PropertyKey[]
+export function classOwnKeys(target: ConstructorLike, recursive = true): PropertyKey[]
 {
     assertHasPrototypeProperty(target);
 

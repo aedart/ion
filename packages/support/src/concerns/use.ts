@@ -28,7 +28,7 @@ export function use(
     {
         const registry: Set<ConcernConstructor> = getOrCreateRegistry(target);
 
-        for (let i: number = 0, limit: number = concerns.length; i < limit; i++) {
+        for (let i = 0, limit: number = concerns.length; i < limit; i++) {
             const config = normalizeConfig(concerns[i]);
             const constructor = config.concern;
 

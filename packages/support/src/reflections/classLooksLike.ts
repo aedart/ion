@@ -1,4 +1,4 @@
-import type { ConstructorLike } from "@aedart/contracts";
+import type { ConstructorLike } from '@aedart/contracts';
 import type { ClassBlueprint } from '@aedart/contracts/support/reflections';
 import { LOOKUP_THRESHOLD } from '../arrays/index.js';
 import { hasPrototypeProperty } from './hasPrototypeProperty.js';
@@ -24,8 +24,8 @@ export function classLooksLike(target: object, blueprint: ClassBlueprint): boole
         throw new TypeError('Blueprint must define "members" or "staticMembers" as arrays');
     }
 
-    const numStatic: number = isStaticArray ? (staticMembers as PropertyKey[]).length : 0;
-    const numMembers: number = isMembersArray ? (members as PropertyKey[]).length : 0;
+    const numStatic: number = isStaticArray ? (staticMembers!).length : 0;
+    const numMembers: number = isMembersArray ? (members!).length : 0;
 
     if (numStatic === 0 && numMembers === 0) {
         throw new TypeError('Blueprint must contain at least one member to check');
@@ -37,7 +37,7 @@ export function classLooksLike(target: object, blueprint: ClassBlueprint): boole
 
     // 1. Check Static Members
     if (numStatic > 0) {
-        const list = staticMembers as PropertyKey[];
+        const list = staticMembers!;
         for (let i = 0; i < numStatic; i++) {
             if (!Reflect.has(target, list[i])) {
                 return false;
@@ -48,7 +48,7 @@ export function classLooksLike(target: object, blueprint: ClassBlueprint): boole
     // 2. Check Instance Members (Deep Traversal)
     if (numMembers > 0) {
         const proto: object = (target as ConstructorLike).prototype;
-        const list = members as PropertyKey[];
+        const list = members!;
 
         // Use Set for lookups if above threshold (16) to balance allocation overhead
         if (numMembers > LOOKUP_THRESHOLD) {

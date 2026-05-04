@@ -35,7 +35,7 @@ export function populate<
     target: TargetObj,
     source: SourceObj,
     allowed: AllowedKeys = '*',
-    safe: boolean = true,
+    safe = true,
 ): TargetObj
 {
     const sourceKeys = Reflect.ownKeys(source);
@@ -76,7 +76,7 @@ export function populate<
         if (safe && allowedCollection !== null) {
             const isAllowed = (allowedCollection instanceof Set)
                 ? allowedCollection.has(key)
-                : (allowedCollection as PropertyKey[]).includes(key);
+                : (allowedCollection).includes(key);
 
             if (!isAllowed) {
                 continue;

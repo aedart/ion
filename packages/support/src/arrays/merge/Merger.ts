@@ -89,10 +89,10 @@ export default class Merger implements ArrayMerger
 
                 for (let j = 0; j < currentSourceLength; j++) {
                     // Pass currentSource as the 'array' context per ArrayMergeCallback spec
-                    result[resultIndex] = (callback as ArrayMergeCallback)(
+                    result[resultIndex] = (callback!)(
                         currentSource[j],
                         j,
-                        currentSource as unknown[],
+                        currentSource,
                         options,
                     );
                     resultIndex++;

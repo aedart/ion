@@ -27,7 +27,7 @@ describe('@aedart/support/misc', () => {
             ];
 
             for (const entry of values) {
-                let result = descTag(entry.value);
+                const result = descTag(entry.value);
                 // console.log(result);
 
                 expect(result)

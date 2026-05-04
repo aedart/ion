@@ -16,7 +16,7 @@ export default class ObjectId
      *
      * @static
      */
-    static #count: number = 0;
+    static #count = 0;
 
     /**
      * Weak Map of objects and their associated id

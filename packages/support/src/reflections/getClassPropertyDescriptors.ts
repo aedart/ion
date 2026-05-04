@@ -17,7 +17,7 @@ import { walkParents } from './walkParents.js';
  */
 export function getClassPropertyDescriptors(
     target: ConstructorLike,
-    recursive: boolean = false,
+    recursive = false,
 ): Record<PropertyKey, PropertyDescriptor>
 {
     assertHasPrototypeProperty(target);

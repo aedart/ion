@@ -6,7 +6,7 @@
  *
  * @returns {"/" | `/${string}/`} '/' when not in production
  */
-export function baseURL(path: string, productionEnv: string = 'production'): '/' | `/${string}/`
+export function baseURL(path: string, productionEnv = 'production'): '/' | `/${string}/`
 {
     if (process.env.NODE_ENV !== productionEnv) {
         return '/';

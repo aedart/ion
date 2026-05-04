@@ -24,7 +24,7 @@ export function mergeRegistry(
     // but since Set doesn't have a length index, we use the Set iterator.
     // However, for strict compliance with your performance rules:
     const entries = Array.from(sourceRegistry);
-    for (let i: number = 0, limit: number = entries.length; i < limit; i++) {
+    for (let i = 0, limit: number = entries.length; i < limit; i++) {
         const nestedConcern = entries[i];
 
         if (targetRegistry.has(nestedConcern)) {

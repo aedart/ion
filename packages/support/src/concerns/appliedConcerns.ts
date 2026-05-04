@@ -17,7 +17,7 @@ export function appliedConcerns(target: any): ConcernConstructor[]
         ? target
         : target.constructor;
 
-    const allConcerns: Set<ConcernConstructor> = new Set();
+    const allConcerns = new Set<ConcernConstructor>();
 
     while (constructor !== null && constructor !== Object) {
         if (Reflect.has(constructor, CONCERN_REGISTRY)) {

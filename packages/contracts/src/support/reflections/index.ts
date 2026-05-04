@@ -12,7 +12,7 @@ export const SUPPORT_REFLECTIONS: unique symbol = Symbol('@aedart/contracts/supp
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
  */
-export const TYPED_ARRAY_PROTOTYPE: object = Reflect.getPrototypeOf(Int8Array.prototype) as object;
+export const TYPED_ARRAY_PROTOTYPE: object = Reflect.getPrototypeOf(Int8Array.prototype)!;
 
 import ClassBlueprint from './ClassBlueprint.js';
 export { type ClassBlueprint };

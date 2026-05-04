@@ -18,7 +18,7 @@ export function apply(superclass: Constructor, mixin: MixinFunction): Constructo
     // The following source code is an adaptation of Justin Fagnani's "mixwith.js" (Apache License 2.0)
     // @see https://github.com/justinfagnani/mixwith.js
 
-    const application = mixin(superclass as Constructor);
+    const application = mixin(superclass);
 
     Reflect.set(application.prototype, APPLIED_MIXIN, unwrap(mixin));
 

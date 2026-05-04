@@ -16,7 +16,7 @@
  *    begins to significantly degrade performance compared to $O(n)$
  *    hash-table lookups.
  */
-export const LOOKUP_THRESHOLD: number = 16;
+export const LOOKUP_THRESHOLD = 16;
 
 export * from './includesAll.js';
 export * from './includesAny.js';

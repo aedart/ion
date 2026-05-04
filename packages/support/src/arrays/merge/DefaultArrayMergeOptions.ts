@@ -10,7 +10,7 @@ export default class DefaultArrayMergeOptions implements ArrayMergeOptions
     /**
      * @inheritdoc
      */
-    transferFunctions: boolean = false;
+    transferFunctions = false;
 
     /**
      * @inheritdoc
@@ -20,7 +20,7 @@ export default class DefaultArrayMergeOptions implements ArrayMergeOptions
     /**
      * @inheritdoc
      */
-    clone: boolean = false;
+    clone = false;
 
     /**
      * Create new default merge options from given options

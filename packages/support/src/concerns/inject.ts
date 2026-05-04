@@ -25,7 +25,7 @@ export function inject(target: any, config: ConcernConfiguration): void
     const aliases = config.aliases ?? {};
     const excludes = config.excludes ?? [];
 
-    for (let i: number = 0, limit: number = keys.length; i < limit; i++) {
+    for (let i = 0, limit: number = keys.length; i < limit; i++) {
         const key: string | symbol = keys[i];
 
         // 1. Security & Internal Check
@@ -34,7 +34,7 @@ export function inject(target: any, config: ConcernConfiguration): void
         }
 
         // 2. Handle Exclusions
-        if (excludes.indexOf(key) !== -1) {
+        if (excludes.includes(key)) {
             continue;
         }
 

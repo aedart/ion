@@ -3,7 +3,7 @@
  *
  * @type {number}
  */
-export const DEFAULT_MAX_MERGE_DEPTH: number = 512;
+export const DEFAULT_MAX_MERGE_DEPTH = 512;
 
 import MergeException from './MergeException.js';
 import MergeOptions from './MergeOptions.js';

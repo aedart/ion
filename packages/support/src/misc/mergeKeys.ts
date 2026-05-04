@@ -42,7 +42,7 @@ export function mergeKeys(...keys: Key[]): Key
                 );
             }
 
-            result.push(current as PropertyKey);
+            result.push(current);
         }
     }
 

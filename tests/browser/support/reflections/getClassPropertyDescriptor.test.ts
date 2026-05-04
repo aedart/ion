@@ -50,7 +50,7 @@ describe('@aedart/support/refelctions', () => {
                 // Debug
                 // console.log(descriptor);
 
-                let k = (typeof key == 'symbol')
+                const k = (typeof key == 'symbol')
                     ? key.toString()
                     : key;
 

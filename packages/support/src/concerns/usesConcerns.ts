@@ -15,7 +15,7 @@ export function usesConcerns(target: any, ...concerns: ConcernConstructor[]): bo
         return false;
     }
 
-    for (let i: number = 0, limit: number = concerns.length; i < limit; i++) {
+    for (let i = 0, limit: number = concerns.length; i < limit; i++) {
         if (!hasConcern(target, concerns[i])) {
             return false;
         }

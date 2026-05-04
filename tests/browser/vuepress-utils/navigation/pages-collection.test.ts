@@ -82,7 +82,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 .not
                 .toBe(0);
 
-            let children = pages[0].children;
+            const children = pages[0].children;
             children.forEach((page, index) => {
                 // console.log(page);
 

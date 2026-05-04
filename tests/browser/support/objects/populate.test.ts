@@ -130,7 +130,7 @@ describe('@aedart/support/objects', () => {
 
             const prototype = Reflect.getPrototypeOf(result);
 
-            expect(Reflect.has(prototype as object, 'admin'), 'Prototype pollution NOT prevented')
+            expect(Reflect.has(prototype!, 'admin'), 'Prototype pollution NOT prevented')
                 .toBeFalsy();
 
             expect(result.name, 'Property "name" not populated correctly')

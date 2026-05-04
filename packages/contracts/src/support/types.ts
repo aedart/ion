@@ -6,7 +6,7 @@ export type Key = PropertyKey | (PropertyKey)[];
 /**
  * One or many
  */
-export type OneOrMany<T> = T | ReadonlyArray<T>;
+export type OneOrMany<T> = T | readonly T[];
 
 /**
  * Wildcard identifier

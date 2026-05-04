@@ -23,7 +23,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _name: string = 'Archive';
+    private _name = 'Archive';
 
     /**
      * Archive's path
@@ -31,7 +31,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _path: string = '/archive';
+    private _path = '/archive';
 
     /**
      * Collection to be marked as "current"
@@ -63,7 +63,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _currentLabel: string = 'current';
+    private _currentLabel = 'current';
 
     /**
      * Navigation label for the "next" collection
@@ -71,7 +71,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _nextLabel: string = 'next';
+    private _nextLabel = 'next';
 
     /**
      * Relative path for the "current" collection, in archive
@@ -79,7 +79,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _currentPath: string = '/current/';
+    private _currentPath = '/current/';
 
     /**
      * Relative path for the "next" collection, in archive
@@ -87,7 +87,7 @@ export default class Archive implements ArchiveContract
      * @type {string}
      * @private
      */
-    private _nextPath: string = '/next/';
+    private _nextPath = '/next/';
 
     /**
      * Creates a new Archive instance
