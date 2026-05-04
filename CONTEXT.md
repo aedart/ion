@@ -66,9 +66,9 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
 * **ESM Resolution**: Relative imports MUST include explicit `.js` extensions.
 * **Type Safety**:
-    * Strictly avoid `any`. Use `unknown` for uncertainty or `never` for unreachable code.
-    * Use `satisfies` for object validation to preserve type inference.
-    * Prefer `const enum` for performance-critical lookup constants.
+  * Strictly avoid `any`. Use `unknown` for uncertainty or `never` for unreachable code.
+  * Use `satisfies` for object validation to preserve type inference.
+  * Prefer `const enum` for performance-critical lookup constants.
 * **Documentation**: Use JSDoc for public members. Document generics with `@template`.
 
 ## 7. Performance Patterns (Strict)
@@ -76,9 +76,9 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Looping**: Prefer index-based `for` loops with cached length over `for...of`, `forEach`, or `.map()`.
 * **Iteration**: Use reverse index loops (`i--`) for inheritance chains to avoid `.reverse()` allocations.
 * **Memory**:
-    * Pre-allocate arrays (`new Array(size)`) when size is known.
-    * Avoid `yield` and `async` iteration in high-frequency utilities; prefer `while`.
-    * Minimize object/array spreads (`...`) in hot paths.
+  * Pre-allocate arrays (`new Array(size)`) when size is known.
+  * Avoid `yield` and `async` iteration in high-frequency utilities; prefer `while`.
+  * Minimize object/array spreads (`...`) in hot paths.
 * **Complexity**: Use `LOOKUP_THRESHOLD` (16) to switch between $O(n^2)$ nested loops and $O(n)$ `Set`/`Map` lookups.
 * **Security**: Use `isKeyUnsafe` via `toParts` for all path operations to prevent prototype pollution.
 
