@@ -22,9 +22,9 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Communication**: All responses must be in **English**.
 * **Format**: Context (`CONTEXT.md`) output must be formatted in scannable Markdown for easy copy & paste.
 * **Write Access & Maintenance**:
-  * AI is permitted to fully edit/change the **"AI Session Summary"** (Section 11), after the `**Note to AI**` paragraph.
-  * AI is encouraged to add **Atomic Entries** (brief, 1-line definitions) to **"Technical Architecture & Utilities"** (Section 9) when new stable utilities are created.
-  * **Strict Prohibition**: AI MUST NOT remove, consolidate, or shorten existing definitions in Section 9.
+  * AI is permitted to fully edit/change the **"AI Session Summary"** (Section 12), after the `**Note to AI**` paragraph.
+  * AI is encouraged to add **Atomic Entries** (brief, 1-line definitions) to **"Technical Architecture & Utilities"** (Section 11) when new stable utilities are created.
+  * **Strict Prohibition**: AI MUST NOT remove, consolidate, or shorten existing definitions in Section 11.
   * **Density over Verbosity**: New entries must be concise to maintain high context density and minimize computational overhead.
 
 ## 3. Security Guardrails & Tool Use
@@ -53,7 +53,14 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Formatting**: dprint (4-space indent, **Allman Braces** for functions/classes).
 * **Linting**: ESLint v9.x (Flat Config, `@typescript-eslint` v8+).
 
-## 6. Coding Standards & Style
+## 6. File Structure & Organization
+
+* **Single Responsibility**: Each file must export exactly one primary entity (Function, Class, or Interface).
+* **Utility Splitting**: Utility functions, even if marked as `@internal`, must be extracted into their own files within the same directory or a `utils/` subdirectory.
+* **Naming Convention**: File names must match the name of the primary export (e.g., `getOrCreateRepository.ts` for `export function getOrCreateRepository`).
+* **Avoid Clutter**: Do not co-locate secondary logic or "helper" functions in the same file as a primary class or main public function.
+
+## 7. Coding Standards & Style
 
 * **Indentation**: 4-space width (Spaces only).
 * **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
@@ -65,7 +72,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
     * Prefer `const enum` for performance-critical lookup constants.
 * **Documentation**: Use JSDoc for all public API members. Generics should be documented with `@template`.
 
-## 7. Performance Patterns (Strict)
+## 8. Performance Patterns (Strict)
 
 * **Looping**: Prefer index-based `for` loops with cached length over `for...of`, `forEach`, or `.map()`.
 * **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains to eliminate `.reverse()` allocations.
@@ -76,7 +83,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Complexity**: Use `LOOKUP_THRESHOLD` (16) to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$).
 * **Security**: All path-based operations must utilize `isKeyUnsafe` via `toParts` to prevent prototype pollution.
 
-## 8. Component & File Structure
+## 9. Component & File Structure
 
 * **Sub-module Pattern**: Packages use sub-module exports defined in `package.json`.
 * **Contracts (`src/contracts/`)**: Definitions for `interface`, `type`, and `unique symbol`.
@@ -84,7 +91,13 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Implementations (`src/`)**: Concrete logic implementing the contracts.
 * **Tests (`tests/`)**: Mirror the `src/` structure with `[Name].test.ts` naming.
 
-## 9. Technical Architecture & Utilities
+## 10. Maintenance Scripts
+
+* **deps:sync / deps:propagate**: Dependency management.
+* **fix:imports**: Appends `.js` to relative imports.
+* **build**: `turbo run build`.
+
+## 11. Technical Architecture & Utilities
 
 ### Arrays & Collections (`@aedart/support/arrays`)
 
@@ -122,13 +135,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 
 * **`BaseError`**: Abstract base class. Automates `this.name` and `Error.captureStackTrace` for V8. All custom exceptions MUST inherit from this.
 
-## 10. Maintenance Scripts
-
-* **deps:sync / deps:propagate**: Dependency management.
-* **fix:imports**: Appends `.js` to relative imports.
-* **build**: `turbo run build`.
-
-## 11. AI Session Summary
+## 12. AI Session Summary
 
 **Note to AI**: This is the ONLY section you are permitted to fully change or edit. Use this to maintain context across sessions.
 
