@@ -4,6 +4,14 @@ import { defineConfig } from 'vitest/config';
 import babelPlugin from '@rolldown/plugin-babel';
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            '@aedart/contracts': '/home/alin/code/ion/packages/contracts/src',
+            '@aedart/support': '/home/alin/code/ion/packages/support/src',
+            '@aedart/vuepress-utils': '/home/alin/code/ion/packages/vuepress-utils/src',
+            '@aedart/xyz': '/home/alin/code/ion/packages/xyz/src',
+        },
+    },
     test: {
         coverage: {
             enabled: true,
