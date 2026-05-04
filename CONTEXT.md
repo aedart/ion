@@ -48,23 +48,31 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 
 * **Runtime**: Node.js v24.x (LTS)
 * **Package Manager**: pnpm v9.x (Workspaces)
-* **Language**: TypeScript v6.0 (Target: ESNext)
+* **Language**: TypeScript v6.0 (Target: ESNext, Decorator Metadata: enabled)
 * **Orchestration**: Turborepo
 * **Formatting**: dprint (4-space indent, **Allman Braces** for functions/classes).
-* **Linting**: ESLint v9.x (Flat Config).
+* **Linting**: ESLint v9.x (Flat Config, `@typescript-eslint` v8+).
 
 ## 6. Coding Standards & Style
 
 * **Indentation**: 4-space width (Spaces only).
 * **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
 * **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
-* **ESM Resolution**: Relative imports must include explicit `.js` extensions.
+* **ESM Resolution**: Relative imports must include explicit `.js` extensions (Node.js ESM compatibility).
+* **Type Safety**:
+    * Strictly avoid `any`. Use `unknown` for uncertain types or `never` for unreachable code.
+    * Use `satisfies` operator for object literal validation without losing type inference.
+    * Prefer `const enum` for performance-critical lookup constants.
+* **Documentation**: Use JSDoc for all public API members. Generics should be documented with `@template`.
 
 ## 7. Performance Patterns (Strict)
 
 * **Looping**: Prefer index-based `for` loops with cached length over `for...of`, `forEach`, or `.map()`.
 * **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains to eliminate `.reverse()` allocations.
-* **Memory Management**: Pre-allocate arrays when total size is known. Avoid generator usage (`yield`) in high-frequency utility functions; prefer standard `while` loops. Minimize object/array allocations in hot paths.
+* **Memory Management**:
+    * Pre-allocate arrays (`new Array(size)`) when total size is known.
+    * Avoid generator usage (`yield`) and `async` iteration in high-frequency utility functions; prefer standard `while` loops.
+    * Minimize object/array allocations (avoid spreads `...` in loops) in hot paths.
 * **Complexity**: Use `LOOKUP_THRESHOLD` (16) to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$).
 * **Security**: All path-based operations must utilize `isKeyUnsafe` via `toParts` to prevent prototype pollution.
 
