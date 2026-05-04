@@ -27,7 +27,6 @@ describe('@aedart/support/ararys', () => {
             ];
 
             for (const data of dataSet) {
-                // @ts-expect-error ignore value for testing purposes
                 expect(
                     isTypedArray(data.value),
                     `${data.name} was expected to ${data.expected.toString()}`,

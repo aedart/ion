@@ -5,14 +5,14 @@ import { TYPED_ARRAY_PROTOTYPE } from '@aedart/contracts/support/reflections';
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
  *
- * @param {object|null} target
+ * @param {unknown} target
  *
  * @return {boolean}
  */
-export function isTypedArray(target: object | null): boolean
+export function isTypedArray(target: unknown): boolean
 {
     // Fast-exit for null or non-objects
-    if (target === null || typeof target !== 'object') {
+    if (target === null || target === undefined || typeof target !== 'object') {
         return false;
     }
 

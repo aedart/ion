@@ -4,19 +4,19 @@ import { CLONE } from '@aedart/contracts/support/objects';
 /**
  * Default Array Merge callback
  *
- * @param {any} element
+ * @param {unknown} element
  * @param {number} index
- * @param {any[]} array
+ * @param {unknown[]} array
  * @param {Readonly<ArrayMergeOptions>} options
  *
- * @return {any}
+ * @return {unknown}
  */
 export const defaultArrayMergeCallback: ArrayMergeCallback = function(
-    element: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    element: unknown,
     index: number,
-    array: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    array: unknown[],
     options: Readonly<ArrayMergeOptions>,
-): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+): unknown
 {
     // 1. Transfer function if requested (functions are not cloneable)
     if (options.transferFunctions === true && typeof element === 'function') {
@@ -26,9 +26,9 @@ export const defaultArrayMergeCallback: ArrayMergeCallback = function(
     // 2. Handle CLONE symbol if requested and available
     if (
         options.clone === true && element !== null && typeof element === 'object'
-        && CLONE in element
+        && CLONE in element && typeof element[CLONE] === 'function'
     ) {
-        return element[CLONE]();
+        return (element as { [CLONE]: () => unknown; })[CLONE]();
     }
 
     // 3. Fallback to structuredClone (Deep copy)

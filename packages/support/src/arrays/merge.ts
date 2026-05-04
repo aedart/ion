@@ -6,15 +6,15 @@ import Merger from './merge/Merger.js';
  *
  * **Note**: _Method performs deep copies of array values via structuredClone() or the CLONE symbol._
  *
- * @param {...any[]} sources
+ * @param {...unknown[]} sources
  *
- * @return {ArrayMerger | any[]}
+ * @return {ArrayMerger | unknown[]}
  *
  * @throws {ArrayMergeException}
  */
-export function merge<T extends any[][]>(...sources: T): T['length'] extends 0 ? ArrayMerger
+export function merge<T extends unknown[][]>(...sources: T): T['length'] extends 0 ? ArrayMerger
     : IntersectArrays<T>;
-export function merge(...sources: any[]): ArrayMerger | any[]
+export function merge(...sources: unknown[]): ArrayMerger | unknown[]
 {
     const merger = new Merger();
 
@@ -22,5 +22,5 @@ export function merge(...sources: any[]): ArrayMerger | any[]
         return merger;
     }
 
-    return merger.of(...sources) as any[];
+    return merger.of(...(sources as unknown[][])) as unknown[];
 }

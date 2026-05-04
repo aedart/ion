@@ -60,13 +60,13 @@ export default class Merger implements ArrayMerger
     /**
      * Returns a merger of given source arrays
      *
-     * @param {...any[]} sources
+     * @param {...unknown[]} sources
      *
-     * @return {any[]}
+     * @return {unknown[]}
      *
      * @throws {ArrayMergeException}
      */
-    public of<T extends any[][]>(...sources: T): IntersectArrays<T>
+    public of<T extends unknown[][]>(...sources: T): IntersectArrays<T>
     {
         try {
             const options = this._options;
@@ -92,7 +92,7 @@ export default class Merger implements ArrayMerger
                     result[resultIndex] = (callback as ArrayMergeCallback)(
                         currentSource[j],
                         j,
-                        currentSource,
+                        currentSource as unknown[],
                         options,
                     );
                     resultIndex++;

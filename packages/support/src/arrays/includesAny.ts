@@ -3,14 +3,14 @@ import { LOOKUP_THRESHOLD } from './index.js';
 /**
  * Determine if array includes any (_some_) of the given values
  *
- * @param {any[]} arr
- * @param {any[]} values
+ * @param {unknown[]} arr
+ * @param {unknown[]} values
  *
  * @return {boolean}
  */
 export function includesAny(
-    arr: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
-    values: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    arr: unknown[],
+    values: unknown[],
 ): boolean
 {
     const valuesCount = values.length;

@@ -3,12 +3,15 @@
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable
  *
- * @param {object|null} target
+ * @param {unknown} target
  *
  * @return {boolean}
  */
-export function isConcatSpreadable(target: object | null): boolean
+export function isConcatSpreadable(target: unknown): boolean
 {
-    return target !== null && Symbol.isConcatSpreadable in target
-        && target[Symbol.isConcatSpreadable] === true;
+    return target !== null
+        && target !== undefined
+        && typeof target === 'object'
+        && Symbol.isConcatSpreadable in target
+        && (target as Record<symbol, unknown>)[Symbol.isConcatSpreadable] === true;
 }

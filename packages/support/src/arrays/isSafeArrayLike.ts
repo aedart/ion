@@ -10,11 +10,11 @@ import { isTypedArray } from './isTypedArray.js';
  *  - not instance of a {@link String} object.
  *  - not a [Typed Array]{@link isTypedArray} object.
  *
- * @param {any} value
+ * @param {unknown} value
  *
  * @return {boolean}
  */
-export function isSafeArrayLike(value: any): boolean
+export function isSafeArrayLike(value: unknown): boolean
 {
     // 1. Cheapest checks first: exclude string primitives and boxed String objects.
     // 2. Perform isArrayLike to ensure it has a valid length property.

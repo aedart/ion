@@ -7,9 +7,9 @@ export type ArrayMergeCallback = (
     /**
      * The current element being processed in the array
      *
-     * @type {any}
+     * @type {unknown}
      */
-    element: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    element: unknown,
     /**
      * The index of the current element being processed in the array.
      *
@@ -19,16 +19,16 @@ export type ArrayMergeCallback = (
     /**
      * The concatenated array this callback was called upon
      *
-     * @type {any[]}
+     * @type {unknown[]}
      */
-    array: any[], /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    array: unknown[],
     /**
      * The merge options to be applied
      *
      * @type {Readonly<ArrayMergeOptions>}
      */
     options: Readonly<ArrayMergeOptions>,
-) => any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+) => unknown;
 
 /**
  * Intersect Arrays
@@ -38,8 +38,8 @@ export type ArrayMergeCallback = (
  *
  * @template T - Tuple of array types
  */
-export type IntersectArrays<T extends any[][]> = T extends [infer Head, ...infer Tail]
-    ? Tail extends any[][] ? Tail['length'] extends 0 ? Head
+export type IntersectArrays<T extends unknown[][]> = T extends [infer Head, ...infer Tail]
+    ? Tail extends unknown[][] ? Tail['length'] extends 0 ? Head
         : Head & IntersectArrays<Tail>
     : Head
-    : any[];
+    : unknown[];

@@ -4,11 +4,11 @@
  * An array-like object is a non-null object that has a `length` property
  * which is a non-negative integer.
  *
- * @param {any} value
+ * @param {unknown} value
  *
  * @returns {boolean}
  */
-export function isArrayLike(value: any): boolean
+export function isArrayLike(value: unknown): boolean
 {
     // Values that are null or not objects/functions cannot be array-like
     if (value === null || value === undefined || typeof value === 'symbol') {
@@ -24,7 +24,7 @@ export function isArrayLike(value: any): boolean
 
     // Primitives like strings have a .length, and are technically array-like.
     // If you want to include strings (like Lodash does), we check the length.
-    const length = value.length;
+    const length = (value as { length: unknown; }).length;
 
     return typeof length === 'number'
         && length >= 0

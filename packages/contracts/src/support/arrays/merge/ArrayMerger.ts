@@ -21,7 +21,7 @@ export default interface ArrayMerger {
     /**
      * Returns a merger of given source arrays
      *
-     * @template T extends any[][]
+     * @template T extends unknown[][]
      *
      * @param {...T} sources
      *
@@ -29,5 +29,5 @@ export default interface ArrayMerger {
      *
      * @throws {ArrayMergeException}
      */
-    of<T extends any[][]>(...sources: T): IntersectArrays<T>;
+    of<T extends unknown[][]>(...sources: T): IntersectArrays<T>;
 }

@@ -26,10 +26,10 @@ export default abstract class BaseError extends Error implements Throwable
 
         // 3. Optimized Stack Trace Capture
         // V8 (Node/Chrome) provides captureStackTrace to hide the constructor from the trace.
-        // @ts-expect-error Existence of captureStackTrace is being checked here.
-        if (typeof Error.captureStackTrace === 'function') {
-            // @ts-expect-error Error.captureStackTrace should exist here
-            Error.captureStackTrace(this, this.constructor);
+        if (typeof (Error as { captureStackTrace?: unknown; }).captureStackTrace === 'function') {
+            (Error as unknown as {
+                captureStackTrace: (target: object, constructor: Function) => void;
+            }).captureStackTrace(this, this.constructor);
         }
 
         // Non-V8 (Safari/Firefox) automatically creates the stack during super().

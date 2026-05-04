@@ -96,7 +96,7 @@ describe('@aedart/support/ararys', () => {
 
             const result = merge()
                 .using((element) => {
-                    return element * 2;
+                    return (element as number) * 2;
                 })
                 .of(a, b);
 
@@ -116,7 +116,7 @@ describe('@aedart/support/ararys', () => {
 
                 [CLONE](): this
                 {
-                    return new (this.constructor as any)(`@${this.msg}@`);
+                    return new (this.constructor as new(foo: string) => this)(`@${this.msg}@`);
                 }
             }
 
