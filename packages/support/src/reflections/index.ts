@@ -14,6 +14,7 @@ export * from './isBoundFunction.js';
 export * from './isCallable.js';
 export * from './isClassConstructor.js';
 export * from './isConstructor.js';
+export * from './isException.js';
 export * from './isKeySafe.js';
 export * from './isKeyUnsafe.js';
 export * from './isMethod.js';
