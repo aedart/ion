@@ -26,7 +26,7 @@ export default class AbstractClassError extends LogicalError
     {
         super(
             `Unable to create new instance of abstract class ${getNameOrDesc(target)}`,
-            options || { cause: { target: target } },
+            options ?? { cause: { target: target } },
         );
 
         this.target = target;

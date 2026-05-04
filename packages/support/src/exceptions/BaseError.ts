@@ -1,4 +1,5 @@
-import type { Throwable } from '@aedart/contracts/support/exceptions';
+import type { ConstructorLike } from "@aedart/contracts";
+import { Throwable } from '@aedart/contracts/support/exceptions';
 
 /**
  * Base Error
@@ -28,8 +29,8 @@ export default abstract class BaseError extends Error implements Throwable
         // V8 (Node/Chrome) provides captureStackTrace to hide the constructor from the trace.
         if (typeof (Error as { captureStackTrace?: unknown; }).captureStackTrace === 'function') {
             (Error as unknown as {
-                captureStackTrace: (target: object, constructor: Function) => void;
-            }).captureStackTrace(this, this.constructor);
+                captureStackTrace: (target: object, constructor: ConstructorLike) => void;
+            }).captureStackTrace(this, this.constructor as ConstructorLike);
         }
 
         // Non-V8 (Safari/Firefox) automatically creates the stack during super().
