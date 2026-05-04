@@ -138,41 +138,9 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 
 **Note to AI**: This is the ONLY section you are permitted to fully change or edit. Use this to maintain context across sessions.
 
-### Current Sub-Module Status: Meta (`@aedart/support/meta`)
-
-#### Current Architecture (v2.2 - "Clean-Slate" Branch)
-
-* **Storage**: `WeakMap` based registry using `MetaRepository` instances.
-* **Inheritance**: Manual branching strategy with optimized O(1) ancestor access via `#parent` reference.
-* **Discovery**: Lazy discovery and flushing of staged metadata from decorators (eliminates class decorator requirement).
-* **Target Steering**: Static members on Constructor; Instance members on Prototype.
-* **Namespacing**: Explicit separation using `static.methods` and `static.fields` prefixes.
-
-#### Implementation Details & Breakthroughs
-
-* **Metadata Helper**: `Metadata.get/has` utilizes `resolveTarget()` to pivot between constructor and prototype automatically.
-* **Performance**: Optimized `discoverAndFlush` and `flush` using high-performance index-based `for` loops and `Reflect.ownKeys` to minimize object allocations and side-effects.
-* **Registry Flow**: `getOrCreateRepository()` triggers `discoverAndFlush()`.
-* **Breakthrough**: Resolved "Timing Issue" by scanning class members for metadata links, allowing eager access to instance member metadata without instantiation.
-* **Hardening**: Standardized on `unknown` types across contracts and implementations to eliminate `any` usage.
-* **Organization**: Refactored into atomic utilities (`flush`, `discoverAndFlush`, `getOrCreateBaseRepository`) to break circular dependencies and follow Single Responsibility standards.
-
-#### Current Challenges & Timing Constraints
-
-* **Registry State**: Internal state is managed via multiple `WeakMap`s in `registry.ts`.
-* **Environment Variance**: `Symbol.metadata` is polyfilled to ensure consistent behavior across different transpilation environments.
-
-### Objectives for Next Session
-
-1. **Service Container Integration**: Begin porting `@aedart/container`, leveraging the now stable and eager metadata system.
-2. **Reflections**: Further optimize `resolveTarget` if complex member paths become common.
-3. **Documentation**: Ensure the new discovery behavior is documented in the `/docs` directory.
-
-### Files to Scan Before Resuming
-
-* `packages/support/src/meta/Metadata.ts`
-* `packages/support/src/meta/meta.ts`
-* `packages/support/src/meta/getOrCreateRepository.ts`
-* `packages/support/src/meta/discoverAndFlush.ts`
-* `packages/support/src/meta/flush.ts`
-* `tests/browser/support/meta/meta.test.ts`
+### Status: Meta (@aedart/support/meta) - STABLE CORE
+* **Architecture**: WeakMap registry utilizing `MetaRepository` with O(1) ancestor access via `#parent`.
+* **Discovery**: Lazy-flushing metadata system (no class decorator required); distinguishes between Static (Constructor) and Instance (Prototype) targets.
+* **Compatibility**: Supports TC39 `Symbol.metadata` with polyfill fallback.
+* **Next Steps**: Port `@aedart/container` using the eager metadata system; update `/docs`.
+* **Primary Source**: `packages/support/src/meta/` (Metadata, meta, getOrCreateRepository, discoverAndFlush).
