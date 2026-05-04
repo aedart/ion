@@ -59,6 +59,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Utility Splitting**: Utility functions, even if marked as `@internal`, must be extracted into their own files within the same directory or a `utils/` subdirectory.
 * **Naming Convention**: File names must match the name of the primary export (e.g., `getOrCreateRepository.ts` for `export function getOrCreateRepository`).
 * **Avoid Clutter**: Do not co-locate secondary logic or "helper" functions in the same file as a primary class or main public function.
+* **Index Files**: Use `index.ts` files solely for re-exporting public API members. They must not contain logic. Ensure re-exports follow the ESM Resolution rule (explicit `.js` extensions).
 
 ## 7. Coding Standards & Style
 
@@ -124,6 +125,14 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **`CLONE` Symbol**: `unique symbol` for `Cloneable` interface.
 * **Encapsulation**: Use native JavaScript private fields (`#field`).
 
+### Metadata Sub-Module (`@aedart/support/meta`)
+
+* **`Metadata`**: High-level helper for metadata retrieval; handles inheritance and target pivoting.
+* **`meta`**: Stage 3 decorator for metadata registration; supports eager discovery without class decorators.
+* **`getOrCreateRepository`**: Main entry point for repository retrieval; triggers lazy discovery and flushing.
+* **`discoverAndFlush`**: Iterative utility for finding staged decorator metadata via `Symbol.metadata` or member scanning.
+* **`flush`**: Atomic utility for moving staged metadata into target repositories.
+
 ### Concerns (PHP-style Traits) (`@aedart/support/concerns`)
 
 * **Pattern**: Stateless "Direct Injection" (Descriptor Copy) using Stage 3 Decorators.
@@ -141,35 +150,38 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 
 ### Current Sub-Module Status: Meta (`@aedart/support/meta`)
 
-#### Current Architecture (v2.1 - "Clean-Slate" Branch)
+#### Current Architecture (v2.2 - "Clean-Slate" Branch)
 
 * **Storage**: `WeakMap` based registry using `MetaRepository` instances.
 * **Inheritance**: Manual branching strategy with optimized O(1) ancestor access via `#parent` reference.
+* **Discovery**: Lazy discovery and flushing of staged metadata from decorators (eliminates class decorator requirement).
 * **Target Steering**: Static members on Constructor; Instance members on Prototype.
 * **Namespacing**: Explicit separation using `static.methods` and `static.fields` prefixes.
 
 #### Implementation Details & Breakthroughs
 
 * **Metadata Helper**: `Metadata.get/has` utilizes `resolveTarget()` to pivot between constructor and prototype automatically.
-* **Performance**: `findRepository()` uses an optimized iterative `while` loop. Values returned by reference.
-* **Registry Flow**: `getOrCreateRepository()` handles "gap" classes in the chain.
+* **Performance**: `findRepository()` uses an optimized iterative `while` loop.
+* **Registry Flow**: `getOrCreateRepository()` triggers `discoverAndFlush()`.
+* **Breakthrough**: Resolved "Timing Issue" by scanning class members for metadata links, allowing eager access to instance member metadata without instantiation.
+* **Organization**: Refactored into atomic utilities (`flush`, `discoverAndFlush`, `getOrCreateBaseRepository`) to break circular dependencies and follow Single Responsibility standards.
 
 #### Current Challenges & Timing Constraints
 
-* **Timing Issue**: Babel 2023-11 defers `addInitializer` for instance members until `new`.
-* **Current Workaround**: Class-level `@meta()` decorator is required to "flush" member metadata for eager DI scanning.
-* **Static Members**: Flushed during definition via static initializers (no class decorator needed).
+* **Registry State**: Internal state is managed via multiple `WeakMap`s in `registry.ts`.
+* **Symbol.metadata**: Polyfilled to ensure consistent behavior across different transpilation environments.
 
 ### Objectives for Next Session
 
-1. **Remove Class Decorator Requirement**: Explore a "Global Staging Fallback" or a "Metadata.get Trigger" to allow instance member metadata to be accessible eagerly without requiring the class to be decorated or instantiated.
-2. **Service Container Integration**: Prepare for the porting of `@aedart/container` using the new high-performance metadata registry.
-3. **Reflections**: Ensure `context.metadata` (Symbol.metadata) is utilized as a fallback within the `MetaRepository` or `Metadata` utility where supported.
+1. **Service Container Integration**: Begin porting `@aedart/container`, leveraging the now stable and eager metadata system.
+2. **Reflections**: Further optimize `resolveTarget` if complex member paths become common.
+3. **Documentation**: Ensure the new discovery behavior is documented in the `/docs` directory.
 
 ### Files to Scan Before Resuming
 
 * `packages/support/src/meta/Metadata.ts`
-* `packages/support/src/meta/MetaRepository.ts`
+* `packages/support/src/meta/meta.ts`
 * `packages/support/src/meta/getOrCreateRepository.ts`
-* `packages/support/src/meta/meta.ts` (the decorator)
-* `tests/browser/support/meta/meta.test.ts` (specifically the "Long Walk" inheritance test)
+* `packages/support/src/meta/discoverAndFlush.ts`
+* `packages/support/src/meta/flush.ts`
+* `tests/browser/support/meta/meta.test.ts`
