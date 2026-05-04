@@ -61,9 +61,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 
 ## 6. Coding Standards & Style
 
-* **Indentation**: 4-space width (Spaces).
-* **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
-* **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
+* **Formatting**: Automated. Use `dprint` (Allman style) and `eslint`. Focus on logic; run `npm run fix:all` locally.
 * **ESM Resolution**: Relative imports MUST include explicit `.js` extensions.
 * **Type Safety**:
   * Strictly avoid `any`. Use `unknown` for uncertainty or `never` for unreachable code.
@@ -87,6 +85,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * `deps:sync` / `deps:propagate`: Dependency management.
 * `fix:imports`: Appends `.js` to relative imports.
 * `build`: `turbo run build`.
+* `fix:all`: Runs `dprint`, `eslint --fix`, and `fix:imports` to standardize code.
 
 ## 9. Technical Architecture & Utilities
 
@@ -139,6 +138,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 **Note to AI**: This is the ONLY section you are permitted to fully change or edit. Use this to maintain context across sessions.
 
 ### Status: Meta (@aedart/support/meta) - STABLE CORE
+
 * **Architecture**: WeakMap registry utilizing `MetaRepository` with O(1) ancestor access via `#parent`.
 * **Discovery**: Lazy-flushing metadata system (no class decorator required); distinguishes between Static (Constructor) and Instance (Prototype) targets.
 * **Compatibility**: Supports TC39 `Symbol.metadata` with polyfill fallback.
