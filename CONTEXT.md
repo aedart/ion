@@ -22,9 +22,9 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Communication**: All responses must be in **English**.
 * **Format**: Context (`CONTEXT.md`) output must be formatted in scannable Markdown for easy copy & paste.
 * **Write Access & Maintenance**:
-  * AI is permitted to fully edit/change the **"AI Session Summary"** (Section 12), after the `**Note to AI**` paragraph.
-  * AI is encouraged to add **Atomic Entries** (brief, 1-line definitions) to **"Technical Architecture & Utilities"** (Section 11) when new stable utilities are created.
-  * **Strict Prohibition**: AI MUST NOT remove, consolidate, or shorten existing definitions in Section 11.
+  * AI may edit Section 10 (Session Summary) after the `**Note to AI**` paragraph.
+  * AI may add 1-line **Atomic Entries** to Section 9 for new stable utilities.
+  * **Strict Prohibition**: AI MUST NOT remove, consolidate, or shorten existing definitions in Section 9.
   * **Density over Verbosity**: New entries must be concise to maintain high context density and minimize computational overhead.
 
 ## 3. Security Guardrails & Tool Use
@@ -37,14 +37,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
   * **Network**: `curl | bash`, `wget` to unknown domains.
 * **Human-in-the-Loop**: All state-changing commands require explicit `[y/N]` approval. No `--yolo` mode permitted.
 
-## 4. Efficiency & Token Management (Free Tier)
-
-* **Request Optimization**: Prioritize "Planning-first" turns. Present a checklist of changes and wait for user approval `[y/N]` before generating code.
-* **Conciseness**: Keep all code explanations brief. Focus on "What" and "How," skipping the "Why" unless explicitly asked.
-* **Context Scoping**: Use the `@` symbol to reference only the specific files needed for the current task to minimize token usage.
-* **No Auto-Completion**: Do not generate boilerplate or unrelated files unless they are part of the specific feature request.
-
-## 5. Tech Stack & Environment
+## 4. Tech Stack & Environment
 
 * **Runtime**: Node.js v24.x (LTS)
 * **Package Manager**: pnpm v9.x (Workspaces)
@@ -53,52 +46,49 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 * **Formatting**: dprint (4-space indent, **Allman Braces** for functions/classes).
 * **Linting**: ESLint v9.x (Flat Config, `@typescript-eslint` v8+).
 
-## 6. File Structure & Organization
+## 5. Architectural & File Organization
 
 * **Single Responsibility**: Each file must export exactly one primary entity (Function, Class, or Interface).
-* **Utility Splitting**: Utility functions, even if marked as `@internal`, must be extracted into their own files within the same directory or a `utils/` subdirectory.
-* **Naming Convention**: File names must match the name of the primary export (e.g., `getOrCreateRepository.ts` for `export function getOrCreateRepository`).
 * **Avoid Clutter**: Do not co-locate secondary logic or "helper" functions in the same file as a primary class or main public function.
-* **Index Files**: Use `index.ts` files solely for re-exporting public API members. They must not contain logic. Ensure re-exports follow the ESM Resolution rule (explicit `.js` extensions).
-
-## 7. Coding Standards & Style
-
-* **Indentation**: 4-space width (Spaces only).
-* **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
-* **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
-* **ESM Resolution**: Relative imports must include explicit `.js` extensions (Node.js ESM compatibility).
-* **Type Safety**:
-    * Strictly avoid `any`. Use `unknown` for uncertain types or `never` for unreachable code.
-    * Use `satisfies` operator for object literal validation without losing type inference.
-    * Prefer `const enum` for performance-critical lookup constants.
-* **Documentation**: Use JSDoc for all public API members. Generics should be documented with `@template`.
-
-## 8. Performance Patterns (Strict)
-
-* **Looping**: Prefer index-based `for` loops with cached length over `for...of`, `forEach`, or `.map()`.
-* **Iteration**: Use reverse index loops (`i--`) when consuming inheritance chains to eliminate `.reverse()` allocations.
-* **Memory Management**:
-    * Pre-allocate arrays (`new Array(size)`) when total size is known.
-    * Avoid generator usage (`yield`) and `async` iteration in high-frequency utility functions; prefer standard `while` loops.
-    * Minimize object/array allocations (avoid spreads `...` in loops) in hot paths.
-* **Complexity**: Use `LOOKUP_THRESHOLD` (16) to switch between nested loops ($O(n^2)$) and `Set`/`Map` lookups ($O(n)$).
-* **Security**: All path-based operations must utilize `isKeyUnsafe` via `toParts` to prevent prototype pollution.
-
-## 9. Component & File Structure
-
+* **Naming**: File names must match the primary export (e.g., `getOrCreateRepository.ts`).
+* **Utility Splitting**: Extract helper/internal functions into separate files in the same directory or a `utils/` sub-folder. Do not co-locate with primary classes.
+* **Index Files**: Use `index.ts` strictly for re-exporting public API members. No logic allowed. Ensure re-exports follow the ESM Resolution rule (explicit `.js` extensions).
 * **Sub-module Pattern**: Packages use sub-module exports defined in `package.json`.
 * **Contracts (`src/contracts/`)**: Definitions for `interface`, `type`, and `unique symbol`.
 * **Symbol Naming**: Descriptions must follow: `Symbol('@aedart/[package]/[sub-module]/[name]')`.
 * **Implementations (`src/`)**: Concrete logic implementing the contracts.
 * **Tests (`tests/`)**: Mirror the `src/` structure with `[Name].test.ts` naming.
 
-## 10. Maintenance Scripts
+## 6. Coding Standards & Style
 
-* **deps:sync / deps:propagate**: Dependency management.
-* **fix:imports**: Appends `.js` to relative imports.
-* **build**: `turbo run build`.
+* **Indentation**: 4-space width (Spaces).
+* **Brace Style (Allman)**: Opening brace `{` on a new line for functions, methods, constructors, and classes.
+* **Control Flow**: Opening brace `{` on the same line for `if`, `for`, `while`, `try/catch`, `switch`.
+* **ESM Resolution**: Relative imports MUST include explicit `.js` extensions.
+* **Type Safety**:
+    * Strictly avoid `any`. Use `unknown` for uncertainty or `never` for unreachable code.
+    * Use `satisfies` for object validation to preserve type inference.
+    * Prefer `const enum` for performance-critical lookup constants.
+* **Documentation**: Use JSDoc for public members. Document generics with `@template`.
 
-## 11. Technical Architecture & Utilities
+## 7. Performance Patterns (Strict)
+
+* **Looping**: Prefer index-based `for` loops with cached length over `for...of`, `forEach`, or `.map()`.
+* **Iteration**: Use reverse index loops (`i--`) for inheritance chains to avoid `.reverse()` allocations.
+* **Memory**:
+    * Pre-allocate arrays (`new Array(size)`) when size is known.
+    * Avoid `yield` and `async` iteration in high-frequency utilities; prefer `while`.
+    * Minimize object/array spreads (`...`) in hot paths.
+* **Complexity**: Use `LOOKUP_THRESHOLD` (16) to switch between $O(n^2)$ nested loops and $O(n)$ `Set`/`Map` lookups.
+* **Security**: Use `isKeyUnsafe` via `toParts` for all path operations to prevent prototype pollution.
+
+## 8. Maintenance Scripts
+
+* `deps:sync` / `deps:propagate`: Dependency management.
+* `fix:imports`: Appends `.js` to relative imports.
+* `build`: `turbo run build`.
+
+## 9. Technical Architecture & Utilities
 
 ### Arrays & Collections (`@aedart/support/arrays`)
 
@@ -144,7 +134,7 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 
 * **`BaseError`**: Abstract base class. Automates `this.name` and `Error.captureStackTrace` for V8. All custom exceptions MUST inherit from this.
 
-## 12. AI Session Summary
+## 10. AI Session Summary
 
 **Note to AI**: This is the ONLY section you are permitted to fully change or edit. Use this to maintain context across sessions.
 
