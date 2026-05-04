@@ -21,7 +21,7 @@ export default class MetaRepository implements Repository
     /**
      * The actual metadata store for this specific owner.
      */
-    readonly #data: Record<PropertyKey, any> = Object.create(null);
+    readonly #data: Record<PropertyKey, unknown> = Object.create(null);
 
     /**
      * Create a new Metadata Repository instance.
@@ -38,7 +38,7 @@ export default class MetaRepository implements Repository
     /**
      * @inheritdoc
      */
-    set(key: Key, value: any): void
+    set(key: Key, value: unknown): void
     {
         // Explicit security validation
         // We parse the parts to check every segment of the path
@@ -86,7 +86,7 @@ export default class MetaRepository implements Repository
     /**
      * @inheritdoc
      */
-    all(): Record<PropertyKey, any>
+    all(): Record<PropertyKey, unknown>
     {
         return { ...this.#data };
     }

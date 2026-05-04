@@ -1,4 +1,5 @@
-import { Key } from '@aedart/contracts/support/types.js';
+import { ConstructorLike } from '@aedart/contracts';
+import { Key } from '@aedart/contracts/support';
 import { toParts } from '../objects/toParts.js';
 import { isConstructor } from '../reflections/isConstructor.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
@@ -16,7 +17,7 @@ export default class Metadata
      * @template T
      * @param {object} target
      * @param {Key} key
-     * @param {any} [defaultValue]
+     * @param {T} [defaultValue]
      *
      * @returns {T | undefined}
      */
@@ -47,9 +48,9 @@ export default class Metadata
      *
      * @param {object} target
      *
-     * @returns {Record<PropertyKey, any>}
+     * @returns {Record<PropertyKey, unknown>}
      */
-    static all(target: object): Record<PropertyKey, any>
+    static all(target: object): Record<PropertyKey, unknown>
     {
         return getOrCreateRepository(target).all();
     }
@@ -72,27 +73,10 @@ export default class Metadata
 
             // If querying instance members via the Class, pivot to the Prototype.
             if (root === 'methods' || root === 'fields') {
-                return (target as any).prototype;
+                return (target as ConstructorLike).prototype;
             }
         }
 
         return target;
-
-        // if (isConstructor(target)) {
-        //     const parts = toParts(key);
-        //
-        //     // If the key starts with 'static', it's definitely on the constructor
-        //     if (parts[0] === 'static') {
-        //         return target;
-        //     }
-        //
-        //     // If it starts with 'methods' or 'fields' (WITHOUT 'static'),
-        //     // it's an instance member and MUST be on the prototype.
-        //     if (parts[0] === 'methods' || parts[0] === 'fields') {
-        //         return (target as any).prototype;
-        //     }
-        // }
-        //
-        // return target;
     }
 }

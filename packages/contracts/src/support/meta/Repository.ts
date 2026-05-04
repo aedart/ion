@@ -9,16 +9,18 @@ export default interface Repository {
      * Set a metadata value for the given key or path.
      *
      * @param {Key} key
-     * @param {any} value
+     * @param {unknown} value
      */
-    set(key: Key, value: any): void;
+    set(key: Key, value: unknown): void;
 
     /**
      * Get a metadata value for the given key or path.
      *
      * @template T
+     *
      * @param {Key} key
-     * @param {any} [defaultValue]
+     * @param {T} [defaultValue]
+     *
      * @returns {T | undefined}
      */
     get<T>(key: Key, defaultValue?: T): T | undefined;
@@ -27,6 +29,7 @@ export default interface Repository {
      * Determine if metadata exists for the given key or path.
      *
      * @param {Key} key
+     *
      * @returns {boolean}
      */
     has(key: Key): boolean;
@@ -34,9 +37,9 @@ export default interface Repository {
     /**
      * Returns all metadata for the bound target only (excludes inherited).
      *
-     * @returns {Record<PropertyKey, any>}
+     * @returns {Record<PropertyKey, unknown>}
      */
-    all(): Record<PropertyKey, any>;
+    all(): Record<PropertyKey, unknown>;
 
     /**
      * The target (class or member) this repository is bound to.

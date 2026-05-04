@@ -1,167 +1,95 @@
-import { Key } from '@aedart/contracts/support';
-import { MetaCallback, MetaEntry } from '@aedart/contracts/support/meta';
+import { ConstructorLike } from '@aedart/contracts';
+import { MetaCallback, MetaEntry } from '@aedart/contracts/support/meta/index.js';
+import { Key } from '@aedart/contracts/support/types.js';
+import { flush } from './flush.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
+import { MEMBER_TO_METADATA } from './registry.js';
 
 /**
  * Store metadata on a class or class member.
+ *
+ * @param {Key | MetaCallback} keyOrCallback
+ * @param {unknown} [value]
+ *
+ * @returns {(target: any, context: ClassDecoratorContext | ClassMemberDecoratorContext) => void}
  */
-export function meta(keyOrCallback: Key | MetaCallback, value?: any)
+export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
 {
-    return function(target: any, context: ClassDecoratorContext | ClassMemberDecoratorContext): void
+    return function(
+        target: unknown,
+        context: ClassDecoratorContext | ClassMemberDecoratorContext,
+    ): void
     {
         const isClass = context.kind === 'class';
-        const isStatic = (context as any).static ?? false;
+        const isStatic = (context as ClassMemberDecoratorContext).static ?? false;
 
-        // 1. Stage the metadata immediately
-        // @ts-expect-error TODO: Why...
+        // 1. Ensure metadata object exists on the context
+        // @ts-expect-error: metadata might not be in the context type yet
         context.metadata ??= Object.create(null);
+        const metadataObj = (context as ClassDecoratorContext).metadata;
+
+        // 2. Resolve key and value
         const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
 
-        if (!isClass) {
-            const kind = context.kind === 'method' ? 'methods' : 'fields';
-            const prefix = isStatic ? 'static.' : '';
-            const path = `${prefix}${kind}.${String(context.name)}.${String(key)}`;
-            (context.metadata as any)[path] = val;
+        // 3. If it's a class decorator, we can flush everything immediately
+        if (isClass) {
+            getOrCreateRepository(target as object).set(key, val);
+            flush(target as ConstructorLike, metadataObj);
 
-            // NEW: If it's a static member, we can flush it immediately using addInitializer
-            // because static initializers run during class definition!
-            if (isStatic) {
-                context.addInitializer(function(this: any)
-                {
-                    getOrCreateRepository(this).set(path, val);
-                });
-            }
             return;
         }
 
-        // 2. Class Flush (Constructor & Prototype)
-        const constructor = target;
-        const prototype = target.prototype;
+        // 4. If it's a member decorator, stage the metadata
+        const kind = context.kind === 'method' ? 'methods' : 'fields';
+        const prefix = isStatic ? 'static.' : '';
+        const path = `${prefix}${kind}.${String(context.name)}.${String(key)}`;
 
-        getOrCreateRepository(constructor).set(key, val);
+        metadataObj[path] = val;
 
-        const staged = context.metadata as Record<string, any>;
-        for (const path in staged) {
-            const destination = path.startsWith('static.') ? constructor : prototype;
-            getOrCreateRepository(destination).set(path, staged[path]);
+        // 5. Link the member to the metadata object for discovery
+        // For methods, target is the function. For fields, it's undefined (in 2023-11).
+        if (target !== undefined && target !== null) {
+            MEMBER_TO_METADATA.set(target as object, metadataObj);
         }
+
+        // 6. Use addInitializer to flush metadata.
+        // For static members, this runs during class definition.
+        // For instance members, this runs during instantiation.
+        context.addInitializer(function(this: unknown)
+        {
+            const constructor = isStatic
+                ? this
+                : ((this as object).constructor ?? Object.getPrototypeOf(this)?.constructor);
+
+            if (constructor) {
+                flush(constructor as ConstructorLike, metadataObj);
+            }
+        });
     };
-
-    // TODO: C - works, if new Level1() is invoked....
-    // return function(target: any, context: ClassDecoratorContext | ClassMemberDecoratorContext): void
-    // {
-    //     const isClass = context.kind === 'class';
-    //     const isStatic = (context as any).static ?? false;
-    //
-    //     // 1. Classes: Target is already the constructor
-    //     if (isClass)
-    //     {
-    //         const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
-    //         getOrCreateRepository(target).set(key, val);
-    //         return;
-    //     }
-    //
-    //     // 2. Members
-    //     context.addInitializer(function(this: any)
-    //     {
-    //         // PIVOT: If this is an instance member, 'this' is the instance.
-    //         // We MUST use the prototype for shared member metadata.
-    //         const owner = isStatic
-    //             ? this
-    //             : (Object.getPrototypeOf(this) ?? this);
-    //
-    //         const { key, val } = resolveKeyValue(keyOrCallback, value, owner, context);
-    //         const repo = getOrCreateRepository(owner);
-    //
-    //         const kind = context.kind === 'method' ? 'methods' : 'fields';
-    //         const namespace = isStatic ? `static.${kind}` : kind;
-    //
-    //         repo.set(`${namespace}.${String(context.name)}.${String(key)}`, val);
-    //     });
-    // };
-
-    // // TODO: B
-    // return function(target: any, context: ClassDecoratorContext | ClassMemberDecoratorContext): void
-    // {
-    //     const isClass = context.kind === 'class';
-    //
-    //     // 1. Immediate resolution for Class Decorators
-    //     if (isClass)
-    //     {
-    //         const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
-    //         getOrCreateRepository(target).set(key, val);
-    //         return;
-    //     }
-    //
-    //     // 2. Member Decorators (Static vs Instance)
-    //     const isStatic = (context as ClassMemberDecoratorContext).static ?? false;
-    //
-    //     // For Static members, we can attach to the 'this' context if it's
-    //     // available, or we use an initializer that runs during class definition.
-    //     // To ensure the DI container sees it immediately after class load:
-    //     context.addInitializer(function(this: any)
-    //     {
-    //         // 'this' is the Constructor for static members,
-    //         // or the Prototype for instance members.
-    //         const owner = isStatic
-    //             ? this
-    //             : (this.prototype ?? this);
-    //
-    //         console.log(`Decorating ${String(context.name)} on`, owner);
-    //
-    //         const repo = getOrCreateRepository(owner);
-    //         const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
-    //
-    //         const kind = context.kind === 'method' ? 'methods' : 'fields';
-    //         const namespace = isStatic ? `static.${kind}` : kind;
-    //
-    //         repo.set(`${namespace}.${String(context.name)}.${String(key)}`, val);
-    //
-    //         console.log(`Repository for ${String(context.name)} parent is:`, (repo as any).parent);
-    //     });
-    // }
-
-    // TODO: A
-    // return function(target: any, context: DecoratorContext)
-    // {
-    //     const isClass = context.kind === 'class';
-    //
-    //     // 1. Immediate resolution for classes
-    //     if (isClass) {
-    //         const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
-    //         getOrCreateRepository(target).set(key, val);
-    //         return;
-    //     }
-    //
-    //     // 2. Initializer-based resolution for all members
-    //     context.addInitializer(function(this: any)
-    //     {
-    //         const owner = context.static
-    //             ? this
-    //             : (this.prototype ?? Object.getPrototypeOf(this) ?? this);
-    //
-    //         const repo = getOrCreateRepository(owner);
-    //         const { key, val } = resolveKeyValue(keyOrCallback, value, target, context);
-    //
-    //         // Differentiate namespace based on static flag
-    //         const kind = context.kind === 'method'
-    //             ? 'methods'
-    //             : 'fields';
-    //
-    //         const namespace = context.static
-    //             ? `static.${kind}`
-    //             : kind;
-    //
-    //         repo.set(`${namespace}.${String(context.name)}.${String(key)}`, val);
-    //     });
-    // };
 }
 
-function resolveKeyValue(koc: Key | MetaCallback, v: any, target: any, context: DecoratorContext)
+/**
+ * Resolve key and value from the given arguments.
+ *
+ * @param {Key | MetaCallback} koc
+ * @param {unknown} v
+ * @param {unknown} target
+ * @param {ClassDecoratorContext | ClassMemberDecoratorContext} context
+ *
+ * @returns {{ key: Key, val: unknown }}
+ */
+function resolveKeyValue(
+    koc: Key | MetaCallback,
+    v: unknown,
+    target: unknown,
+    context: ClassDecoratorContext | ClassMemberDecoratorContext,
+)
 {
     if (typeof koc === 'function') {
-        const entry: MetaEntry = (koc as MetaCallback)(target, context);
+        const entry: MetaEntry = (koc as MetaCallback)(target as object, context);
+
         return { key: entry.key, val: entry.value };
     }
+
     return { key: koc, val: v };
 }

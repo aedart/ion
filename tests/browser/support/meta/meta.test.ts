@@ -104,15 +104,15 @@ describe('@meta() decorator', () => {
         {}
 
         // Debugging
-        console.log('--- Debug Registry ---');
-        console.log(
-            'Level1 Prototype Has Repo:',
-            Metadata.has(Level1.prototype, 'methods.doWork.status'),
-        );
-        console.log(
-            'Level6 Prototype Has Repo:',
-            Metadata.has(Level6.prototype, 'methods.doWork.status'),
-        );
+        // console.log('--- Debug Registry ---');
+        // console.log(
+        //     'Level1 Prototype Has Repo:',
+        //     Metadata.has(Level1.prototype, 'methods.doWork.status'),
+        // );
+        // console.log(
+        //     'Level6 Prototype Has Repo:',
+        //     Metadata.has(Level6.prototype, 'methods.doWork.status'),
+        // );
 
         // --- Assertions ---
 
