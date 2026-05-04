@@ -4,16 +4,15 @@ import { isBoundFunction } from './isBoundFunction.js';
  * Cached references to avoid repeated lookups and allocations.
  */
 const { construct: reflectConstruct } = Reflect;
-const DUMMY_ARGS: any[] = [];
-const DUMMY_CONSTRUCTOR = function()
-{};
+const DUMMY_ARGS: never[] = [];
+const DUMMY_CONSTRUCTOR = function () {};
 
 /**
- * Determine if given argument is a constructor.
+ * Determine if a given argument is a constructor.
  *
- * @param {unknown} argument The value to check.
+ * @param {unknown} argument - The value to check.
  *
- * @returns {boolean}
+ * @returns {boolean} `true` if the argument is a constructor, `false` otherwise.
  */
 export function isConstructor(argument: unknown): boolean
 {
@@ -21,14 +20,14 @@ export function isConstructor(argument: unknown): boolean
         return false;
     }
 
-    // Fast Path: Arrow fns lack prototypes and aren't bound.
+    // Fast path: arrow functions lack prototypes and aren't bound.
     // This avoids the expensive try/catch for most non-constructors.
-    if (!(argument as Function).prototype && !isBoundFunction(argument)) {
+    if (!(argument as { prototype?: unknown }).prototype && !isBoundFunction(argument)) {
         return false;
     }
 
     try {
-        reflectConstruct(DUMMY_CONSTRUCTOR, DUMMY_ARGS, argument as Function);
+        reflectConstruct(DUMMY_CONSTRUCTOR, DUMMY_ARGS, argument as new (...args: unknown[]) => unknown);
         return true;
     } catch {
         return false;

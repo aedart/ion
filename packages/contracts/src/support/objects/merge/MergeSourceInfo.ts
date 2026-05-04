@@ -22,9 +22,9 @@ export default interface MergeSourceInfo {
     /**
      * Value of the property in source object
      *
-     * @type {any}
+     * @type {unknown}
      */
-    value: any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+    value: unknown;
 
     /**
      * The source object that holds the property key and value

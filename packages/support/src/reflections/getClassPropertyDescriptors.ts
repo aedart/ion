@@ -4,12 +4,12 @@ import { populateDescriptors } from './populateDescriptors.js';
 import { walkParents } from './walkParents.js';
 
 /**
- * Returns all property descriptors that are defined on the target's prototype chain.
+ * Returns all property descriptors defined on the target's prototype chain.
  *
- * @param {ConstructorLike} target The target class
- * @param {boolean} [recursive=false] If `true`, then target's parent prototypes are traversed.
+ * @param {ConstructorLike} target - The target class.
+ * @param {boolean} [recursive=false] - If `true`, the target's parent prototypes are traversed.
  *
- * @return {Record<PropertyKey, PropertyDescriptor>}
+ * @returns {Record<PropertyKey, PropertyDescriptor>}
  *
  * @throws {TypeError}
  *
@@ -21,26 +21,24 @@ export function getClassPropertyDescriptors(
 ): Record<PropertyKey, PropertyDescriptor>
 {
     assertHasPrototypeProperty(target);
-
     const output: Record<PropertyKey, PropertyDescriptor> = Object.create(null);
 
     // If not recursive, we only care about the immediate prototype.
     if (!recursive) {
-        return populateDescriptors(output, target.prototype);
+        return populateDescriptors(output, target.prototype as object);
     }
 
     // To respect the inheritance priority (child overrides parent), we collect
     // the chain first.
-    const chain: any[] = [];
-    for (const parent of walkParents(target.prototype, true)) {
+    const chain: ConstructorLike[] = [];
+    for (const parent of walkParents(target, true)) {
         chain.push(parent);
     }
 
-    // Since walkParents yields nearest parent first, we
-    // iterate the chain in reverse order to ensure child descriptors
-    // win or are merged onto parent descriptors.
+    // Since walkParents yields nearest parent first, we iterate the chain in
+    // reverse order to ensure child descriptors win or are merged onto parent descriptors.
     for (let i = chain.length - 1; i >= 0; i--) {
-        populateDescriptors(output, chain[i]);
+        populateDescriptors(output, chain[i] as object);
     }
 
     return output;

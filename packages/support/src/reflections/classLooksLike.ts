@@ -1,3 +1,4 @@
+import type { ConstructorLike } from "@aedart/contracts";
 import type { ClassBlueprint } from '@aedart/contracts/support/reflections';
 import { LOOKUP_THRESHOLD } from '../arrays/index.js';
 import { hasPrototypeProperty } from './hasPrototypeProperty.js';
@@ -46,7 +47,7 @@ export function classLooksLike(target: object, blueprint: ClassBlueprint): boole
 
     // 2. Check Instance Members (Deep Traversal)
     if (numMembers > 0) {
-        const proto: object = (target as any).prototype;
+        const proto: object = (target as ConstructorLike).prototype;
         const list = members as PropertyKey[];
 
         // Use Set for lookups if above threshold (16) to balance allocation overhead

@@ -1,15 +1,14 @@
 /**
- * Determine if given key is a valid property key name
+ * Determine if a given key is a valid property key.
  *
- * @see {PropertyKey}
+ * @see {@link PropertyKey}
  *
- * @param {any} key
+ * @param {unknown} key - The value to check.
  *
- * @returns {boolean} True if typeof key is a string, number or symbol
+ * @returns {key is PropertyKey} `true` if the key is a `string`, `number`, or `symbol`.
  */
-export function isPropertyKey(key: any): boolean
+export function isPropertyKey(key: unknown): key is PropertyKey
 {
     const type = typeof key;
-
     return type === 'string' || type === 'number' || type === 'symbol';
 }

@@ -1,12 +1,13 @@
-import { Key } from '@aedart/contracts/support';
+import type { Key } from '@aedart/contracts/support';
 
 /**
  * Resolves a key or path into individual parts.
  *
- * @param {Key} key
- * @returns {string[]}
+ * @param {Key} key - The key or path to resolve.
+ *
+ * @returns {PropertyKey[]} An array of individual path segments.
  */
-export function toParts(key: Key): (PropertyKey)[]
+export function toParts(key: Key): PropertyKey[]
 {
     if (Array.isArray(key)) {
         return key;
@@ -17,5 +18,5 @@ export function toParts(key: Key): (PropertyKey)[]
     }
 
     // Capture everything that isn't a dot or a bracket
-    return String(key).match(/[^.[\]]+/g) || [];
+    return String(key).match(/[^.[\]]+/g) ?? [];
 }

@@ -1,14 +1,14 @@
-import { Key } from '@aedart/contracts/support';
+import type { Key } from '@aedart/contracts/support';
 import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
 import { toParts } from './toParts.js';
 
 /**
  * Check if a value exists at a given path on a target object.
  *
- * @param {object} target
- * @param {Key} path
+ * @param {object} target - The target object to check.
+ * @param {Key} path - The key or path to check.
  *
- * @returns {boolean}
+ * @returns {boolean} `true` if a value exists at the given path, `false` otherwise.
  */
 export function has(target: object, path: Key): boolean
 {
@@ -22,8 +22,7 @@ export function has(target: object, path: Key): boolean
         return false;
     }
 
-    let current: any = target;
-
+    let current: Record<PropertyKey, unknown> = target as Record<PropertyKey, unknown>;
     for (let i = 0; i < len; i++) {
         const key = segments[i];
 
@@ -37,7 +36,7 @@ export function has(target: object, path: Key): boolean
             return false;
         }
 
-        current = current[key];
+        current = current[key] as Record<PropertyKey, unknown>;
     }
 
     return true;

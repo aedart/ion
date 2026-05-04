@@ -35,7 +35,7 @@ export const defaultMergeCallback: MergeCallback = function(
     const hasExisting: boolean = Reflect.has(result, key);
 
     // @ts-expect-error Existing value can be of any type here...
-    const existingValue: any = result[key];
+    const existingValue: unknown = result[key];
 
     // Cloneable Support
     if (

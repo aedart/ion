@@ -1,14 +1,14 @@
-import { Key } from '@aedart/contracts/support';
+import type { Key } from '@aedart/contracts/support';
 import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
 import { toParts } from './toParts.js';
 
 /**
  * Removes a value at a given path on a target object.
  *
- * @param {object} target
- * @param {Key} path
+ * @param {object} target - The target object to remove the value from.
+ * @param {Key} path - The key or path to remove.
  *
- * @returns {boolean}
+ * @returns {boolean} `true` if the value was removed or did not exist, `false` otherwise.
  */
 export function forget(target: object, path: Key): boolean
 {
@@ -22,8 +22,7 @@ export function forget(target: object, path: Key): boolean
         return false;
     }
 
-    let current: any = target;
-
+    let current: Record<PropertyKey, unknown> = target as Record<PropertyKey, unknown>;
     for (let i = 0; i < len; i++) {
         const key = segments[i];
 
@@ -35,7 +34,7 @@ export function forget(target: object, path: Key): boolean
         if (i === len - 1) {
             try {
                 return delete current[key];
-            } catch (e) {
+            } catch {
                 // Return false if property is non-configurable (strict mode)
                 return false;
             }
@@ -46,7 +45,7 @@ export function forget(target: object, path: Key): boolean
             return true;
         }
 
-        current = current[key];
+        current = current[key] as Record<PropertyKey, unknown>;
     }
 
     // Fallback for safety, though the loop logic should cover all paths

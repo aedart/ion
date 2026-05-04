@@ -1,14 +1,14 @@
 /**
- * Determine if value(s) are different from undefined and null.
+ * Determine if value(s) are different from `undefined` and `null`.
  *
- * @param {any} [value] The first value to check.
- * @param {...any} [values] Additional values to check.
+ * @param {unknown} [value] - The first value to check.
+ * @param {...unknown} [_values] - Additional values to check.
  *
- * @returns {boolean}
+ * @returns {value is NonNullable<unknown>} `true` if all values are neither `undefined` nor `null`.
  */
-export function isset(value?: any, ...values: any[]): boolean
+export function isset(value?: unknown, ..._values: unknown[]): value is NonNullable<unknown>
 {
-    // Fast Path: Named parameter access is faster than arguments object lookup
+    // Fast path: named parameter access is faster than arguments object lookup
     if (value == null) {
         return false;
     }
@@ -18,12 +18,12 @@ export function isset(value?: any, ...values: any[]): boolean
         return true;
     }
 
-    // Secondary Path: Iterate through arguments object to avoid array allocation
+    // Secondary path: iterate through arguments object to avoid array allocation
     for (let i = 1; i < len; i++) {
+        // eslint-disable-next-line prefer-rest-params
         if (arguments[i] == null) {
             return false;
         }
     }
-
     return true;
 }
