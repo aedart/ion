@@ -151,15 +151,16 @@ This document is the **Source of Truth** for the `@aedart` monorepo. It serves a
 #### Implementation Details & Breakthroughs
 
 * **Metadata Helper**: `Metadata.get/has` utilizes `resolveTarget()` to pivot between constructor and prototype automatically.
-* **Performance**: `findRepository()` uses an optimized iterative `while` loop.
+* **Performance**: Optimized `discoverAndFlush` and `flush` using high-performance index-based `for` loops and `Reflect.ownKeys` to minimize object allocations and side-effects.
 * **Registry Flow**: `getOrCreateRepository()` triggers `discoverAndFlush()`.
 * **Breakthrough**: Resolved "Timing Issue" by scanning class members for metadata links, allowing eager access to instance member metadata without instantiation.
+* **Hardening**: Standardized on `unknown` types across contracts and implementations to eliminate `any` usage.
 * **Organization**: Refactored into atomic utilities (`flush`, `discoverAndFlush`, `getOrCreateBaseRepository`) to break circular dependencies and follow Single Responsibility standards.
 
 #### Current Challenges & Timing Constraints
 
 * **Registry State**: Internal state is managed via multiple `WeakMap`s in `registry.ts`.
-* **Symbol.metadata**: Polyfilled to ensure consistent behavior across different transpilation environments.
+* **Environment Variance**: `Symbol.metadata` is polyfilled to ensure consistent behavior across different transpilation environments.
 
 ### Objectives for Next Session
 
