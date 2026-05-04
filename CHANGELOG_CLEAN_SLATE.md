@@ -17,6 +17,7 @@ Temporary changelog for feature branch.
 * `scripts/sync-assets.js` util for exporting assets, like `vue`, `scss`, `css`...etc.
 * `scripts/fix-esm-imports.js` util for fixing ESM imports.
 * `toParts()` util function (_support package_).
+* `isException()` util (_support package_).
 
 ### Changed
 
