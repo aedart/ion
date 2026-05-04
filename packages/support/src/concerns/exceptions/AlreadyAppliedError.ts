@@ -9,6 +9,8 @@ import InvalidConcernError from './InvalidConcernError.js';
 export default class AlreadyAppliedError extends InvalidConcernError
     implements AlreadyAppliedException
 {
+    public override readonly name = 'AlreadyAppliedException' as const;
+    
     /**
      * The target class where the conflict occurred
      */

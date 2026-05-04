@@ -7,5 +7,5 @@ import type Throwable from '../../exceptions/Throwable.js';
  */
 export default interface MergeException extends Throwable
 {
-    readonly name: string;
+    readonly name: 'MergeException';
 }

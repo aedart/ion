@@ -8,6 +8,8 @@ import BaseError from '../../exceptions/BaseError.js';
  */
 export default class ArrayMergeError extends BaseError implements ArrayMergeException
 {
+    public override readonly name = 'ArrayMergeException' as const;
+    
     /**
      * Create a new Array Merge Error instance
      *

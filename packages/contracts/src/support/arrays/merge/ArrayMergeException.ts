@@ -7,5 +7,5 @@ import type Throwable from '../../exceptions/Throwable.js';
  */
 export default interface ArrayMergeException extends Throwable
 {
-    readonly name: string;
+    readonly name: 'ArrayMergeException';
 }

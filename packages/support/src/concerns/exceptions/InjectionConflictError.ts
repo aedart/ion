@@ -9,6 +9,8 @@ import ConcernError from './ConcernError.js';
  */
 export default class InjectionConflictError extends ConcernError implements ConcernConflictException
 {
+    public override readonly name = 'ConcernConflictException' as const;
+    
     /**
      * The target class where the conflict occurred
      */

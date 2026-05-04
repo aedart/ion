@@ -9,6 +9,8 @@ import ConcernError from './ConcernError.js';
  */
 export default class InvalidConcernError extends ConcernError implements InvalidConcernException
 {
+    public override readonly name = 'InvalidConcernException' as const;
+    
     /**
      * The invalid concern class
      */
