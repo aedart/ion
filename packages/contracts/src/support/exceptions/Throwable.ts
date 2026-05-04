@@ -9,4 +9,7 @@
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
  * @see Error
  */
-export default interface Throwable extends Error {}
+export default interface Throwable extends Error
+{
+    readonly name: string;
+}

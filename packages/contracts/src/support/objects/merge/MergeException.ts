@@ -5,4 +5,7 @@ import type Throwable from '../../exceptions/Throwable.js';
  *
  * To be thrown when two or more objects are unable to be merged.
  */
-export default interface MergeException extends Throwable {}
+export default interface MergeException extends Throwable
+{
+    readonly name: string;
+}
