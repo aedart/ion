@@ -3,29 +3,43 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-    // 1. Global Ignores (replacing .eslintignore)
+    // 1. Global Ignores
     {
-        ignores: ['**/dist/**', '**/node_modules/**', '**/coverage/**'],
+        ignores: [
+            "**/dist/",          // Ignores all dist folders recursively
+            "**/node_modules/",
+            "**/coverage/",
+            "docs/.vuepress/",   // Specific to your project root
+            "**/*.d.ts",         // CRITICAL: Stops the 'parserOptions.project' error
+            '.turbo/',        // Recommended since you use Turbo
+        ],
     },
-    // 2. Base Configuration for all TypeScript files
+    // 2. Base Configuration
     {
         files: ['**/*.ts'],
-        extends: [js.configs.recommended, ...tseslint.configs.recommended],
+        // Use 'recommendedTypeChecked' since you already defined project/tsconfig
+        extends: [
+            js.configs.recommended,
+            ...tseslint.configs.recommendedTypeChecked,
+            ...tseslint.configs.stylisticTypeChecked
+        ],
         languageOptions: {
             parserOptions: {
-                project: './tsconfig.json',
+                project: true, // Modern way to say "use nearest tsconfig"
                 tsconfigRootDir: import.meta.dirname,
             },
             globals: {
-                ...globals.node, // Enable Node.js globals by default
+                ...globals.node,
             },
         },
         rules: {
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
             'no-console': 'warn',
             '@typescript-eslint/no-explicit-any': ['error', {
-                ignoreRestArgs: true, // Allows ...args: any[]
+                ignoreRestArgs: true,
             }],
+            // Disable rules that dprint handles to avoid conflicts
+            '@typescript-eslint/indent': 'off',
         },
     },
     // 3. Browser-specific overrides for your centralized tests
