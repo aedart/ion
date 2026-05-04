@@ -16,13 +16,15 @@ This package follows [Semantic Versioning 2.0.0](http://semver.org/)
 
 ## Acknowledgements: Artificial Intelligence & Attribution
 
-This project utilizes advanced Artificial Intelligence (AI) models, specifically **ChatGPT** (developed by **OpenAI**) and **Claude** (developed by **Anthropic**), as collaborative agents in the architectural design, implementation, and optimization of the source code.
+This project utilizes Artificial Intelligence (AI) — specifically **Claude** (Anthropic), **Gemini** (Google), and other Large Language Models — as collaborative agents in its architectural design, implementation, and optimization.
 
-I acknowledge and credit the following contributors to the intelligence powering this repository:
+The following contributors to the intelligence powering this repository are acknowledged:
 
-* **Model Developers & Researchers**: The engineers and scientists at OpenAI and Anthropic who developed the Large Language Models (LLMs) used during development.
-* **Trainers & Data Contributors**: The vast ecosystem of human trainers, feedback providers, and the global open-source community whose collective knowledge forms the foundation of these models' capabilities.
-* **AI Synthesis**: Portions of the logic, performance optimizations, and documentation structures were generated or refined through AI-assisted pair programming.
+*   **Model Developers & Researchers**: The engineers and scientists at Anthropic, Google, and other AI organizations who developed the models used during development.
+*   **The Open-Source Community**: The global community whose collective knowledge forms the foundation of these models' capabilities.
+*   **AI-Assisted Development**: Portions of the logic, performance optimizations, and documentation were refined through AI-assisted pair programming.
 
-**Transparency Note for Developers**:\
-While AI is used to accelerate development and ensure adherence to strict coding standards, all generated code undergoes rigorous review to ensure it meets the project’s security, performance, and architectural integrity requirements.
+### Transparency Note
+
+AI is used to accelerate development and maintain strict architectural standards. **Every line of code undergoes thorough human review** to ensure it meets the project's security, performance, and integrity requirements. The final responsibility for the codebase rests solely with the human maintainer.
+
