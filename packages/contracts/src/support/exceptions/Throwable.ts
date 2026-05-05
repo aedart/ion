@@ -9,7 +9,7 @@
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
  * @see Error
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export default interface Throwable extends Error
 {
-    readonly name: string;
 }

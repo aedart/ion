@@ -5,7 +5,7 @@ import type Throwable from '../../exceptions/Throwable.js';
  *
  * To be thrown when unable to merge arrays.
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export default interface ArrayMergeException extends Throwable
 {
-    readonly name: 'ArrayMergeException';
 }

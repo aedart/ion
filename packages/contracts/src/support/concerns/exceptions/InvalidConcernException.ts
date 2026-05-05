@@ -1,4 +1,5 @@
 import ConcernException from './ConcernException.js';
+import ConcernConstructor from "../ConcernConstructor.js";
 
 /**
  * Invalid Concern Exception
@@ -10,5 +11,5 @@ export default interface InvalidConcernException extends ConcernException
     /**
      * The invalid concern class
      */
-    readonly concern: any;
+    readonly concern: ConcernConstructor;
 }

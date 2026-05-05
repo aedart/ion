@@ -1,4 +1,4 @@
-import type { InvalidConcernException } from '@aedart/contracts/support/concerns';
+import type { InvalidConcernException, ConcernConstructor } from '@aedart/contracts/support/concerns';
 import ConcernError from './ConcernError.js';
 
 /**
@@ -9,21 +9,21 @@ import ConcernError from './ConcernError.js';
  */
 export default class InvalidConcernError extends ConcernError implements InvalidConcernException
 {
-    public override readonly name = 'InvalidConcernException' as const;
+    public readonly name = 'InvalidConcernException' as const;
     
     /**
      * The invalid concern class
      */
-    readonly #concern: any;
+    readonly #concern: ConcernConstructor;
 
     /**
      * Create a new Invalid Concern Error instance
      *
-     * @param {any} concern
+     * @param {ConcernConstructor} concern
      * @param {string} [message]
      * @param {ErrorOptions} [options]
      */
-    constructor(concern: any, message?: string, options?: ErrorOptions)
+    constructor(concern: ConcernConstructor, message?: string, options?: ErrorOptions)
     {
         super(message ?? 'Invalid Concern', options);
 
@@ -33,7 +33,14 @@ export default class InvalidConcernError extends ConcernError implements Invalid
     /**
      * The invalid concern class
      */
-    public get concern(): any {
+
+    /**
+     * The invalid concern class
+     * 
+     * @returns {ConcernConstructor}
+     */
+    public get concern(): ConcernConstructor
+    {
         return this.#concern;
     }
 }

@@ -6,8 +6,6 @@ import BaseError from '../../exceptions/BaseError.js';
  */
 export default class ConcernError extends BaseError implements ConcernException
 {
-    // public override readonly name = 'ConcernException' as const;
-    
     /**
      * @inheritdoc
      */

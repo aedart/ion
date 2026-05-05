@@ -5,8 +5,6 @@ import ConcernException from './ConcernException.js';
  */
 export default interface ConcernConflictException extends ConcernException
 {
-    readonly name: 'ConcernConflictException';
-    
     /**
      * The target class where the conflict occurred
      */

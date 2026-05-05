@@ -1,4 +1,7 @@
-import { type AlreadyAppliedException } from '@aedart/contracts/support/concerns';
+import {
+    type AlreadyAppliedException,
+    type ConcernConstructor
+} from '@aedart/contracts/support/concerns';
 import InvalidConcernError from './InvalidConcernError.js';
 
 /**
@@ -6,11 +9,8 @@ import InvalidConcernError from './InvalidConcernError.js';
  *
  * Thrown when a concern is applied to a target that already uses it.
  */
-export default class AlreadyAppliedError extends InvalidConcernError
-    implements AlreadyAppliedException
+export default class AlreadyAppliedError extends InvalidConcernError implements AlreadyAppliedException
 {
-    public override readonly name = 'AlreadyAppliedException' as const;
-    
     /**
      * The target class where the conflict occurred
      */
@@ -19,12 +19,12 @@ export default class AlreadyAppliedError extends InvalidConcernError
     /**
      * Create a new Already Applied Error instance
      *
-     * @param {any} target
+     * @param {object} target
      * @param {ConcernConstructor} concern
      * @param {string} [message]
      * @param {ErrorOptions} [options]
      */
-    constructor(target: any, concern: any, message?: string, options?: ErrorOptions)
+    constructor(target: object, concern: ConcernConstructor, message?: string, options?: ErrorOptions)
     {
         super(concern, message ?? 'Concern Already Applied', options);
 
@@ -34,7 +34,8 @@ export default class AlreadyAppliedError extends InvalidConcernError
     /**
      * The target class where the conflict occurred
      */
-    public get target(): object {
+    public get target(): object
+    {
         return this.#target;
     }
 }

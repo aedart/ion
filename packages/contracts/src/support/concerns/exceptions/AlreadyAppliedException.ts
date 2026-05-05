@@ -5,8 +5,6 @@ import InvalidConcernException from './InvalidConcernException.js';
  */
 export default interface AlreadyAppliedException extends InvalidConcernException
 {
-    readonly name: 'AlreadyAppliedException';
-    
     /**
      * The target class where the conflict occurred
      */
