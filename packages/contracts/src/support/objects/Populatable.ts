@@ -9,7 +9,7 @@ export default interface Populatable {
      *
      * **Note**: _When no `data` is provided, then nothing is populated_
      *
-     * @param {Record<PropertyKey, any>} [data]
+     * @param {Record<PropertyKey, unknown>} [data]
      *
      * @returns {this}
      *
@@ -18,7 +18,7 @@ export default interface Populatable {
     populate(
         data?: Record<
             PropertyKey,
-            any
+            unknown
         >,  
     ): this;
 }
