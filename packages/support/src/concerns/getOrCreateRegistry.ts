@@ -1,15 +1,21 @@
-import { CONCERN_REGISTRY, type ConcernConstructor } from '@aedart/contracts/support/concerns';
+import { type ConstructorLike } from "@aedart/contracts";
+import {
+    CONCERN_REGISTRY,
+    type ConcernConstructor,
+    type WithConcernRegistry,
+} from '@aedart/contracts/support/concerns';
+import { hasConcernRegistry } from './hasConcernRegistry.js';
 
 /**
  * Get or create the Concern Registry on the target constructor
  *
- * @param {any} target
+ * @param {ConstructorLike} target
  *
  * @returns {Set<ConcernConstructor>}
  */
-export function getOrCreateRegistry(target: any): Set<ConcernConstructor>
+export function getOrCreateRegistry(target: ConstructorLike): Set<ConcernConstructor>
 {
-    if (!Reflect.has(target, CONCERN_REGISTRY)) {
+    if (!hasConcernRegistry(target)) {
         Reflect.defineProperty(target, CONCERN_REGISTRY, {
             value: new Set<ConcernConstructor>(),
             configurable: false,
@@ -18,5 +24,7 @@ export function getOrCreateRegistry(target: any): Set<ConcernConstructor>
         });
     }
 
-    return target[CONCERN_REGISTRY];
+    // Safe: At this point the registry has been defined and is safe to return!
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    return (target as WithConcernRegistry<typeof target>)[CONCERN_REGISTRY] as Set<ConcernConstructor>;
 }

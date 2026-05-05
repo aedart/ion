@@ -1,4 +1,6 @@
-import { CONCERN_REGISTRY, type ConcernConstructor } from '@aedart/contracts/support/concerns';
+import { type ConstructorLike } from "@aedart/contracts";
+import { CONCERN_REGISTRY, type ConcernConstructor} from '@aedart/contracts/support/concerns';
+import { hasConcernRegistry } from './hasConcernRegistry.js';
 
 /**
  * Returns a list of all concerns applied to the target
@@ -7,7 +9,7 @@ import { CONCERN_REGISTRY, type ConcernConstructor } from '@aedart/contracts/sup
  *
  * @returns {ConcernConstructor[]}
  */
-export function appliedConcerns(target: any): ConcernConstructor[]
+export function appliedConcerns(target: unknown): ConcernConstructor[]
 {
     if (target === null || target === undefined) {
         return [];
@@ -20,7 +22,9 @@ export function appliedConcerns(target: any): ConcernConstructor[]
     const allConcerns = new Set<ConcernConstructor>();
 
     while (constructor !== null && constructor !== Object) {
-        if (Reflect.has(constructor, CONCERN_REGISTRY)) {
+        if (hasConcernRegistry(constructor as ConstructorLike)) {
+            // @ts-expect-error constructor has a concerns registry at this point
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const registry: Set<ConcernConstructor> = constructor[CONCERN_REGISTRY];
 
             // Standard loop over the Set iterator for performance
@@ -29,7 +33,7 @@ export function appliedConcerns(target: any): ConcernConstructor[]
             }
         }
 
-        constructor = Reflect.getPrototypeOf(constructor);
+        constructor = Reflect.getPrototypeOf(constructor) as ConstructorLike;
     }
 
     return Array.from(allConcerns);

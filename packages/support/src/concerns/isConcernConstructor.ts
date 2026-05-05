@@ -4,12 +4,12 @@ import type { ConcernConstructor } from '@aedart/contracts/support/concerns';
 /**
  * Determine if target is a valid concern constructor
  *
- * @param {any} target
+ * @param {unknown} target
  *
  * @returns {target is ConcernConstructor}
  */
-export function isConcernConstructor(target: any): target is ConcernConstructor
+export function isConcernConstructor(target: unknown): target is ConcernConstructor
 {
     return typeof target === 'function'
-        && target[CONCERN_CLASS] === true;
+        && (target as object)[CONCERN_CLASS] === true;
 }
