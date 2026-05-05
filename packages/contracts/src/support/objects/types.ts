@@ -3,7 +3,11 @@ import type { Wildcard } from '../types.js';
 /**
  * Allowed property keys
  */
-export type AllowedKeys = PropertyKey | PropertyKey[] | Wildcard | AllowedKeysCallback;
+export type AllowedKeys =
+    PropertyKey
+    | PropertyKey[]
+    | Wildcard
+    | AllowedKeysCallback;
 
 /**
  * Callback that returns a list of properties that are "allowed" to be processed.

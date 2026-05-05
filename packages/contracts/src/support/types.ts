@@ -14,4 +14,5 @@ export type OneOrMany<T> = T | readonly T[];
  * Often used to denote that "all" properties, elements or items are
  * allowed or supported as argument for a function or method.
  */
-export type Wildcard = '*';
+export const WILDCARD = '*' as const;
+export type Wildcard = typeof WILDCARD & { readonly __brand: 'Wildcard' };
