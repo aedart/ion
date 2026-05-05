@@ -22,5 +22,5 @@ export function merge(...sources: unknown[]): ArrayMerger | unknown[]
         return merger;
     }
 
-    return merger.of(...(sources as unknown[][])) as unknown[];
+    return merger.of(...(sources as unknown[][]));
 }

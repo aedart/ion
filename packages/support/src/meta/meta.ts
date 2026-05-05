@@ -49,7 +49,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
         // 5. Link the member to the metadata object for discovery
         // For methods, target is the function. For fields, it's undefined (in 2023-11).
         if (target !== undefined && target !== null) {
-            MEMBER_TO_METADATA.set(target as object, metadataObj);
+            MEMBER_TO_METADATA.set(target, metadataObj);
         }
 
         // 6. Use addInitializer to flush metadata.
