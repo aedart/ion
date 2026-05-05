@@ -3,6 +3,9 @@ import {
     type ConcernConstructor,
     type ShorthandConfiguration,
 } from '@aedart/contracts/support/concerns';
+import {
+    type ConstructorLike
+} from "@aedart/contracts";
 import { AlreadyAppliedError, InvalidConcernError } from './exceptions/index.js';
 import { getOrCreateRegistry } from './getOrCreateRegistry.js';
 import { inject } from './inject.js';
@@ -24,7 +27,7 @@ export function use(
     ...concerns: (ConcernConstructor | ConcernConfiguration | ShorthandConfiguration)[]
 )
 {
-    return function(target: any)
+    return function(target: ConstructorLike)
     {
         const registry: Set<ConcernConstructor> = getOrCreateRegistry(target);
 
