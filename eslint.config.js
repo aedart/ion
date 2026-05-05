@@ -6,12 +6,12 @@ export default tseslint.config(
     // 1. Global Ignores
     {
         ignores: [
-            "**/dist/",          // Ignores all dist folders recursively
-            "**/node_modules/",
-            "**/coverage/",
-            "docs/.vuepress/",   // Specific to your project root
-            "**/*.d.ts",         // CRITICAL: Stops the 'parserOptions.project' error
-            '.turbo/',        // Recommended since you use Turbo
+            '**/dist/', // Ignores all dist folders recursively
+            '**/node_modules/',
+            '**/coverage/',
+            'docs/.vuepress/', // Specific to your project root
+            '**/*.d.ts', // CRITICAL: Stops the 'parserOptions.project' error
+            '.turbo/', // Recommended since you use Turbo
         ],
     },
     // 2. Base Configuration
@@ -21,7 +21,7 @@ export default tseslint.config(
         extends: [
             js.configs.recommended,
             ...tseslint.configs.recommendedTypeChecked,
-            ...tseslint.configs.stylisticTypeChecked
+            ...tseslint.configs.stylisticTypeChecked,
         ],
         languageOptions: {
             parserOptions: {

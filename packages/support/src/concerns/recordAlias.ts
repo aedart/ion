@@ -1,21 +1,28 @@
-import { APPLIED_ALIASES, type ConcernConstructor } from '@aedart/contracts/support/concerns';
+import { type ConstructorLike } from '@aedart/contracts';
+import {
+    type AliasSource,
+    APPLIED_ALIASES,
+    type ConcernConstructor,
+    type WithAppliedAliases,
+} from '@aedart/contracts/support/concerns';
+import { hasAppliedAliasesMap } from './hasAppliedAliasesMap.js';
 
 /**
  * Record an alias mapping on the target constructor
  *
- * @param target
+ * @param {ConstructorLike} target
  * @param {ConcernConstructor} concern
  * @param {PropertyKey} originalKey
  * @param {PropertyKey} aliasKey
  */
 export function recordAlias(
-    target: any,
+    target: ConstructorLike,
     concern: ConcernConstructor,
     originalKey: PropertyKey,
     aliasKey: PropertyKey,
 ): void
 {
-    if (!Reflect.has(target, APPLIED_ALIASES)) {
+    if (!hasAppliedAliasesMap(target)) {
         Reflect.defineProperty(target, APPLIED_ALIASES, {
             value: new Map<PropertyKey, { concern: ConcernConstructor; original: PropertyKey; }>(),
             configurable: false,
@@ -24,6 +31,6 @@ export function recordAlias(
         });
     }
 
-    const aliases = target[APPLIED_ALIASES];
-    aliases.set(aliasKey, { concern, original: originalKey });
+    const aliases: Map<PropertyKey, AliasSource> = (target as WithAppliedAliases)[APPLIED_ALIASES];
+    aliases.set(aliasKey, { concern: concern, original: originalKey });
 }

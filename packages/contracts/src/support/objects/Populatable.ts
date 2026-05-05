@@ -19,6 +19,6 @@ export default interface Populatable {
         data?: Record<
             PropertyKey,
             unknown
-        >,  
+        >,
     ): this;
 }

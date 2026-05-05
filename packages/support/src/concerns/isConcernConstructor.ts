@@ -11,5 +11,5 @@ import type { ConcernConstructor } from '@aedart/contracts/support/concerns';
 export function isConcernConstructor(target: unknown): target is ConcernConstructor
 {
     return typeof target === 'function'
-        && (target as object)[CONCERN_CLASS] === true;
+        && (target as ConcernConstructor)[CONCERN_CLASS] === true;
 }

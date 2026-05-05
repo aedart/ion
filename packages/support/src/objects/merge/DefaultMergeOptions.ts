@@ -72,7 +72,7 @@ export default class DefaultMergeOptions implements MergeOptions
         // Resolve merge callback: prioritize function argument, then options property, then default.
         this.callback = (typeof options === 'function')
             ? options
-            : (options)?.callback ?? defaultMergeCallback;
+            : options?.callback ?? defaultMergeCallback;
 
         // Resolve skip callback: ensure it is always a function to avoid type-checking during merge loops.
         if (typeof this.skip !== 'function') {

@@ -1,4 +1,4 @@
-import type { ConstructorLike } from "@aedart/contracts";
+import type { ConstructorLike } from '@aedart/contracts';
 import { Throwable } from '@aedart/contracts/support/exceptions';
 
 /**

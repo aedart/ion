@@ -1,28 +1,29 @@
-import type { AliasSource } from '@aedart/contracts/support/concerns';
-import { APPLIED_ALIASES } from '@aedart/contracts/support/concerns';
+import { type ConstructorLike } from '@aedart/contracts';
+import { type AliasSource, APPLIED_ALIASES } from '@aedart/contracts/support/concerns';
+import { hasAppliedAliasesMap } from './hasAppliedAliasesMap.js';
 
 /**
  * Returns the ultimate source information for a given alias,
  * resolving nested aliases recursively.
  *
- * @param {any} target Class constructor or instance
+ * @param {unknown} target Class constructor or instance
  * @param {PropertyKey} key The name of the aliased property
  *
  * @returns {AliasSource | undefined}
  */
-export function getAliasSource(target: any, key: PropertyKey): AliasSource | undefined
+export function getAliasSource(target: unknown, key: PropertyKey): AliasSource | undefined
 {
     if (target === null || target === undefined) {
         return undefined;
     }
 
     let constructor = (typeof target === 'function')
-        ? target
-        : target.constructor;
+        ? target as ConstructorLike
+        : (target as object).constructor as ConstructorLike;
 
     while (constructor !== null && constructor !== Object) {
-        if (Reflect.has(constructor, APPLIED_ALIASES)) {
-            const aliases = constructor[APPLIED_ALIASES] as Map<PropertyKey, AliasSource>;
+        if (hasAppliedAliasesMap(constructor)) {
+            const aliases: Map<PropertyKey, AliasSource> = constructor[APPLIED_ALIASES];
             const mapping: AliasSource | undefined = aliases.get(key);
 
             if (mapping !== undefined) {
@@ -32,7 +33,7 @@ export function getAliasSource(target: any, key: PropertyKey): AliasSource | und
             }
         }
 
-        constructor = Reflect.getPrototypeOf(constructor);
+        constructor = Reflect.getPrototypeOf(constructor) as ConstructorLike;
     }
 
     return undefined;

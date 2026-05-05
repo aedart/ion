@@ -1,7 +1,7 @@
+import type { AliasSource } from '@aedart/contracts/support/concerns/index';
+import { ConstructorLike } from '../../types.js';
 import Concern from './Concern.js';
 import ConcernConstructor from './ConcernConstructor.js';
-import { ConstructorLike } from "../../types.js";
-import type {AliasSource} from "@aedart/contracts/support/concerns/index";
 
 /**
  * Alias Configuration
@@ -45,18 +45,18 @@ export const APPLIED_ALIASES: unique symbol = Symbol(
 
 /**
  * Class that has a concern registry
- * 
+ *
  * @see {@link CONCERN_REGISTRY}
  */
 export type WithConcernRegistry<T extends ConstructorLike = ConstructorLike> = T & {
-    [CONCERN_REGISTRY]: Set<ConcernConstructor>
-}
+    [CONCERN_REGISTRY]: Set<ConcernConstructor>;
+};
 
 /**
  * Class that has an applied aliases map
- * 
+ *
  * @see {@link APPLIED_ALIASES}
  */
 export type WithAppliedAliases<T extends ConstructorLike = ConstructorLike> = T & {
-    [APPLIED_ALIASES]: Map<PropertyKey, AliasSource>
-}
+    [APPLIED_ALIASES]: Map<PropertyKey, AliasSource>;
+};

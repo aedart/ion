@@ -6,6 +6,7 @@ export * from './appliedConcerns.js';
 export * from './exceptions/index.js';
 export * from './getAliasSource.js';
 export * from './getOrCreateRegistry.js';
+export * from './hasAppliedAliasesMap.js';
 export * from './hasConcern.js';
 export * from './hasConcernRegistry.js';
 export * from './inject.js';

@@ -2,14 +2,17 @@ import { type ConcernConstructor } from '@aedart/contracts/support/concerns';
 import { hasConcern } from './hasConcern.js';
 
 /**
- * Determine if the target uses all of the given concerns
+ * Determine if the target uses given concerns
  *
- * @param {any} target Class constructor or instance
+ * **Note**: _When multiple concerns are given, then target must use all
+ * specified concerns, before this function returns `true`._
+ *
+ * @param {unknown} target Class constructor or instance
  * @param {...ConcernConstructor} concerns
  *
  * @returns {boolean}
  */
-export function usesConcerns(target: any, ...concerns: ConcernConstructor[]): boolean
+export function usesConcerns(target: unknown, ...concerns: ConcernConstructor[]): boolean
 {
     if (target === null || target === undefined || concerns.length === 0) {
         return false;

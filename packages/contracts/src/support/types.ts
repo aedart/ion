@@ -15,4 +15,4 @@ export type OneOrMany<T> = T | readonly T[];
  * allowed or supported as argument for a function or method.
  */
 export const WILDCARD = '*' as const;
-export type Wildcard = typeof WILDCARD & { readonly __brand: 'Wildcard' };
+export type Wildcard = typeof WILDCARD & { readonly __brand: 'Wildcard'; };

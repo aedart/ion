@@ -1,13 +1,10 @@
+import ConcernConstructor from '../ConcernConstructor.js';
 import ConcernException from './ConcernException.js';
-import ConcernConstructor from "../ConcernConstructor.js";
 
 /**
  * Invalid Concern Exception
  */
-export default interface InvalidConcernException extends ConcernException
-{
-    readonly name: string;
-    
+export default interface InvalidConcernException extends ConcernException {
     /**
      * The invalid concern class
      */

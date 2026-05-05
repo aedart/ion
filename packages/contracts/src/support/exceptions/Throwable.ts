@@ -10,6 +10,5 @@
  * @see Error
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export default interface Throwable extends Error
-{
+export default interface Throwable extends Error {
 }

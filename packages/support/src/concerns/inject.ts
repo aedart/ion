@@ -1,3 +1,4 @@
+import type { ConstructorLike } from '@aedart/contracts';
 import {
     CONCERN_REGISTRY,
     type ConcernConfiguration,
@@ -11,12 +12,12 @@ import { recordAlias } from './recordAlias.js';
 /**
  * Inject properties from the concern into the target prototype
  *
- * @param {any} target
+ * @param {ConstructorLike} target
  * @param {ConcernConfiguration} config
  *
  * @throws {InjectionConflictError}
  */
-export function inject(target: any, config: ConcernConfiguration): void
+export function inject(target: ConstructorLike, config: ConcernConfiguration): void
 {
     const constructor: ConcernConstructor = config.concern;
     const descriptors: PropertyDescriptorMap = getClassPropertyDescriptors(constructor);
@@ -52,7 +53,7 @@ export function inject(target: any, config: ConcernConfiguration): void
 
         // 5. Conflict Check (Prototype & Existing Member Check)
         // This catches if the property exists on the class OR was just injected
-        if (Reflect.has(target.prototype, finalKey)) {
+        if (Reflect.has(target.prototype as object, finalKey)) {
             throw new InjectionConflictError(
                 target,
                 finalKey,
@@ -68,6 +69,6 @@ export function inject(target: any, config: ConcernConfiguration): void
         }
 
         // 7. Direct Injection
-        Reflect.defineProperty(target.prototype, finalKey, descriptors[key as string]);
+        Reflect.defineProperty(target.prototype as object, finalKey, descriptors[key as string]);
     }
 }

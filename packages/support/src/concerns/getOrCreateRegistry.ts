@@ -1,4 +1,4 @@
-import { type ConstructorLike } from "@aedart/contracts";
+import { type ConstructorLike } from '@aedart/contracts';
 import {
     CONCERN_REGISTRY,
     type ConcernConstructor,
@@ -24,7 +24,5 @@ export function getOrCreateRegistry(target: ConstructorLike): Set<ConcernConstru
         });
     }
 
-    // Safe: At this point the registry has been defined and is safe to return!
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    return (target as WithConcernRegistry<typeof target>)[CONCERN_REGISTRY] as Set<ConcernConstructor>;
+    return (target as WithConcernRegistry)[CONCERN_REGISTRY];
 }

@@ -4,7 +4,7 @@ import type { Wildcard } from '../types.js';
  * Allowed property keys
  */
 export type AllowedKeys =
-    PropertyKey
+    | PropertyKey
     | PropertyKey[]
     | Wildcard
     | AllowedKeysCallback;

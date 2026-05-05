@@ -6,7 +6,7 @@ import { isBoundFunction } from './isBoundFunction.js';
 const { construct: reflectConstruct } = Reflect;
 const DUMMY_ARGS: never[] = [];
 const DUMMY_CONSTRUCTOR = function()
-{};
+{/* empty */};
 
 /**
  * Determine if a given argument is a constructor.

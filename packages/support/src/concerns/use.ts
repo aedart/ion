@@ -1,11 +1,9 @@
+import { type ConstructorLike } from '@aedart/contracts';
 import {
     type ConcernConfiguration,
     type ConcernConstructor,
     type ShorthandConfiguration,
 } from '@aedart/contracts/support/concerns';
-import {
-    type ConstructorLike
-} from "@aedart/contracts";
 import { AlreadyAppliedError, InvalidConcernError } from './exceptions/index.js';
 import { getOrCreateRegistry } from './getOrCreateRegistry.js';
 import { inject } from './inject.js';

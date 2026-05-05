@@ -1,24 +1,31 @@
-import { CONCERN_REGISTRY, type ConcernConstructor } from '@aedart/contracts/support/concerns';
+import { type ConstructorLike } from '@aedart/contracts';
+import {
+    CONCERN_REGISTRY,
+    type ConcernConstructor,
+    type WithConcernRegistry,
+} from '@aedart/contracts/support/concerns';
 import { AlreadyAppliedError } from './exceptions/index.js';
+import { hasConcernRegistry } from './hasConcernRegistry.js';
 
 /**
  * Merges concern registry
  *
- * @param target
+ * @param {ConstructorLike} target
  * @param {ConcernConstructor} concern
  * @param {Set<ConcernConstructor>} targetRegistry
  */
 export function mergeRegistry(
-    target: any,
+    target: ConstructorLike,
     concern: ConcernConstructor,
     targetRegistry: Set<ConcernConstructor>,
 ): void
 {
-    if (!Reflect.has(concern, CONCERN_REGISTRY)) {
+    if (!hasConcernRegistry(concern)) {
         return;
     }
 
-    const sourceRegistry: Set<ConcernConstructor> = (concern as any)[CONCERN_REGISTRY];
+    const sourceRegistry: Set<ConcernConstructor> =
+        (concern as WithConcernRegistry)[CONCERN_REGISTRY];
 
     // We use a standard for...of or convert to array for the cached loop,
     // but since Set doesn't have a length index, we use the Set iterator.

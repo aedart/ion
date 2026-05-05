@@ -44,7 +44,7 @@ export const defaultMergeCallback: MergeCallback = function(
         && typeof value === 'object'
         && isCloneable(value)
     ) {
-        const clone = (value)[CLONE]();
+        const clone = value[CLONE]();
 
         if (clone === null || typeof clone !== 'object') {
             throw new MergeError(
@@ -97,7 +97,7 @@ export const defaultMergeCallback: MergeCallback = function(
             // 1. Arrays, and array-like...
             const isArray: boolean = Array.isArray(
                 value,
-            );  
+            );
             if (isArray || isConcatSpreadable(value) || isSafeArrayLike(value)) {
                 // If required to merge with existing value, if one exists...
                 if (

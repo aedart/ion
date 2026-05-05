@@ -86,7 +86,7 @@ function resolveKeyValue(
 )
 {
     if (typeof koc === 'function') {
-        const entry: MetaEntry = (koc)(target as object, context);
+        const entry: MetaEntry = koc(target as object, context);
 
         return { key: entry.key, val: entry.value };
     }

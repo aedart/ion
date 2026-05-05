@@ -1,10 +1,9 @@
 import { LogicalError } from '@aedart/support/exceptions';
-import { isException } from "@aedart/support/reflections";
-import { describe, expect, test, assert } from 'vitest';
+import { isException } from '@aedart/support/reflections';
+import { assert, describe, expect, test } from 'vitest';
 
 describe('@aedart/support/exceptions', () => {
     describe('isException', () => {
-        
         test('returns true when exception name matches', () => {
             const error = new LogicalError('Something went wrong');
 
@@ -33,14 +32,12 @@ describe('@aedart/support/exceptions', () => {
             const error: unknown = new LogicalError('Narrow me');
 
             if (isException<LogicalError>(error, 'LogicalError')) {
-                // Vitest/TypeScript: If this compiles and runs, 
+                // Vitest/TypeScript: If this compiles and runs,
                 // 'error' is successfully narrowed to LogicalError here.
                 expect(error.name).toBe('LogicalError');
             } else {
-                
                 assert.fail('Should have narrowed to LogicalError');
             }
         });
-        
     });
 });

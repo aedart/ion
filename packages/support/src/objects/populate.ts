@@ -76,7 +76,7 @@ export function populate<
         if (safe && allowedCollection !== null) {
             const isAllowed = (allowedCollection instanceof Set)
                 ? allowedCollection.has(key)
-                : (allowedCollection).includes(key);
+                : allowedCollection.includes(key);
 
             if (!isAllowed) {
                 continue;
