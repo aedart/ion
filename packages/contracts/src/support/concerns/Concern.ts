@@ -3,5 +3,7 @@
  *
  * A wrapper for a specific trait-like behaviour.
  */
-export default interface Concern {
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export default interface Concern
+{
 }
