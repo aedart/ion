@@ -23,7 +23,7 @@ export function appliedConcerns(target: unknown): ConcernConstructor[]
 
     while (constructor !== null && constructor !== Object) {
         if (hasConcernRegistry(constructor as ConstructorLike)) {
-            // @ts-expect-error constructor has a concerns registry at this point
+            // @ts-expect-error constructor has a concern registry at this point
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const registry: Set<ConcernConstructor> = constructor[CONCERN_REGISTRY];
 
