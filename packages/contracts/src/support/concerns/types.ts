@@ -1,5 +1,6 @@
 import Concern from './Concern.js';
 import ConcernConstructor from './ConcernConstructor.js';
+import { ConstructorLike } from "../../types.js";
 
 /**
  * Alias Configuration
@@ -40,3 +41,12 @@ export const CONCERN_REGISTRY: unique symbol = Symbol(
 export const APPLIED_ALIASES: unique symbol = Symbol(
     '@aedart/contracts/support/concerns/applied-aliases',
 );
+
+/**
+ * Class that has a concern registry
+ * 
+ * @see {@link CONCERN_REGISTRY}
+ */
+export type WithConcernRegistry<T extends ConstructorLike = ConstructorLike> = T & {
+    [CONCERN_REGISTRY]: Set<ConcernConstructor>
+}
