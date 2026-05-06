@@ -25,7 +25,7 @@ export default tseslint.config(
         ],
         languageOptions: {
             parserOptions: {
-                project: true, // Modern way to say "use nearest tsconfig"
+                projectService: true,
                 tsconfigRootDir: import.meta.dirname,
             },
             globals: {
