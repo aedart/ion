@@ -1,5 +1,5 @@
 import { type ConstructorLike } from '@aedart/contracts';
-import {APPLIED_ALIASES, type WithAppliedAliases} from '@aedart/contracts/support/concerns';
+import { APPLIED_ALIASES, type WithAppliedAliases } from '@aedart/contracts/support/concerns';
 
 /**
  * Determine if target has an applied aliases map
