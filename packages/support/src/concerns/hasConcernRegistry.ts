@@ -12,5 +12,6 @@ export function hasConcernRegistry(
     target: ConstructorLike,
 ): target is WithConcernRegistry<typeof target>
 {
-    return Reflect.has(target, CONCERN_REGISTRY);
+    return Reflect.has(target, CONCERN_REGISTRY)
+        && (target as WithConcernRegistry<typeof target>)[CONCERN_REGISTRY] instanceof Set;
 }

@@ -23,9 +23,7 @@ export function mergeRegistry(
     if (!hasConcernRegistry(concern)) {
         return;
     }
-
-    const sourceRegistry: Set<ConcernConstructor> =
-        (concern as WithConcernRegistry)[CONCERN_REGISTRY];
+    const sourceRegistry: Set<ConcernConstructor> = (concern as WithConcernRegistry<typeof concern>)[CONCERN_REGISTRY];
 
     // We use a standard for...of or convert to array for the cached loop,
     // but since Set doesn't have a length index, we use the Set iterator.

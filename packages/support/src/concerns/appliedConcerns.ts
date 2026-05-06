@@ -17,13 +17,13 @@ export function appliedConcerns(target: unknown): ConcernConstructor[]
 
     let constructor = (typeof target === 'function')
         ? target as ConstructorLike
-        : (target as object).constructor as ConstructorLike;
+        : target.constructor as ConstructorLike;
 
     const allConcerns = new Set<ConcernConstructor>();
 
     while (constructor !== null && constructor !== Object) {
         if (hasConcernRegistry(constructor)) {
-            const registry = constructor[CONCERN_REGISTRY];
+            const registry: Set<ConcernConstructor> = constructor[CONCERN_REGISTRY];
 
             // Standard loop over the Set iterator for performance
             for (const concern of registry) {

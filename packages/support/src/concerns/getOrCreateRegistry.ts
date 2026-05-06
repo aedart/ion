@@ -24,5 +24,5 @@ export function getOrCreateRegistry(target: ConstructorLike): Set<ConcernConstru
         });
     }
 
-    return (target as WithConcernRegistry)[CONCERN_REGISTRY];
+    return (target as WithConcernRegistry<typeof target>)[CONCERN_REGISTRY];
 }

@@ -19,7 +19,7 @@ export function getAliasSource(target: unknown, key: PropertyKey): AliasSource |
 
     let constructor = (typeof target === 'function')
         ? target as ConstructorLike
-        : (target as object).constructor as ConstructorLike;
+        : target.constructor as ConstructorLike;
 
     while (constructor !== null && constructor !== Object) {
         if (hasAppliedAliasesMap(constructor)) {

@@ -31,6 +31,6 @@ export function recordAlias(
         });
     }
 
-    const aliases: Map<PropertyKey, AliasSource> = (target as WithAppliedAliases)[APPLIED_ALIASES];
+    const aliases: Map<PropertyKey, AliasSource> = (target as WithAppliedAliases<typeof target>)[APPLIED_ALIASES];
     aliases.set(aliasKey, { concern: concern, original: originalKey });
 }
