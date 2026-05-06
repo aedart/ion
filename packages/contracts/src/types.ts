@@ -1,12 +1,12 @@
 /**
  * Constructor type
  */
-export type Constructor<T = unknown> = new(...args: any[]) => T;
+export type Constructor<T = unknown> = new(...args: unknown[]) => T;
 
 /**
  * Abstract constructor type
  */
-export type AbstractConstructor<T = unknown> = abstract new(...args: any[]) => T;
+export type AbstractConstructor<T = unknown> = abstract new(...args: unknown[]) => T;
 
 /**
  * Constructor Like
