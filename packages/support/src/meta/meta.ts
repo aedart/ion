@@ -1,9 +1,10 @@
 import { ConstructorLike } from '@aedart/contracts';
-import { MetaCallback, MetaEntry } from '@aedart/contracts/support/meta/index.js';
+import { MetaCallback } from '@aedart/contracts/support/meta/index.js';
 import { Key } from '@aedart/contracts/support/types.js';
 import { flush } from './flush.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
 import { MEMBER_TO_METADATA } from './registry.js';
+import { resolveKeyValue } from './resolveKeyValue.js';
 
 /**
  * Store metadata on a class or class member.
@@ -42,6 +43,8 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
         // 4. If it's a member decorator, stage the metadata
         const kind = context.kind === 'method' ? 'methods' : 'fields';
         const prefix = isStatic ? 'static.' : '';
+
+        // E.g. 'static.methods.playSound.volumne', 'fields.id.fetch_url'
         const path = `${prefix}${kind}.${String(context.name)}.${String(key)}`;
 
         metadataObj[path] = val;
@@ -58,38 +61,15 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
         context.addInitializer(function(this: unknown)
         {
             const constructor = isStatic
-                ? this
-                : ((this as object).constructor ?? Object.getPrototypeOf(this)?.constructor);
+                ? this as ConstructorLike
+                : ((this as object).constructor
+                    ?? (Object.getPrototypeOf(this) as object | undefined)?.constructor) as
+                        | ConstructorLike
+                        | undefined;
 
             if (constructor) {
-                flush(constructor as ConstructorLike, metadataObj);
+                flush(constructor, metadataObj);
             }
         });
     };
-}
-
-/**
- * Resolve key and value from the given arguments.
- *
- * @param {Key | MetaCallback} koc
- * @param {unknown} v
- * @param {unknown} target
- * @param {ClassDecoratorContext | ClassMemberDecoratorContext} context
- *
- * @returns {{ key: Key, val: unknown }}
- */
-function resolveKeyValue(
-    koc: Key | MetaCallback,
-    v: unknown,
-    target: unknown,
-    context: ClassDecoratorContext | ClassMemberDecoratorContext,
-)
-{
-    if (typeof koc === 'function') {
-        const entry: MetaEntry = koc(target as object, context);
-
-        return { key: entry.key, val: entry.value };
-    }
-
-    return { key: koc, val: v };
 }

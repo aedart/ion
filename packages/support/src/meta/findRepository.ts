@@ -21,7 +21,7 @@ export function findRepository(target: object | null): Repository | undefined
         }
 
         // 2. Move up to the prototype (parent class or parent prototype)
-        current = Object.getPrototypeOf(current);
+        current = Object.getPrototypeOf(current) as object;
     }
 
     return undefined;

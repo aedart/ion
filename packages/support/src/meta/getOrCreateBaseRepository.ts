@@ -20,7 +20,7 @@ export function getOrCreateBaseRepository(target: object): Repository
         return repo;
     }
 
-    const parent = findRepository(Object.getPrototypeOf(target));
+    const parent = findRepository(Object.getPrototypeOf(target) as object);
 
     repo = new MetaRepository(target, parent);
     registry.set(target, repo);

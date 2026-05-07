@@ -13,20 +13,23 @@ import { FLUSHED_METADATA, MEMBER_TO_METADATA } from './registry.js';
 export function discoverAndFlush(target: unknown): void
 {
     // A. Try to find the constructor (owner)
-    const constructor = isConstructor(target) ? target : (target as object)?.constructor;
+    const constructor = isConstructor(target)
+        ? target as ConstructorLike
+        : (target as object)?.constructor as ConstructorLike;
+
     if (!isConstructor(constructor)) {
         return;
     }
 
     // B. Check Symbol.metadata
-    const staged = (constructor as ConstructorLike)[Symbol.metadata];
+    const staged = constructor[Symbol.metadata];
     if (staged !== undefined && !FLUSHED_METADATA.has(staged as Record<string, unknown>)) {
-        return flush(constructor as ConstructorLike, staged as Record<string, unknown>);
+        return flush(constructor, staged as Record<string, unknown>);
     }
 
     // C. Discovery Fallback: Scan members for a link to the metadata object
     // We scan both static members (on constructor) and instance members (on prototype)
-    const sources = [constructor, (constructor as ConstructorLike).prototype];
+    const sources = [constructor, constructor.prototype as ConstructorLike];
     for (let i = 0, len = sources.length; i < len; i++) {
         const source = sources[i];
         if (!source) {
@@ -49,11 +52,11 @@ export function discoverAndFlush(target: unknown): void
                 continue;
             }
 
-            const val = descriptor.value;
+            const val = descriptor.value as unknown;
             if (typeof val === 'function' && MEMBER_TO_METADATA.has(val)) {
                 const metadataObj = MEMBER_TO_METADATA.get(val);
                 if (metadataObj) {
-                    return flush(constructor as ConstructorLike, metadataObj);
+                    return flush(constructor, metadataObj);
                 }
             }
         }

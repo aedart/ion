@@ -21,7 +21,10 @@ export default class MetaRepository implements Repository
     /**
      * The actual metadata store for this specific owner.
      */
-    readonly #data: Record<PropertyKey, unknown> = Object.create(null);
+    readonly #data: Record<PropertyKey, unknown> = Object.create(null) as Record<
+        PropertyKey,
+        unknown
+    >;
 
     /**
      * Create a new Metadata Repository instance.

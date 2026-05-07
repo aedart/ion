@@ -73,7 +73,7 @@ export default class Metadata
 
             // If querying instance members via the Class, pivot to the Prototype.
             if (root === 'methods' || root === 'fields') {
-                return (target as ConstructorLike).prototype;
+                return (target as ConstructorLike).prototype as object;
             }
         }
 

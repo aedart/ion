@@ -18,7 +18,7 @@ export function flush(owner: ConstructorLike, staged: Record<string, unknown>): 
 
     FLUSHED_METADATA.add(staged);
 
-    const prototype = owner.prototype;
+    const prototype = owner.prototype as object;
     const keys = Reflect.ownKeys(staged);
 
     for (let i = 0, len = keys.length; i < len; i++) {
