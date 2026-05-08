@@ -21,7 +21,7 @@ export const defaultMergeCallback: MergeCallback = function(
     target: MergeSourceInfo,
     next: NextCallback,
     options: Readonly<MergeOptions>,
-): any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+): unknown
 {
     let { value } = target;
     const {
