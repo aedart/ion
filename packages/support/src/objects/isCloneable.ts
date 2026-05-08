@@ -1,4 +1,4 @@
-import { CLONE } from '@aedart/contracts/support/objects';
+import { CLONE, Cloneable } from '@aedart/contracts/support/objects';
 import { hasMethod } from '../reflections/hasMethod.js';
 
 /**
@@ -11,7 +11,7 @@ import { hasMethod } from '../reflections/hasMethod.js';
  *
  * @return {boolean}
  */
-export function isCloneable(target: object): boolean
+export function isCloneable(target: object): target is Cloneable
 {
     return hasMethod(target, CLONE);
 }

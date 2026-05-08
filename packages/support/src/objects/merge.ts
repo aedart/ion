@@ -108,5 +108,5 @@ export function merge(
 
     // Direct merge call: merge(a, b, ...sources)
     // eslint-disable-next-line prefer-rest-params
-    return (new Merger()).of(...(arguments as unknown as object[])) as object;
+    return (new Merger()).of(...(arguments as unknown as object[]));
 }

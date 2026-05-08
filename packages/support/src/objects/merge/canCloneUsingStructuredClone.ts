@@ -14,8 +14,8 @@ import { TYPED_ARRAY_PROTOTYPE } from '@aedart/contracts/support/reflections';
  */
 export function canCloneUsingStructuredClone(value: object): boolean
 {
-    // 1. Handle Typed Arrays separately using prototype checking (V8-optimized)
-    if (TYPED_ARRAY_PROTOTYPE && TYPED_ARRAY_PROTOTYPE.isPrototypeOf(value)) {
+    // 1. Handle Typed Arrays separately using prototype checking
+    if (TYPED_ARRAY_PROTOTYPE && Object.prototype.isPrototypeOf.call(TYPED_ARRAY_PROTOTYPE, value)) {
         return true;
     }
 

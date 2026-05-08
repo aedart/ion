@@ -6,6 +6,7 @@ import {
     NextCallback,
     ObjectsMerger,
 } from '@aedart/contracts/support/objects';
+import { Constructor } from "@aedart/contracts";
 import { isKeyUnsafe } from '../../reflections/isKeyUnsafe.js';
 import MergeError from '../exceptions/MergeError.js';
 import DefaultMergeOptions from './DefaultMergeOptions.js';
@@ -39,22 +40,22 @@ export default class Merger implements ObjectsMerger
      */
     public using(options?: MergeCallback | MergeOptions): this
     {
-        return new (this.constructor as any)(options);
+        return new (this.constructor as Constructor<this>)(options);
     }
 
     /**
      * @inheritDoc
      */
-    public of(...sources: object[]): any
+    public of(...sources: object[]): object
     {
         const totalSources: number = sources.length;
         if (totalSources === 0) {
-            return Object.create(null);
+            return Object.create(null) as object;
         }
 
         // Ensure we don't mutate the first source by merging into a fresh object
         return this.merge(
-            [Object.create(null), ...sources],
+            [Object.create(null) as object, ...sources],
             this.#options,
             0,
         );
@@ -133,7 +134,7 @@ export default class Merger implements ObjectsMerger
                 continue;
             }
 
-            const value: any = Reflect.get(source, key);
+            const value: unknown = Reflect.get(source, key);
             const target: MergeSourceInfo = {
                 result,
                 key,
@@ -157,7 +158,7 @@ export default class Merger implements ObjectsMerger
                 );
             }
 
-            const mergedValue: any = options.callback!(target, next, options);
+            const mergedValue: unknown = options.callback!(target, next, options);
 
             Reflect.set(result, key, mergedValue);
         }

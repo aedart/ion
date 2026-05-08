@@ -90,66 +90,66 @@ export const defaultMergeCallback: MergeCallback = function(
         // -------------------------------------------------------------------------------------------------------- //
         // Null, Arrays and Objects
         case 'object':
-            if (value === null) {
-                return value;
-            }
-
-            // 1. Arrays, and array-like...
-            const isArray: boolean = Array.isArray(
-                value,
-            );
-            if (isArray || isConcatSpreadable(value) || isSafeArrayLike(value)) {
-                // If required to merge with existing value, if one exists...
-                if (
-                    options.mergeArrays === true
-                    && hasExisting
-                    && (isArray || Array.isArray(existingValue))
-                ) {
-                    // If either existing or new value is of the type array, merge values into
-                    // a new array.
-                    return mergeArrays()
-                        .using(options.arrayMergeOptions)
-                        .of(existingValue, value);
-                } else if (isArray) {
-                    // When not requested merged, just overwrite existing value with a new array,
-                    // if new value is an array.
-                    return mergeArrays()
-                        .using(options.arrayMergeOptions)
-                        .of(value);
+            {
+                if (value === null) {
+                    return value;
                 }
 
-                // For concat spreadable objects or array-like objects, the "basic object" merge logic
-                // will deal with them.
-            }
-
-            // 2. Standard Array handling (when mergeArrays is false)
-            if (isArray) {
-                return mergeArrays()
-                    .using(options.arrayMergeOptions)
-                    .of(value);
-            }
-
-            // 3. Cloneable / Native kinds
-            if (canCloneUsingStructuredClone(value)) {
-                return structuredClone(value);
-            }
-
-            // 4. Weak References
-            if (isWeakKind(value)) {
-                return value;
-            }
-
-            // 5. Basic Objects / Deep Recursion
-            if (
-                hasExisting
-                && existingValue !== null
-                && typeof existingValue === 'object'
-                && !Array.isArray(existingValue)
-            ) {
-                return next([existingValue, value], options, depth + 1);
-            }
-
-            return next([Object.create(null), value], options, depth + 1);
+                // 1. Arrays, and array-like...
+                const isArray: boolean = Array.isArray(value);
+                if (isArray || isConcatSpreadable(value) || isSafeArrayLike(value)) {
+                    // If required to merge with existing value, if one exists...
+                    if (
+                        options.mergeArrays === true
+                        && hasExisting
+                        && (isArray || Array.isArray(existingValue))
+                    ) {
+                        // If either existing or new value is of the type array, merge values into
+                        // a new array.
+                        return mergeArrays()
+                            .using(options.arrayMergeOptions)
+                            .of(existingValue as unknown[], value as unknown[]);
+                    } else if (isArray) {
+                        // When not requested merged, just overwrite existing value with a new array,
+                        // if new value is an array.
+                        return mergeArrays()
+                            .using(options.arrayMergeOptions)
+                            .of(value as unknown[]);
+                    }
+    
+                    // For concat spreadable objects or array-like objects, the "basic object" merge logic
+                    // will deal with them.
+                }
+    
+                // 2. Standard Array handling (when mergeArrays is false)
+                if (isArray) {
+                    return mergeArrays()
+                        .using(options.arrayMergeOptions)
+                        .of(value as unknown[]);
+                }
+    
+                // 3. Cloneable / Native kinds
+                if (canCloneUsingStructuredClone(value as object)) {
+                    return structuredClone(value);
+                }
+    
+                // 4. Weak References
+                if (isWeakKind(value as object)) {
+                    return value;
+                }
+    
+                // 5. Basic Objects / Deep Recursion
+                if (
+                    hasExisting
+                    && existingValue !== null
+                    && typeof existingValue === 'object'
+                    && !Array.isArray(existingValue)
+                ) {
+                    return next([existingValue, value as object], options, depth + 1);
+                }
+    
+                return next([Object.create(null) as object, value as object], options, depth + 1); 
+        }
 
         default:
             throw new MergeError(
