@@ -13,6 +13,7 @@ describe('@aedart/support/arrays', () => {
                 {
                     value: function()
                     {
+                        // eslint-disable-next-line prefer-rest-params
                         return arguments;
                     }(),
                     expected: true,
@@ -46,7 +47,7 @@ describe('@aedart/support/arrays', () => {
                 { value: new Set(), expected: false, name: 'Set' },
                 {
                     value: function()
-                    {},
+                    { /* empty */ },
                     expected: false,
                     name: 'Function',
                 },
@@ -75,6 +76,7 @@ describe('@aedart/support/arrays', () => {
                 {
                     value: function()
                     {
+                        // eslint-disable-next-line prefer-rest-params
                         return arguments;
                     }(),
                     expected: true,
@@ -92,7 +94,7 @@ describe('@aedart/support/arrays', () => {
                 { value: {}, expected: false, name: 'Object (without length property)' },
                 {
                     value: function()
-                    {},
+                    { /* empty */ },
                     expected: false,
                     name: 'Function',
                 },

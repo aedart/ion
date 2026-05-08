@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 describe('@aedart/support/ararys', () => {
     describe('isConcatSpreadable()', () => {
         test('can determine if object contains Symbol.isConcatSpreadable', () => {
-            const concatSpreadableArr: any[] = [1, 2, 3];
+            const concatSpreadableArr: unknown[] = [1, 2, 3];
 
             // @ts-expect-error Setting Symbol.isConcatSpreadable for testing purposes
             concatSpreadableArr[Symbol.isConcatSpreadable] = true;

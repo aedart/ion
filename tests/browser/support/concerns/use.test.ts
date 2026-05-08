@@ -1,4 +1,7 @@
 import {
+    type ConcernConstructor,
+} from '@aedart/contracts/support/concerns';
+import {
     AbstractConcern,
     AlreadyAppliedError,
     InjectionConflictError,
@@ -44,23 +47,30 @@ describe('@aedart/support/concerns', () => {
         }
 
         test('can inject concern properties into target class', () => {
+            
+            // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+            interface MyService extends TimestampConcern {}
+            
             @use(TimestampConcern)
             class MyService
             {
             }
 
-            const service: any = new MyService();
+            const service = new MyService();
 
             expect(service.getCreated()).toBe(12345);
         });
 
         test('can inject multiple concerns', () => {
+            
+            interface MultiService extends TimestampConcern, LoggerConcern {}
+            
             @use(TimestampConcern, LoggerConcern)
             class MultiService
             {
             }
 
-            const service: any = new MultiService();
+            const service = new MultiService();
 
             expect(service.getCreated()).toBe(12345);
             expect(service.log('test')).toBe('Log: test');
@@ -71,9 +81,9 @@ describe('@aedart/support/concerns', () => {
                 class NotAConcern
                 {
                 }
-
-                @use(NotAConcern as any)
-                class FailingClass
+                
+                @use(NotAConcern as ConcernConstructor) // Ignore "bad" type cast here - it's for failure testing!
+                class FailingClass // eslint-disable-line @typescript-eslint/no-unused-vars
                 {
                 }
             };
@@ -84,7 +94,7 @@ describe('@aedart/support/concerns', () => {
         test('throws InjectionConflictError when property already exists on target', () => {
             const action = () => {
                 @use(TimestampConcern)
-                class ConflictingClass
+                class ConflictingClass // eslint-disable-line @typescript-eslint/no-unused-vars
                 {
                     public getCreated(): number
                     {
@@ -97,6 +107,11 @@ describe('@aedart/support/concerns', () => {
         });
 
         test('can alias properties to avoid conflicts', () => {
+            
+            interface AliasedService extends TimestampConcern {
+                getTimestamp(): number;
+            }
+            
             @use({
                 concern: TimestampConcern,
                 aliases: { getCreated: 'getTimestamp' },
@@ -105,13 +120,21 @@ describe('@aedart/support/concerns', () => {
             {
             }
 
-            const service: any = new AliasedService();
+            const service = new AliasedService();
 
             expect(service.getTimestamp()).toBe(12345);
+            
+            // Ensure that "getCreated" method does not exist!
+            // eslint-disable-next-line @typescript-eslint/unbound-method
             expect(service.getCreated).toBeUndefined();
         });
 
         test('can alias properties using shorthand configuration', () => {
+
+            interface AliasedService extends TimestampConcern {
+                getTimestamp(): number;
+            }
+            
             @use(
                 [TimestampConcern, { getCreated: 'getTimestamp' }],
             )
@@ -119,13 +142,20 @@ describe('@aedart/support/concerns', () => {
             {
             }
 
-            const service: any = new AliasedService();
+            const service = new AliasedService();
 
             expect(service.getTimestamp()).toBe(12345);
+
+            // Ensure that "getCreated" method does not exist!
+            // eslint-disable-next-line @typescript-eslint/unbound-method
             expect(service.getCreated).toBeUndefined();
         });
 
         test('can exclude specific properties', () => {
+
+            // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+            interface ExcludedService extends LoggerConcern {}
+            
             @use({
                 concern: LoggerConcern,
                 excludes: ['log'],
@@ -134,8 +164,10 @@ describe('@aedart/support/concerns', () => {
             {
             }
 
-            const service: any = new ExcludedService();
+            const service = new ExcludedService();
 
+            // Ensure that "log" is not defined / excluded.
+            // eslint-disable-next-line @typescript-eslint/unbound-method
             expect(service.log).toBeUndefined();
         });
 
@@ -146,7 +178,7 @@ describe('@aedart/support/concerns', () => {
 
             const action = () => {
                 @use(TimestampConcern)
-                class Child extends Parent
+                class Child extends Parent // eslint-disable-line @typescript-eslint/no-unused-vars
                 {}
             };
 
@@ -156,7 +188,7 @@ describe('@aedart/support/concerns', () => {
         test('throws error when aliasing to "constructor"', () => {
             const action = () => {
                 @use([SecurityConcern, { someMethod: 'constructor' }])
-                class DangerousClass
+                class DangerousClass // eslint-disable-line @typescript-eslint/no-unused-vars
                 {}
             };
 
@@ -167,7 +199,7 @@ describe('@aedart/support/concerns', () => {
         test('throws error when aliasing to "__proto__"', () => {
             const action = () => {
                 @use([SecurityConcern, { someMethod: '__proto__' }])
-                class DangerousClass
+                class DangerousClass // eslint-disable-line @typescript-eslint/no-unused-vars
                 {}
             };
 
@@ -178,7 +210,7 @@ describe('@aedart/support/concerns', () => {
         test('throws error when aliasing to "prototype"', () => {
             const action = () => {
                 @use([SecurityConcern, { someMethod: 'prototype' }])
-                class DangerousClass
+                class DangerousClass // eslint-disable-line @typescript-eslint/no-unused-vars
                 {}
             };
 
@@ -199,6 +231,9 @@ describe('@aedart/support/concerns', () => {
             }
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+        interface CompositeConcern extends BaseBehavior {}
+        
         /**
          * Level 2: A Concern that uses another Concern
          */
@@ -211,6 +246,9 @@ describe('@aedart/support/concerns', () => {
             }
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+        interface FinalService extends CompositeConcern {}
+        
         /**
          * Level 3: The Target Class
          */
@@ -219,7 +257,7 @@ describe('@aedart/support/concerns', () => {
         {}
 
         test('can access methods from nested concerns', () => {
-            const service: any = new FinalService();
+            const service = new FinalService();
 
             // Directly from the primary concern
             expect(service.hello()).toBe('world');
@@ -244,7 +282,7 @@ describe('@aedart/support/concerns', () => {
                 // BaseBehavior is already part of CompositeConcern.
                 // Applying both manually should trigger the check.
                 @use(BaseBehavior, CompositeConcern)
-                class DoubleAppliedService
+                class DoubleAppliedService // eslint-disable-line @typescript-eslint/no-unused-vars
                 {}
             };
 
@@ -260,7 +298,7 @@ describe('@aedart/support/concerns', () => {
                 // CompositeConcern also brings in BaseBehavior,
                 // but ParentService already has it.
                 @use(CompositeConcern)
-                class ChildService extends ParentService
+                class ChildService extends ParentService // eslint-disable-line @typescript-eslint/no-unused-vars
                 {}
             };
 

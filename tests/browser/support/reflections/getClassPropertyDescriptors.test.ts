@@ -8,8 +8,9 @@ describe('@aedart/support/refelctions', () => {
     describe('getClassPropertyDescriptors()', () => {
         test('fails when target has no prototype', () => {
             const callback = () => {
-                const obj = Object.create(null);
+                const obj = Object.create(null) as object;
 
+                // @ts-expect-error object type is intentional to provoke error
                 getClassPropertyDescriptors(obj);
             };
 
@@ -22,14 +23,20 @@ describe('@aedart/support/refelctions', () => {
 
             class A
             {
-                set name(v) {}
+                set name(v) {
+                    /* empty */
+                }
                 get name() {
                     return null;
                 }
                 bar()
-                {}
+                {
+                    /* empty */
+                }
                 [MY_SYMBOL]()
-                {}
+                {
+                    /* empty */
+                }
             }
 
             // -------------------------------------------------------------------------------- //
@@ -70,19 +77,27 @@ describe('@aedart/support/refelctions', () => {
 
             class A
             {
-                set name(v) {}
+                set name(v) {
+                    /* empty */
+                }
                 get name() {
                     return null;
                 }
                 foo()
-                {}
+                {
+                    /* empty */
+                }
                 [MY_SYMBOL]()
-                {}
+                {
+                    /* empty */
+                }
             }
 
             class B extends A
             {
-                set bar(v) {}
+                set bar(v) {
+                    /* empty */
+                }
                 get bar() {
                     return null;
                 }
@@ -119,24 +134,34 @@ describe('@aedart/support/refelctions', () => {
 
             class A
             {
-                set name(v) {}
+                set name(v) {
+                    /* empty */
+                }
                 get name() {
                     return null;
                 }
                 foo()
-                {}
+                {
+                    /* empty */
+                }
                 [MY_SYMBOL]()
-                {}
+                {
+                    /* empty */
+                }
             }
 
             class B extends A
             {
-                set name(v) {}
+                set name(v) {
+                    /* empty */
+                }
                 get name() {
                     return null;
                 }
                 foo()
-                {}
+                {
+                    /* empty */
+                }
                 [MY_SYMBOL]()
                 {
                     return false;
@@ -179,18 +204,18 @@ describe('@aedart/support/refelctions', () => {
                     }
 
                     // Ensure does not match parent's descriptor...
-                    // @ts-expect-error Ignore descriptor property comparison here for testing purposes.
                     expect(
+                        // @ts-expect-error Ignore descriptor property comparison here for testing purposes.
                         descriptor[p] !== parentDescriptor[p],
-                        `${k}[${p}] matches parent descriptor property, but SHOULD NOT do so`,
+                        `${k}[${String(p)}] matches parent descriptor property, but SHOULD NOT do so`,
                     )
                         .toBeTruthy();
 
                     // Double check...
-                    // @ts-expect-error Ignore descriptor property comparison here for testing purposes.
                     expect(
+                        // @ts-expect-error Ignore descriptor property comparison here for testing purposes.
                         descriptor[p] === targetDescriptor[p],
-                        `${k}[${p}] does NOT match target property descriptor property!`,
+                        `${k}[${String(p)}] does NOT match target property descriptor property!`,
                     )
                         .toBeTruthy();
                 }
@@ -204,13 +229,15 @@ describe('@aedart/support/refelctions', () => {
             class A
             {
                 get age(): number {
-                    return 0;
+                    return 1 + Math.random();
                 }
             }
 
             class B extends A
             {
-                set age(value: number) {}
+                set age(value: number) {
+                    /* empty */
+                }
             }
 
             // -------------------------------------------------------------------------------- //
