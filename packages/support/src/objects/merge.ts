@@ -85,7 +85,9 @@ export function merge(a: object, b: object, ...sources: object[]): object;
  */
 export function merge(
     a?: object | MergeCallback | MergeOptions,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     b?: object,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ...sources: object[]
 ): ObjectsMerger | object
 {
@@ -104,6 +106,7 @@ export function merge(
         return new Merger(a as MergeCallback | MergeOptions);
     }
 
-    // Direct merge call: merge(a, b, ...)
-    return (new Merger()).of(...(arguments as unknown as object[]));
+    // Direct merge call: merge(a, b, ...sources)
+    // eslint-disable-next-line prefer-rest-params
+    return (new Merger()).of(...(arguments as unknown as object[])) as object;
 }
