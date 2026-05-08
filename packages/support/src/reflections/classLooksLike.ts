@@ -6,13 +6,17 @@ import { walkPrototype } from './walkPrototype.js';
 
 /**
  * Determine if target class looks like given blueprint.
- *
+ * 
+ * @template T The class (interface) type that the target is "tested" against
+ * 
  * @param {object} target
  * @param {ClassBlueprint} blueprint
- *
+ * 
+ * @returns {target is T}
+ * 
  * @throws {TypeError} If blueprint is invalid.
  */
-export function classLooksLike(target: object, blueprint: ClassBlueprint): boolean
+export function classLooksLike<T extends object>(target: object, blueprint: ClassBlueprint): target is T
 {
     const staticMembers = blueprint?.staticMembers;
     const members = blueprint?.members;
@@ -47,7 +51,7 @@ export function classLooksLike(target: object, blueprint: ClassBlueprint): boole
 
     // 2. Check Instance Members (Deep Traversal)
     if (numMembers > 0) {
-        const proto: object = (target as ConstructorLike).prototype;
+        const proto = (target as ConstructorLike).prototype as object;
         const list = members!;
 
         // Use Set for lookups if above threshold (16) to balance allocation overhead

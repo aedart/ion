@@ -16,6 +16,6 @@ export function* walkPrototype(target: object): Generator<PropertyKey>
             yield keys[i];
         }
 
-        current = Object.getPrototypeOf(current);
+        current = Object.getPrototypeOf(current) as object;
     }
 }

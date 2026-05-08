@@ -43,23 +43,25 @@ describe('@aedart/support/refelctions', () => {
             class A
             {
                 foo()
-                {}
+                { /* empty */ }
 
                 bar()
-                {}
+                { /* empty */ }
 
                 static sayHi()
-                {}
+                { /* empty */ }
             }
 
             class B extends A
             {
                 get zim() {
-                    return null;
+                    return 'sweet ' + new Date().getTime();
                 }
 
                 static goodBye()
-                {}
+                {
+                    return 'good bye';
+                }
             }
 
             // --------------------------------------------------------------------------------------- //
@@ -164,6 +166,33 @@ describe('@aedart/support/refelctions', () => {
                 )
                     .toBe(entry.expected);
             }
+        });
+
+        test('can determine if target is T (type), in TypeScript', () => {
+            
+            interface MyInterface {
+                foo: string;
+                
+                bar(): void;
+            }
+            
+            // NOTE: Do not "implement" interface in TS, for this test...
+            class A /*implements MyInterface*/
+            {
+                get foo(): string
+                {
+                    return 'foo ' + new Date().getTime();
+                }
+                
+                bar(): void
+                {
+                    return;
+                }
+            }
+
+            const result = classLooksLike<MyInterface>(A, { members: [ 'foo', 'bar' ] });
+            expect(result)
+                .toBeTruthy()
         });
     });
 });
