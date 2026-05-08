@@ -40,6 +40,12 @@ export default tseslint.config(
             }],
             // Disable rules that dprint handles to avoid conflicts
             '@typescript-eslint/indent': 'off',
+
+            // There is no "sane" way to define return type of the `@use()` decorator.
+            // This means that defining interfaces that extend concern classes is perhaps
+            // the "best" solution, given the limitations of TypeScript.
+            // @see /tests/browser/support/concerns/use.test.ts
+            "@typescript-eslint/no-unsafe-declaration-merging": "off"
         },
     },
     // 3. Browser-specific overrides for your centralized tests
