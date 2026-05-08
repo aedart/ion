@@ -18,7 +18,7 @@ export const DeDupe = function(mixin: MixinFunction): MixinFunction
     // @see https://github.com/justinfagnani/mixwith.js
 
     return wrap(mixin, (superclass) => {
-        return hasMixin(superclass.prototype, mixin)
+        return hasMixin(superclass.prototype as object, mixin)
             ? superclass
             : mixin(superclass);
     });

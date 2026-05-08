@@ -17,7 +17,7 @@ export function unwrap(wrapped: MixinFunction): MixinFunction
 
     if (Reflect.has(wrapped, WRAPPED_MIXIN)) {
         // @ts-expect-error WRAPPED_MIXIN is in wrapped at this point
-        return wrapped[WRAPPED_MIXIN];
+        return wrapped[WRAPPED_MIXIN] as MixinFunction;
     }
 
     return wrapped;

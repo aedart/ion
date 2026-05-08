@@ -28,7 +28,7 @@ export const Cached = function(mixin: MixinFunction): MixinFunction
         let cachedApplications: WeakMap<MixinFunction, object> | undefined =
             Reflect.has(superclass, CACHED_APPLICATIONS)
                 // @ts-expect-error CACHED_APPLICATIONS is in superclass at this point
-                ? superclass[CACHED_APPLICATIONS]
+                ? superclass[CACHED_APPLICATIONS] as WeakMap<MixinFunction, object>
                 : undefined;
 
         if (cachedApplications === undefined) {
