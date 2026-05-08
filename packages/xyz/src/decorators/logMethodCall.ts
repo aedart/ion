@@ -2,19 +2,19 @@ import DummyLogger from './DummyLogger.js';
 
 /**
  * Logs method call
- *
- * @param method
- * @param context
- *
- * @returns {(this:any, ...args: any[]) => any}
+ * 
+ * @param {(...args: unknown[]) => unknown} method
+ * @param {ClassMethodDecoratorContext} context
+ * 
+ * @returns {(this:object, ...methodArgs: unknown[]) => unknown}
  */
-export function logMethodCall(method: any, context: ClassMethodDecoratorContext)
+export function logMethodCall(method: (...args: unknown[]) => unknown, context: ClassMethodDecoratorContext)
 {
-    return function(this: any, ...args: any[])
+    return function(this: object, ...methodArgs: unknown[])
     {
         DummyLogger.log('LOG: Invoking method', context);
 
-        const result = method.call(this, ...args);
+        const result = method.call(this, ...methodArgs);
 
         DummyLogger.log('LOG: method was invoked');
 

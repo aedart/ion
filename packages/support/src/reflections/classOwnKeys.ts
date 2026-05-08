@@ -17,7 +17,7 @@ export function classOwnKeys(target: ConstructorLike, recursive = true): Propert
 {
     assertHasPrototypeProperty(target);
 
-    const proto: object = target.prototype;
+    const proto = target.prototype as object;
 
     if (!recursive) {
         return Reflect.ownKeys(proto);

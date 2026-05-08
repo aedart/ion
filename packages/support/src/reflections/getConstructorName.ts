@@ -14,7 +14,7 @@ export function getConstructorName(
 ): string | null
 {
     // Direct access via optional chaining is the fastest path in Node 24 V8.
-    const name: string | undefined = target?.name ?? target?.prototype?.constructor?.name;
+    const name: string | undefined = target?.name ?? (target?.prototype as object)?.constructor?.name;
 
     // Check for string type and non-zero length to filter out anonymous or invalid names.
     if (typeof name === 'string' && name.length > 0) {

@@ -5,16 +5,16 @@ export default class DummyLogger
 {
     /**
      * Log entries
-     * @type {any[]}
+     * @type {unknown[]}
      */
-    static entries: any[] = [];
+    static entries: unknown[] = [];
 
     /**
      * Log an entry...
      *
-     * @param {any} args
+     * @param {...unknown[]} args
      */
-    static log(...args: any): void
+    static log(...args: unknown[]): void
     {
         this.entries.push(args);
     }

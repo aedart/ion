@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import type { Page, PluginObject } from 'vuepress';
+import type { Page, PluginObject, PageData } from 'vuepress';
 
 /**
  * Options for the Last Updated formatter
@@ -37,7 +37,8 @@ export function lastUpdatedPlugin(options: LastUpdatedOptions = {}): PluginObjec
         extendsPage(page: Page): void
         {
             // Extract the Git timestamp (requires @vuepress/plugin-git)
-            const updatedTime = (page.data as any).git?.updatedTime;
+            // @ts-expect-error updatedTime "should" be in the git object.
+            const updatedTime = ((page.data as PageData).git as object)?.updatedTime as number;
 
             if (updatedTime) {
                 const formatted = DateTime.fromMillis(updatedTime)

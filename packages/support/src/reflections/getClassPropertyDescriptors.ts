@@ -21,7 +21,7 @@ export function getClassPropertyDescriptors(
 ): Record<PropertyKey, PropertyDescriptor>
 {
     assertHasPrototypeProperty(target);
-    const output: Record<PropertyKey, PropertyDescriptor> = Object.create(null);
+    const output = Object.create(null) as Record<PropertyKey, PropertyDescriptor>; 
 
     // If not recursive, we only care about the immediate prototype.
     if (!recursive) {

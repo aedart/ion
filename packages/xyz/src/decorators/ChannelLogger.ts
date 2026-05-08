@@ -16,9 +16,9 @@ export default class ChannelLogger
      * Log messages to a specific channel
      *
      * @param {string} channel
-     * @param {...any} args
+     * @param {...unknown} args
      */
-    static log(channel: string | symbol, ...args: any): void
+    static log(channel: string | symbol, ...args: unknown[]): void
     {
         const existing = ChannelLogger.channels.get(channel) ?? [];
         existing.push(args);
@@ -31,9 +31,9 @@ export default class ChannelLogger
      *
      * @param {string | symbol} channel
      *
-     * @returns {any[]}
+     * @returns {unknown[]}
      */
-    static entries(channel: string | symbol): any[]
+    static entries(channel: string | symbol): unknown[]
     {
         return ChannelLogger.channels.get(channel) ?? [];
     }
