@@ -9,7 +9,7 @@ import { has } from './has.js';
  *
  * @returns {boolean}
  */
-export function hasAll<T>(target: object, ...paths: Key[]): boolean
+export function hasAll(target: object, ...paths: Key[]): boolean
 {
     if (target === undefined || paths.length === 0) {
         return false;
