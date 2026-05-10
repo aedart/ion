@@ -9,6 +9,9 @@ describe('@aedart/support/exceptions', () => {
 
             const msg = 'Lorum Lipsum';
             const options = { cause: { details: 'Morus Esto buno' } };
+
+            // Safe: eslint doesn't understand that `wasThrown` is actually used!
+            // eslint-disable-next-line no-useless-assignment
             let wasThrown = false;
 
             try {

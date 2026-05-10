@@ -89,6 +89,8 @@ describe('@aedart/support/objects', () => {
 
         test('handles sparse arrays (holes)', () => {
             const target = {
+                // Safe: the empty hole in the array in for testing purpose...
+                // eslint-disable-next-line no-sparse-arrays
                 arr: [1, /* hole */, 3],
             };
 

@@ -82,7 +82,9 @@ describe('@aedart/support/objects', () => {
 
             set(target, '__proto__.polluted', true);
             expect(get(target, '__proto__.polluted')).toBeUndefined();
-            expect((target as any).polluted).toBeUndefined();
+
+            // @ts-expect-error Attempting to access "polluted" property is on purpose - and it should be undefined!
+            expect(target.polluted).toBeUndefined();
         });
     });
 });

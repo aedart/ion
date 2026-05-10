@@ -5,8 +5,10 @@ describe('@aedart/support/mixins', () => {
     describe('decorators', () => {
         describe('Bare', () => {
             test('mixin is on prototype chain', () => {
+                // @ts-expect-error Unknown base class in this case, ignore for testing purpose
                 const MyMixin = Bare((superclass) => class extends superclass {});
 
+                // @ts-expect-error Unknown base class in this case, ignore for testing purpose
                 class A extends MyMixin(class {})
                 {}
 
@@ -21,6 +23,7 @@ describe('@aedart/support/mixins', () => {
 
             test('can invoke methods from mixin, superclass and subclass', () => {
                 const MyMixin = Bare((superclass) =>
+                    // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                     class extends superclass {
                         foo()
                         {
@@ -37,6 +40,7 @@ describe('@aedart/support/mixins', () => {
                     }
                 }
 
+                // @ts-expect-error Unknown base class in this case, ignore for testing purpose
                 class B extends MyMixin(A)
                 {
                     fin()
@@ -47,7 +51,7 @@ describe('@aedart/support/mixins', () => {
 
                 // -------------------------------------------------------------------------- //
 
-                const instance = new B();
+                const instance = new B() as { foo(): string; bar(): string; fin(): string; };
 
                 expect(instance.foo(), 'mixin defined method not invoked')
                     .toEqual('foo');
@@ -65,6 +69,7 @@ describe('@aedart/support/mixins', () => {
                 // applied on, the mixin will overwrite it...
 
                 const MyMixin = Bare((superclass) =>
+                    // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                     class extends superclass {
                         foo()
                         {
@@ -81,12 +86,13 @@ describe('@aedart/support/mixins', () => {
                     }
                 }
 
+                // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                 class B extends MyMixin(A)
                 {}
 
                 // -------------------------------------------------------------------------- //
 
-                const instance = new B();
+                const instance = new B() as { foo(): string; };
 
                 expect(instance.foo(), 'mixin should overwrite superclass foo method')
                     .toEqual('bar');
@@ -94,6 +100,7 @@ describe('@aedart/support/mixins', () => {
 
             test('subclass methods overwrite mixin methods', () => {
                 const MyMixin = Bare((superclass) =>
+                    // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                     class extends superclass {
                         foo()
                         {
@@ -110,6 +117,7 @@ describe('@aedart/support/mixins', () => {
                     }
                 }
 
+                // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                 class B extends MyMixin(A)
                 {
                     foo()
@@ -127,6 +135,7 @@ describe('@aedart/support/mixins', () => {
             });
 
             test('subclass methods overwrite superclass methods', () => {
+                // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                 const MyMixin = Bare((superclass) => class extends superclass {});
 
                 class A
@@ -137,6 +146,7 @@ describe('@aedart/support/mixins', () => {
                     }
                 }
 
+                // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                 class B extends MyMixin(A)
                 {
                     foo()
@@ -155,9 +165,11 @@ describe('@aedart/support/mixins', () => {
 
             test('mixin can invoke superclass methods', () => {
                 const MyMixin = Bare((superclass) =>
+                    // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                     class extends superclass {
                         foo()
                         {
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                             return super.foo();
                         }
                     }
@@ -171,18 +183,20 @@ describe('@aedart/support/mixins', () => {
                     }
                 }
 
+                // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                 class B extends MyMixin(A)
                 {}
 
                 // -------------------------------------------------------------------------- //
 
-                const instance = new B();
+                const instance = new B() as { foo(): string; };
 
                 expect(instance.foo(), 'mixin should invoke superclass foo method')
                     .toEqual('weeee');
             });
 
             test('subclass can invoke parent methods', () => {
+                // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                 const MyMixin = Bare((superclass) => class extends superclass {});
 
                 class A
@@ -193,10 +207,12 @@ describe('@aedart/support/mixins', () => {
                     }
                 }
 
+                // @ts-expect-error Unknown superclass in this case, ignore for testing purpose
                 class B extends MyMixin(A)
                 {
                     foo()
                     {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                         return super.foo();
                     }
                 }

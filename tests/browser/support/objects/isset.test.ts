@@ -4,6 +4,7 @@ import { describe, expect, test } from 'vitest';
 describe('@aedart/support/objects', () => {
     describe('isset', () => {
         test('returns false when no object', () => {
+            // @ts-expect-error ignore type, for testing purpose
             expect(isset(undefined))
                 .toBeFalsy();
         });
@@ -42,7 +43,7 @@ describe('@aedart/support/objects', () => {
             expect(isset(target, 'b.c.name'), 'b.c.age should NOT be set')
                 .toBeFalsy();
 
-            // @ts-ignore
+            // @ts-expect-error ignore type(s) for testing purposes
             expect(isset(target, [undefined]), '[ undefined ] should NOT be set')
                 .toBeFalsy();
         });

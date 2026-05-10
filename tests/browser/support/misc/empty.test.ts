@@ -49,7 +49,7 @@ describe('@aedart/support/misc', () => {
                 typedArr,
                 new Date(),
                 function()
-                {},
+                {/* empty */},
                 Symbol('symbol'),
             ];
 
@@ -62,9 +62,9 @@ describe('@aedart/support/misc', () => {
         });
 
         test('can determine if "Arguments" is empty', () => {
-            const fn = function(...args: any[])
+            const fn = function(...args: unknown[])
             {
-                return arguments;
+                return args;
             };
 
             expect(empty(fn()), 'Arguments should be empty, when no args. provided for method call')

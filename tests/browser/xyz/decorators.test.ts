@@ -10,7 +10,7 @@ describe('@aedart/xyz', () => {
             const character = new Character();
             character.move();
 
-            const entries = DummyLogger.entries;
+            const entries = DummyLogger.entries as (Record<PropertyKey, unknown>[])[];
 
             // Debug
             // console.log(entries);
@@ -46,6 +46,7 @@ describe('@aedart/xyz', () => {
 
             class Foo
             {
+                // @ts-expect-error ignore decorator return type here...
                 @logMethodCall
                 bar()
                 {
@@ -58,7 +59,7 @@ describe('@aedart/xyz', () => {
 
             // --------------------------------------------------------------------------------- //
 
-            const entries = DummyLogger.entries;
+            const entries = DummyLogger.entries as (Record<PropertyKey, unknown>[])[];
 
             // Debug
             // console.log(entries);
@@ -90,6 +91,7 @@ describe('@aedart/xyz', () => {
         test('decorator is still applied in subclass', () => {
             class Foo
             {
+                // @ts-expect-error ignore decorator return type here...
                 @logMethodCall
                 hi()
                 {
@@ -105,7 +107,7 @@ describe('@aedart/xyz', () => {
 
             // --------------------------------------------------------------------------------- //
 
-            const entries = DummyLogger.entries;
+            const entries = DummyLogger.entries as (Record<PropertyKey, unknown>[])[];
 
             // Debug
             // console.log(entries);
@@ -122,6 +124,7 @@ describe('@aedart/xyz', () => {
         test('decorator is invoked when method overwritten', () => {
             class Foo
             {
+                // @ts-expect-error ignore decorator return type here...
                 @logMethodCall
                 hi()
                 {
@@ -188,29 +191,25 @@ describe('@aedart/xyz', () => {
 
                         // The addInitializer() is really a life-line in that we can obtain the
                         // class that a given "target" belongs to, using "this" or its prototype...
-                        // @ts-ignore
-                        context.addInitializer(function(thisArg: unknown)
+
+                        context.addInitializer(function(this: unknown)
                         {
                             ChannelLogger.log(
                                 channel,
                                 '@init',
                                 context.name,
                                 context.kind,
-                                // @ts-expect-error ignore private and static
-                                context.static,
+                                (context as ClassMemberDecoratorContext).static,
                                 // To obtain the "class" of the target...
 
-                                // @ts-expect-error ignore private and static
-                                context.static
-                                    // @ts-expect-error ignore thisArg for now
+                                (context as ClassMemberDecoratorContext).static
                                     ? this
-                                    // @ts-expect-error ignore thisArg for now
-                                    : Reflect.getPrototypeOf(this)?.constructor,
+                                    : Reflect.getPrototypeOf(this as object)?.constructor,
                             );
                         });
                     } else {
-                        // @ts-expect-error
-                        return function(initialValue)
+                        // @ts-expect-error Ignore return of function here...
+                        return function()
                         {
                             ChannelLogger.log(
                                 channel,
@@ -223,10 +222,8 @@ describe('@aedart/xyz', () => {
                                     // @ts-expect-error ignore thisArg for now
                                     ? this
                                     // @ts-expect-error ignore thisArg for now
-                                    : Reflect.getPrototypeOf(this).constructor,
+                                    : Reflect.getPrototypeOf(this as object).constructor,
                             );
-
-                            return initialValue;
                         };
                     }
                 };
@@ -239,11 +236,11 @@ describe('@aedart/xyz', () => {
             {
                 // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('private id')
-                #id = 1234;
+                #id = 1234; // eslint-disable-line no-unused-private-class-members
 
                 // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('static private status')
-                static #status = 'on';
+                static #status = 'on'; // eslint-disable-line no-unused-private-class-members
 
                 // @ts-expect-error ignore unable to resolve property decorator signature
                 @decorator('public url')
@@ -254,7 +251,7 @@ describe('@aedart/xyz', () => {
                 static host = 'example.org';
 
                 @decorator('accessor query')
-                accessor query: Record<PropertyKey, any> = {};
+                accessor query: Record<PropertyKey, unknown> = {};
 
                 @decorator('static accessor protocol')
                 static accessor protocol = 'https';
@@ -283,33 +280,36 @@ describe('@aedart/xyz', () => {
 
                 @decorator('public foo')
                 foo()
-                {}
+                {/* empty */}
 
                 @decorator('static public bar')
                 static bar()
-                {}
+                {/* empty */}
 
                 @decorator('private call')
                 #call()
-                {}
+                // eslint-disable-line no-unused-private-class-members
+                {/* empty */}
 
                 @decorator('static private ping')
                 static #ping()
-                {}
+                // eslint-disable-line no-unused-private-class-members
+                {/* empty */}
             }
 
             // a) All static decorated members are initialised, without need to initialise class instance.
             // b) When class instance is made, then it will run "addInitializer" for all decorated members.
-            const x = new Service();
+            // const x = new Service();
+            new Service();
             // x.foo(); // No need, the "addInitializer" callback is invoked.
 
             // --------------------------------------------------------------------------------- //
 
             const entries = ChannelLogger.entries(channel);
-            for (const entry of entries) {
-                // Debug
-                // console.log(entry);
-            }
+            // Debug
+            // for (const entry of entries) {
+            //     console.log(entry);
+            // }
 
             // If we have entries, then test passes... (test is more intended for manual review of what was logged)
             expect(entries.length)

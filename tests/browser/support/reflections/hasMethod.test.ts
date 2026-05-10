@@ -44,9 +44,9 @@ describe('@aedart/support/refelctions', () => {
 
             for (const entry of data) {
                 expect(
-                    // @ts-ignore
+                    // @ts-expect-error Ignore type of value for testing purpose
                     hasAllMethods(entry.value, ...entry.methods),
-                    `${entry.name} was expected to ${entry.expected.toString()}`,
+                    `${entry.name} was expected to ${String(entry.expected)}`,
                 )
                     .toBe(entry.expected);
             }
@@ -95,9 +95,9 @@ describe('@aedart/support/refelctions', () => {
 
             for (const entry of data) {
                 expect(
-                    // @ts-ignore
+                    // @ts-expect-error Ignore type of value for testing purpose
                     hasMethod(entry.value, entry.method),
-                    `${entry.name} was expected to ${entry.expected.toString()}`,
+                    `${entry.name} was expected to ${String(entry.expected)}`,
                 )
                     .toBe(entry.expected);
             }

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import type { Page, PluginObject, PageData } from 'vuepress';
+import type { Page, PageData, PluginObject } from 'vuepress';
 
 /**
  * Options for the Last Updated formatter

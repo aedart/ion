@@ -23,8 +23,7 @@ describe('@aedart/support/refelctions', () => {
                 expect(
                     // @ts-expect-error Ignoring argument type for testing purposes
                     isKeySafe(data.value),
-                    // @ts-expect-error Ignoring argument type for testing purposes
-                    `${data.name} was expected to ${data.safe.toString()}`,
+                    `${data.name} was expected to ${String(data.safe)}`, // eslint-disable-line @typescript-eslint/restrict-template-expressions
                 )
                     .toBe(data.safe);
             }
@@ -37,8 +36,7 @@ describe('@aedart/support/refelctions', () => {
                 expect(
                     // @ts-expect-error Ignoring argument type for testing purposes
                     isKeyUnsafe(data.value),
-                    // @ts-expect-error Ignoring argument type for testing purposes
-                    `${data.name} was expected to ${data.safe.toString()}`,
+                    `${data.name} was expected to ${String(data.safe)}`, // eslint-disable-line @typescript-eslint/restrict-template-expressions
                 )
                     .toBe(!data.safe);
             }

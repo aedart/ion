@@ -18,16 +18,16 @@ describe('@aedart/support/refelctions', () => {
                 { value: Array, expected: true, name: 'array (object)' },
                 {
                     value: function()
-                    {},
+                    {/* empty */},
                     expected: true,
                     name: 'function',
                 },
-                { value: () => {}, expected: true, name: 'function (arrow)' },
+                { value: () => {/* empty */}, expected: true, name: 'function (arrow)' },
             ];
 
-            data.forEach((entry, index) => {
+            data.forEach((entry) => {
                 const result = isCallable(entry.value);
-                expect(result, `${entry.name} was expected to be ${entry.expected}`)
+                expect(result, `${entry.name} was expected to be ${String(entry.expected)}`)
                     .toBe(entry.expected);
             });
         });

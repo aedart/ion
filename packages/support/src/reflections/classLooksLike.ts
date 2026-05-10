@@ -6,17 +6,20 @@ import { walkPrototype } from './walkPrototype.js';
 
 /**
  * Determine if target class looks like given blueprint.
- * 
+ *
  * @template T The class (interface) type that the target is "tested" against
- * 
+ *
  * @param {object} target
  * @param {ClassBlueprint} blueprint
- * 
+ *
  * @returns {target is T}
- * 
+ *
  * @throws {TypeError} If blueprint is invalid.
  */
-export function classLooksLike<T extends object>(target: object, blueprint: ClassBlueprint): target is T
+export function classLooksLike<T extends object>(
+    target: object,
+    blueprint: ClassBlueprint,
+): target is T
 {
     const staticMembers = blueprint?.staticMembers;
     const members = blueprint?.members;

@@ -73,12 +73,12 @@ describe('@aedart/vuepress-utils/navigation', () => {
             // console.log(result);
 
             const fullPath = archiveMock.path + path;
-            const hasFullPathKey = result.hasOwnProperty(fullPath);
+            const hasFullPathKey = Reflect.has(result, fullPath);
             expect(hasFullPathKey, 'Full path key does not exist in sidebar config object')
                 .toBeTruthy();
 
             const pages = result[fullPath] as SidebarGroupOptions[];
-            expect(pages.length, 'No pages are exported')
+            expect((pages as unknown[]).length, 'No pages are exported')
                 .not
                 .toBe(0);
 
@@ -87,7 +87,10 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 // console.log(page);
 
                 const isPrefixed = (page as string).startsWith(fullPath);
-                expect(isPrefixed, `Page path at index ${index} is not prefixed: ${page}`)
+                expect(
+                    isPrefixed,
+                    `Page path at index ${index} is not prefixed: ${String(page.link)}`,
+                )
                     .toBeTruthy();
             });
         });

@@ -32,8 +32,8 @@ describe('@aedart/support/objects', () => {
             ];
 
             for (const data of dataSet) {
-                // @ts-ignore
                 expect(
+                    // @ts-expect-error value's type is ignored here for testing purpose...
                     isCloneable(data.value),
                     `${data.name} was expected to ${data.expected.toString()}`,
                 )

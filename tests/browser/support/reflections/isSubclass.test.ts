@@ -1,10 +1,11 @@
+import { type ConstructorLike } from '@aedart/contracts';
 import { isSubclass } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/refelctions', () => {
     describe('isSubclass()', () => {
         test('returns false if target has no prototype property', () => {
-            const target = Object.create(null);
+            const target = Object.create(null) as object;
             class A
             {}
 
@@ -13,11 +14,11 @@ describe('@aedart/support/refelctions', () => {
         });
 
         test('returns false if superclass has no prototype property', () => {
-            const target = Object.create(null);
+            const target = Object.create(null) as object;
             class A
             {}
 
-            expect(isSubclass(A, target))
+            expect(isSubclass(A, target as ConstructorLike))
                 .toBeFalsy();
         });
 

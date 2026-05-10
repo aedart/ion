@@ -4,13 +4,13 @@ import { describe, expect, test } from 'vitest';
 describe('@aedart/support/refelctions', () => {
     describe('hasPrototypeProperty', () => {
         test('can determine if object has prototype', () => {
-            const obj = Object.create({ prototype: {} });
+            const obj = Object.create({ prototype: {} }) as object;
             const objWithProto = {
                 __proto__: function()
-                {},
+                {/* empty */},
             };
 
-            const nullObj = Object.create(null);
+            const nullObj = Object.create(null) as object;
             const objWithUndefinedProto = { __proto__: undefined };
             const objWithPrototypeNull = { prototype: null };
 
@@ -46,8 +46,8 @@ describe('@aedart/support/refelctions', () => {
         });
 
         test('can determine if function has prototype', () => {
-            const fn = function()
-            {};
+            const fn = function(): void
+            {/* empty */};
             const arrowFn = () => true;
 
             expect(hasPrototypeProperty(fn), 'function should have a prototype')

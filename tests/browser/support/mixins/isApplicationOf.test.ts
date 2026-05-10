@@ -15,11 +15,11 @@ describe('@aedart/support/mixins', () => {
 
             // -------------------------------------------------------------------------- //
 
-            const resultA = isApplicationOf(appliedA.prototype, MyMixinA);
+            const resultA = isApplicationOf(appliedA.prototype as object, MyMixinA);
             expect(resultA, 'should be application of mixin a')
                 .toBeTruthy();
 
-            const resultB = isApplicationOf(appliedB.prototype, MyMixinA);
+            const resultB = isApplicationOf(appliedB.prototype as object, MyMixinA);
             expect(resultB, 'should NOT be application of mixin a')
                 .toBeFalsy();
         });
@@ -32,7 +32,7 @@ describe('@aedart/support/mixins', () => {
 
             // -------------------------------------------------------------------------- //
 
-            const result = isApplicationOf(Wrapped(class {}).prototype, MyMixin);
+            const result = isApplicationOf(Wrapped(class {}).prototype as object, MyMixin);
             expect(result, 'should be application of wrapped mixin')
                 .toBeTruthy();
         });

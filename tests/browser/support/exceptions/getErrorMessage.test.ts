@@ -27,6 +27,8 @@ describe('@aedart/support/exceptions', () => {
                 'Everyone just loves the saltyness of popcorn kebab brushd with sugar.';
 
             try {
+                // Throwing a string here is on purpose, for testing purposes...
+                // eslint-disable-next-line @typescript-eslint/only-throw-error
                 throw 'Some expression';
             } catch (e) {
                 result = getErrorMessage(e, defaultMessage);

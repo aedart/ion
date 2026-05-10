@@ -119,10 +119,10 @@ describe('@aedart/vuepress-utils/navigation', () => {
                 // Debug
                 // console.log(link, arr);
 
-                expect(arr.length, `${link} appears to have no children`)
+                expect((arr as unknown[]).length, `${link} appears to have no children`)
                     .toBeGreaterThan(0);
 
-                (arr as Record<PropertyKey, any>[]).forEach((child, index) => {
+                (arr as Record<PropertyKey, unknown>[]).forEach((child) => {
                     // Debug
                     // console.log(child);
 
@@ -131,7 +131,7 @@ describe('@aedart/vuepress-utils/navigation', () => {
                     children.forEach((link) => {
                         expect(
                             link.startsWith(archive.path),
-                            `${link} was not prefixed with archive path (${archive.path})`,
+                            `${link} was not prefixed with archive path (${String(archive.path)})`,
                         )
                             .toBeTruthy();
                     });

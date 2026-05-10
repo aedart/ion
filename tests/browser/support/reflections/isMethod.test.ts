@@ -1,7 +1,7 @@
 import { isMethod } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
-describe('@aedart/support/refelctions', () => {
+describe('@aedart/support/reflections', () => {
     describe('isMethod', () => {
         test('can determine if property is a class method', () => {
             const MY_PROP = Symbol('@my_prop');
@@ -10,19 +10,21 @@ describe('@aedart/support/refelctions', () => {
             {
                 name = 'Olaf';
                 [MY_PROP] = 23;
+
+                // eslint-disable-next-line no-unused-private-class-members
                 #title = '';
 
                 get age() {
-                    return 45;
+                    return Math.random();
                 } // Checks the actual return type...
                 set title(v: string) {
                     this.#title = v;
                 }
 
                 foo()
-                {}
+                {/* empty */}
                 [MY_METHOD]()
-                {}
+                {/* empty */}
             }
 
             const instance = new A();

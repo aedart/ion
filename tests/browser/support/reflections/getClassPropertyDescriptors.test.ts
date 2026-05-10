@@ -207,7 +207,9 @@ describe('@aedart/support/refelctions', () => {
                     expect(
                         // @ts-expect-error Ignore descriptor property comparison here for testing purposes.
                         descriptor[p] !== parentDescriptor[p],
-                        `${k}[${String(p)}] matches parent descriptor property, but SHOULD NOT do so`,
+                        `${k}[${
+                            String(p)
+                        }] matches parent descriptor property, but SHOULD NOT do so`,
                     )
                         .toBeTruthy();
 

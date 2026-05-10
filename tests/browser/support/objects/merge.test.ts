@@ -51,10 +51,10 @@ describe('@aedart/support/objects', () => {
 
             for (const key of keys) {
                 // @ts-expect-error ignoring type for testing purposes
-                const expected = b[key];
+                const expected = b[key]; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
 
                 // @ts-expect-error ignoring type for testing purposes
-                expect(result[key], `Incorrect value for key ${key}`)
+                expect(result[key], `Incorrect value for key ${String(key)}`)
                     .toBe(expected);
             }
         });
@@ -74,6 +74,7 @@ describe('@aedart/support/objects', () => {
             // Debug
             // console.log('result', result);
 
+            // @ts-expect-error foo should be undefined in this case.
             expect(result.foo, 'Value should be undefined')
                 .toBeUndefined();
         });
@@ -95,6 +96,7 @@ describe('@aedart/support/objects', () => {
             // Debug
             // console.log('result', result);
 
+            // @ts-expect-error foo should NOT be undefined in this case.
             expect(result.foo, 'Value should NOT be undefined')
                 .toBe(a.foo);
         });
@@ -110,13 +112,13 @@ describe('@aedart/support/objects', () => {
             // --------------------------------------------------------------------- //
 
             const result = merge()
-                .using((target, next, options) => {
+                .using((target) => {
                     const { key, value } = target;
                     if (key === 'b') {
-                        return value + 1;
+                        return (value as number) + 1;
                     }
 
-                    return value;
+                    return value as number;
                 })
                 .of(a, b);
 
@@ -241,7 +243,7 @@ describe('@aedart/support/objects', () => {
 
             for (const key of keys) {
                 // @ts-expect-error ignoring type for testing purposes
-                const expected = b[key];
+                const expected = b[key]; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
 
                 expect(result[key], `Incorrect value for symbol key`)
                     .toBe(expected);
@@ -307,7 +309,7 @@ describe('@aedart/support/objects', () => {
                 };
                 const b = {
                     'arr': [function()
-                    {}],
+                    {/* empty */}],
                 };
 
                 return merge(a, b);
@@ -509,8 +511,8 @@ describe('@aedart/support/objects', () => {
                 'foo': null,
             };
             const b = {
-                'foo': function()
-                {},
+                'foo': function(): void
+                {/* empty */},
             };
 
             // --------------------------------------------------------------------- //
@@ -519,12 +521,14 @@ describe('@aedart/support/objects', () => {
                 .using({
                     mergeArrays: true,
                 })
-                .of(a, b);
+                .of(a, b) as { foo(): void; };
 
             expect(Reflect.has(result, 'foo'), 'Key with function value not merged')
                 .toBeTruthy();
 
+            // eslint-disable-next-line @typescript-eslint/unbound-method
             expect(result.foo, 'Function not referenced in result')
+                // eslint-disable-next-line @typescript-eslint/unbound-method
                 .toBe(b.foo);
         });
 

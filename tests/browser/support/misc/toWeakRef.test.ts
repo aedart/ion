@@ -10,7 +10,7 @@ describe('@aedart/support/misc', () => {
             ];
 
             targets.forEach((target, index) => {
-                // @ts-ignore
+                // @ts-expect-error Null is tested here on purposes.
                 expect(toWeakRef(target), `Target at index ${index} should be undefined`)
                     .toBeUndefined();
             });

@@ -1,6 +1,4 @@
-import {
-    type ConcernConstructor,
-} from '@aedart/contracts/support/concerns';
+import { type ConcernConstructor } from '@aedart/contracts/support/concerns';
 import {
     AbstractConcern,
     AlreadyAppliedError,
@@ -47,10 +45,9 @@ describe('@aedart/support/concerns', () => {
         }
 
         test('can inject concern properties into target class', () => {
-            
             // eslint-disable-next-line @typescript-eslint/no-empty-object-type
             interface MyService extends TimestampConcern {}
-            
+
             @use(TimestampConcern)
             class MyService
             {
@@ -62,9 +59,8 @@ describe('@aedart/support/concerns', () => {
         });
 
         test('can inject multiple concerns', () => {
-            
             interface MultiService extends TimestampConcern, LoggerConcern {}
-            
+
             @use(TimestampConcern, LoggerConcern)
             class MultiService
             {
@@ -81,7 +77,7 @@ describe('@aedart/support/concerns', () => {
                 class NotAConcern
                 {
                 }
-                
+
                 @use(NotAConcern as ConcernConstructor) // Ignore "bad" type cast here - it's for failure testing!
                 class FailingClass // eslint-disable-line @typescript-eslint/no-unused-vars
                 {
@@ -107,11 +103,10 @@ describe('@aedart/support/concerns', () => {
         });
 
         test('can alias properties to avoid conflicts', () => {
-            
             interface AliasedService extends TimestampConcern {
                 getTimestamp(): number;
             }
-            
+
             @use({
                 concern: TimestampConcern,
                 aliases: { getCreated: 'getTimestamp' },
@@ -123,18 +118,17 @@ describe('@aedart/support/concerns', () => {
             const service = new AliasedService();
 
             expect(service.getTimestamp()).toBe(12345);
-            
+
             // Ensure that "getCreated" method does not exist!
             // eslint-disable-next-line @typescript-eslint/unbound-method
             expect(service.getCreated).toBeUndefined();
         });
 
         test('can alias properties using shorthand configuration', () => {
-
             interface AliasedService extends TimestampConcern {
                 getTimestamp(): number;
             }
-            
+
             @use(
                 [TimestampConcern, { getCreated: 'getTimestamp' }],
             )
@@ -152,10 +146,9 @@ describe('@aedart/support/concerns', () => {
         });
 
         test('can exclude specific properties', () => {
-
             // eslint-disable-next-line @typescript-eslint/no-empty-object-type
             interface ExcludedService extends LoggerConcern {}
-            
+
             @use({
                 concern: LoggerConcern,
                 excludes: ['log'],
@@ -233,7 +226,7 @@ describe('@aedart/support/concerns', () => {
 
         // eslint-disable-next-line @typescript-eslint/no-empty-object-type
         interface CompositeConcern extends BaseBehavior {}
-        
+
         /**
          * Level 2: A Concern that uses another Concern
          */
@@ -248,7 +241,7 @@ describe('@aedart/support/concerns', () => {
 
         // eslint-disable-next-line @typescript-eslint/no-empty-object-type
         interface FinalService extends CompositeConcern {}
-        
+
         /**
          * Level 3: The Target Class
          */

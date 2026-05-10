@@ -7,7 +7,7 @@ describe('@aedart/support/refelctions', () => {
             const callback = () => {
                 const obj = {
                     __proto__: function()
-                    {},
+                    {/* empty */},
                 };
 
                 assertHasPrototypeProperty(obj);

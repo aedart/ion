@@ -71,7 +71,7 @@ describe('@meta() decorator', () => {
         {
             @meta('status', 'base-method')
             doWork()
-            {}
+            {/* empty */}
 
             @meta('prop-type', 'string')
             name = '';
@@ -94,7 +94,7 @@ describe('@meta() decorator', () => {
         {
             @meta('version', 'v5-static')
             static connect()
-            {}
+            {/* empty */}
         }
 
         // new Level1()
@@ -146,13 +146,13 @@ describe('@meta() decorator', () => {
         {
             @meta('access', 'admin')
             doSomething()
-            {}
+            {/* empty */}
         }
 
         class Child extends Parent
         {
             override doSomething()
-            {} // Override method
+            {/* empty */} // Override method
         }
 
         // Method metadata is stored on the prototype, namespaced by method name
@@ -187,7 +187,7 @@ describe('@meta() decorator', () => {
         {
             @meta('op', 'sum')
             static compute()
-            {}
+            {/* empty */}
         }
 
         class Child extends Parent
@@ -234,6 +234,7 @@ describe('@meta() decorator', () => {
         test('immediately prevents pollution via class decorator', () => {
             const trigger = () => {
                 @meta('__proto__.polluted', true)
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 class Polluter
                 {}
             };
@@ -244,6 +245,7 @@ describe('@meta() decorator', () => {
 
         test('prevents pollution via static member decorator', () => {
             const trigger = () => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 class StaticPolluter
                 {
                     @meta('constructor.prototype.polluted', true)
@@ -261,7 +263,7 @@ describe('@meta() decorator', () => {
                 {
                     @meta('constructor.prototype.polluted', true)
                     someMethod()
-                    {}
+                    {/* empty */}
                 }
 
                 // CRITICAL: Must instantiate to trigger the member's addInitializer

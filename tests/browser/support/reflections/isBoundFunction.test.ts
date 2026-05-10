@@ -6,10 +6,10 @@ describe('@aedart/support/refelctions', () => {
         test('can determine function is bound', () => {
             const obj = {};
             const foo = function()
-            {};
+            {/* empty */};
             const boundFoo = foo.bind(obj);
             const bar = function()
-            {};
+            {/* empty */};
 
             expect(isBoundFunction(boundFoo), 'A should be bound')
                 .toBeTruthy();

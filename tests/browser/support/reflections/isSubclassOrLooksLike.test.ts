@@ -7,7 +7,7 @@ describe('@aedart/support/refelctions', () => {
             class A
             {
                 foo()
-                {}
+                {/* empty */}
             }
             class B extends A
             {}
@@ -15,7 +15,7 @@ describe('@aedart/support/refelctions', () => {
             class C
             {
                 foo()
-                {}
+                {/* empty */}
             }
 
             // --------------------------------------------------------------------------------------- //
@@ -59,7 +59,7 @@ describe('@aedart/support/refelctions', () => {
                     entry.superclass,
                     entry.blueprint,
                 );
-                expect(result, `${entry.name} was expected to ${entry.expected.toString()}`)
+                expect(result, `${entry.name} was expected to ${String(entry.expected)}`)
                     .toBe(entry.expected);
             }
         });

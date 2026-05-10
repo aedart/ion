@@ -24,11 +24,11 @@ describe('@aedart/support/refelctions', () => {
                 { value: /./, expected: false, name: 'RegExp (as string)' },
                 { value: {}, expected: false, name: 'object' },
                 { value: [], expected: false, name: 'array' },
-                { value: () => {}, expected: false, name: 'function (arrow)' },
+                { value: () => {/* empty */}, expected: false, name: 'function (arrow)' },
 
                 {
                     value: function()
-                    {},
+                    {/* empty */},
                     expected: false,
                     name: 'function',
                 },
@@ -42,17 +42,21 @@ describe('@aedart/support/refelctions', () => {
 
                 { value: classWithConstructor, expected: false, name: 'class' },
                 { value: class {}, expected: false, name: 'class (anonymous)' },
-                { value: classWithStaticMethod.foo, expected: false, name: 'static class method' },
+                {
+                    value: classWithStaticMethod.foo.bind(classWithStaticMethod),
+                    expected: false,
+                    name: 'static class method',
+                },
 
                 { value: new WeakMap(), expected: true, name: 'WeakMap (object)' },
                 { value: new WeakSet(), expected: true, name: 'WeakSet (object)' },
                 { value: new WeakRef({}), expected: true, name: 'WeakRef (object)' },
             ];
 
-            data.forEach((entry, index) => {
+            data.forEach((entry) => {
                 // @ts-expect-error Ignore value for testing purposes...
                 const result = isWeakKind(entry.value);
-                expect(result, `${entry.name} was expected to be ${entry.expected}`)
+                expect(result, `${entry.name} was expected to be ${String(entry.expected)}`)
                     .toBe(entry.expected);
             });
         });

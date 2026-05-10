@@ -11,7 +11,7 @@ describe('@aedart/support/mixins', () => {
 
             // -------------------------------------------------------------------------- //
 
-            const result = hasMixin(appliedA.prototype, MyMixin);
+            const result = hasMixin(appliedA.prototype as object, MyMixin);
             expect(result, 'should be application of mixin')
                 .toBeTruthy();
         });

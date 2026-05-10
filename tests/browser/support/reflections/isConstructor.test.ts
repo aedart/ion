@@ -24,11 +24,11 @@ describe('@aedart/support/refelctions', () => {
                 { value: /./, expected: false, name: 'RegExp (as string)' },
                 { value: {}, expected: false, name: 'object' },
                 { value: [], expected: false, name: 'array' },
-                { value: () => {}, expected: false, name: 'function (arrow)' },
+                { value: () => {/* empty */}, expected: false, name: 'function (arrow)' },
 
                 {
                     value: function()
-                    {},
+                    {/* empty */},
                     expected: true,
                     name: 'function',
                 },
@@ -45,12 +45,16 @@ describe('@aedart/support/refelctions', () => {
 
                 { value: classWithConstructor, expected: true, name: 'class' },
                 { value: class {}, expected: true, name: 'class (anonymous)' },
-                { value: classWithStaticMethod.foo, expected: false, name: 'static class method' },
+                {
+                    value: classWithStaticMethod.foo.bind(classWithStaticMethod),
+                    expected: false,
+                    name: 'static class method',
+                },
             ];
 
-            data.forEach((entry, index) => {
+            data.forEach((entry) => {
                 const result = isConstructor(entry.value);
-                expect(result, `${entry.name} was expected to be ${entry.expected}`)
+                expect(result, `${entry.name} was expected to be ${String(entry.expected)}`)
                     .toBe(entry.expected);
             });
         });

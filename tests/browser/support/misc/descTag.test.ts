@@ -6,9 +6,7 @@ describe('@aedart/support/misc', () => {
         test('can return default string description', () => {
             class Custom
             {
-                get [Symbol.toStringTag]() {
-                    return 'My Custom Tag';
-                }
+                readonly [Symbol.toStringTag] = 'My Custom Tag';
             }
 
             const values = [
@@ -20,7 +18,7 @@ describe('@aedart/support/misc', () => {
                 { value: null, expected: 'Null' },
                 {
                     value: function()
-                    {},
+                    {/* empty */},
                     expected: 'Function',
                 },
                 { value: new Custom(), expected: 'My Custom Tag' },

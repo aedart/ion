@@ -1,3 +1,4 @@
+import { Constructor } from '@aedart/contracts';
 import {
     DEFAULT_MAX_MERGE_DEPTH,
     MergeCallback,
@@ -6,7 +7,6 @@ import {
     NextCallback,
     ObjectsMerger,
 } from '@aedart/contracts/support/objects';
-import { Constructor } from "@aedart/contracts";
 import { isKeyUnsafe } from '../../reflections/isKeyUnsafe.js';
 import MergeError from '../exceptions/MergeError.js';
 import DefaultMergeOptions from './DefaultMergeOptions.js';

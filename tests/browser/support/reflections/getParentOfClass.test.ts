@@ -7,10 +7,10 @@ describe('@aedart/support/refelctions', () => {
             class A
             {
                 foo()
-                {}
+                {/* empty */}
 
                 get bar() {
-                    return null;
+                    return 2 + Math.random();
                 }
             }
 
@@ -29,20 +29,20 @@ describe('@aedart/support/refelctions', () => {
             class A
             {
                 foo()
-                {}
+                {/* empty */}
             }
 
             class B extends A
             {
                 get bar() {
-                    return '';
+                    return Math.random();
                 }
             }
 
             class C extends B
             {
                 zar()
-                {}
+                {/* empty */}
             }
 
             // ----------------------------------------------------------------------- //
@@ -60,20 +60,20 @@ describe('@aedart/support/refelctions', () => {
             class A
             {
                 a()
-                {}
+                {/* empty */}
             }
 
             class B extends A
             {
                 get b() {
-                    return null;
+                    return Math.random();
                 }
             }
 
             class C extends B
             {
                 c()
-                {}
+                {/* empty */}
 
                 static keys()
                 {

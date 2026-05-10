@@ -1,5 +1,4 @@
-import type { Key } from '@aedart/contracts/support';
-import { isKey, mergeKeys } from '@aedart/support/misc';
+import { mergeKeys } from '@aedart/support/misc';
 import { describe, expect, test } from 'vitest';
 
 describe('@aedart/support/misc', () => {
@@ -27,7 +26,7 @@ describe('@aedart/support/misc', () => {
 
         test('throws TypeError if a single argument is not a valid property key', () => {
             const callback = () => {
-                // @ts-ignore
+                // @ts-expect-error testing if mergeKeys() throws TypeError on invalid key.
                 return mergeKeys(true);
             };
 
@@ -36,7 +35,7 @@ describe('@aedart/support/misc', () => {
 
         test('throws TypeError if an array argument contains an invalid property key', () => {
             const callback = () => {
-                // @ts-ignore
+                // @ts-expect-error testing if mergeKeys() throws TypeError on invalid key.
                 return mergeKeys(['valid', { name: 'invalid' }]);
             };
 

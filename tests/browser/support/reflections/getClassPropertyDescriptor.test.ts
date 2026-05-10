@@ -1,3 +1,4 @@
+import { type ConstructorLike } from '@aedart/contracts';
 import { getClassPropertyDescriptor } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
@@ -5,7 +6,7 @@ describe('@aedart/support/refelctions', () => {
     describe('getClassPropertyDescriptor', () => {
         test('fails when target has no prototype', () => {
             const callback = () => {
-                const obj = Object.create(null);
+                const obj = Object.create(null) as ConstructorLike;
 
                 getClassPropertyDescriptor(obj, 'name');
             };
@@ -28,14 +29,18 @@ describe('@aedart/support/refelctions', () => {
 
             class A
             {
-                set name(v) {}
+                #name: unknown;
+
+                set name(v) {
+                    this.#name = v;
+                }
                 get name() {
-                    return null;
+                    return this.#name;
                 }
                 foo()
-                {}
+                {/* empty */}
                 [MY_SYMBOL]()
-                {}
+                {/* empty */}
             }
 
             const properties = [
@@ -63,8 +68,10 @@ describe('@aedart/support/refelctions', () => {
         test('returns undefined if property is private', () => {
             class A
             {
+                // #foo is attempted accessed in test...
+                // eslint-disable-next-line no-unused-private-class-members
                 #foo()
-                {}
+                {/* empty */}
             }
 
             const a = getClassPropertyDescriptor(A, 'foo');

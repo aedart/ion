@@ -47,7 +47,7 @@ describe('@aedart/support/arrays', () => {
                 { value: new Set(), expected: false, name: 'Set' },
                 {
                     value: function()
-                    { /* empty */ },
+                    {/* empty */},
                     expected: false,
                     name: 'Function',
                 },
@@ -94,7 +94,7 @@ describe('@aedart/support/arrays', () => {
                 { value: {}, expected: false, name: 'Object (without length property)' },
                 {
                     value: function()
-                    { /* empty */ },
+                    {/* empty */},
                     expected: false,
                     name: 'Function',
                 },

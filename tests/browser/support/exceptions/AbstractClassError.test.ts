@@ -6,6 +6,9 @@ describe('@aedart/support/exceptions', () => {
         test('can throw new Abstract Class Error', () => {
             class A
             {}
+
+            // Safe: eslint doesn't understand that `wasThrown` is actually used!
+            // eslint-disable-next-line no-useless-assignment
             let wasThrown = false;
 
             try {

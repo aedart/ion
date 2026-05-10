@@ -46,7 +46,7 @@ describe('@aedart/support/ararys', () => {
         test('fails when attempting to merge arrays with non-cloneable values', () => {
             const a = [1, 2, 3];
             const b = [function()
-            { /* empty*/ }];
+            {/* empty*/}];
 
             // --------------------------------------------------------------- //
 
