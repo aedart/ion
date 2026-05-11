@@ -1,7 +1,9 @@
+import MemberAddress from './MemberAddress.js';
 import Metadata from './Metadata.js';
 import MetaRepository from './MetaRepository.js';
+import OwnerContext from './OwnerContext.js';
 
-export { Metadata, MetaRepository };
+export { MemberAddress, Metadata, MetaRepository, OwnerContext };
 
 // export * from './discoverAndFlush.js'; // internal
 export * from './findRepository.js';
@@ -9,5 +11,5 @@ export * from './findRepository.js';
 export * from './getOrCreateBaseRepository.js';
 export * from './getOrCreateRepository.js';
 export * from './meta.js';
-export * from './registries.js';
+// export * from './registries.js'; // internal
 // export * from './resolveKeyValue.js'; // internal
