@@ -246,6 +246,22 @@ describe('@meta() decorator', () => {
         expect(Metadata.get(MyClass, ['methods', 'myMethod', MY_KEY])).toBe('secret-value');
     });
 
+    test('can use Symbols as metadata keys, for static method', () => {
+        const MY_KEY = Symbol('my_key');
+
+        class MyClass
+        {
+            @meta(MY_KEY, 'secret-value')
+            static myMethod()
+            {/* empty */}
+        }
+
+        // Debug
+        // new MyClass();
+
+        expect(Metadata.get(MyClass, ['static', 'methods', 'myMethod', MY_KEY])).toBe('secret-value');
+    });
+    
     describe('@meta() security: prototype pollution', () => {
         test('immediately prevents pollution via class decorator', () => {
             const trigger = () => {
