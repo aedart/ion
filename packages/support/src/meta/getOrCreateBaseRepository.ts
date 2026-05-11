@@ -1,7 +1,7 @@
 import { Repository } from '@aedart/contracts/support/meta/index.js';
 import { findRepository } from './findRepository.js';
 import MetaRepository from './MetaRepository.js';
-import { registry } from './registry.js';
+import { registry } from './registries.js';
 
 /**
  * Gets the existing repository for a target, or creates a new one

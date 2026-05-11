@@ -1,7 +1,7 @@
 import { ConstructorLike } from '@aedart/contracts';
 import { isConstructor } from '../reflections/isConstructor.js';
 import { flush } from './flush.js';
-import { FLUSHED_METADATA, MEMBER_TO_METADATA } from './registry.js';
+import { FLUSHED_METADATA, MEMBER_TO_METADATA } from './registries';
 
 /**
  * Discovers and flushes staged metadata for the given target.

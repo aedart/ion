@@ -3,7 +3,7 @@ import { MetaCallback } from '@aedart/contracts/support/meta/index.js';
 import { Key } from '@aedart/contracts/support/types.js';
 import { flush } from './flush.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
-import { MEMBER_TO_METADATA } from './registry.js';
+import { MEMBER_TO_METADATA } from './registries.js';
 import { resolveKeyValue } from './resolveKeyValue.js';
 
 /**

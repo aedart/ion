@@ -1,6 +1,6 @@
 import { ConstructorLike } from '@aedart/contracts';
 import { getOrCreateBaseRepository } from './getOrCreateBaseRepository.js';
-import { FLUSHED_METADATA } from './registry.js';
+import { FLUSHED_METADATA } from './registries';
 
 /**
  * Flush staged metadata into the repositories of the given owner.

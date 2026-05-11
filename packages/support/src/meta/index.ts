@@ -9,5 +9,5 @@ export * from './findRepository.js';
 export * from './getOrCreateBaseRepository.js';
 export * from './getOrCreateRepository.js';
 export * from './meta.js';
-export * from './registry.js';
+export * from './registries.js';
 // export * from './resolveKeyValue.js'; // internal
