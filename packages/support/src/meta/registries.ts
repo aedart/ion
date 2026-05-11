@@ -1,5 +1,5 @@
 import { Repository } from '@aedart/contracts/support/meta/index.js';
-import "./polyfill.js";
+import './polyfill.js';
 
 /**
  * The internal registry for all metadata repositories.
