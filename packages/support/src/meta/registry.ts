@@ -1,10 +1,5 @@
 import { Repository } from '@aedart/contracts/support/meta/index.js';
-
-/**
- * Polyfill Symbol.metadata if it does not exist.
- */
-// @ts-expect-error: Symbol.metadata is not yet in the TypeScript Symbol interface
-Symbol.metadata ??= Symbol.for('Symbol.metadata');
+import "./polyfill.js";
 
 /**
  * The internal registry for all metadata repositories.
