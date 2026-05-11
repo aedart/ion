@@ -8,9 +8,9 @@ export default interface MemberAddress {
     /**
      * Owner Context
      *
-     * @type {OwnerContext}
+     * @type {OwnerContext | undefined}
      */
-    readonly ctx: OwnerContext;
+    ctx: OwnerContext | undefined;
 
     /**
      * Indicates whether the member is static (`true`) or otherwise (`false`)

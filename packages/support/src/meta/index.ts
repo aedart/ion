@@ -1,9 +1,9 @@
-import MemberAddress from './MemberAddress.js';
+import Address from './Address.js';
 import Metadata from './Metadata.js';
 import MetaRepository from './MetaRepository.js';
 import OwnerContext from './OwnerContext.js';
 
-export { MemberAddress, Metadata, MetaRepository, OwnerContext };
+export { Address, Metadata, MetaRepository, OwnerContext };
 
 // export * from './discoverAndFlush.js'; // internal
 export * from './findRepository.js';

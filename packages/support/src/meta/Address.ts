@@ -1,6 +1,6 @@
 import { type Key } from '@aedart/contracts/support';
 import {
-    type MemberAddress as MemberAddressContract,
+    type MemberAddress,
     type OwnerContext,
 } from '@aedart/contracts/support/meta';
 import { toParts } from '../objects/toParts.js';
@@ -8,12 +8,12 @@ import { toParts } from '../objects/toParts.js';
 /**
  * Member Address
  */
-export default class MemberAddress implements MemberAddressContract
+export default class Address implements MemberAddress
 {
     /**
      * @inheritdoc
      */
-    readonly ctx: OwnerContext;
+    ctx: OwnerContext | undefined;
 
     /**
      * @inheritdoc
@@ -38,12 +38,12 @@ export default class MemberAddress implements MemberAddressContract
     /**
      * Create a new member address instance
      *
-     * @param {OwnerContext} ctx
+     * @param {OwnerContext | undefined} ctx
      * @param {boolean} isStatic
      * @param {string} kind
      * @param {string | symbol} name
      */
-    constructor(ctx: OwnerContext, isStatic: boolean, kind: string, name: string | symbol)
+    constructor(ctx: OwnerContext | undefined, isStatic: boolean, kind: string, name: string | symbol)
     {
         this.ctx = ctx;
         this.static = isStatic;

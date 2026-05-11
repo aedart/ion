@@ -1,12 +1,11 @@
-import { type MemberAddress as MemberAddressContract } from '@aedart/contracts/support/meta';
-import { MemberAddress, OwnerContext } from '@aedart/support/meta';
+import { Address, OwnerContext } from '@aedart/support/meta';
 import { describe, expect, test } from 'vitest';
 
 describe('@meta() decorator', () => {
-    describe('MemberAddress', () => {
+    describe('Address', () => {
         test('can obtain base path', () => {
-            const ctx = new OwnerContext({});
-            const address: MemberAddressContract = new MemberAddress(ctx, true, 'method', 'foo');
+
+            const address = new Address(undefined, true, 'method', 'foo');
 
             const basePath = address.basePath;
 
@@ -15,8 +14,7 @@ describe('@meta() decorator', () => {
         });
 
         test('returns base path when no key given', () => {
-            const ctx = new OwnerContext({});
-            const address: MemberAddressContract = new MemberAddress(ctx, false, 'method', 'foo');
+            const address = new Address(undefined, false, 'method', 'foo');
 
             const result = address.path();
 
@@ -28,7 +26,7 @@ describe('@meta() decorator', () => {
             const ctx = new OwnerContext({});
             const name = Symbol('my_foo_method');
             const key = Symbol('my_secret');
-            const address: MemberAddressContract = new MemberAddress(ctx, true, 'method', name);
+            const address = new Address(undefined, true, 'method', name);
 
             const result = address.path(key);
 
@@ -36,6 +34,21 @@ describe('@meta() decorator', () => {
             
             expect(result)
                 .toEqual(['static', 'methods', name, key]);
+        });
+
+        test('can (re)set ctx', () => {
+
+            const contextA = new OwnerContext({});
+            
+            
+            const address = new Address(contextA, true, 'method', 'foo');
+            expect(address.ctx)
+                .toEqual(contextA);
+
+            const contextB = new OwnerContext({});
+            address.ctx = contextB;
+            expect(address.ctx)
+                .toEqual(contextB);
         });
     });
 });
