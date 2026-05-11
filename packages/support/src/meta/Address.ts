@@ -1,8 +1,5 @@
 import { type Key } from '@aedart/contracts/support';
-import {
-    type MemberAddress,
-    type OwnerContext,
-} from '@aedart/contracts/support/meta';
+import { type MemberAddress, type OwnerContext } from '@aedart/contracts/support/meta';
 import { toParts } from '../objects/toParts.js';
 
 /**
@@ -43,7 +40,12 @@ export default class Address implements MemberAddress
      * @param {string} kind
      * @param {string | symbol} name
      */
-    constructor(ctx: OwnerContext | undefined, isStatic: boolean, kind: string, name: string | symbol)
+    constructor(
+        ctx: OwnerContext | undefined,
+        isStatic: boolean,
+        kind: string,
+        name: string | symbol,
+    )
     {
         this.ctx = ctx;
         this.static = isStatic;
