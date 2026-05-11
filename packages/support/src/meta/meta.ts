@@ -1,6 +1,9 @@
 import { ConstructorLike } from '@aedart/contracts';
 import { MetaCallback } from '@aedart/contracts/support/meta/index.js';
 import { Key } from '@aedart/contracts/support/types.js';
+import { set } from '../objects/set.js';
+import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
+import Address from './Address.js';
 import { flush } from './flush.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
 import { MEMBER_TO_METADATA } from './registries.js';
@@ -40,22 +43,34 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
             return;
         }
 
-        // 4. If it's a member decorator, stage the metadata
-        const kind = context.kind === 'method' ? 'methods' : 'fields';
-        const prefix = isStatic ? 'static.' : '';
+        // 4. Create new member address, without owner context (will be set later...)
+        const memberAddress = new Address(undefined, isStatic, context.kind, context.name);
 
-        // E.g. 'static.methods.playSound.volumne', 'fields.id.fetch_url'
-        const path = `${prefix}${kind}.${String(context.name)}.${String(key)}`;
+        // Generate a full path (from address) so it can be stored / staged...
+        let pathParts = memberAddress.path(key) as PropertyKey[];
+        if (!Array.isArray(pathParts)) {
+            pathParts = [pathParts];
+        }
 
-        metadataObj[path] = val;
+        // Fail if any path segment is unsafe. This is needed because `set()` ignores
+        // any unsafe path.
+        const partsLen = pathParts.length;
+        for (let i = 0; i < partsLen; i++) {
+            if (isKeyUnsafe(pathParts[i])) {
+                throw new TypeError(`Unsafe metadata key/path detected: ${String(key)}`);
+            }
+        }
 
-        // 5. Link the member to the metadata object for discovery
+        // 5. If it's a member decorator, stage the metadata
+        set(metadataObj, pathParts, val);
+
+        // 6. Link the member to the metadata object for discovery
         // For methods, target is the function. For fields, it's undefined (in 2023-11).
         if (target !== undefined && target !== null) {
             MEMBER_TO_METADATA.set(target, metadataObj);
         }
 
-        // 6. Use addInitializer to flush metadata.
+        // 7. Use addInitializer to flush metadata.
         // For static members, this runs during class definition.
         // For instance members, this runs during instantiation.
         context.addInitializer(function(this: unknown)
@@ -69,6 +84,9 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
 
             if (constructor) {
                 flush(constructor, metadataObj);
+
+                // TODO: resolve owner context for constructor...
+                // TODO: Save member address in registry...
             }
         });
     };
