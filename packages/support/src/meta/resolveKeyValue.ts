@@ -4,9 +4,9 @@ import { Key } from '@aedart/contracts/support/types.js';
 /**
  * Resolve key and value from the given arguments.
  *
- * @param {Key | MetaCallback} koc
- * @param {unknown} v
- * @param {unknown} target
+ * @param {Key | MetaCallback} koc Key or Callback
+ * @param {unknown} v Value
+ * @param {unknown} target The target 
  * @param {ClassDecoratorContext | ClassMemberDecoratorContext} context
  *
  * @returns {{ key: Key, val: unknown }}
