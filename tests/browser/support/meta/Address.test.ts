@@ -4,7 +4,6 @@ import { describe, expect, test } from 'vitest';
 describe('@meta() decorator', () => {
     describe('Address', () => {
         test('can obtain base path', () => {
-
             const address = new Address(undefined, true, 'method', 'foo');
 
             const basePath = address.basePath;
@@ -34,10 +33,8 @@ describe('@meta() decorator', () => {
         });
 
         test('can (re)set ctx', () => {
-
             const contextA = new OwnerContext({});
-            
-            
+
             const address = new Address(contextA, true, 'method', 'foo');
             expect(address.ctx)
                 .toEqual(contextA);
