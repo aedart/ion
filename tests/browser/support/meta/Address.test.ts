@@ -23,15 +23,12 @@ describe('@meta() decorator', () => {
         });
 
         test('returns full path to given key', () => {
-            const ctx = new OwnerContext({});
             const name = Symbol('my_foo_method');
             const key = Symbol('my_secret');
             const address = new Address(undefined, true, 'method', name);
 
             const result = address.path(key);
 
-            console.log('RESULT', result);
-            
             expect(result)
                 .toEqual(['static', 'methods', name, key]);
         });
