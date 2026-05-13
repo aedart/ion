@@ -8,6 +8,7 @@ import { flush } from './flush.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
 import { MEMBER_TO_METADATA } from './registries.js';
 import { resolveKeyValue } from './resolveKeyValue.js';
+import { registerAddress } from "./registerAddress.js";
 
 /**
  * Store metadata on a class or class member.
@@ -85,8 +86,11 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
             if (constructor) {
                 flush(constructor, metadataObj);
 
-                // TODO: resolve owner context for constructor...
-                // TODO: Save member address in registry...
+                // Save the target (member) address, for the given owner.
+                // This will enable meta lookups, using the member directly.
+                if (context.kind === 'method') {
+                    registerAddress(constructor, target as object, memberAddress);    
+                }
             }
         });
     };
