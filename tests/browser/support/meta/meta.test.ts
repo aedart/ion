@@ -259,9 +259,11 @@ describe('@meta() decorator', () => {
         // Debug
         // new MyClass();
 
-        expect(Metadata.get(MyClass, ['static', 'methods', 'myMethod', MY_KEY])).toBe('secret-value');
+        expect(Metadata.get(MyClass, ['static', 'methods', 'myMethod', MY_KEY])).toBe(
+            'secret-value',
+        );
     });
-    
+
     describe('@meta() security: prototype pollution', () => {
         test('immediately prevents pollution via class decorator', () => {
             const trigger = () => {

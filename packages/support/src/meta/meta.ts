@@ -3,13 +3,12 @@ import { MetaCallback } from '@aedart/contracts/support/meta/index.js';
 import { Key } from '@aedart/contracts/support/types.js';
 import { set } from '../objects/set.js';
 import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
-import Address from './Address.js';
+import { findOrCreateMemberAddress } from './findOrCreateMemberAddress.js';
 import { flush } from './flush.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
+import { registerAddress } from './registerAddress.js';
 import { MEMBER_TO_METADATA } from './registries.js';
 import { resolveKeyValue } from './resolveKeyValue.js';
-import { registerAddress } from "./registerAddress.js";
-import { findOrCreateMemberAddress } from "./findOrCreateMemberAddress.js";
 
 /**
  * Store metadata on a class or class member.
@@ -90,7 +89,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
                 // Save the target (member) address, for the given owner.
                 // This will enable meta lookups, using the member directly.
                 if (context.kind === 'method') {
-                    registerAddress(constructor, target as object, memberAddress);    
+                    registerAddress(constructor, target as object, memberAddress);
                 }
             }
         });

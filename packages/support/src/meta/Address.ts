@@ -103,7 +103,7 @@ export default class Address implements MemberAddress
             ? ['static', kind, this.name]
             : [kind, this.name];
 
-        // Freezing stops V8 from keeping hidden "growth memory buffers" 
+        // Freezing stops V8 from keeping hidden "growth memory buffers"
         return Object.freeze(path) as unknown as Key;
     }
 }
