@@ -12,5 +12,6 @@ export * from './getOrCreateBaseRepository.js';
 export * from './getOrCreateOwnerContext.js';
 export * from './getOrCreateRepository.js';
 export * from './meta.js';
+export * from './registerAddress.js';
 // export * from './registries.js'; // internal
 // export * from './resolveKeyValue.js'; // internal
