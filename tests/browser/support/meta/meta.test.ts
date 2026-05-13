@@ -288,7 +288,7 @@ describe('@meta() decorator', () => {
     // TODO: Static method meta, ... obtain via static member directly.
     // TODO: Inherit static method meta, ... obtain via static member directly.
     // TODO: Static getter / setter (field) meta, ... obtain via member directly.
-    
+
     describe('@meta() security: prototype pollution', () => {
         test('immediately prevents pollution via class decorator', () => {
             const trigger = () => {
