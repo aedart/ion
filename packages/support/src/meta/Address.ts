@@ -63,12 +63,24 @@ export default class Address implements MemberAddress
             return this.basePath;
         }
 
-        const output = toParts(this.basePath);
+        const base = this.basePath as PropertyKey[];
         const parts = toParts(key);
-        const len = parts.length;
 
-        for (let i = 0; i < len; ++i) {
-            output.push(parts[i]);
+        if (parts.length === 0) {
+            return this.basePath;
+        }
+
+        // Pre-allocate the exact array size needed.
+        // This avoids V8 inner-loop array resizing and memory reallocation steps.
+        const output = new Array<PropertyKey>(base.length + parts.length);
+
+        // Linear copy operations (highly optimized by V8 runtime JIT)
+        for (let i = 0; i < base.length; ++i) {
+            output[i] = base[i];
+        }
+
+        for (let i = 0; i < parts.length; ++i) {
+            output[base.length + i] = parts[i];
         }
 
         return output;
@@ -83,21 +95,15 @@ export default class Address implements MemberAddress
      */
     protected resolveBasePath(): Key
     {
-        // Base path is resolved as an array because a member's name can
-        // be a symbol, and not just a string!
+        const kind = this.kind === 'method' ? 'methods' : 'fields';
 
-        const kind = this.kind === 'method'
-            ? 'methods'
-            : 'fields';
+        // Direct layout construction avoids slow unshift structural re-indexes
+        // E.g. [ 'static', 'methods', 'playSound' ], or [ 'methods', 'playSound' ]
+        const path = this.static
+            ? ['static', kind, this.name]
+            : [kind, this.name];
 
-        // E.g. [ 'methods', 'playSound' ], or [ 'fields', 'foo' ]
-        const path = [kind, this.name];
-
-        // E.g. [ 'static', 'methods', 'playSound' ], or [ 'static', 'fields', 'foo' ]
-        if (this.static) {
-            path.unshift('static');
-        }
-
-        return path;
+        // Freezing stops V8 from keeping hidden "growth memory buffers" 
+        return Object.freeze(path) as unknown as Key;
     }
 }
