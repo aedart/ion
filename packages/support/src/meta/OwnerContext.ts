@@ -1,5 +1,4 @@
 import { type OwnerContext as OwnerContextContract } from '@aedart/contracts/support/meta';
-import { toWeakRef } from '../misc/toWeakRef';
 
 /**
  * Owner Context
@@ -22,7 +21,7 @@ export default class OwnerContext implements OwnerContextContract
      */
     constructor(owner: object)
     {
-        this.#owner = toWeakRef(owner)!;
+        this.#owner = new WeakRef(owner);
     }
 
     /**
