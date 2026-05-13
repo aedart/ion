@@ -1,1 +1,5 @@
-packages: ['packages/*']
+packages: [ 'packages/*' ]
+allowBuilds:
+  '@parcel/watcher': true
+  dprint: true
+  esbuild: true
