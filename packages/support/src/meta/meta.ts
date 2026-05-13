@@ -9,6 +9,7 @@ import { getOrCreateRepository } from './getOrCreateRepository.js';
 import { MEMBER_TO_METADATA } from './registries.js';
 import { resolveKeyValue } from './resolveKeyValue.js';
 import { registerAddress } from "./registerAddress.js";
+import { findOrCreateMemberAddress } from "./findOrCreateMemberAddress.js";
 
 /**
  * Store metadata on a class or class member.
@@ -44,8 +45,8 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
             return;
         }
 
-        // 4. Create new member address, without owner context (will be set later...)
-        const memberAddress = new Address(undefined, isStatic, context.kind, context.name);
+        // 4. Find or create member address (in this case without the "owner context", which is resolved later).
+        const memberAddress = findOrCreateMemberAddress(target, context);
 
         // Generate a full path (from address) so it can be stored / staged...
         let pathParts = memberAddress.path(key) as PropertyKey[];
