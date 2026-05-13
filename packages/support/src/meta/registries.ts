@@ -1,4 +1,7 @@
-import { Repository } from '@aedart/contracts/support/meta/index.js';
+import {
+    type Repository,
+    type OwnerContext
+} from '@aedart/contracts/support/meta';
 import './polyfill.js';
 
 /**
@@ -27,3 +30,12 @@ export const MEMBER_TO_METADATA = new WeakMap<object, Record<PropertyKey, unknow
  * @type {WeakSet<object>}
  */
 export const FLUSHED_METADATA = new WeakSet<object>();
+
+/**
+ * Cache of Owner Context instances
+ * 
+ * @internal
+ * 
+ * @type {WeakMap<object, OwnerContext>}
+ */
+export const contextCache = new WeakMap<object, OwnerContext>();
