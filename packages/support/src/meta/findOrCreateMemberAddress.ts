@@ -17,7 +17,15 @@ export function findOrCreateMemberAddress(
     owner?: OwnerContext,
 ): MemberAddress
 {
-    let address = addressRegistry.get(member as object);
+    let addressMember = member as object;
+    
+    // When accessor is given, attempt to find address via the `get` method.
+    // See `registerAddress()` for additional details!
+    if (context.kind === 'accessor') {
+        addressMember = (member as Record<PropertyKey, object>)['get'];
+    }
+
+    let address = addressRegistry.get(addressMember);
 
     // Create member address (possibly without "owner context")...
     address ??= new Address(owner, context.static ?? false, context.kind, context.name);
