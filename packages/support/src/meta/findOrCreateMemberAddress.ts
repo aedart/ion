@@ -18,11 +18,11 @@ export function findOrCreateMemberAddress(
 ): MemberAddress
 {
     let addressMember = member as object;
-    
+
     // When accessor is given, attempt to find address via the `get` method.
     // See `registerAddress()` for additional details!
     if (context.kind === 'accessor') {
-        addressMember = (member as Record<PropertyKey, object>)['get'];
+        addressMember = (member as Record<PropertyKey, object>).get;
     }
 
     let address = addressRegistry.get(addressMember);

@@ -1,27 +1,26 @@
-import { type ConstructorLike} from "@aedart/contracts";
+import { type ConstructorLike } from '@aedart/contracts';
 import { meta, Metadata } from '@aedart/support/meta';
-import { getClassPropertyDescriptors } from "@aedart/support/reflections";
+import { getClassPropertyDescriptors } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
 describe('@meta() decorator (instance members)', () => {
-
     class BaseService
     {
-        @meta('wip', 'wap') myField = 'abc';
-        
-        @meta('fip', 'fup') accessor value = 42;
-        
-        protected _name: string = 'my-service';
+        @meta('wip', 'wap')
+        myField = 'abc';
+
+        @meta('fip', 'fup')
+        accessor value = 42;
+
+        protected _name = 'my-service';
 
         @meta('get_name', 'zar')
-        get name(): string
-        {
+        get name(): string {
             return this._name;
         }
 
         @meta('set_name', 'fin')
-        set name(n: string)
-        {
+        set name(n: string) {
             this._name = n;
         }
 
@@ -34,7 +33,7 @@ describe('@meta() decorator (instance members)', () => {
         // TODO: Static getter / setter?
         // TODO: Static method
     }
-    
+
     class AlphaService extends BaseService
     {}
 
@@ -46,17 +45,15 @@ describe('@meta() decorator (instance members)', () => {
         override myField = 'cda';
 
         override accessor value = 51;
-        
-        override get name(): string
-        {
+
+        override get name(): string {
             return this._name;
         }
-        
-        override set name(n: string)
-        {
+
+        override set name(n: string) {
             this._name = n;
         }
-        
+
         override play()
         {/* empty */}
 
@@ -65,9 +62,8 @@ describe('@meta() decorator (instance members)', () => {
         // TODO: override Static getter / setter?
         // TODO: override Static method
     }
-    
+
     test('can get meta using instance member reference', () => {
-        
         const instance = new BaseService();
 
         // --------------------------------------------------------------------------------------------------- //
@@ -75,31 +71,63 @@ describe('@meta() decorator (instance members)', () => {
         // The only way to do this, is via the class.
         expect(Metadata.get(BaseService, 'fields.myField.wip'), 'Unable to get meta for field')
             .toBe('wap');
-        
+
         // --------------------------------------------------------------------------------------------------- //
         // Accessor: A bit tricky because we have to use property descriptor, using the instance's prototype
 
-        const valueDescriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(instance), 'value') as PropertyDescriptor;
-        expect(Metadata.has(valueDescriptor.get as object, 'fip'), 'Unable to determine if has meta for accessor (get)')
-            .toBe(true);
-        expect(Metadata.get(valueDescriptor.get as object, 'fip'), 'Incorrect meta value for accessor (get)')
-            .toBe('fup');
-        expect(Metadata.has(valueDescriptor.set as object, 'fip'), 'Unable to determine if has meta for accessor (set)')
-            .toBe(true);
-        expect(Metadata.get(valueDescriptor.set as object, 'fip'), 'Incorrect meta value for accessor (set)')
-            .toBe('fup');
-        
-        // --------------------------------------------------------------------------------------------------- //
-        // Getter / Setter: Similar to the accessor 
+        const valueDescriptor = Object.getOwnPropertyDescriptor(
+            Object.getPrototypeOf(instance),
+            'value',
+        )!;
 
-        const nameDescriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(instance), 'name') as PropertyDescriptor;
-        expect(Metadata.has(nameDescriptor.get as object, 'get_name'), 'Unable to determine if has meta for getter')
+        expect(
+            Metadata.has(valueDescriptor.get as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for accessor (get)',
+        )
             .toBe(true);
-        expect(Metadata.get(nameDescriptor.get as object, 'get_name'), 'Incorrect meta value for getter')
+        expect(
+            Metadata.get(valueDescriptor.get as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for accessor (get)',
+        )
+            .toBe('fup');
+        expect(
+            Metadata.has(valueDescriptor.set as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for accessor (set)',
+        )
+            .toBe(true);
+        expect(
+            Metadata.get(valueDescriptor.set as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for accessor (set)',
+        )
+            .toBe('fup');
+
+        // --------------------------------------------------------------------------------------------------- //
+        // Getter / Setter: Similar to the accessor
+
+        const nameDescriptor = Object.getOwnPropertyDescriptor(
+            Object.getPrototypeOf(instance),
+            'name',
+        )!;
+
+        expect(
+            Metadata.has(nameDescriptor.get as object, 'get_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for getter',
+        )
+            .toBe(true);
+        expect(
+            Metadata.get(nameDescriptor.get as object, 'get_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for getter',
+        )
             .toBe('zar');
-        expect(Metadata.has(nameDescriptor.get as object, 'set_name'), 'Unable to determine if has meta for setter')
+        expect(
+            Metadata.has(nameDescriptor.get as object, 'set_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for setter',
+        )
             .toBe(true);
-        expect(Metadata.get(nameDescriptor.get as object, 'set_name'), 'Incorrect meta value for setter')
+        expect(
+            Metadata.get(nameDescriptor.get as object, 'set_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for setter',
+        )
             .toBe('fin');
 
         // --------------------------------------------------------------------------------------------------- //
@@ -113,7 +141,6 @@ describe('@meta() decorator (instance members)', () => {
     });
 
     test('can get meta using instance member reference (inherited)', () => {
-
         const instance = new BetaService();
 
         // --------------------------------------------------------------------------------------------------- //
@@ -126,36 +153,62 @@ describe('@meta() decorator (instance members)', () => {
         // the instance's prototype. We need to obtain them from the "base" class, so this util comes in handy.
         const descriptors = getClassPropertyDescriptors(
             instance.constructor as ConstructorLike,
-            true
+            true,
         );
-        
+
         // Debug
-        //console.log('descriptors', descriptors);
-        
+        // console.log('descriptors', descriptors);
+
         // --------------------------------------------------------------------------------------------------- //
         // Accessor
-        
-        const valueDescriptor = descriptors['value'] as PropertyDescriptor;
-        expect(Metadata.has(valueDescriptor.get as object, 'fip'), 'Unable to determine if has meta for accessor (get)')
+
+        const valueDescriptor = descriptors.value;
+
+        expect(
+            Metadata.has(valueDescriptor.get as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for accessor (get)',
+        )
             .toBe(true);
-        expect(Metadata.get(valueDescriptor.get as object, 'fip'), 'Incorrect meta value for accessor (get)')
+        expect(
+            Metadata.get(valueDescriptor.get as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for accessor (get)',
+        )
             .toBe('fup');
-        expect(Metadata.has(valueDescriptor.set as object, 'fip'), 'Unable to determine if has meta for accessor (set)')
+        expect(
+            Metadata.has(valueDescriptor.set as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for accessor (set)',
+        )
             .toBe(true);
-        expect(Metadata.get(valueDescriptor.set as object, 'fip'), 'Incorrect meta value for accessor (set)')
+        expect(
+            Metadata.get(valueDescriptor.set as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for accessor (set)',
+        )
             .toBe('fup');
 
         // --------------------------------------------------------------------------------------------------- //
         // Getter / Setter
 
-        const nameDescriptor = descriptors['name'] as PropertyDescriptor;
-        expect(Metadata.has(nameDescriptor.get as object, 'get_name'), 'Unable to determine if has meta for getter')
+        const nameDescriptor = descriptors.name;
+
+        expect(
+            Metadata.has(nameDescriptor.get as object, 'get_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for getter',
+        )
             .toBe(true);
-        expect(Metadata.get(nameDescriptor.get as object, 'get_name'), 'Incorrect meta value for getter')
+        expect(
+            Metadata.get(nameDescriptor.get as object, 'get_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for getter',
+        )
             .toBe('zar');
-        expect(Metadata.has(nameDescriptor.get as object, 'set_name'), 'Unable to determine if has meta for setter')
+        expect(
+            Metadata.has(nameDescriptor.get as object, 'set_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for setter',
+        )
             .toBe(true);
-        expect(Metadata.get(nameDescriptor.get as object, 'set_name'), 'Incorrect meta value for setter')
+        expect(
+            Metadata.get(nameDescriptor.get as object, 'set_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for setter',
+        )
             .toBe('fin');
 
         // --------------------------------------------------------------------------------------------------- //
@@ -169,7 +222,6 @@ describe('@meta() decorator (instance members)', () => {
     });
 
     test('can get meta using instance member reference (overridden)', () => {
-
         const instance = new GammaService();
 
         // --------------------------------------------------------------------------------------------------- //
@@ -181,36 +233,62 @@ describe('@meta() decorator (instance members)', () => {
         // Get the class descriptors, just like in the previous test
         const overriddenDescriptors = getClassPropertyDescriptors(
             instance.constructor as ConstructorLike,
-            true
+            true,
         );
 
         // Debug
-        //console.log('descriptors (overridden)', overriddenDescriptors);
+        // console.log('descriptors (overridden)', overriddenDescriptors);
 
         // --------------------------------------------------------------------------------------------------- //
         // Accessor
 
-        const valueDescriptor = overriddenDescriptors['value'] as PropertyDescriptor;
-        expect(Metadata.has(valueDescriptor.get as object, 'fip'), 'Unable to determine if has meta for accessor (get)')
+        const valueDescriptor = overriddenDescriptors.value;
+
+        expect(
+            Metadata.has(valueDescriptor.get as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for accessor (get)',
+        )
             .toBe(true);
-        expect(Metadata.get(valueDescriptor.get as object, 'fip'), 'Incorrect meta value for accessor (get)')
+        expect(
+            Metadata.get(valueDescriptor.get as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for accessor (get)',
+        )
             .toBe('fup');
-        expect(Metadata.has(valueDescriptor.set as object, 'fip'), 'Unable to determine if has meta for accessor (set)')
+        expect(
+            Metadata.has(valueDescriptor.set as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for accessor (set)',
+        )
             .toBe(true);
-        expect(Metadata.get(valueDescriptor.set as object, 'fip'), 'Incorrect meta value for accessor (set)')
+        expect(
+            Metadata.get(valueDescriptor.set as object, 'fip'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for accessor (set)',
+        )
             .toBe('fup');
 
         // --------------------------------------------------------------------------------------------------- //
         // Getter / Setter
 
-        const nameDescriptor = overriddenDescriptors['name'] as PropertyDescriptor;
-        expect(Metadata.has(nameDescriptor.get as object, 'get_name'), 'Unable to determine if has meta for getter')
+        const nameDescriptor = overriddenDescriptors.name;
+
+        expect(
+            Metadata.has(nameDescriptor.get as object, 'get_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for getter',
+        )
             .toBe(true);
-        expect(Metadata.get(nameDescriptor.get as object, 'get_name'), 'Incorrect meta value for getter')
+        expect(
+            Metadata.get(nameDescriptor.get as object, 'get_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for getter',
+        )
             .toBe('zar');
-        expect(Metadata.has(nameDescriptor.get as object, 'set_name'), 'Unable to determine if has meta for setter')
+        expect(
+            Metadata.has(nameDescriptor.get as object, 'set_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Unable to determine if has meta for setter',
+        )
             .toBe(true);
-        expect(Metadata.get(nameDescriptor.get as object, 'set_name'), 'Incorrect meta value for setter')
+        expect(
+            Metadata.get(nameDescriptor.get as object, 'set_name'), // eslint-disable-line @typescript-eslint/unbound-method
+            'Incorrect meta value for setter',
+        )
             .toBe('fin');
 
         // --------------------------------------------------------------------------------------------------- //
@@ -222,10 +300,8 @@ describe('@meta() decorator (instance members)', () => {
         expect(Metadata.get(play, 'foo'), 'Incorrect meta value for instance method')
             .toBe('bar');
     });
-    
+
     // TODO: Static method meta, ... obtain via static member directly.
     // TODO: Inherit static method meta, ... obtain via static member directly.
     // TODO: Static getter / setter (field) meta, ... obtain via member directly.
-
-
 });

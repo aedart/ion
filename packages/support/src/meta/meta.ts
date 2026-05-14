@@ -95,27 +95,35 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
                 // This will enable meta lookups, using the member directly.
                 // console.log('address registration for', target);
                 registerAddress(constructor, target as object, memberAddress);
-                    
+
                 // To ensure that meta is still available for a member, when it is overridden in child classes,
                 // we register the same address again, using the member defined in the prototype, which is obtained
                 // via `Reflect.getOwnPropertyDescriptor`, so we can handle as many kind as possible.
                 // NOTE: This sadly does not work for static members!
 
-                const descriptor = Reflect.getOwnPropertyDescriptor(constructor.prototype, context.name);
+                const descriptor = Reflect.getOwnPropertyDescriptor(
+                    constructor.prototype,
+                    context.name,
+                );
                 if (descriptor === undefined) {
                     return;
                 }
 
                 const proto = (() => {
                     switch (context.kind) {
-                        case 'method': return descriptor.value as object;
-                        case 'accessor': return descriptor as object;
-                        case 'setter': return descriptor.set as object;
-                        case 'getter': return descriptor.get as object;
-                        default: return undefined;
+                        case 'method':
+                            return descriptor.value as object;
+                        case 'accessor':
+                            return descriptor as object;
+                        case 'setter':
+                            return descriptor.set as object;
+                        case 'getter':
+                            return descriptor.get as object;
+                        default:
+                            return undefined;
                     }
                 })();
-                
+
                 if (proto !== undefined && proto !== target) {
                     registerAddress(constructor, proto, memberAddress);
                 }

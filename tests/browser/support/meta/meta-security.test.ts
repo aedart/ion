@@ -5,7 +5,7 @@ describe('@meta() security: prototype pollution', () => {
     test('immediately prevents pollution via class decorator', () => {
         const trigger = () => {
             @meta('__proto__.polluted', true)
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             class Polluter
             {}
         };
