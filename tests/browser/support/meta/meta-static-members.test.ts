@@ -41,7 +41,7 @@ describe('@meta() decorator (static members)', () => {
     //     // This is because decorator's context.addInitializer() do not offer a late static
     //     // binding for `this` (this = BaseService in this case). For this reason, the only
     //     // way to ensure inheritance, is via the custom `@inheritMeta()`!
-    //    
+    //
     //     static override myField = 'cda';
     //
     //     static override accessor value = 51;
@@ -59,11 +59,13 @@ describe('@meta() decorator (static members)', () => {
     // }
 
     test('can get meta using static member reference', () => {
-
         // --------------------------------------------------------------------------------------------------- //
         // Field: Similar as for "instance" field, we can only obtain a static field's meta using the class and
         // full path.
-        expect(Metadata.get(BaseService, 'static.fields.myField.wip'), 'Unable to get meta for field')
+        expect(
+            Metadata.get(BaseService, 'static.fields.myField.wip'),
+            'Unable to get meta for field',
+        )
             .toBe('wap');
 
         // --------------------------------------------------------------------------------------------------- //
@@ -137,7 +139,10 @@ describe('@meta() decorator (static members)', () => {
     test('inherits meta using static member reference', () => {
         // --------------------------------------------------------------------------------------------------- //
         // Field: The same as in previous test. We can only get meta for "field" kind, using the class reference.
-        expect(Metadata.get(BetaService, 'static.fields.myField.wip'), 'Unable to get meta for field')
+        expect(
+            Metadata.get(BetaService, 'static.fields.myField.wip'),
+            'Unable to get meta for field',
+        )
             .toBe('wap');
 
         // --------------------------------------------------------------------------------------------------- //
@@ -146,7 +151,7 @@ describe('@meta() decorator (static members)', () => {
         const descriptors = getClassPropertyDescriptors(
             BetaService,
             true,
-            false
+            false,
         );
 
         // Debug
