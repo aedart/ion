@@ -93,18 +93,16 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
 
                 // Save the target (member) address, for the given owner.
                 // This will enable meta lookups, using the member directly.
-                // console.log('address registration for', target);
                 registerAddress(constructor, target as object, memberAddress);
 
-                // To ensure that meta is still available for a member, when it is overridden in child classes,
-                // we register the same address again, using the member defined in the prototype, which is obtained
-                // via `Reflect.getOwnPropertyDescriptor`, so we can handle as many kind as possible.
-                // NOTE: This sadly does not work for static members!
+                // To ensure that meta is still available vai a member reference directly, even when overridden
+                // in a child class, we register the address again, using member obtained from a property descriptor.
+                // NOTE: This sadly DOES NOT work for overridden static members (no late static binding of `this`)!
 
-                const descriptor = Reflect.getOwnPropertyDescriptor(
-                    constructor.prototype,
-                    context.name,
-                );
+                const descriptor = !isStatic
+                    ? Reflect.getOwnPropertyDescriptor(constructor.prototype, context.name)
+                    : Reflect.getOwnPropertyDescriptor(constructor, context.name);
+
                 if (descriptor === undefined) {
                     return;
                 }
