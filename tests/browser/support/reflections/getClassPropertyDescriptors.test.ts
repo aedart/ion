@@ -18,7 +18,7 @@ describe('@aedart/support/refelctions', () => {
                 .toThrow(TypeError);
         });
 
-        test('can get property descriptors for class', () => {
+        test('can get property descriptors for class\'s prototype', () => {
             const MY_SYMBOL = Symbol('my_symbol');
 
             class A
@@ -72,7 +72,62 @@ describe('@aedart/support/refelctions', () => {
             }
         });
 
-        test('can get property descriptors for class recursively', () => {
+        test('can get static property descriptors for class', () => {
+            const MY_SYMBOL = Symbol('my_symbol');
+
+            class A
+            {
+                static set name(v) {
+                    /* empty */
+                }
+                static get name() {
+                    return null;
+                }
+                static bar()
+                {
+                    /* empty */
+                }
+                static [MY_SYMBOL]()
+                {
+                    /* empty */
+                }
+            }
+
+            // -------------------------------------------------------------------------------- //
+
+            const expected = [
+                'prototype',
+                'length',
+                'name',
+                'bar',
+                MY_SYMBOL,
+            ];
+
+            const descriptors = getClassPropertyDescriptors(A, false, false);
+
+            // Debug
+            // console.log(descriptors);
+
+            for (const key of expected) {
+                const k = (typeof key == 'symbol')
+                    ? key.toString()
+                    : key;
+
+                expect(Reflect.has(descriptors, key), 'Key ' + k + ' not in descriptors record')
+                    .toBeTruthy();
+
+                const descriptor = descriptors[key];
+
+                // Debug
+                // console.log(key, descriptor);
+
+                expect(descriptor, 'No descriptor returned for ' + k)
+                    .not
+                    .toBeUndefined();
+            }
+        });
+        
+        test('can get property descriptors for class\'s prototype recursively', () => {
             const MY_SYMBOL = Symbol('my_symbol');
 
             class A
@@ -129,6 +184,67 @@ describe('@aedart/support/refelctions', () => {
             }
         });
 
+        test('can get static property descriptors for class recursively', () => {
+            const MY_SYMBOL = Symbol('my_symbol');
+
+            class A
+            {
+                static set name(v) {
+                    /* empty */
+                }
+                static get name() {
+                    return null;
+                }
+                static foo()
+                {
+                    /* empty */
+                }
+                static [MY_SYMBOL]()
+                {
+                    /* empty */
+                }
+            }
+
+            class B extends A
+            {
+                static set bar(v) {
+                    /* empty */
+                }
+                static get bar() {
+                    return null;
+                }
+            }
+
+            // -------------------------------------------------------------------------------- //
+
+            const expected = [
+                'prototype',
+                'length',
+                'name',
+                'foo',
+                'bar',
+                MY_SYMBOL,
+            ];
+
+            const descriptors = getClassPropertyDescriptors(B, true, false);
+            // Debug
+            // console.log(descriptors);
+            
+            for (const key of expected) {
+                const k = (typeof key == 'symbol')
+                    ? key.toString()
+                    : key;
+
+                expect(Reflect.has(descriptors, key), 'Key ' + k + ' not in descriptors record')
+                    .toBeTruthy();
+
+                const descriptor = descriptors[key];
+                expect(descriptor, 'No descriptor returned for ' + k)
+                    .not
+                    .toBeUndefined();
+            }
+        });
+        
         test('returns top-most property descriptors', () => {
             const MY_SYMBOL = Symbol('my_symbol');
 
