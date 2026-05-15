@@ -41,6 +41,7 @@ Temporary changelog for feature branch.
 * `useCloneable` option has been renamed to `clone` and set to `false` by default, in `MergeOptions` (_contracts and support packages_)
 * Object `merge()` behaviour changed to correctly deal with concat-spreadable objects and arrays (_support package_).
 * `set()`, `get()`, `has()`, `forget()` and `isArrayLike()` no longer use lodash (_support package_).
+* `ObjectId` properties are now set to be private.
 
 **Non-breaking Changes**
 
@@ -49,7 +50,7 @@ Temporary changelog for feature branch.
 * Optimized performance of reflections utilities (_support package_).
 * Optimized performance of objects' `hasAll()`, `hasAny()`, `forgetAll()`, `ObjectId`, `isset()` and `populate()` (_support package_).
 * Improved typing of array `merge()` to work with any amount of arrays (_support package_).
-* `ObjectId` properties are now set to be private.
+* `getClassPropertyDescriptors()` can now also return property descriptors for static defined properties (_support package_).
 * The TypeScript source files are now also published, along with appropriate source maps.
 * dprint is now used for formatting.
 
