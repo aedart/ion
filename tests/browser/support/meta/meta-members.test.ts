@@ -27,11 +27,6 @@ describe('@meta() decorator (instance members)', () => {
         @meta('foo', 'bar')
         play()
         {/* empty */}
-
-        // TODO: Static field
-        // TODO: Static accessor
-        // TODO: Static getter / setter?
-        // TODO: Static method
     }
 
     class AlphaService extends BaseService
@@ -56,11 +51,6 @@ describe('@meta() decorator (instance members)', () => {
 
         override play()
         {/* empty */}
-
-        // TODO: override Static field
-        // TODO: override Static accessor
-        // TODO: override Static getter / setter?
-        // TODO: override Static method
     }
 
     test('can get meta using instance member reference', () => {
@@ -300,8 +290,4 @@ describe('@meta() decorator (instance members)', () => {
         expect(Metadata.get(play, 'foo'), 'Incorrect meta value for instance method')
             .toBe('bar');
     });
-
-    // TODO: Static method meta, ... obtain via static member directly.
-    // TODO: Inherit static method meta, ... obtain via static member directly.
-    // TODO: Static getter / setter (field) meta, ... obtain via member directly.
 });
