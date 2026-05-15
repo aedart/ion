@@ -140,7 +140,7 @@ describe('@meta() decorator (instance members)', () => {
             .toBe('bar');
     });
 
-    test('can get meta using instance member reference (inherited)', () => {
+    test('inherits meta using instance member reference', () => {
         const instance = new BetaService();
 
         // --------------------------------------------------------------------------------------------------- //
@@ -221,7 +221,7 @@ describe('@meta() decorator (instance members)', () => {
             .toBe('bar');
     });
 
-    test('can get meta using instance member reference (overridden)', () => {
+    test('inherits meta using overridden instance member reference', () => {
         const instance = new GammaService();
 
         // --------------------------------------------------------------------------------------------------- //
