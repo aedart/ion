@@ -35,28 +35,28 @@ describe('@meta() decorator (static members)', () => {
     {}
 
     // TODO: WIP
-    class GammaService extends BetaService
-    {
-        // Note: meta is sadly NOT automatically inherited for overridden static members.
-        // This is because decorator's context.addInitializer() do not offer a late static
-        // binding for `this` (this = BaseService in this case). For this reason, the only
-        // way to ensure inheritance, is via the custom `@inheritMeta()`!
-        
-        static override myField = 'cda';
-
-        static override accessor value = 51;
-
-        static override get name(): string {
-            return this._name;
-        }
-
-        static override set name(n: string) {
-            this._name = n;
-        }
-
-        static override play()
-        {/* empty */}
-    }
+    // class GammaService extends BetaService
+    // {
+    //     // Note: meta is sadly NOT automatically inherited for overridden static members.
+    //     // This is because decorator's context.addInitializer() do not offer a late static
+    //     // binding for `this` (this = BaseService in this case). For this reason, the only
+    //     // way to ensure inheritance, is via the custom `@inheritMeta()`!
+    //    
+    //     static override myField = 'cda';
+    //
+    //     static override accessor value = 51;
+    //
+    //     static override get name(): string {
+    //         return this._name;
+    //     }
+    //
+    //     static override set name(n: string) {
+    //         this._name = n;
+    //     }
+    //
+    //     static override play()
+    //     {/* empty */}
+    // }
 
     test('can get meta using static member reference', () => {
 
