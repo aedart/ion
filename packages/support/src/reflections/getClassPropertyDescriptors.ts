@@ -47,7 +47,7 @@ export function getClassPropertyDescriptors(
         const from = fromPrototype
             ? chain[i].prototype as object
             : chain[i] as object;
-        
+
         populateDescriptors(output, from);
     }
 

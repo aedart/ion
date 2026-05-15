@@ -18,7 +18,7 @@ describe('@aedart/support/refelctions', () => {
                 .toThrow(TypeError);
         });
 
-        test('can get property descriptors for class\'s prototype', () => {
+        test("can get property descriptors for class's prototype", () => {
             const MY_SYMBOL = Symbol('my_symbol');
 
             class A
@@ -126,8 +126,8 @@ describe('@aedart/support/refelctions', () => {
                     .toBeUndefined();
             }
         });
-        
-        test('can get property descriptors for class\'s prototype recursively', () => {
+
+        test("can get property descriptors for class's prototype recursively", () => {
             const MY_SYMBOL = Symbol('my_symbol');
 
             class A
@@ -229,7 +229,7 @@ describe('@aedart/support/refelctions', () => {
             const descriptors = getClassPropertyDescriptors(B, true, false);
             // Debug
             // console.log(descriptors);
-            
+
             for (const key of expected) {
                 const k = (typeof key == 'symbol')
                     ? key.toString()
@@ -244,7 +244,7 @@ describe('@aedart/support/refelctions', () => {
                     .toBeUndefined();
             }
         });
-        
+
         test('returns top-most property descriptors', () => {
             const MY_SYMBOL = Symbol('my_symbol');
 
