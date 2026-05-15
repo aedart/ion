@@ -38,7 +38,6 @@ export function getClassPropertyDescriptors(
     // Since walkParents yields nearest parent first, we iterate the chain in
     // reverse order to ensure child descriptors win or are merged onto parent descriptors.
     for (let i = chain.length - 1; i >= 0; i--) {
-        // populateDescriptors(output, chain[i]);
         populateDescriptors(output, chain[i].prototype as object);
     }
 
