@@ -21,30 +21,31 @@ jobs:
 
         steps:
             - name: 'Checkout'
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             # 1. Setup pnpm
             - name: 'Install pnpm'
-              uses: pnpm/action-setup@v4
-              with:
-                  version: 9
+              uses: pnpm/action-setup@v6
 
             # 2. Setup Node 24 (No pnpm cache here to ensure a fresh fetch)
             - name: 'Use Node ${{ matrix.node }}'
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v6
               with:
                   node-version: ${{ matrix.node }}
 
             # 3. Force Fresh Dependency Resolution
             # We ignore the lockfile and prefer the latest versions in range.
             - name: 'Install latest dependencies'
-              run: pnpm install --no-frozen-lockfile --prefer-latest
+              run: pnpm install --no-frozen-lockfile
 
             # 4. Install Playwright Browsers (Required for Vitest)
             - name: 'Install Playwright Browsers'
               run: pnpm exec playwright install --with-deps chromium firefox
 
             # 5. Run the Pipeline
+            - name: 'Build'
+              run: pnpm build
+            
             - name: 'Check Formatting'
               run: pnpm format
 
@@ -53,9 +54,6 @@ jobs:
 
             - name: 'Type Check'
               run: pnpm type-check
-
-            - name: 'Build'
-              run: pnpm build
 
             - name: 'Test (Node & Headless Browsers)'
               run: pnpm test

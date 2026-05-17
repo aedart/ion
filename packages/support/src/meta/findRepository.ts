@@ -1,6 +1,6 @@
 // @aedart/support/meta/findRepository.js
 import { Repository } from '@aedart/contracts/support/meta';
-import { registry } from './registry.js';
+import { registry } from './registries.js';
 
 /**
  * Find the nearest parent repository in the prototype chain.

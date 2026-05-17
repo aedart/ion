@@ -5,10 +5,13 @@ describe('@aedart/support/mixins', () => {
     describe('decorators', () => {
         describe('HasInstance', () => {
             test('respects class inheritance ', () => {
+                // @ts-expect-error Ignore superclass type here.
                 const MyMixin = HasInstance((superclass) => class extends superclass {});
 
                 class A
                 {}
+
+                // @ts-expect-error Ignore MyMixin return type here.
                 class B extends MyMixin(A)
                 {}
 
@@ -25,10 +28,14 @@ describe('@aedart/support/mixins', () => {
 
             test('can determine if instance of mixin', () => {
                 // NOTE: The Bare decorator MUST also be applied here, or instance of [mixin] will not work as intended!
+
+                // @ts-expect-error Ignore superclass type here.
                 const MyMixin = HasInstance(Bare((superclass) => class extends superclass {}));
 
                 class A
                 {}
+
+                // @ts-expect-error Ignore MyMixin return type here.
                 class B extends MyMixin(A)
                 {}
 

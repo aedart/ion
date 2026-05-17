@@ -12,10 +12,14 @@ describe('@aedart/support/mixins', () => {
 
                 const MyMixinA = Cached(Bare((superclass) => {
                     aApplied++;
+
+                    // @ts-expect-error Ignore superclass type here.
                     return class extends superclass {};
                 }));
                 const MyMixinB = Cached(Bare((superclass) => {
                     bApplied++;
+
+                    // @ts-expect-error Ignore superclass type here.
                     return class extends superclass {};
                 }));
 
@@ -23,8 +27,12 @@ describe('@aedart/support/mixins', () => {
                 {}
 
                 // Notice that the same mixins are applied on the same superclass.
+
+                // @ts-expect-error Ignore MyMixin return type here.
                 class B extends MyMixinA(MyMixinB(A))
                 {}
+
+                // @ts-expect-error Ignore MyMixin return type here.
                 class C extends MyMixinA(MyMixinB(A))
                 {}
 

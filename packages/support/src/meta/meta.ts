@@ -1,9 +1,13 @@
 import { ConstructorLike } from '@aedart/contracts';
 import { MetaCallback } from '@aedart/contracts/support/meta/index.js';
 import { Key } from '@aedart/contracts/support/types.js';
+import { set } from '../objects/set.js';
+import { isKeyUnsafe } from '../reflections/isKeyUnsafe.js';
+import { findOrCreateMemberAddress } from './findOrCreateMemberAddress.js';
 import { flush } from './flush.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
-import { MEMBER_TO_METADATA } from './registry.js';
+import { registerAddress } from './registerAddress.js';
+import { MEMBER_TO_METADATA } from './registries.js';
 import { resolveKeyValue } from './resolveKeyValue.js';
 
 /**
@@ -40,22 +44,34 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
             return;
         }
 
-        // 4. If it's a member decorator, stage the metadata
-        const kind = context.kind === 'method' ? 'methods' : 'fields';
-        const prefix = isStatic ? 'static.' : '';
+        // 4. Find or create member address (in this case without the "owner context", which is resolved later).
+        const memberAddress = findOrCreateMemberAddress(target, context);
 
-        // E.g. 'static.methods.playSound.volumne', 'fields.id.fetch_url'
-        const path = `${prefix}${kind}.${String(context.name)}.${String(key)}`;
+        // Generate a full path (from address) so it can be stored / staged...
+        let pathParts = memberAddress.path(key) as PropertyKey[];
+        if (!Array.isArray(pathParts)) {
+            pathParts = [pathParts];
+        }
 
-        metadataObj[path] = val;
+        // Fail if any path segment is unsafe. This is needed because `set()` ignores
+        // any unsafe path.
+        const partsLen = pathParts.length;
+        for (let i = 0; i < partsLen; i++) {
+            if (isKeyUnsafe(pathParts[i])) {
+                throw new TypeError(`Unsafe metadata key/path detected: ${String(key)}`);
+            }
+        }
 
-        // 5. Link the member to the metadata object for discovery
+        // 5. If it's a member decorator, stage the metadata
+        set(metadataObj, pathParts, val);
+
+        // 6. Link the member to the metadata object for discovery
         // For methods, target is the function. For fields, it's undefined (in 2023-11).
         if (target !== undefined && target !== null) {
             MEMBER_TO_METADATA.set(target, metadataObj);
         }
 
-        // 6. Use addInitializer to flush metadata.
+        // 7. Use addInitializer to flush metadata.
         // For static members, this runs during class definition.
         // For instance members, this runs during instantiation.
         context.addInitializer(function(this: unknown)
@@ -67,8 +83,47 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
                         | ConstructorLike
                         | undefined;
 
-            if (constructor) {
-                flush(constructor, metadataObj);
+            // Skip further processing if there isn't a constructor available, or if
+            // the context.kind is a "field" (target is then `undefined`).
+            if (!constructor || context.kind === 'field') {
+                return;
+            }
+
+            flush(constructor, metadataObj);
+
+            // Save the target (member) address, for the given owner.
+            // This will enable meta lookups, using the member directly.
+            registerAddress(constructor, target as object, memberAddress);
+
+            // To ensure that meta is still available via a member reference directly, even when overridden
+            // in a child class, we register the address again, using member obtained from a property descriptor.
+            // NOTE: This sadly DOES NOT work for overridden static members (no late static binding of `this`)!
+
+            const descriptor = !isStatic
+                ? Reflect.getOwnPropertyDescriptor(constructor.prototype, context.name)
+                : Reflect.getOwnPropertyDescriptor(constructor, context.name);
+
+            if (descriptor === undefined) {
+                return;
+            }
+
+            const proto = (() => {
+                switch (context.kind) {
+                    case 'method':
+                        return descriptor.value as object;
+                    case 'accessor':
+                        return descriptor as object;
+                    case 'setter':
+                        return descriptor.set as object;
+                    case 'getter':
+                        return descriptor.get as object;
+                    default:
+                        return undefined;
+                }
+            })();
+
+            if (proto !== undefined && proto !== target) {
+                registerAddress(constructor, proto, memberAddress);
             }
         });
     };

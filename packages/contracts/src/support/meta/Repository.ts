@@ -1,8 +1,7 @@
-// @aedart/contracts/support/meta/Repository.js
 import { Key } from '../types.js';
 
 /**
- * Metadata Repository Contract
+ * Metadata Repository
  */
 export default interface Repository {
     /**

@@ -6,7 +6,7 @@ import { Key } from '@aedart/contracts/support/types.js';
  *
  * @param {Key | MetaCallback} koc Key or Callback
  * @param {unknown} v Value
- * @param {unknown} target The target 
+ * @param {unknown} target The target
  * @param {ClassDecoratorContext | ClassMemberDecoratorContext} context
  *
  * @returns {{ key: Key, val: unknown }}

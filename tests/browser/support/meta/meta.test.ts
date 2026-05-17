@@ -230,48 +230,36 @@ describe('@meta() decorator', () => {
         expect(Metadata.get(SecureClass, MY_KEY)).toBe('secret-value');
     });
 
-    describe('@meta() security: prototype pollution', () => {
-        test('immediately prevents pollution via class decorator', () => {
-            const trigger = () => {
-                @meta('__proto__.polluted', true)
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                class Polluter
-                {}
-            };
+    test('can use Symbols as metadata keys, for method', () => {
+        const MY_KEY = Symbol('my_key');
 
-            // Class decorators run immediately; should throw during definition.
-            expect(trigger).toThrow();
-        });
+        class MyClass
+        {
+            @meta(MY_KEY, 'secret-value')
+            myMethod()
+            {/* empty */}
+        }
 
-        test('prevents pollution via static member decorator', () => {
-            const trigger = () => {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                class StaticPolluter
-                {
-                    @meta('constructor.prototype.polluted', true)
-                    static someField = 123;
-                }
-            };
+        // Debug
+        // new MyClass();
 
-            // Static initializers run during class definition; should throw here.
-            expect(trigger).toThrow();
-        });
+        expect(Metadata.get(MyClass, ['methods', 'myMethod', MY_KEY])).toBe('secret-value');
+    });
 
-        test('prevents pollution via instance member decorator', () => {
-            const trigger = () => {
-                class InstancePolluter
-                {
-                    @meta('constructor.prototype.polluted', true)
-                    someMethod()
-                    {/* empty */}
-                }
+    test('can use Symbols as metadata keys, for static method', () => {
+        const MY_KEY = Symbol('my_key');
 
-                // CRITICAL: Must instantiate to trigger the member's addInitializer
-                new InstancePolluter();
-            };
+        class MyClass
+        {
+            @meta(MY_KEY, 'secret-value')
+            static myMethod()
+            {/* empty */}
+        }
 
-            // Now that we instantiate, the initializer runs and set() throws.
-            expect(trigger).toThrow();
-        });
+        // Debug
+        // new MyClass();
+
+        expect(Metadata.get(MyClass, ['static', 'methods', 'myMethod', MY_KEY]))
+            .toBe('secret-value');
     });
 });

@@ -1,16 +1,16 @@
 import { ConstructorLike } from '@aedart/contracts';
 import { getOrCreateBaseRepository } from './getOrCreateBaseRepository.js';
-import { FLUSHED_METADATA } from './registry.js';
+import { FLUSHED_METADATA } from './registries';
 
 /**
  * Flush staged metadata into the repositories of the given owner.
  *
  * @param {ConstructorLike} owner The Class (constructor)
- * @param {Record<string, unknown>} staged The metadata object from decorator context
+ * @param {Record<PropertyKey, unknown>} staged The metadata object from decorator context
  *
  * @internal
  */
-export function flush(owner: ConstructorLike, staged: Record<string, unknown>): void
+export function flush(owner: ConstructorLike, staged: Record<PropertyKey, unknown>): void
 {
     if (FLUSHED_METADATA.has(staged)) {
         return;
@@ -23,7 +23,7 @@ export function flush(owner: ConstructorLike, staged: Record<string, unknown>): 
 
     for (let i = 0, len = keys.length; i < len; i++) {
         const path = keys[i] as string;
-        const destination = path.startsWith('static.')
+        const destination = path.startsWith('static')
             ? owner
             : prototype;
 

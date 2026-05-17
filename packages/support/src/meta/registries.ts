@@ -1,5 +1,9 @@
-import { Repository } from '@aedart/contracts/support/meta/index.js';
-import "./polyfill.js";
+import {
+    type MemberAddress,
+    type OwnerContext,
+    type Repository,
+} from '@aedart/contracts/support/meta';
+import './polyfill.js';
 
 /**
  * The internal registry for all metadata repositories.
@@ -27,3 +31,21 @@ export const MEMBER_TO_METADATA = new WeakMap<object, Record<PropertyKey, unknow
  * @type {WeakSet<object>}
  */
 export const FLUSHED_METADATA = new WeakSet<object>();
+
+/**
+ * Cache of Owner Context instances
+ *
+ * @internal
+ *
+ * @type {WeakMap<object, OwnerContext>}
+ */
+export const contextCache = new WeakMap<object, OwnerContext>();
+
+/**
+ * Member Address registry
+ *
+ * @internal
+ *
+ * @type {WeakMap<object, MemberAddress>}
+ */
+export const addressRegistry = new WeakMap<object, MemberAddress>();

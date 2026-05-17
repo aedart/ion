@@ -3,6 +3,8 @@ import { Key } from '@aedart/contracts/support';
 import { toParts } from '../objects/toParts.js';
 import { isConstructor } from '../reflections/isConstructor.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
+import { addressRegistry } from './registries.js';
+import type Resolved from './Resolved.js';
 
 /**
  * Metadata Helper
@@ -23,9 +25,9 @@ export default class Metadata
      */
     static get<T>(target: object, key: Key, defaultValue?: T): T | undefined
     {
-        const resolved = this.resolveTarget(target, key);
+        const { resolvedTarget, resolvedKey } = this.resolveTargetAndKey(target, key);
 
-        return getOrCreateRepository(resolved).get<T>(key, defaultValue);
+        return getOrCreateRepository(resolvedTarget).get<T>(resolvedKey, defaultValue);
     }
 
     /**
@@ -38,9 +40,9 @@ export default class Metadata
      */
     static has(target: object, key: Key): boolean
     {
-        const resolved = this.resolveTarget(target, key);
+        const { resolvedTarget, resolvedKey } = this.resolveTargetAndKey(target, key);
 
-        return getOrCreateRepository(resolved).has(key);
+        return getOrCreateRepository(resolvedTarget).has(resolvedKey);
     }
 
     /**
@@ -53,6 +55,37 @@ export default class Metadata
     static all(target: object): Record<PropertyKey, unknown>
     {
         return getOrCreateRepository(target).all();
+    }
+
+    /**
+     *  Resolve the actual target and key for metadata lookup
+     *
+     * @param {object} target
+     * @param {Key} key
+     *
+     * @returns {Resolved}
+     *
+     * @protected
+     */
+    protected static resolveTargetAndKey(target: object, key: Key): Resolved
+    {
+        let owner = target;
+        let resolvedKey = key;
+
+        const address = addressRegistry.get(target);
+        if (address !== undefined) {
+            const resolvedOwner = address.ctx?.ownerRef?.deref();
+            if (resolvedOwner !== undefined) {
+                owner = resolvedOwner;
+            }
+
+            resolvedKey = address.path(key);
+        }
+
+        return {
+            resolvedTarget: this.resolveTarget(owner, resolvedKey),
+            resolvedKey,
+        };
     }
 
     /**

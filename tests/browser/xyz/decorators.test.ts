@@ -287,13 +287,13 @@ describe('@aedart/xyz', () => {
                 {/* empty */}
 
                 @decorator('private call')
+                // eslint-disable-next-line no-unused-private-class-members
                 #call()
-                // eslint-disable-line no-unused-private-class-members
                 {/* empty */}
 
                 @decorator('static private ping')
+                // eslint-disable-next-line no-unused-private-class-members
                 static #ping()
-                // eslint-disable-line no-unused-private-class-members
                 {/* empty */}
             }
 
