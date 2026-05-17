@@ -43,6 +43,9 @@ jobs:
               run: pnpm exec playwright install --with-deps chromium firefox
 
             # 5. Run the Pipeline
+            - name: 'Build'
+              run: pnpm build
+            
             - name: 'Check Formatting'
               run: pnpm format
 
@@ -51,9 +54,6 @@ jobs:
 
             - name: 'Type Check'
               run: pnpm type-check
-
-            - name: 'Build'
-              run: pnpm build
 
             - name: 'Test (Node & Headless Browsers)'
               run: pnpm test
