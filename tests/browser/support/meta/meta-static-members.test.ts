@@ -1,4 +1,4 @@
-import { meta, Metadata, inheritMeta } from '@aedart/support/meta';
+import { inheritMeta, meta, Metadata } from '@aedart/support/meta';
 import { getClassPropertyDescriptors } from '@aedart/support/reflections';
 import { describe, expect, test } from 'vitest';
 
@@ -39,9 +39,9 @@ describe('@meta() decorator (static members)', () => {
         // Note: meta is sadly NOT automatically inherited for overridden static members.
         // This is because decorator's context.addInitializer() do not offer a late static
         // binding for `this` (this = BaseService in this case). For this reason, the only
-        // way to obtain inherited metadata via a static member reference, is via the 
+        // way to obtain inherited metadata via a static member reference, is via the
         // @inheritMeta() decorator.
-        
+
         @inheritMeta() // NOTE: Has NO effect for field type, because "target" is undefined in decorator!
         static override myField = 'cda';
 
@@ -62,10 +62,10 @@ describe('@meta() decorator (static members)', () => {
         static override play()
         {/* empty */}
     }
-    
+
     class SierraService extends GammaService
     {}
-    
+
     class TangoService extends SierraService
     {}
 
@@ -231,10 +231,12 @@ describe('@meta() decorator (static members)', () => {
     });
 
     test('inherits meta using overridden static member reference (via @inheritMeta())', () => {
-
         // --------------------------------------------------------------------------------------------------- //
         // Field: Same as previous tests...
-        expect(Metadata.get(GammaService, 'static.fields.myField.wip'), 'Unable to get meta for field')
+        expect(
+            Metadata.get(GammaService, 'static.fields.myField.wip'),
+            'Unable to get meta for field',
+        )
             .toBe('wap');
 
         // --------------------------------------------------------------------------------------------------- //
@@ -242,7 +244,7 @@ describe('@meta() decorator (static members)', () => {
         const overriddenDescriptors = getClassPropertyDescriptors(
             GammaService,
             true,
-            false
+            false,
         );
 
         // Debug
@@ -311,10 +313,12 @@ describe('@meta() decorator (static members)', () => {
     });
 
     test('inherits meta using overridden static member reference (deep inheritance chain)', () => {
-
         // --------------------------------------------------------------------------------------------------- //
         // Field: Same as previous tests...
-        expect(Metadata.get(TangoService, 'static.fields.myField.wip'), 'Unable to get meta for field')
+        expect(
+            Metadata.get(TangoService, 'static.fields.myField.wip'),
+            'Unable to get meta for field',
+        )
             .toBe('wap');
 
         // --------------------------------------------------------------------------------------------------- //
@@ -322,7 +326,7 @@ describe('@meta() decorator (static members)', () => {
         const overriddenDescriptors = getClassPropertyDescriptors(
             TangoService,
             true,
-            false
+            false,
         );
 
         // Debug
