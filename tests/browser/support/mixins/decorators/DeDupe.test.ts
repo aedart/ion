@@ -8,9 +8,12 @@ describe('@aedart/support/mixins', () => {
                 let applied = 0;
                 const MyMixin = DeDupe(Bare((superclass) => {
                     applied++;
+
+                    // @ts-expect-error Ignore superclas type here.
                     return class extends superclass {};
                 }));
 
+                // @ts-expect-error Ignore MyMixin return type here.
                 class A extends MyMixin(
                     MyMixin(
                         MyMixin(class {}),

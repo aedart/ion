@@ -8,10 +8,13 @@ describe('@aedart/support/mixins', () => {
                 // It is a bit redundant to test all of "Mixin" decorator's applied decorators.
                 // So here we just ensure that the top-level functionality works as intended.
 
+                // @ts-expect-error Ignore superclass type here.
                 const MyMixin = Mixin((superclass) => class extends superclass {});
 
                 class A
                 {}
+
+                // @ts-expect-error Ignore MyMixin type here.
                 class B extends MyMixin(A)
                 {}
 
