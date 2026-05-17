@@ -27,7 +27,7 @@ jobs:
             - name: 'Install pnpm'
               uses: pnpm/action-setup@v4
               with:
-                  version: 9
+                  version: 11
 
             # 2. Setup Node 24 (No pnpm cache here to ensure a fresh fetch)
             - name: 'Use Node ${{ matrix.node }}'
