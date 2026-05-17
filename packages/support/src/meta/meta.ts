@@ -83,48 +83,47 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
                         | ConstructorLike
                         | undefined;
 
-            if (constructor) {
-                flush(constructor, metadataObj);
+            // Skip further processing if there isn't a constructor available, or if
+            // the context.kind is a "field" (target is then `undefined`).
+            if (!constructor || context.kind === 'field') {
+                return;
+            }
 
-                // Skip further processing if "field" is given (target is then `undefined`)
-                if (context.kind === 'field') {
-                    return;
+            flush(constructor, metadataObj);
+
+            // Save the target (member) address, for the given owner.
+            // This will enable meta lookups, using the member directly.
+            registerAddress(constructor, target as object, memberAddress);
+
+            // To ensure that meta is still available vai a member reference directly, even when overridden
+            // in a child class, we register the address again, using member obtained from a property descriptor.
+            // NOTE: This sadly DOES NOT work for overridden static members (no late static binding of `this`)!
+
+            const descriptor = !isStatic
+                ? Reflect.getOwnPropertyDescriptor(constructor.prototype, context.name)
+                : Reflect.getOwnPropertyDescriptor(constructor, context.name);
+
+            if (descriptor === undefined) {
+                return;
+            }
+
+            const proto = (() => {
+                switch (context.kind) {
+                    case 'method':
+                        return descriptor.value as object;
+                    case 'accessor':
+                        return descriptor as object;
+                    case 'setter':
+                        return descriptor.set as object;
+                    case 'getter':
+                        return descriptor.get as object;
+                    default:
+                        return undefined;
                 }
+            })();
 
-                // Save the target (member) address, for the given owner.
-                // This will enable meta lookups, using the member directly.
-                registerAddress(constructor, target as object, memberAddress);
-
-                // To ensure that meta is still available vai a member reference directly, even when overridden
-                // in a child class, we register the address again, using member obtained from a property descriptor.
-                // NOTE: This sadly DOES NOT work for overridden static members (no late static binding of `this`)!
-
-                const descriptor = !isStatic
-                    ? Reflect.getOwnPropertyDescriptor(constructor.prototype, context.name)
-                    : Reflect.getOwnPropertyDescriptor(constructor, context.name);
-
-                if (descriptor === undefined) {
-                    return;
-                }
-
-                const proto = (() => {
-                    switch (context.kind) {
-                        case 'method':
-                            return descriptor.value as object;
-                        case 'accessor':
-                            return descriptor as object;
-                        case 'setter':
-                            return descriptor.set as object;
-                        case 'getter':
-                            return descriptor.get as object;
-                        default:
-                            return undefined;
-                    }
-                })();
-
-                if (proto !== undefined && proto !== target) {
-                    registerAddress(constructor, proto, memberAddress);
-                }
+            if (proto !== undefined && proto !== target) {
+                registerAddress(constructor, proto, memberAddress);
             }
         });
     };
