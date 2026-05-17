@@ -36,7 +36,7 @@ jobs:
             # 3. Force Fresh Dependency Resolution
             # We ignore the lockfile and prefer the latest versions in range.
             - name: 'Install latest dependencies'
-              run: pnpm install --no-frozen-lockfile --prefer-latest
+              run: pnpm install --no-frozen-lockfile
 
             # 4. Install Playwright Browsers (Required for Vitest)
             - name: 'Install Playwright Browsers'
