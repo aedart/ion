@@ -95,7 +95,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
             // This will enable meta lookups, using the member directly.
             registerAddress(constructor, target as object, memberAddress);
 
-            // To ensure that meta is still available vai a member reference directly, even when overridden
+            // To ensure that meta is still available via a member reference directly, even when overridden
             // in a child class, we register the address again, using member obtained from a property descriptor.
             // NOTE: This sadly DOES NOT work for overridden static members (no late static binding of `this`)!
 
