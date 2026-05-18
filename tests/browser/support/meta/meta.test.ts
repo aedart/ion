@@ -38,10 +38,30 @@ describe('@meta() decorator', () => {
         class Child extends Parent
         {}
 
-        expect(Metadata.get(Parent, 'version')).toBe('1.0.0');
         expect(Metadata.get(Child, 'version')).toBe('2.0.0');
+        expect(Metadata.get(Parent, 'version')).toBe('1.0.0');
     });
 
+    test('manual branching: child does not mutate parent (class member)', () => {
+        
+        class Parent
+        {
+            @meta('version', '1.0.0')
+            foo()
+            { /* empty */ }
+        }
+
+        class Child extends Parent
+        {
+            @meta('version', '2.0.0')
+            foo()
+            { /* empty */ }
+        }
+
+        expect(Metadata.get(Child, 'methods.foo.version')).toBe('2.0.0');
+        expect(Metadata.get(Parent, 'methods.foo.version')).toBe('1.0.0');
+    });
+    
     test('bridges gaps in inheritance chain', () => {
         @meta('shared', true)
         class A
@@ -262,4 +282,52 @@ describe('@meta() decorator', () => {
         expect(Metadata.get(MyClass, ['static', 'methods', 'myMethod', MY_KEY]))
             .toBe('secret-value');
     });
+    
+    // test('can obtain all metadata for target', () => {
+    //    
+    //     @meta('a_class_lvl', 'A')
+    //     class A
+    //     {
+    //         @meta('a_field_lvl', 'sun')
+    //         accessor message = 'Hello';
+    //        
+    //         @meta('a_method_lvl', 'bar')
+    //         foo()
+    //         { /* empty */ }
+    //     }
+    //
+    //     @meta('b_class_lvl', 'B')
+    //     class B extends A
+    //     {
+    //         @meta('a_field_lvl', 'zar')
+    //         @meta('msg', 'hi there...')
+    //         foo()
+    //         { /* empty */ }
+    //
+    //
+    //         @meta('url', 'https://example.com/foo')
+    //         bar()
+    //         { /* empty */ }
+    //     }
+    //    
+    //     // new A();
+    //     // new B();
+    //    
+    //    
+    //    
+    //     const aMeta = Metadata.all(A, false);
+    //     const bMeta = Metadata.all(B, false); // NOT inherited
+    //     const allMeta = Metadata.all(B); // Inherited
+    //    
+    //     // Debug
+    //     console.log({
+    //         aMethods: Metadata.get(A, 'methods'),
+    //         bMethods: Metadata.get(B, 'methods'),
+    //         a: aMeta,
+    //         b: bMeta,
+    //         all: allMeta,
+    //         // aClass: A[Symbol.metadata],
+    //         // bClass: B[Symbol.metadata],
+    //     });
+    // })
 });
