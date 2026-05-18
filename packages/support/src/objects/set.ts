@@ -38,7 +38,12 @@ export function set(target: object, path: Key, value: unknown): void
         // Determine if we should create an array or an object for the next level
         const nextKey = segments[i + 1];
 
-        // If current key doesn't exist or isn't an object/array, initialize it
+        // If current key doesn't exist or isn't an object/array, initialize it.
+        // If it exists but is NOT an own property, we must shadow it to avoid
+        // mutating the prototype's nested objects!
+        // We use Object.create() for objects to ensure that subsequent levels
+        // are also correctly identified as "not own" properties, allowing for
+        // recursive shadowing.
         if (
             current[key] === undefined || current[key] === null || typeof current[key] !== 'object'
         ) {
@@ -48,6 +53,10 @@ export function set(target: object, path: Key, value: unknown): void
                 && nextKey !== ''
                 && !Number.isNaN(Number(nextKey));
             current[key] = isNextKeyIndex ? [] : {};
+        } else if (!Object.prototype.hasOwnProperty.call(current, key)) {
+            current[key] = Array.isArray(current[key])
+                ? [...(current[key] as unknown[])]
+                : Object.create(current[key]);
         }
 
         current = current[key] as Record<PropertyKey, unknown>;
