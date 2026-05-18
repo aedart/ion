@@ -34,11 +34,14 @@ export default interface Repository {
     has(key: Key): boolean;
 
     /**
-     * Returns all metadata for the bound target only (excludes inherited).
+     * Returns all metadata for the target.
      *
+     * @param {boolean} [inherited=true] Returns all inherited metadata is return, if `true`.
+     *                                   Otherwise, only this target's metadata is returned.
+     * 
      * @returns {Record<PropertyKey, unknown>}
      */
-    all(): Record<PropertyKey, unknown>;
+    all(inherited?: boolean): Record<PropertyKey, unknown>;
 
     /**
      * The target (class or member) this repository is bound to.
