@@ -89,11 +89,47 @@ export default class MetaRepository implements Repository
     /**
      * @inheritdoc
      */
-    all(): Record<PropertyKey, unknown>
+    all(inherited = true): Record<PropertyKey, unknown>
     {
-        return { ...this.#data };
+        // TODO: WIP - something is off here...
+        
+        const current = {
+            ...(this.#owner as Record<PropertyKey, unknown>)[Symbol.metadata] ?? Object.create(null) as object,
+            ...this.#data,
+            // ...this.get<Record<PropertyKey, unknown>>('methods', Object.create(null) as Record<PropertyKey, unknown>),
+            // ...this.get<Record<PropertyKey, unknown>>('fields', Object.create(null) as Record<PropertyKey, unknown>),
+            // ...this.get<Record<PropertyKey, unknown>>('static', Object.create(null) as Record<PropertyKey, unknown>),
+        }
+        
+        return current;
+        
+        // if (!inherited) {
+        //     return current;    
+        // }
+        //
+        // const parentMeta = this.#parent?.all(inherited) ?? Object.create(null) as Record<
+        //     PropertyKey,
+        //     unknown
+        // >;
+        //
+        // // console.log('PARENT', {
+        // //     // @ts-expect-error Bla
+        // //     owner: this.#owner[Symbol.metadata] as object,
+        // //     // parent: this.#parent?.allData() as Record<PropertyKey, unknown>,
+        // // });
+        //
+        // return {
+        //     ...parentMeta,
+        //     ...current
+        // }
     }
 
+    // TODO: Cleanup - Remove this again...
+    allData(): Record<PropertyKey, unknown>
+    {
+        return this.#data;
+    }
+    
     /**
      * @inheritdoc
      */
