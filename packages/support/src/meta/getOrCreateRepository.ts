@@ -24,8 +24,7 @@ export function getOrCreateRepository(target: object): Repository
 
     while (
         current !== null &&
-        typeof current === 'function' &&
-        current.name !== 'Function' && // Stops at native Function
+        current !== Function.prototype &&
         current !== Object.prototype
     ) {
         // Skip further traversal if we hit a class already in the registry
