@@ -22,7 +22,12 @@ export function getOrCreateRepository(target: object): Repository
     const chain: object[] = [];
     let current: object | null = target;
 
-    while (current !== null && current !== Function.prototype && current !== Object.prototype) {
+    while (
+        current !== null &&
+        typeof current === 'function' &&
+        current.name !== 'Function' && // Stops at native Function
+        current !== Object.prototype
+    ) {
         // Skip further traversal if we hit a class already in the registry
         if (registry.has(current)) {
             chain.push(current);
