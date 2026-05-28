@@ -1,4 +1,4 @@
-import { ConstructorLike } from "@aedart/contracts";
+import { ConstructorLike } from '@aedart/contracts';
 import { Repository } from '@aedart/contracts/support/meta';
 import MetaRepository from './MetaRepository.js';
 import { registry } from './registries.js';
@@ -23,9 +23,9 @@ export function getOrCreateRepository(target: object): Repository
     let current: object | null = target;
 
     while (
-        current !== null &&
-        current !== Function.prototype &&
-        current !== Object.prototype
+        current !== null
+        && current !== Function.prototype
+        && current !== Object.prototype
     ) {
         // Skip further traversal if we hit a class already in the registry
         if (registry.has(current)) {
@@ -50,7 +50,7 @@ export function getOrCreateRepository(target: object): Repository
             // Create, register, and link
             const repo: Repository = new MetaRepository(currentTarget, parentRepo);
             registry.set(currentTarget, repo);
-            
+
             parentRepo = repo;
         }
     }

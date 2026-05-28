@@ -11,6 +11,6 @@ import { registry } from './registries.js';
 export function findRepository(target: object | null): Repository | undefined
 {
     if (!target) return undefined;
-    
+
     return registry.get(target);
 }

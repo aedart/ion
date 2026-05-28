@@ -19,7 +19,6 @@ describe('@aedart/support/objects', () => {
                 { key: ['e', 'nested', foo], value: 'bar' },
                 { key: ['e', foo, 3], value: 'zim' },
                 { key: 'f.g.h', value: 'deep' },
-                
             ];
 
             values.forEach(({ key, value }, index) => {
@@ -55,7 +54,7 @@ describe('@aedart/support/objects', () => {
             set(obj, 'a.b', 'hello');
             expect((obj.a as Record<string, unknown>).b).toBe('hello');
         });
-        
+
         test('can set and get through existing falsy values', () => {
             const target = { a: { b: 0 } };
 
@@ -77,7 +76,7 @@ describe('@aedart/support/objects', () => {
             expect(Array.isArray(matrix[0])).toBe(true);
             expect(matrix[0][1]).toBe(99);
         });
-        
+
         test('overwrites primitive values with objects when setting deep paths', () => {
             const target = { a: 123 };
 
@@ -111,7 +110,7 @@ describe('@aedart/support/objects', () => {
             const obj: Record<string, unknown> = {};
             set(obj, '__proto__', { polluted: true });
             // The global Object prototype must remain unpolluted
-            expect((({} as Record<string, unknown>).polluted)).toBeUndefined();
+            expect(({} as Record<string, unknown>).polluted).toBeUndefined();
         });
 
         test('stops traversal when __proto__ appears mid-path', () => {
@@ -128,12 +127,13 @@ describe('@aedart/support/objects', () => {
         });
 
         test('does not set a value when the only segment is prototype', () => {
-            function Ctor() { /* empty */ }
+            function Ctor()
+            {/* empty */}
             set(Ctor, 'prototype', 'bad');
             // prototype must remain an object
             expect(typeof (Ctor as unknown as Record<string, unknown>).prototype).toBe('object');
         });
-        
+
         test('shadows an inherited object rather than mutating the prototype', () => {
             const proto = { nested: { fromProto: true } };
             const child = Object.create(proto) as Record<string, unknown>;
@@ -166,7 +166,7 @@ describe('@aedart/support/objects', () => {
             // null passes the typeof check but fails the !== null check
             const original = {};
             set(null as unknown as object, 'a', 1);
-            expect(original).toEqual({});  // nothing blew up
+            expect(original).toEqual({}); // nothing blew up
         });
 
         test('does nothing when target is a primitive (number)', () => {

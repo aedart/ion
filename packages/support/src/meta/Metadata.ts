@@ -49,7 +49,7 @@ export default class Metadata
      * @param {object} target
      * @param {boolean} [inherited=true] Returns all inherited metadata is return, if `true`.
      *                                   Otherwise, only this target's metadata is returned.
-     * 
+     *
      * @returns {Record<PropertyKey, unknown>}
      */
     static all(target: object, inherited = true): Record<PropertyKey, unknown>

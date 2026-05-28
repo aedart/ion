@@ -39,7 +39,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
         // Generate a full path (from address) so it can be stored / staged...
         let pathParts = memberAddress.path(key) as PropertyKey[];
         if (!Array.isArray(pathParts)) {
-            pathParts = [ pathParts ];
+            pathParts = [pathParts];
         }
 
         // Use addInitializer to flush metadata.
@@ -52,7 +52,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
                     ?? (Object.getPrototypeOf(this) as object | undefined)?.constructor) as
                         | ConstructorLike
                         | undefined;
-            
+
             if (!constructor) {
                 return;
             }
@@ -66,7 +66,7 @@ export function meta(keyOrCallback: Key | MetaCallback, value?: unknown)
 
             // Save the target (member) address
             registerAddress(constructor, target as object, memberAddress);
-            
+
             // Link final member version for discovery
             const descriptor = !isStatic
                 ? Reflect.getOwnPropertyDescriptor(constructor.prototype, context.name)

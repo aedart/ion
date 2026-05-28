@@ -104,7 +104,7 @@ export default class MetaRepository implements Repository
             ...current,
         };
     }
-    
+
     /**
      * @inheritdoc
      */

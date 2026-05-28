@@ -1,57 +1,68 @@
-import { getOrCreateRepository, MetaRepository, findRepository } from "@aedart/support/meta";
+import { findRepository, getOrCreateRepository, MetaRepository } from '@aedart/support/meta';
 import { describe, expect, test } from 'vitest';
 
 describe('getOrCreateRepository()', () => {
-    
     describe('basic creation', () => {
         test('returns a Repository instance', () => {
-            class A {}
+            class A
+            {}
             const repo = getOrCreateRepository(A);
             expect(repo).toBeInstanceOf(MetaRepository);
         });
 
         test('sets the correct owner on the repository', () => {
-            class A {}
+            class A
+            {}
             const repo = getOrCreateRepository(A);
             expect(repo.owner).toBe(A);
         });
 
         test('returns undefined parent for a root class', () => {
-            class A {}
+            class A
+            {}
             const repo = getOrCreateRepository(A);
             expect(repo.parent).toBeUndefined();
         });
 
         test('makes the repository findable via findRepository() after creation', () => {
-            class A {}
+            class A
+            {}
             const ctor = A;
             getOrCreateRepository(ctor);
             expect(findRepository(ctor)).toBeInstanceOf(MetaRepository);
         });
 
         test('findRepository() returns undefined before getOrCreateRepository() is called', () => {
-            class A {}
+            class A
+            {}
             expect(findRepository(A)).toBeUndefined();
         });
     });
 
     describe('identity — no overwriting', () => {
         test('returns the exact same instance on repeated calls', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
             const ctor = C;
 
-            const first  = getOrCreateRepository(ctor);
+            const first = getOrCreateRepository(ctor);
             const second = getOrCreateRepository(ctor);
             expect(first).toBe(second);
         });
 
         test('does not overwrite an ancestor repo when a descendant is requested later', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
-            class D extends C {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
+            class D extends C
+            {}
 
             const repoA = getOrCreateRepository(A);
             getOrCreateRepository(D);
@@ -60,10 +71,14 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('does not overwrite an intermediate repo when a deeper descendant is requested', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
-            class D extends C {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
+            class D extends C
+            {}
 
             const repoB = getOrCreateRepository(B);
             getOrCreateRepository(D);
@@ -71,11 +86,13 @@ describe('getOrCreateRepository()', () => {
             expect(findRepository(B)).toBe(repoB);
         });
     });
-    
+
     describe('inheritance chain linkage', () => {
         test('links a direct child to its parent repository', () => {
-            class A {}
-            class B extends A {}
+            class A
+            {}
+            class B extends A
+            {}
 
             const repoA = getOrCreateRepository(A);
             const repoB = getOrCreateRepository(B);
@@ -84,11 +101,16 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('builds the full chain when only the deepest class is requested first', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
-            class D extends C {}
-            class E extends D {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
+            class D extends C
+            {}
+            class E extends D
+            {}
 
             getOrCreateRepository(E);
 
@@ -105,10 +127,14 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('all ancestors are registered as a side-effect of requesting the deepest class', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
-            class D extends C {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
+            class D extends C
+            {}
 
             getOrCreateRepository(D);
 
@@ -118,10 +144,14 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('produces the same chain regardless of request order (A → D → C scenario)', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
-            class D extends C {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
+            class D extends C
+            {}
 
             const repoA = getOrCreateRepository(A);
             const repoD = getOrCreateRepository(D);
@@ -134,12 +164,15 @@ describe('getOrCreateRepository()', () => {
             expect(repoB.parent).toBe(repoA);
         });
     });
-    
+
     describe('parallel inheritance branches', () => {
         test('gives sibling branches their own distinct repository instances', () => {
-            class A {}
-            class B extends A {}
-            class X extends A {}
+            class A
+            {}
+            class B extends A
+            {}
+            class X extends A
+            {}
 
             const repoB = getOrCreateRepository(B);
             const repoX = getOrCreateRepository(X);
@@ -148,9 +181,12 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('shares the common ancestor repository across sibling branches', () => {
-            class A {}
-            class B extends A {}
-            class X extends A {}
+            class A
+            {}
+            class B extends A
+            {}
+            class X extends A
+            {}
 
             const repoB = getOrCreateRepository(B);
             const repoX = getOrCreateRepository(X);
@@ -159,10 +195,14 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('does not cross-link sibling repos as parents of each other', () => {
-            class A {}
-            class B extends A {}
-            class X extends A {}
-            class Y extends X {}
+            class A
+            {}
+            class B extends A
+            {}
+            class X extends A
+            {}
+            class Y extends X
+            {}
 
             getOrCreateRepository(Y);
 
@@ -177,11 +217,13 @@ describe('getOrCreateRepository()', () => {
 
     describe('edge cases', () => {
         test('handles two completely unrelated class hierarchies independently', () => {
-            class Alpha {}
-            class Beta {}
+            class Alpha
+            {}
+            class Beta
+            {}
 
             const repoAlpha = getOrCreateRepository(Alpha);
-            const repoBeta  = getOrCreateRepository(Beta );
+            const repoBeta = getOrCreateRepository(Beta);
 
             expect(repoAlpha).not.toBe(repoBeta);
             expect(repoAlpha.parent).toBeUndefined();
@@ -189,9 +231,12 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('rapid repeated calls produce only one Repository per class', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
 
             const ctor = C;
             const results = Array.from({ length: 10 }, () => getOrCreateRepository(ctor));
@@ -201,11 +246,16 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('every class in a chain has its own distinct repository', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
-            class D extends C {}
-            class E extends D {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
+            class D extends C
+            {}
+            class E extends D
+            {}
 
             const ctors = [A, B, C, D, E];
             getOrCreateRepository(ctors[4]); // trigger full chain
@@ -217,10 +267,14 @@ describe('getOrCreateRepository()', () => {
         });
 
         test('every repository in a chain references the correct owner', () => {
-            class A {}
-            class B extends A {}
-            class C extends B {}
-            class D extends C {}
+            class A
+            {}
+            class B extends A
+            {}
+            class C extends B
+            {}
+            class D extends C
+            {}
 
             const ctors = [A, B, C, D];
             getOrCreateRepository(ctors[3]);
@@ -231,4 +285,3 @@ describe('getOrCreateRepository()', () => {
         });
     });
 });
-

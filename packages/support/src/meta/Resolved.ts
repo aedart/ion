@@ -5,8 +5,7 @@ import { type Key } from '@aedart/contracts/support';
  *
  * @internal
  */
-export default interface Resolved
-{
+export default interface Resolved {
     /**
      * The resolved target
      */

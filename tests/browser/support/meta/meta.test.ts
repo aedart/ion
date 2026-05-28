@@ -43,28 +43,27 @@ describe('@meta() decorator', () => {
     });
 
     test('manual branching: child does not mutate parent (class member)', () => {
-        
         class Parent
         {
             @meta('version', '1.0.0')
             foo()
-            { /* empty */ }
+            {/* empty */}
         }
 
         class Child extends Parent
         {
             @meta('version', '2.0.0')
             foo()
-            { /* empty */ }
+            {/* empty */}
         }
 
         new Parent();
         new Child();
-        
+
         expect(Metadata.get(Parent, 'methods.foo.version')).toBe('1.0.0');
         expect(Metadata.get(Child, 'methods.foo.version')).toBe('2.0.0');
     });
-    
+
     test('bridges gaps in inheritance chain', () => {
         @meta('shared', true)
         class A
@@ -137,7 +136,7 @@ describe('@meta() decorator', () => {
         {}
 
         new Leaf();
-        
+
         expect(Metadata.has(Leaf, 'methods.doWork.status')).toBe(true);
         expect(Metadata.get(Leaf, 'is-leaf')).toBe(true);
         expect(Metadata.has(Level1, 'is-leaf')).toBe(false);
@@ -160,8 +159,11 @@ describe('@meta() decorator', () => {
         new Parent();
         new Child();
 
-        expect(Metadata.get(Parent, 'methods.doSomething.access'), 'incorrect meta on parent').toBe('admin');
-        expect(Metadata.get(Child, 'methods.doSomething.access'), 'meta not inherited by child').toBe('admin');
+        expect(Metadata.get(Parent, 'methods.doSomething.access'), 'incorrect meta on parent').toBe(
+            'admin',
+        );
+        expect(Metadata.get(Child, 'methods.doSomething.access'), 'meta not inherited by child')
+            .toBe('admin');
     });
 
     test('can decorate and inherit instance fields', () => {
