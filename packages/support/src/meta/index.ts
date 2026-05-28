@@ -5,11 +5,8 @@ import OwnerContext from './OwnerContext.js';
 
 export { Address, Metadata, MetaRepository, OwnerContext };
 
-// export * from './discoverAndFlush.js'; // internal
 export * from './findOrCreateMemberAddress.js';
 export * from './findRepository.js';
-// export * from './flush.js'; // internal
-export * from './getOrCreateBaseRepository.js';
 export * from './getOrCreateOwnerContext.js';
 export * from './getOrCreateRepository.js';
 export * from './inheritMeta.js';

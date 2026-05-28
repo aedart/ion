@@ -43,25 +43,27 @@ describe('@meta() decorator', () => {
     });
 
     test('manual branching: child does not mutate parent (class member)', () => {
-        
         class Parent
         {
             @meta('version', '1.0.0')
             foo()
-            { /* empty */ }
+            {/* empty */}
         }
 
         class Child extends Parent
         {
             @meta('version', '2.0.0')
             foo()
-            { /* empty */ }
+            {/* empty */}
         }
 
-        expect(Metadata.get(Child, 'methods.foo.version')).toBe('2.0.0');
+        new Parent();
+        new Child();
+
         expect(Metadata.get(Parent, 'methods.foo.version')).toBe('1.0.0');
+        expect(Metadata.get(Child, 'methods.foo.version')).toBe('2.0.0');
     });
-    
+
     test('bridges gaps in inheritance chain', () => {
         @meta('shared', true)
         class A
@@ -77,15 +79,6 @@ describe('@meta() decorator', () => {
     });
 
     test('bridges long inheritance gaps for members', () => {
-        // Level 1: Define base metadata on a method and field
-        // class Level1 {
-        //     @meta('status', 'base-method')
-        //     doWork() {}
-        //
-        //     @meta('prop-type', 'string')
-        //     name: string = '';
-        // }
-
         @meta('foo', 'bar')
         class Level1
         {
@@ -97,11 +90,8 @@ describe('@meta() decorator', () => {
             name = '';
         }
 
-        // new Level1()
-
         // Level 2-4: Empty classes (The Gaps)
-        // These should not have their own repositories initially,
-        // so findRepository must skip them to find Level1.
+        // These should not have their own repositories created.
         class Level2 extends Level1
         {}
         class Level3 extends Level2
@@ -117,24 +107,13 @@ describe('@meta() decorator', () => {
             {/* empty */}
         }
 
-        // new Level1()
-
         // Level 6: The Leaf class
         class Level6 extends Level5
         {}
 
-        // Debugging
-        // console.log('--- Debug Registry ---');
-        // console.log(
-        //     'Level1 Prototype Has Repo:',
-        //     Metadata.has(Level1.prototype, 'methods.doWork.status'),
-        // );
-        // console.log(
-        //     'Level6 Prototype Has Repo:',
-        //     Metadata.has(Level6.prototype, 'methods.doWork.status'),
-        // );
+        // --------------------------------------------------------------------------- //
 
-        // --- Assertions ---
+        new Level6();
 
         // 1. Instance Method Metadata (Deep Inheritance)
         // Should resolve: Level6 -> Level6.prototype -> Level1.prototype (via #parent)
@@ -156,6 +135,8 @@ describe('@meta() decorator', () => {
         class Leaf extends Level6
         {}
 
+        new Leaf();
+
         expect(Metadata.has(Leaf, 'methods.doWork.status')).toBe(true);
         expect(Metadata.get(Leaf, 'is-leaf')).toBe(true);
         expect(Metadata.has(Level1, 'is-leaf')).toBe(false);
@@ -175,13 +156,14 @@ describe('@meta() decorator', () => {
             {/* empty */} // Override method
         }
 
-        // Method metadata is stored on the prototype, namespaced by method name
+        new Parent();
+        new Child();
 
-        // new Parent();
-        // new Child();
-
-        expect(Metadata.get(Parent, 'methods.doSomething.access')).toBe('admin');
-        expect(Metadata.get(Child, 'methods.doSomething.access')).toBe('admin');
+        expect(Metadata.get(Parent, 'methods.doSomething.access'), 'incorrect meta on parent').toBe(
+            'admin',
+        );
+        expect(Metadata.get(Child, 'methods.doSomething.access'), 'meta not inherited by child')
+            .toBe('admin');
     });
 
     test('can decorate and inherit instance fields', () => {
@@ -194,8 +176,8 @@ describe('@meta() decorator', () => {
         class Child extends Parent
         {}
 
-        // new Parent();
-        // new Child();
+        new Parent();
+        new Child();
 
         // Note: We access the prototype since instance fields are defined there via decorators
         expect(Metadata.get(Parent, 'fields.name.validation')).toBe('required');
@@ -260,8 +242,7 @@ describe('@meta() decorator', () => {
             {/* empty */}
         }
 
-        // Debug
-        // new MyClass();
+        new MyClass();
 
         expect(Metadata.get(MyClass, ['methods', 'myMethod', MY_KEY])).toBe('secret-value');
     });
@@ -276,58 +257,9 @@ describe('@meta() decorator', () => {
             {/* empty */}
         }
 
-        // Debug
         // new MyClass();
 
         expect(Metadata.get(MyClass, ['static', 'methods', 'myMethod', MY_KEY]))
             .toBe('secret-value');
     });
-    
-    // test('can obtain all metadata for target', () => {
-    //    
-    //     @meta('a_class_lvl', 'A')
-    //     class A
-    //     {
-    //         @meta('a_field_lvl', 'sun')
-    //         accessor message = 'Hello';
-    //        
-    //         @meta('a_method_lvl', 'bar')
-    //         foo()
-    //         { /* empty */ }
-    //     }
-    //
-    //     @meta('b_class_lvl', 'B')
-    //     class B extends A
-    //     {
-    //         @meta('a_field_lvl', 'zar')
-    //         @meta('msg', 'hi there...')
-    //         foo()
-    //         { /* empty */ }
-    //
-    //
-    //         @meta('url', 'https://example.com/foo')
-    //         bar()
-    //         { /* empty */ }
-    //     }
-    //    
-    //     // new A();
-    //     // new B();
-    //    
-    //    
-    //    
-    //     const aMeta = Metadata.all(A, false);
-    //     const bMeta = Metadata.all(B, false); // NOT inherited
-    //     const allMeta = Metadata.all(B); // Inherited
-    //    
-    //     // Debug
-    //     console.log({
-    //         aMethods: Metadata.get(A, 'methods'),
-    //         bMethods: Metadata.get(B, 'methods'),
-    //         a: aMeta,
-    //         b: bMeta,
-    //         all: allMeta,
-    //         // aClass: A[Symbol.metadata],
-    //         // bClass: B[Symbol.metadata],
-    //     });
-    // })
 });

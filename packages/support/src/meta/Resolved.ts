@@ -1,4 +1,4 @@
-import { Key } from '@aedart/contracts/support';
+import { type Key } from '@aedart/contracts/support';
 
 /**
  * Resolved target and key
