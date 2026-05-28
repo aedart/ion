@@ -1,6 +1,4 @@
-import { ConstructorLike } from '@aedart/contracts';
 import { Key } from '@aedart/contracts/support';
-import { toParts } from '../objects/toParts.js';
 import { isConstructor } from '../reflections/isConstructor.js';
 import { getOrCreateRepository } from './getOrCreateRepository.js';
 import { addressRegistry } from './registries.js';
@@ -85,7 +83,7 @@ export default class Metadata
         }
 
         return {
-            resolvedTarget: this.resolveTarget(owner, resolvedKey),
+            resolvedTarget: this.resolveTarget(owner),
             resolvedKey,
         };
     }
@@ -94,22 +92,15 @@ export default class Metadata
      * Resolves the actual target for metadata lookup
      *
      * @param {object} target
-     * @param {PropertyKey} key
      *
      * @returns {object}
      *
      * @protected
      */
-    protected static resolveTarget(target: object, key: Key): object
+    protected static resolveTarget(target: object): object
     {
-        if (isConstructor(target)) {
-            const parts = toParts(key);
-            const root = parts[0];
-
-            // If querying instance members via the Class, pivot to the Prototype.
-            if (root === 'methods' || root === 'fields') {
-                return (target as ConstructorLike).prototype as object;
-            }
+        if (!isConstructor(target)) {
+            return target.constructor;
         }
 
         return target;
